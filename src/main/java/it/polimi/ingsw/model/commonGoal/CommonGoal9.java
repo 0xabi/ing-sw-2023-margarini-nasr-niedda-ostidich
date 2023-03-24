@@ -1,4 +1,14 @@
 package it.polimi.ingsw.model.commonGoal;
 
-public class CommonGoal9 {
+import it.polimi.ingsw.model.CommonGoal;
+import it.polimi.ingsw.model.Shelf;
+
+public class CommonGoal9 extends CommonGoal {
+
+    @Override
+    public boolean check(Shelf shelf) {
+        //check
+        return false;
+    }
+
 }
