@@ -1,13 +1,9 @@
 package it.polimi.ingsw.model;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
-public class CommonGoal {
-
-    private static final Set<CommonGoal> alreadyChosen = new HashSet<CommonGoal>();
+public abstract class CommonGoal {
 
     private final ScoringTokenStack tokens;
 
