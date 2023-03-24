@@ -1,4 +1,9 @@
 package it.polimi.ingsw.model.commonGoal;
 
-public class CommonGoal1 {
+import it.polimi.ingsw.model.CommonGoal;
+
+public class CommonGoal1 extends CommonGoal {
+
+
+
 }
