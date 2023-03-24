@@ -34,7 +34,19 @@ public class Player {
         this.points = this.points + points;
      }
 
-     public List<Coordinates> (Board board){
+     public List<Coordinates> pickTiles(Board board){
+
+    }
+
+    private int checkAvailablePickNumber() {
+
+}
+
+    public void  insertTiles(list<tile> tiles, int column){
+
+    }
+
+    private void chooseOrder(list<tile>){
 
     }
 }
