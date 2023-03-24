@@ -1,17 +1,18 @@
 package it.polimi.ingsw.model;
+import java.util.List;
 
 public class Player {
 
     private String name;
     private int points;
-    private PesonalGoal personalGoal;
+    private PersonalGoal personalGoal;
     private Shelf shelf;
 
     public Player(String name){
         this.name = name;
         points = 0;
         shelf = new Shelf();
-        pesonalGoal = new PersonalGoal();
+        personalGoal = new PersonalGoal();
     }
 
      public String getName(){
@@ -22,7 +23,7 @@ public class Player {
         return points;
      }
 
-     public PersonalGoal(){
+     public PersonalGoal getPersonalGoal(){
         return personalGoal;
      }
 
@@ -34,7 +35,19 @@ public class Player {
         this.points = this.points + points;
      }
 
-     public List<Coordinates> (Board board){
+     public List<Coordinate> pickTiles(Board board){
+
+    }
+
+    private int checkAvailablePickNumber() {
+
+}
+
+    public void  insertTiles(List<Tile> tiles, int column){
+
+    }
+
+    private void chooseOrder(List<Tile> tiles){
 
     }
 }
