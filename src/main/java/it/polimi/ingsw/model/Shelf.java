@@ -2,8 +2,8 @@ package it.polimi.ingsw.model;
 import java.util.List;
 
 public class Shelf {
-     private int rowLength=6 ;
-     private int coloumnLength=5;
+    private int rowLength=6 ;
+    private int coloumnLength=5;
     private Tile positions[rowLengtyh][columnLength];
 
     public Shelf(){
@@ -15,7 +15,7 @@ public class Shelf {
 
     }
 
-    public Tile getPosition(Coordinate coord) {
+    public Tile getPosition(Coordinates coord) {
         return positions[coord.x][coord.y];
 }
     public boolean insertInColumn(List<Tile> Tiles, int column){

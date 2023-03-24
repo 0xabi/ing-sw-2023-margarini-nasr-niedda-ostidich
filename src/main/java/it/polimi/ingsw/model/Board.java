@@ -43,19 +43,19 @@ public class Board {
         bag.refillBoard(this);
     }
 
-    public boolean selectTiles(List<Coordinate> selection) {
+    public boolean selectTiles(List<Coordinates> selection) {
         //check whether selection is legit and if true empties the tiles selected on the board
         //uses method checkSelection()
         //uses method emptyTiles()
         return false;
     }
 
-    private boolean checkSelection(List<Coordinate> selection) {
+    private boolean checkSelection(List<Coordinates> selection) {
         //check whether selection is legit
         return false;
     }
 
-    private void emptyTiles(List<Coordinate> selection) {
+    private void emptyTiles(List<Coordinates> selection) {
         //empties the tile selected on board
     }
 

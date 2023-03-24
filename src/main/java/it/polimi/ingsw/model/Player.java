@@ -4,8 +4,11 @@ import java.util.List;
 public class Player {
 
     private String name;
+
     private int points;
+
     private PersonalGoal personalGoal;
+
     private Shelf shelf;
 
     public Player(String name){
@@ -15,33 +18,33 @@ public class Player {
         personalGoal = new PersonalGoal();
     }
 
-     public String getName(){
+    public String getName(){
         return name;
-     }
+    }
 
-     public int getPoints(){
+    public int getPoints(){
         return points;
-     }
+    }
 
-     public PersonalGoal getPersonalGoal(){
+    public PersonalGoal getPersonalGoal(){
         return personalGoal;
-     }
+    }
 
-     public Shelf getShelf(){
+    public Shelf getShelf(){
         return shelf;
-     }
+    }
 
-     public void addPoints(int points){
+    public void addPoints(int points){
         this.points = this.points + points;
-     }
+    }
 
-     public List<Coordinate> pickTiles(Board board){
-
+    public List<Coordinates> pickTiles(Board board){
+        return null;
     }
 
     private int checkAvailablePickNumber() {
-
-}
+        return 0;
+    }
 
     public void  insertTiles(List<Tile> tiles, int column){
 
@@ -50,4 +53,5 @@ public class Player {
     private void chooseOrder(List<Tile> tiles){
 
     }
+
 }

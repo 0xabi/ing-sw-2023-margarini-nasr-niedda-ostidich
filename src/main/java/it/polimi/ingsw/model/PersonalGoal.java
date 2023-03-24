@@ -7,10 +7,10 @@ import java.util.HashSet;
 public class PersonalGoal {
 
     private Set<PersonalGoal> alredyChoosen;
-    private Map<Coordinate, Tile> matches;
+    private Map<Coordinates, Tile> matches;
 
     public PersonalGoal(){
-        Map<Coordinate, Tile> matches = new HashMap<>();
+        Map<Coordinates, Tile> matches = new HashMap<>();
         Set<PersonalGoal> alredyChoosen = new HashSet<>();
     }
 
