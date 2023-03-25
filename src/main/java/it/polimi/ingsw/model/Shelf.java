@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 import java.util.List;
+import java.io.*;
 
 public class Shelf {
     private static final int rowLength = 6;
@@ -7,12 +8,23 @@ public class Shelf {
     private static final int columnLength = 5;
 
     private Tile[][] positions;
+     private final int rowLength=6 ;
+     private final int columnLength=5;
+    private Tile[][] positions;
 
     public Shelf(){
         positions = new Tile[rowLength][columnLength];
         for(int i = 0; i < rowLength; i++)
             for(int j = 0; j < columnLength; j++)
                 positions[i][j] = null;
+    }
+
+    public int getRow(){
+        return rowLength;
+    }
+
+    public int getColumn(){
+        return columnLength;
     }
 
     public Tile[][] getPositions() {
