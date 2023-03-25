@@ -1,16 +1,14 @@
 package it.polimi.ingsw.model;
+
 import java.util.List;
-import java.io.*;
 
 public class Shelf {
+
     private static final int rowLength = 6;
 
     private static final int columnLength = 5;
 
-    private Tile[][] positions;
-     private final int rowLength=6 ;
-     private final int columnLength=5;
-    private Tile[][] positions;
+    private final Tile[][] positions;
 
     public Shelf(){
         positions = new Tile[rowLength][columnLength];
