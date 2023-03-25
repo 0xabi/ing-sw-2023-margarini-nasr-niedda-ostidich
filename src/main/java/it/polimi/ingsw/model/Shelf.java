@@ -44,6 +44,12 @@ public class Shelf {
         return false;
     }
 
+    public int getTilesInColumn(int column){
+        for(int i = 0; i < rowLength; i++)
+            if(positions[i][column] != null) return rowLength-i;
+        return rowLength;
+    }
+
     public boolean isFull(){
         for(int i = 0; i < rowLength; i++)
             if(positions[i][0] == null) return false;

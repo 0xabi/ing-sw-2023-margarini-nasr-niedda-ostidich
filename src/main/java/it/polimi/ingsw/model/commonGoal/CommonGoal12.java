@@ -5,6 +5,8 @@ import it.polimi.ingsw.model.Shelf;
 
 public class CommonGoal12 extends CommonGoal {
 
+    private static final int chosenColumn = 0;
+
     @Override
     public boolean check(Shelf shelf) {
 
