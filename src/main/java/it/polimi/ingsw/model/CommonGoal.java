@@ -22,10 +22,7 @@ public abstract class CommonGoal {
         return givenPlayers;
     }
 
-    public boolean check(Shelf shelf) {
-        //check
-        return false;
-    }
+    public abstract boolean check(Shelf shelf);
 
     public void assignPoints(Player player) {
         player.addPoints(tokens.pop());

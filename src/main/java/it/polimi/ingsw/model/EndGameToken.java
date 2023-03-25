@@ -9,7 +9,7 @@ public class EndGameToken {
     }
 
     public void assignPoints(Player player) {
-        //assigns points to player
+        player.addPoints(endGamePoints);
     }
 
 }

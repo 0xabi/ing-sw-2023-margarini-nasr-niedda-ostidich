@@ -14,12 +14,15 @@ public class GameModel {
 
     private final CommonGoal commonGoal2;
 
-    private final List<Player> players = new LinkedList<Player>();
+    private final List<Player> players = new LinkedList<>();
 
     public GameModel(List<String> names) {
-        //random choosing of 2 of 12 commonGoal (maybe factory methods pattern)
-        commonGoal1 = new CommonGoal1();
-        commonGoal2 = new CommonGoal2();
+        commonGoal1 = CommonGoalFactory.getCommonGoal();
+        CommonGoal commonGoalTemp = CommonGoalFactory.getCommonGoal();
+        while(commonGoalTemp.equals(commonGoal1)) {
+            commonGoalTemp = CommonGoalFactory.getCommonGoal();
+        }
+        commonGoal2 = commonGoalTemp;
     }
 
     public boolean turnCycle() {
