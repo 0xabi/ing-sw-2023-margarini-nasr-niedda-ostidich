@@ -41,7 +41,7 @@ public class Player {
 
     private int checkAvailablePickNumber() {
 
-}
+    }
 
     public void  insertTiles(List<Tile> tiles, int column){
 

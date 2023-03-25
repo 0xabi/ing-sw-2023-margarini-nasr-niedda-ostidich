@@ -41,7 +41,7 @@ public class Shelf {
         for(int i = 0; i < rowLength; i++)
             if(positions[i][column] != Tile.EMPTY) return rowLength-i;
 
-        return 6;
+        return rowLength;
     }
 
     public boolean insertInColumn(List<Tile> Tiles, int column){
