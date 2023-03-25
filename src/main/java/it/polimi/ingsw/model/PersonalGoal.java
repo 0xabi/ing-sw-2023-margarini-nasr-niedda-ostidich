@@ -14,7 +14,7 @@ public class PersonalGoal {
         Set<PersonalGoal> alredyChoosen = new HashSet<>();
     }
 
-    public void assignPoints(Player){
+    public void assignPoints(Player player){
 
     }
 
