@@ -3,15 +3,15 @@ import java.util.List;
 
 public class Player {
 
-    private String name;
+    private final String name;
 
     private int points;
 
-    private PersonalGoal personalGoal;
+    private final PersonalGoal personalGoal;
 
-    private Shelf shelf;
+    private final Shelf shelf;
 
-    public Player(String name){
+    public Player(String name) {
         this.name = name;
         points = 0;
         shelf = new Shelf();
@@ -34,24 +34,28 @@ public class Player {
         return shelf;
     }
 
-    public void addPoints(int points){
+    public void addPoints(int points) {
         this.points = this.points + points;
     }
 
-    public List<Coordinates> pickTiles(Board board){
+    public List<Coordinates> pickTiles(Board board) {
+        //selects (if legally chosen) tiles on the board
+        //uses the method checkAvailablePickNumber()
         return null;
     }
 
     private int checkAvailablePickNumber() {
+        //returns the size of empty spaces in the least filled column
         return 0;
     }
 
-    public void  insertTiles(List<Tile> tiles, int column){
-
+    public void insertTiles(List<Tile> tiles, int column) {
+        //inserts the list of tiles in the column asking for the order
+        //uses method chooseOrder()
     }
 
     private void chooseOrder(List<Tile> tiles){
-
+        //asks the player to choose the order to insert the selection
     }
 
 }

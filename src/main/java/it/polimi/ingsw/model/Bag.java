@@ -24,10 +24,13 @@ public class Bag {
 
     public void refillBoard(Board board) {
         //set new filled board
+        //uses method emptyBoardInBag()
+        //uses method tilesLeft()
     }
 
     private void emptyBoardInBag(Board board) {
         //adds remains in board to bag
+        //uses method addTiles()
     }
 
 }
