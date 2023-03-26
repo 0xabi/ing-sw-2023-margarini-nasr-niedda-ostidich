@@ -1,4 +1,7 @@
 package it.polimi.ingsw.model;
+
+import netscape.javascript.JSObject;
+
 import java.util.Map;
 import java.util.Set;
 import java.util.HashMap;
@@ -10,19 +13,26 @@ public class PersonalGoal {
 
     private final Map<Coordinates, Tile> matches;
 
-    public PersonalGoal(){
-        //matches is constructed from one of a given set of matches
+    private static final Map<Integer, Integer> points = null;
+
+    public PersonalGoal() {
+
+        //matches is constructed from one of a given set of matches (without duplicates)
         matches = new HashMap<>();
     }
 
     public void assignPoints(Player player) {
-        //assigns points to the player
-        //uses method matchesShared()
+        player.addPoints(points.get(matchesShared(player.getShelf())));
     }
 
-    private int matchesShared(Shelf shelf){
-        //gives back the number from 0 to 6 of matches between the personal goal card and the shel
-        return 0;
+    private int matchesShared(Shelf shelf) {
+        int matchesNumber = 0;
+        for(Coordinates coordinates: matches.keySet()) {
+            if(shelf.getPosition(coordinates).equals(matches.get(coordinates))) {
+                matchesNumber++;
+            }
+        }
+        return matchesNumber;
     }
 
 }
