@@ -74,9 +74,21 @@ public class GameModel {
     }
 
     public Map<String, Integer> calculatePoints() {
-        //return a map with points for every player's name
-        //remember to make a decision in a tie game
-        return null;
+        Map<String, Integer> playersPoints = new HashMap<>();
+        for(Player player: players) {
+            player.getPersonalGoal().assignPoints(player);
+            AdjacentTilesGoal.assignPoints(player);
+            playersPoints.put(player.getName(), player.getPoints());
+        }
+        return playersPoints;
+    }
+
+    public List<String> getTurnCycleOrder() {
+        List<String> namesOrder = new LinkedList<>();
+        for(Player player: players) {
+            namesOrder.add(player.getName());
+        }
+        return namesOrder;
     }
 
 }

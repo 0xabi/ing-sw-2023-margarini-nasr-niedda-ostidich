@@ -7,11 +7,12 @@ public class AdjacentTilesGoal {
 
     private static final Map<Integer, Integer> groupPoints = new HashMap<Integer, Integer>();
 
-    public void assignPoints(Player player) {
-        //assigns points to player
+    public static void assignPoints(Player player) {
+        for(int groupSize: groupPoints.keySet())
+            player.addPoints(calculateGroupPoints(groupSize, player.getShelf()));
     }
 
-    private int calculateGroupPoints(int groupSize) {
+    private static int calculateGroupPoints(int groupSize, Shelf shelf) {
         //calculation of points of a groupSize group
         return 0;
     }
