@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,11 +89,6 @@ public class Board {
         return endGameToken;
     }
 
-    public void checkToRefill() {
-        //check if it is to be refilled and refills if true
-        //uses method checkNoMoreTurns()
-    }
-
     private boolean checkNoMoreTurns() {
         //check if it is the last turn of the last cycle
         return false;
@@ -116,6 +112,80 @@ public class Board {
 
     private void emptyTiles(List<Coordinates> selection) {
         //empties the tile selected on board
+    }
+
+    /**
+     *checks if the board isRefillable
+     * @author: Edoardo
+     * @return: true or false
+     */
+    public boolean checkToRefill() {
+
+        for(int i = 0; i < rowLength; i++)
+            for(int j = 0; j < columnLength; j++) {
+                if(isCompletelyFree(i,j)==false)
+                    return false;
+            }
+
+        return true;
+    }
+
+
+    /**
+     *checks if a tile has no other adjacent tiles
+     * @author: Edoardo
+     * @param: Coordinates of a space in the board
+     * @return: true or false
+     */
+    private boolean isCompletelyFree(int x, int y){
+        if(adjacentTile(x,y).contains(Tile.CATS))
+            return false;
+        if(adjacentTile(x,y).contains(Tile.BOOKS))
+            return false;
+        if(adjacentTile(x,y).contains(Tile.FRAMES))
+            return false;
+        if(adjacentTile(x,y).contains(Tile.GAMES))
+            return false;
+        if(adjacentTile(x,y).contains(Tile.PLANTS))
+            return false;
+        if(adjacentTile(x,y).contains(Tile.TROPHIES))
+            return false;
+
+        return true;
+
+    }
+
+    /**
+     *Adjacent tile
+     * @author: Edoardo
+     * @param: Coordinates of a space in the board
+     * @return: a list of adjacent Tile
+     */
+    private List<Tile> adjacentTile(int x, int y){
+
+        List<Tile> adjTile = new ArrayList<Tile>();
+
+        if(x>7)
+            adjTile.add(null);
+        else
+            adjTile.add(spaces[x+1][y]);
+
+        if(x<7)
+            adjTile.add(null);
+        else
+            adjTile.add(spaces[x-1][y]);
+
+        if(y>7)
+            adjTile.add(null);
+        else
+            adjTile.add(spaces[x][y+1]);
+
+        if(y<7)
+            adjTile.add(null);
+        else
+            adjTile.add(spaces[x][y-1]);
+
+        return adjTile;
     }
 
     public Tile getTileInBoard(Coordinates coordinates) {
