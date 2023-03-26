@@ -14,7 +14,7 @@ public class Board {
 
     private final Bag bag = new Bag();
 
-    private final Optional<EndGameToken> endGameToken;
+    private Optional<EndGameToken> endGameToken;
 
     public Board(int num) {
         spaces = new Tile[rowLength][columnLength];
@@ -72,6 +72,10 @@ public class Board {
 
     }
 
+    public void setEndGameToken(Optional<EndGameToken> endGameToken) {
+        this.endGameToken = endGameToken;
+    }
+
     public Tile[][] getSpaces() {
         return spaces;
     }
@@ -80,10 +84,13 @@ public class Board {
         this.spaces = spaces;
     }
 
-    public boolean checkToRefill() {
-        //check if it is to be refilled
+    public Optional<EndGameToken> getEndGameToken() {
+        return endGameToken;
+    }
+
+    public void checkToRefill() {
+        //check if it is to be refilled and refills if true
         //uses method checkNoMoreTurns()
-        return false;
     }
 
     private boolean checkNoMoreTurns() {
@@ -109,6 +116,10 @@ public class Board {
 
     private void emptyTiles(List<Coordinates> selection) {
         //empties the tile selected on board
+    }
+
+    public Tile getTileInBoard(Coordinates coordinates) {
+        return spaces[coordinates.x()][coordinates.y()];
     }
 
 }

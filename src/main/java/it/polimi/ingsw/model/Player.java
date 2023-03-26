@@ -49,9 +49,16 @@ public class Player {
         return 0;
     }
 
-    public void insertTiles(List<Tile> tiles, int column) {
+    public void insertTiles(List<Tile> tiles) {
+        int column = getColumnChoice();
         //inserts the list of tiles in the column asking for the order
         //uses method chooseOrder()
+        //uses method getColumnChoice()
+    }
+
+    private int getColumnChoice() {
+        //asks the player which column to insert in
+        return 0;
     }
 
     private void chooseOrder(List<Tile> tiles){
