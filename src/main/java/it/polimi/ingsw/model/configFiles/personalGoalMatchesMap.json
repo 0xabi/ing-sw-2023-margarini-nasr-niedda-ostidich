@@ -1,3 +1,98 @@
 {
-
+  "1": {
+    "PLANTS": {"x": 0, "y": 0},
+    "GAMES": {"x": 1, "y": 3},
+    "FRAMES": {"x": 2, "y": 0},
+    "TROPHIES": {"x": 2, "y": 5},
+    "BOOKS": {"x": 3, "y": 2},
+    "CATS": {"x": 4, "y": 1}
+  },
+  "2": {
+    "PLANTS": [1, 1],
+    "GAMES": [2, 2],
+    "FRAMES": [4, 5],
+    "TROPHIES": [3, 4],
+    "BOOKS": [4, 3],
+    "CATS": [0, 2]
+  },
+  "3": {
+    "PLANTS": [2, 2],
+    "GAMES": [3, 1],
+    "FRAMES": [0, 1],
+    "TROPHIES": [4, 3],
+    "BOOKS": [0, 5],
+    "CATS": [1, 3]
+  },
+  "4": {
+    "PLANTS": [3, 3],
+    "GAMES": [4, 0],
+    "FRAMES": [2, 2],
+    "TROPHIES": [0, 2],
+    "BOOKS": [1, 4],
+    "CATS": [2, 4]
+  },
+  "5": {
+    "PLANTS": [4, 4],
+    "GAMES": [0, 5],
+    "FRAMES": [1, 3],
+    "TROPHIES": [1, 1],
+    "BOOKS": [2, 3],
+    "CATS": [3, 5]
+  },
+  "6": {
+    "PLANTS": [0, 5],
+    "GAMES": [1, 4],
+    "FRAMES": [3, 4],
+    "TROPHIES": [2, 0],
+    "BOOKS": [3, 2],
+    "CATS": [4, 0]
+  },
+  "7": {
+    "PLANTS": [1, 2],
+    "GAMES": [4, 4],
+    "FRAMES": [3, 1],
+    "TROPHIES": [0, 3],
+    "BOOKS": [2, 5],
+    "CATS": [0, 0]
+  },
+  "8": {
+    "PLANTS": [0, 0],
+    "GAMES": [1, 3],
+    "FRAMES": [2, 0],
+    "TROPHIES": [2, 5],
+    "BOOKS": [3, 2],
+    "CATS": [4, 1]
+  },
+  "9": {
+    "PLANTS": [0, 0],
+    "GAMES": [1, 3],
+    "FRAMES": [2, 0],
+    "TROPHIES": [2, 5],
+    "BOOKS": [3, 2],
+    "CATS": [4, 1]
+  },
+  "10": {
+    "PLANTS": [0, 0],
+    "GAMES": [1, 3],
+    "FRAMES": [2, 0],
+    "TROPHIES": [2, 5],
+    "BOOKS": [3, 2],
+    "CATS": [4, 1]
+  },
+  "11": {
+    "PLANTS": [0, 0],
+    "GAMES": [1, 3],
+    "FRAMES": [2, 0],
+    "TROPHIES": [2, 5],
+    "BOOKS": [3, 2],
+    "CATS": [4, 1]
+  },
+  "12": {
+    "PLANTS": [0, 0],
+    "GAMES": [1, 3],
+    "FRAMES": [2, 0],
+    "TROPHIES": [2, 5],
+    "BOOKS": [3, 2],
+    "CATS": [4, 1]
+  }
 }

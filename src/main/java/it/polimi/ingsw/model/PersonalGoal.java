@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model;
 
-import netscape.javascript.JSObject;
-
 import java.util.Map;
 import java.util.Set;
 import java.util.HashMap;
@@ -11,7 +9,7 @@ public class PersonalGoal {
 
     private final Set<PersonalGoal> alreadyChosen = new HashSet<>();
 
-    private final Map<Coordinates, Tile> matches;
+    private final Map<Tile, Coordinates> matches;
 
     private static final Map<Integer, Integer> points = null;
 
@@ -27,8 +25,8 @@ public class PersonalGoal {
 
     private int matchesShared(Shelf shelf) {
         int matchesNumber = 0;
-        for(Coordinates coordinates: matches.keySet()) {
-            if(shelf.getPosition(coordinates).equals(matches.get(coordinates))) {
+        for(Tile tile: matches.keySet()) {
+            if(shelf.getPosition(matches.get(tile)).equals(tile)) {
                 matchesNumber++;
             }
         }
