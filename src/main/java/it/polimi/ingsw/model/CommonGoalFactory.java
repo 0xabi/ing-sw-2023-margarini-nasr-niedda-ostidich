@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.commonGoal.*;
+import it.polimi.ingsw.model.exceptions.CommonGoalNotPresentException;
 
 import java.util.Random;
 
@@ -22,7 +23,7 @@ public class CommonGoalFactory {
             case 10 -> new CommonGoal10();
             case 11 -> new CommonGoal11();
             case 12 -> new CommonGoal12();
-            default -> throw new IllegalStateException("Unexpected value: " + i);
+            default -> throw new CommonGoalNotPresentException("unexpected value -> " + i);
         };
     }
 

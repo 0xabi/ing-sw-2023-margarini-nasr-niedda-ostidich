@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.exceptions.NoPlayerNumberException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +12,7 @@ public abstract class CommonGoal {
     private final Map<Integer, Player> givenPlayers;
 
     public CommonGoal() {
-        throw new RuntimeException("No player number provided!");
+        throw new NoPlayerNumberException("no player number provided");
     }
 
     public CommonGoal(int playerNumber) {
