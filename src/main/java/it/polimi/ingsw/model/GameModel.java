@@ -33,11 +33,12 @@ public class GameModel {
         Set<Integer> personalGoalNumbersSet = new HashSet<>();
         while(personalGoalNumbersSet.size() < names.size())
             personalGoalNumbersSet.add(random.nextInt(1, 13));
-        List<Integer> personalGoalNumbers = personalGoalNumbersSet.stream().toList();
+        Stack<Integer> personalGoalNumbers = new Stack<>();
+        Set<Boolean> dummy = personalGoalNumbersSet.stream().map(personalGoalNumbers::add).collect(Collectors.toSet());
 
         int playerNumber = names.size();
         for(int i = 0; i < playerNumber; i++)
-            players.add(new Player(names.get(random.nextInt(0, names.size())), personalGoalNumbers.get(i)));
+            players.add(new Player(names.get(random.nextInt(0, names.size())), personalGoalNumbers.pop()));
     }
 
     public boolean turnCycle() {

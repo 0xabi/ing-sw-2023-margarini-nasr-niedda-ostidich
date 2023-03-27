@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -46,11 +47,15 @@ public class PersonalGoal {
             JsonElement matchesElements = JsonParser.parseReader(new FileReader(input));
             JsonObject matchesObject = matchesElements.getAsJsonObject();
 
-            Random random = new Random();
-
-            matches.keySet().addAll(EnumSet.allOf(Tile.class));
-            //add coordinates
-
+            JsonArray jsonCoordinates;
+            for(Tile tile: Tile.values()) {
+                jsonCoordinates = matchesObject.
+                        get(String.valueOf(personalGoalNumber)).
+                        getAsJsonObject().
+                        get(tile.toString()).
+                        getAsJsonArray();
+                matches.put(tile, new Coordinates(jsonCoordinates.get(0).getAsInt(), jsonCoordinates.get(1).getAsInt()));
+            }
         } catch (FileNotFoundException e) {
             throw new ConfigFileNotFoundException("personalGoalMatchesMap not found");
         }
