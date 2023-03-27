@@ -1,20 +1,20 @@
 package it.polimi.ingsw.model;
-
+import java.sql.RowIdLifetime;
 import java.util.List;
+import java.io.*;
 
 public class Shelf {
-
-    private static final int rowLength = 6;
-
-    private static final int columnLength = 5;
-
-    private final Tile[][] positions;
+     private final int rowLength=6 ;
+     private final int columnLength=5;
+    private Tile[][] positions;
 
     public Shelf(){
-        positions = new Tile[rowLength][columnLength];
+
+        Tile[][] shelf = new Tile[rowLength][columnLength];
+
         for(int i = 0; i < rowLength; i++)
-            for(int j = 0; j < columnLength; j++)
-                positions[i][j] = null;
+            for(int j = 0; j< columnLength; j++)
+                positions[i][j] = Tile.EMPTY;
     }
 
     public int getRow(){
@@ -25,37 +25,48 @@ public class Shelf {
         return columnLength;
     }
 
-    public Tile[][] getPositions() {
+    public Tile[][]  getPositions() {
         return positions;
     }
 
-    public Tile getPosition(Coordinates coordinates) {
-        return positions[coordinates.x()][coordinates.y()];
+    public Tile getPosition(Coordinates coord) {
+        return positions[coord.x()][coord.y()];
     }
 
-    public boolean insertInColumn(List<Tile> tiles, int column) {
-        //inserts tiles in column with list order
-        //uses method checkSpaceInColumn()
-        return false;
-    }
-
-    private boolean checkSpaceInColumn(int selectionLength, int column) {
-        //checks the remaining space in a certain column
-        return false;
+    public Tile getTile(int posX, int posY){
+        return positions[posX][posY];
     }
 
     public int getTilesInColumn(int column){
         for(int i = 0; i < rowLength; i++)
-            if(positions[i][column] != null) return rowLength-i;
+            if(positions[i][column] != Tile.EMPTY) return rowLength-i;
+
         return rowLength;
     }
 
-    public boolean isFull(){
-        for(int i = 0; i < rowLength; i++)
-            if(positions[i][0] == null) return false;
+    public boolean insertInColumn(List<Tile> tiles, int column){
+        int index = 1;
+
+        while(index < rowLength + 1 && positions[index-1][column] == Tile.EMPTY) index++;
+
+        for(int i = 0; i < tiles.size(); i++){
+            positions[i][column] = tiles.get(i);
+            index--;
+        }
+
         return true;
     }
 
+    private boolean checkSpaceInColumn(int x, int y){
+
+    }
+
+    public boolean isFull(){
+        for(int j = 0; j< columnLength; j++)
+            if(positions[0][j] == Tile.EMPTY) return false;
+
+        return true;
+    }
 }
 
 
