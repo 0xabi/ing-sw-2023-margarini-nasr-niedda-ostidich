@@ -11,11 +11,11 @@ public class Player {
 
     private final Shelf shelf;
 
-    public Player(String name) {
+    public Player(String name, int personalGoalNumber) {
         this.name = name;
         points = 0;
         shelf = new Shelf();
-        personalGoal = new PersonalGoal();
+        personalGoal = new PersonalGoal(personalGoalNumber);
     }
 
     public String getName(){

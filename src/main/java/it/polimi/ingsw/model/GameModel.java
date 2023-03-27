@@ -1,31 +1,43 @@
 package it.polimi.ingsw.model;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class GameModel {
 
     private final Board board;
 
-    private final CommonGoal commonGoal1;
+    private CommonGoal commonGoal1;
 
-    private final CommonGoal commonGoal2;
+    private CommonGoal commonGoal2;
 
     private final List<Player> players = new LinkedList<>();
 
     public GameModel(List<String> names) {
         board = new Board(names.size());
+        commonGoalConstructor();
+        playerListConstructor(names);
+    }
 
+    private void commonGoalConstructor() {
         commonGoal1 = CommonGoalFactory.getCommonGoal();
         CommonGoal commonGoalTemp = CommonGoalFactory.getCommonGoal();
         while(commonGoalTemp.equals(commonGoal1)) {
             commonGoalTemp = CommonGoalFactory.getCommonGoal();
         }
         commonGoal2 = commonGoalTemp;
+    }
 
+    private void playerListConstructor(List<String> names) {
         Random random = new Random();
+        Set<Integer> personalGoalNumbersSet = new HashSet<>();
+        while(personalGoalNumbersSet.size() < names.size())
+            personalGoalNumbersSet.add(random.nextInt(1, 13));
+        List<Integer> personalGoalNumbers = personalGoalNumbersSet.stream().toList();
+
         int playerNumber = names.size();
         for(int i = 0; i < playerNumber; i++)
-            players.add(new Player(names.get(random.nextInt(0, names.size()))));
+            players.add(new Player(names.get(random.nextInt(0, names.size())), personalGoalNumbers.get(i)));
     }
 
     public boolean turnCycle() {
