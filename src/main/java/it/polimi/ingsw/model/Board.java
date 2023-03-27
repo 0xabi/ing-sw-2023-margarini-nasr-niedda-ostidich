@@ -1,8 +1,7 @@
 package it.polimi.ingsw.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
 
 public class Board {
 
@@ -94,23 +93,54 @@ public class Board {
     }
 
     public void refill() {
-        bag.refillBoard(this);
+        //metto nella bag tutte quelle avanzate sul tavolo
+        emptyBoardInBag();
+
+        for (int i = 0; i < rowLength; i++)
+            for (int j = 0; j < columnLength; j++) {
+                if (spaces[i][j]== Tile.EMPTY) {
+                    Tile t=bag.draw();
+                    spaces[i][j] = t;
+                }
+            }
+
+
+
+
     }
 
     public boolean selectTiles(List<Coordinates> selection) {
-        //check whether selection is legit and if true empties the tiles selected on the board
-        //uses method checkSelection()
-        //uses method emptyTiles()
+        if(checkSelection(selection)) {
+            emptyTiles(selection);
+            return true;
+        }
         return false;
     }
 
     private boolean checkSelection(List<Coordinates> selection) {
-        //check whether selection is legit
-        return false;
+        //checks the player has chosen max 3 tiles
+        if(selection.size()>3)
+            return false;
+
+        //checks the player has chosen tiles that has a free adjacent
+        for(Coordinates e : selection){
+            if(!adjacentTile(e.x(),e.y()).contains(null) && !adjacentTile(e.x(),e.y()).contains(Tile.EMPTY))
+                return false;
+        }
+
+        //checks the player has chosen tiles in coloumn or in row
+        List<Integer> listX=new ArrayList<Integer>();
+        List<Integer> listY=new ArrayList<Integer>();
+        for(Coordinates e : selection){
+            listX.add(e.x());
+            listY.add(e.y());
+        }
+        return listX.stream().allMatch(s -> s.equals(listX.get(0))) || listY.stream().allMatch(s -> s.equals(listY.get(0)));
+
     }
 
     private void emptyTiles(List<Coordinates> selection) {
-        //empties the tile selected on board
+        selection.forEach((e)->spaces[e.x()][e.y()]=Tile.EMPTY);
     }
 
     /**
@@ -122,7 +152,7 @@ public class Board {
 
         for(int i = 0; i < rowLength; i++)
             for(int j = 0; j < columnLength; j++) {
-                if(isCompletelyFree(i,j)==false)
+                if(!isCompletelyFree(i, j))
                     return false;
             }
 
@@ -189,6 +219,17 @@ public class Board {
 
     public Tile getTileInBoard(Coordinates coordinates) {
         return spaces[coordinates.x()][coordinates.y()];
+    }
+
+    private void emptyBoardInBag() {
+
+        for (int i = 0; i < rowLength; i++)
+            for (int j = 0; j < columnLength; j++) {
+                if (spaces[i][j] != null && spaces[i][j] != Tile.EMPTY) {
+                    bag.addTile(spaces[i][j]);
+                    spaces[i][j] = Tile.EMPTY;
+                }
+            }
     }
 
 }

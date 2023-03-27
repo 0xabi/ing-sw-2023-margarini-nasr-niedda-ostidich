@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Bag {
 
@@ -10,27 +9,32 @@ public class Bag {
     private final Map<Tile, Integer> tilesLeft;
 
     public Bag() {
-        tilesLeft = new HashMap<Tile, Integer>();
-        //fill the bag
+        tilesLeft = new HashMap<Tile,Integer>();
+
+        tilesLeft.put(Tile.CATS, totalQuantity);
+        tilesLeft.put(Tile.BOOKS, totalQuantity);
+        tilesLeft.put(Tile.FRAMES, totalQuantity);
+        tilesLeft.put(Tile.GAMES, totalQuantity);
+        tilesLeft.put(Tile.PLANTS, totalQuantity);
+        tilesLeft.put(Tile.TROPHIES, totalQuantity);
     }
 
-    private int tilesLeft(Tile tile) {
-        return tilesLeft.get(tile);
+    public void addTile(Tile tile) {
+        tilesLeft.put(tile, tilesLeft.get(tile)+1);
     }
 
-    private void addTiles(Tile tile, int quantity) {
-        //add quantity to value in key tile
+    private void removeTile(Tile tile){
+        tilesLeft.put(tile,tilesLeft.get(tile)-1);
     }
 
-    public void refillBoard(Board board) {
-        //set new filled board
-        //uses method emptyBoardInBag()
-        //uses method tilesLeft()
-    }
-
-    private void emptyBoardInBag(Board board) {
-        //adds remains in board to bag
-        //uses method addTiles()
+    public Tile draw(){
+        Random random = new Random();
+        int number = random.nextInt(5);
+        while(tilesLeft.get(Tile.values()[number])<=0) { //if a tile has no quantity retry the draw
+            number = random.nextInt(5);
+        }
+        removeTile(Tile.values()[number]);
+        return Tile.values()[number];
     }
 
 }

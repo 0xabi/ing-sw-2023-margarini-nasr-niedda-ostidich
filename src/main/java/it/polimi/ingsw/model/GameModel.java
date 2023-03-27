@@ -14,7 +14,6 @@ public class GameModel {
 
     public GameModel(List<String> names) {
         board = new Board(names.size());
-
         commonGoal1 = CommonGoalFactory.getCommonGoal();
         CommonGoal commonGoalTemp = CommonGoalFactory.getCommonGoal();
         while(commonGoalTemp.equals(commonGoal1)) {
