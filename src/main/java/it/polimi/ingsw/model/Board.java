@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 public class Board {
 
     private static final int rowLength = 9;
