@@ -2,7 +2,14 @@ package it.polimi.ingsw.model;
 
 import java.util.*;
 
-
+/**
+ * The board is a matrix of tiles. When a turn is ending a check to look for a refill scenario is launched, and if true the board
+ * is refilled (except if the current turn is going to be the last).
+ * Player selection is sent via a list of coordinates, which are checked for legality, and if they are, emptied from the board.
+ * An optional containing an end game token tells whether the game match is to be finished at the end of the turn's cycle.
+ *
+ * @author
+ */
 public class Board {
 
     private static final int rowLength = 9;
