@@ -9,6 +9,7 @@
       <option name="excludeList">
         <list>
           <option value="junit:junit" />
+          <option value="org.jetbrains:annotations" />
         </list>
       </option>
     </inspection_tool>
