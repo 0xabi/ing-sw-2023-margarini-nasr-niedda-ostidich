@@ -41,9 +41,27 @@ public class Player {
     }
 
     public List<Coordinates> pickTiles(Board board) {
-        //selects (if legally chosen) tiles on the board
-        //uses the method checkAvailablePickNumber()
+        /**
+        int x = 0, y = 0;
+        ArrayList<Coordinates> list = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+
+        for(int i = 0; i < checkAvailablePickNumber(); i++){
+            do{
+            System.out.println("Choose x");
+            x = scanner.nextInt();
+            System.out.println("Choose y");
+            y = scanner.nextInt();
+            list.add(new Coordinates(x, y));
+            if(!board.checkSelection(x, y))
+                System.out.println("invalid pick, try again");
+            }while(!board.checkSelection(x, y));
+
+            System.out.println("done?");
+            if(scanner.nextLine() == "y") i=4;
+        }**/
         return null;
+
     }
 
     private int checkAvailablePickNumber() {
@@ -55,7 +73,7 @@ public class Player {
         return picks;
     }
 
-    public void insertTiles(ArrayList<Tile> tiles) {
+    public void insertTiles(List<Tile> tiles) {
         int column = getColumnChoice(tiles);
 
         chooseOrder(tiles);
@@ -63,7 +81,7 @@ public class Player {
 
     }
 
-    private int getColumnChoice(ArrayList<Tile> tiles) {
+    private int getColumnChoice(List<Tile> tiles) {
         int column;
         Scanner scanner = new Scanner(System.in);
 
@@ -79,7 +97,7 @@ public class Player {
         }
     }
 
-    private void chooseOrder(ArrayList<Tile> tiles){
+    private void chooseOrder(List<Tile> tiles){
         Scanner scanner = new Scanner(System.in);
         ArrayList<Tile> temp = new ArrayList<>();
         ArrayList<Integer> choosenIndex = new ArrayList<>();

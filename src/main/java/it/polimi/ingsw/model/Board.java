@@ -104,7 +104,7 @@ public class Board {
         return false;
     }
 
-    private boolean checkSelection(List<Coordinates> selection) {
+    public boolean checkSelection(List<Coordinates> selection) {
         //check whether selection is legit
         return false;
     }

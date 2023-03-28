@@ -58,7 +58,7 @@ public class Shelf {
     }
 
     private boolean checkSpaceInColumn(int x, int y){
-
+        return false;
     }
 
     public boolean isFull(){
