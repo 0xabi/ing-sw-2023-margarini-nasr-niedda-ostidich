@@ -2,11 +2,22 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.commonGoal.*;
 import it.polimi.ingsw.model.exceptions.CommonGoalNotPresentException;
-
 import java.util.Random;
 
+/**
+ * Used to get a random common Goal.
+ *
+ * @author Francesco Ostidich
+ */
 public class CommonGoalFactory {
 
+    /**
+     * Returns a random common goal.
+     *
+     * @return a random common goal
+     * @throws CommonGoalNotPresentException if the random generated number does not belong to a respective common goal constructor
+     * @author Francesco Ostidich
+     */
     public static CommonGoal getCommonGoal() {
         Random random = new Random();
         int i = random.nextInt(1, 13);

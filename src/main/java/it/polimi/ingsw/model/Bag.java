@@ -2,6 +2,13 @@ package it.polimi.ingsw.model;
 
 import java.util.*;
 
+/**
+ * The number of each single tile is given by a constant. A map with tiles as key remembers the remaining quantities in the bag.
+ * It's called to draw tiles when the board is to be refilled (if there are any tile left of that type in the bag).
+ * Before the refill, tiles remaining on the board should be emptied in bag.
+ *
+ * @author
+ */
 public class Bag {
 
     private static final int totalQuantity = 22;
@@ -9,7 +16,7 @@ public class Bag {
     private final Map<Tile, Integer> tilesLeft;
 
     public Bag() {
-        tilesLeft = new HashMap<Tile,Integer>();
+        tilesLeft = new HashMap<>();
 
         tilesLeft.put(Tile.CATS, totalQuantity);
         tilesLeft.put(Tile.BOOKS, totalQuantity);

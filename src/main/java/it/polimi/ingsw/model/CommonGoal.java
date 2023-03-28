@@ -40,7 +40,7 @@ public abstract class CommonGoal {
      */
     public CommonGoal(int playerNumber) {
         tokens = new ScoringTokenStack(playerNumber);
-        givenPlayers = new HashMap<Integer, Player>();
+        givenPlayers = new HashMap<>();
     }
 
     /**

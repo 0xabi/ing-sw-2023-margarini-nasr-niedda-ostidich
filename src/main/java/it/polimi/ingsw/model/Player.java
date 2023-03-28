@@ -1,6 +1,13 @@
 package it.polimi.ingsw.model;
 import java.util.List;
 
+/**
+ * A player is constructed on his unique name. It has his own shelf and points (initialized as 0 and only addable).
+ * Players are called to pick, choose order, and insert tiles from board to shelf. The process is completely checked to
+ * avoid illegal moves.
+ *
+ * @author
+ */
 public class Player {
 
     private final String name;

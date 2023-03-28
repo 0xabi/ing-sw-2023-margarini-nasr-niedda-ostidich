@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
 
 /**
  * The personal goal card is represented with a map of six elements where the tiles are the keys of a coordinate.
- * In order to get a different personal goal from another player, GameModel.class extracts a different number for each
- * player that PersonalGoal.class gets and uses to pick a unique matches map.
+ * In order to get a different personal goal from another player, GameModel.java extracts a different number for each
+ * player that PersonalGoal.java gets and uses to pick a unique matches map.
  * A method to assign points to the player is called at the end of the game: it checks the matches number on the shelf
  * and adds the respective points to the player's points.
  *

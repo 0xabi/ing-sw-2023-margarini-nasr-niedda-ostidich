@@ -2,7 +2,14 @@ package it.polimi.ingsw.model;
 
 import java.util.*;
 
-
+/**
+ * The board is a matrix of tiles. When a turn is ending a check to look for a refill scenario is launched, and if true the board
+ * is refilled (except if the current turn is going to be the last).
+ * Player selection is sent via a list of coordinates, which are checked for legality, and if they are, emptied from the board.
+ * An optional containing an end game token tells whether the game match is to be finished at the end of the turn's cycle.
+ *
+ * @author
+ */
 public class Board {
 
     private static final int rowLength = 9;
@@ -93,7 +100,7 @@ public class Board {
     }
 
     public void refill() {
-        //metto nella bag tutte quelle avanzate sul tavolo
+        //puts back in the back the ones left on the board
         emptyBoardInBag();
 
         for (int i = 0; i < rowLength; i++)
@@ -128,9 +135,9 @@ public class Board {
                 return false;
         }
 
-        //checks the player has chosen tiles in coloumn or in row
-        List<Integer> listX=new ArrayList<Integer>();
-        List<Integer> listY=new ArrayList<Integer>();
+        //checks the player has chosen tiles in column or in row
+        List<Integer> listX= new ArrayList<>();
+        List<Integer> listY= new ArrayList<>();
         for(Coordinates e : selection){
             listX.add(e.x());
             listY.add(e.y());
@@ -144,27 +151,27 @@ public class Board {
     }
 
     /**
-     *checks if the board isRefillable
-     * @author: Edoardo
-     * @return: true or false
+     * checks if the board isRefillable
+     *
+     * @author Edoardo
      */
-    public boolean checkToRefill() {
+    public void checkToRefill() {
 
         for(int i = 0; i < rowLength; i++)
             for(int j = 0; j < columnLength; j++) {
                 if(!isCompletelyFree(i, j))
-                    return false;
+                    return;
             }
 
-        return true;
     }
 
 
     /**
      *checks if a tile has no other adjacent tiles
-     * @author: Edoardo
-     * @param: Coordinates of a space in the board
-     * @return: true or false
+     * @author Edoardo
+     * @param x is x of coordinate
+     * @param y is y of coordinate
+     * @return true or false
      */
     private boolean isCompletelyFree(int x, int y){
         if(adjacentTile(x,y).contains(Tile.CATS))
@@ -186,13 +193,14 @@ public class Board {
 
     /**
      *Adjacent tile
-     * @author: Edoardo
-     * @param: Coordinates of a space in the board
-     * @return: a list of adjacent Tile
+     * @author Edoardo
+     * @param x is x of coordinate
+     * @param y is y of coordinate
+     * @return a list of adjacent Tile
      */
     private List<Tile> adjacentTile(int x, int y){
 
-        List<Tile> adjTile = new ArrayList<Tile>();
+        List<Tile> adjTile = new ArrayList<>();
 
         if(x>7)
             adjTile.add(null);
