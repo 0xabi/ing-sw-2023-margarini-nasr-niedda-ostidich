@@ -54,7 +54,7 @@ public abstract class CommonGoal {
     }
 
     /**
-     * <p>Implemented specifically in concrete subclasses</p>
+     * <p>Common goals implemented specifically in concrete subclasses</p>
      * <p>Checks if player's shelf got the common goal.</p>
      *
      * @param shelf is the players shelf to check to

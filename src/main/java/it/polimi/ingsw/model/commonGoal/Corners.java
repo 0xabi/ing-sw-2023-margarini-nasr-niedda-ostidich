@@ -12,6 +12,9 @@ import org.jetbrains.annotations.NotNull;
  */
 public class Corners extends CommonGoal {
 
+    /**
+     * @author Pietro Andrea Niedda
+     */
     @Override
     public boolean check(@NotNull Shelf shelf) {
 

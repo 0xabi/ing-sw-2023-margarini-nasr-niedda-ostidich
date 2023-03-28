@@ -13,11 +13,6 @@ import org.jetbrains.annotations.NotNull;
 public class FiveTilesX extends CommonGoal {
 
     /**
-     * <p>Implements abstract method of CommonGoal.</p>
-     * <p>Checks if player's shelf got the common goal.</p>
-     *
-     * @param shelf is the players shelf to check to
-     * @return boolean true if check succeeds.
      * @author Francesco Ostidich
      */
     @Override

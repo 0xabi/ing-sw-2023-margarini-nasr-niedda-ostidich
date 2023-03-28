@@ -11,6 +11,9 @@ import it.polimi.ingsw.model.Shelf;
  */
 public class FourGroupsOfFour extends CommonGoal {
 
+    /**
+     * @author Edoardo Margarini
+     */
     @Override
     public boolean check(Shelf shelf) {
         //check
