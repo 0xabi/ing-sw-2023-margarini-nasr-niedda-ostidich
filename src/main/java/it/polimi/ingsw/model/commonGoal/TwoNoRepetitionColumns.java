@@ -7,7 +7,12 @@ import it.polimi.ingsw.model.Tile;
 
 import java.util.ArrayList;
 
-public class CommonGoal9 extends CommonGoal {
+/**
+ * Two columns each formed by 6 different types of tiles.
+ *
+ * @author Abdullah Nasr
+ */
+public class TwoNoRepetitionColumns extends CommonGoal {
 
     private final int NUM_DIFFERENT_TILES = 6;
     private final int TIMES=2;
@@ -46,6 +51,15 @@ public class CommonGoal9 extends CommonGoal {
         }
         return false;
     }
+
+    /**
+     * <p>Implements abstract method of CommonGoal.</p>
+     * <p>Checks if player's shelf got the common goal.</p>
+     *
+     * @param shelf is the players shelf to check to
+     * @return boolean true if check succeeds.
+     * @author Abdullah Nasr
+     */
     @Override
     public boolean check(Shelf shelf) {
 

@@ -4,7 +4,12 @@ import it.polimi.ingsw.model.CommonGoal;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.Shelf;
 
-public class CommonGoal3 extends CommonGoal {
+/**
+ * Four tiles of the same type in the four corners of the bookshelf.
+ *
+ * @author Pietro Andrea Niedda
+ */
+public class Corners extends CommonGoal {
 
     @Override
     public boolean check(Shelf shelf) {

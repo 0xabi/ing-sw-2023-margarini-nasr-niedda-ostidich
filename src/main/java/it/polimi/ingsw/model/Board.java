@@ -20,6 +20,7 @@ public class Board {
 
     private final Bag bag = new Bag();
 
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     private Optional<EndGameToken> endGameToken;
 
     public Board(int num) {

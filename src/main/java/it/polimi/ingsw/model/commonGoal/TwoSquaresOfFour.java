@@ -5,8 +5,13 @@ import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.Shelf;
 import it.polimi.ingsw.model.Tile;
 
-
-public class CommonGoal4 extends CommonGoal {
+/**
+ * Two groups each containing 4 tiles of the same type in a 2x2 square.
+ * The tiles of one square can be different from those of the other square.
+ *
+ * @author Abdullah Nasr
+ */
+public class TwoSquaresOfFour extends CommonGoal {
 
     private final int DIM_SQUARE = 2;
     private final int TIMES=2;
@@ -126,6 +131,15 @@ public class CommonGoal4 extends CommonGoal {
 
        return count;
     }
+
+    /**
+     * <p>Implements abstract method of CommonGoal.</p>
+     * <p>Checks if player's shelf got the common goal.</p>
+     *
+     * @param shelf is the players shelf to check to
+     * @return boolean true if check succeeds.
+     * @author Abdullah Nasr
+     */
     @Override
     public boolean check(Shelf shelf) {
 
