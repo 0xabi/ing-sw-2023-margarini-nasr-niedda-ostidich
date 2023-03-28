@@ -1,6 +1,6 @@
 # ing-sw-2023-margarini-nasr-niedda-ostidich
-# Progetto Ingegneria del Software
-# My Shelfie
+### Progetto Ingegneria del Software
+### My Shelfie
 
 ## Project built with a Model View Controller structure.
 
@@ -10,4 +10,4 @@
 
 ### View:
 
-#### Controller:
+### Controller:
