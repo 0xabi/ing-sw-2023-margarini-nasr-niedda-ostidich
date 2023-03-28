@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.commonGoal;
 
 import it.polimi.ingsw.model.CommonGoal;
 import it.polimi.ingsw.model.Shelf;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Five tiles of the same type forming a diagonal.
@@ -11,15 +12,10 @@ import it.polimi.ingsw.model.Shelf;
 public class OneDiagonalOfFive extends CommonGoal {
 
     /**
-     * <p>Implements abstract method of CommonGoal.</p>
-     * <p>Checks if player's shelf got the common goal.</p>
-     *
-     * @param shelf is the players shelf to check to
-     * @return boolean true if check succeeds.
      * @author Edoardo Margarini
      */
     @Override
-    public boolean check(Shelf shelf) {
+    public boolean check(@NotNull Shelf shelf) {
         //check
         return false;
     }

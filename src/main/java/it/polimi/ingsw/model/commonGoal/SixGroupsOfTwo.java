@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.commonGoal;
 
 import it.polimi.ingsw.model.CommonGoal;
 import it.polimi.ingsw.model.Shelf;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Six groups each containing at least 2 tiles of the same type (not necessarily in the depicted shape).
@@ -11,8 +12,16 @@ import it.polimi.ingsw.model.Shelf;
  */
 public class SixGroupsOfTwo extends CommonGoal {
 
+
+    private static final int groupsNumber = 6;
+
+    private static final int tilesInGroup = 2;
+
+    /**
+     * @author Edoardo Margarini
+     */
     @Override
-    public boolean check(Shelf shelf) {
+    public boolean check(@NotNull Shelf shelf) {
         //check
         return false;
     }

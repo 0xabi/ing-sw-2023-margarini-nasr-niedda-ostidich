@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.CommonGoal;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.Shelf;
 import it.polimi.ingsw.model.Tile;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Two groups each containing 4 tiles of the same type in a 2x2 square.
@@ -16,7 +17,7 @@ public class TwoSquaresOfFour extends CommonGoal {
     private final int DIM_SQUARE = 2;
     private final int TIMES=2;
 
-    private boolean isolatedSquare(Shelf shelf, Coordinates cords)
+    private boolean isolatedSquare(@NotNull Shelf shelf, @NotNull Coordinates cords)
     {
         int x = cords.x();
         int y = cords.y();
@@ -69,7 +70,7 @@ public class TwoSquaresOfFour extends CommonGoal {
 
         return true;
     }
-    private boolean checkSquareToBottomRight(Shelf shelf, Coordinates cords)
+    private boolean checkSquareToBottomRight(@NotNull Shelf shelf, @NotNull Coordinates cords)
     {
         int x = cords.x();
         int y = cords.y();
@@ -111,7 +112,7 @@ public class TwoSquaresOfFour extends CommonGoal {
         return false;
     }
 
-    private int countIsolatedSquares(Shelf shelf)
+    private int countIsolatedSquares(@NotNull Shelf shelf)
     {
         int count=0;
         int row = shelf.getRowNumber() -1;
@@ -133,15 +134,10 @@ public class TwoSquaresOfFour extends CommonGoal {
     }
 
     /**
-     * <p>Implements abstract method of CommonGoal.</p>
-     * <p>Checks if player's shelf got the common goal.</p>
-     *
-     * @param shelf is the players shelf to check to
-     * @return boolean true if check succeeds.
      * @author Abdullah Nasr
      */
     @Override
-    public boolean check(Shelf shelf) {
+    public boolean check(@NotNull Shelf shelf) {
 
         if(countIsolatedSquares(shelf)>=TIMES)
             return true;
