@@ -86,7 +86,6 @@ public class GameModel {
      * &#32&#32&#32- assigns points of the end game token if its filled</p>
      *
      * @author Francesco Ostidich
-     * @return boolean value true signify cycle completed without problems
      */
     public void turnCycle() {
         List<Coordinates> choiceCoordinates;

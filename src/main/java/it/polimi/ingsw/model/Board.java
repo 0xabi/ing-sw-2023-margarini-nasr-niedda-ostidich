@@ -8,7 +8,7 @@ import java.util.*;
  * Player selection is sent via a list of coordinates, which are checked for legality, and if they are, emptied from the board.
  * An optional containing an end game token tells whether the game match is to be finished at the end of the turn's cycle.
  *
- * @author
+ * @author Edoardo Margarini
  */
 public class Board {
 
@@ -110,10 +110,6 @@ public class Board {
                     spaces[i][j] = t;
                 }
             }
-
-
-
-
     }
 
     public boolean selectTiles(List<Coordinates> selection) {
@@ -151,9 +147,9 @@ public class Board {
     }
 
     /**
-     * checks if the board isRefillable
+     * Checks if the board isRefillable.
      *
-     * @author Edoardo
+     * @author Edoardo Margarini
      */
     public void checkToRefill() {
 
@@ -167,8 +163,9 @@ public class Board {
 
 
     /**
-     *checks if a tile has no other adjacent tiles
-     * @author Edoardo
+     * Checks if a tile has no other adjacent tiles.
+     *
+     * @author Edoardo Margarini
      * @param x is x of coordinate
      * @param y is y of coordinate
      * @return true or false
@@ -192,8 +189,9 @@ public class Board {
     }
 
     /**
-     *Adjacent tile
-     * @author Edoardo
+     * Finds adjacent tiles of a specific coordinate.
+     *
+     * @author Edoardo Margarini
      * @param x is x of coordinate
      * @param y is y of coordinate
      * @return a list of adjacent Tile

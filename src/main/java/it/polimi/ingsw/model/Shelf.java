@@ -7,7 +7,7 @@ import java.util.List;
  * than they can insert. It's also checked whether the shelf is full in order to give the end game token points to the first
  * who has it filled.
  *
- * @author
+ * @author Pietro Andrea Niedda
  */
 public class Shelf {
 

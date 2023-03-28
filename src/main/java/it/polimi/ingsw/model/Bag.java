@@ -7,7 +7,7 @@ import java.util.*;
  * It's called to draw tiles when the board is to be refilled (if there are any tile left of that type in the bag).
  * Before the refill, tiles remaining on the board should be emptied in bag.
  *
- * @author
+ * @author Edoardo Margarini
  */
 public class Bag {
 
@@ -18,12 +18,9 @@ public class Bag {
     public Bag() {
         tilesLeft = new HashMap<>();
 
-        tilesLeft.put(Tile.CATS, totalQuantity);
-        tilesLeft.put(Tile.BOOKS, totalQuantity);
-        tilesLeft.put(Tile.FRAMES, totalQuantity);
-        tilesLeft.put(Tile.GAMES, totalQuantity);
-        tilesLeft.put(Tile.PLANTS, totalQuantity);
-        tilesLeft.put(Tile.TROPHIES, totalQuantity);
+        for(Tile tile: Tile.values())
+            if(!tile.equals(Tile.EMPTY))
+                tilesLeft.put(tile, totalQuantity);
     }
 
     public void addTile(Tile tile) {

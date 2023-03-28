@@ -6,7 +6,7 @@ import java.util.List;
  * Players are called to pick, choose order, and insert tiles from board to shelf. The process is completely checked to
  * avoid illegal moves.
  *
- * @author
+ * @author Pietro Andrea Niedda
  */
 public class Player {
 
