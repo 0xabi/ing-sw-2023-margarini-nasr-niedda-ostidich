@@ -9,7 +9,7 @@ public class Bag {
     private final Map<Tile, Integer> tilesLeft;
 
     public Bag() {
-        tilesLeft = new HashMap<Tile,Integer>();
+        tilesLeft = new HashMap<>();
 
         tilesLeft.put(Tile.CATS, totalQuantity);
         tilesLeft.put(Tile.BOOKS, totalQuantity);

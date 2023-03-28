@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class AdjacentTilesGoal {
 
-    private static final Map<Integer, Integer> groupPoints = new HashMap<Integer, Integer>();
+    private static final Map<Integer, Integer> groupPoints = new HashMap<>();
 
     public static void assignPoints(Player player) {
         for(int groupSize: groupPoints.keySet())

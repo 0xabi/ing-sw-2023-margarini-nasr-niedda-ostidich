@@ -88,7 +88,7 @@ public class GameModel {
      * @author Francesco Ostidich
      * @return boolean value true signify cycle completed without problems
      */
-    public boolean turnCycle() {
+    public void turnCycle() {
         List<Coordinates> choiceCoordinates;
         List<Tile> choiceTiles = new LinkedList<>();
 
@@ -124,8 +124,6 @@ public class GameModel {
                 });
             }
         }
-
-        return true;
     }
 
     /**
@@ -137,6 +135,7 @@ public class GameModel {
      * @param player is the player to check connection of
      * @return boolean value true if the player is still connected and playing
      */
+    @SuppressWarnings("SameReturnValue")
     private boolean checkForPlayerConnection(Player player) {
         //makes sure the player is still connected and playing
         return true;

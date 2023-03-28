@@ -5,7 +5,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import it.polimi.ingsw.model.exceptions.ConfigFileNotFoundException;
-import it.polimi.ingsw.model.exceptions.NoPlayerNumberException;
 import it.polimi.ingsw.model.exceptions.NoTokensForPlayerNumberException;
 
 import java.io.File;
