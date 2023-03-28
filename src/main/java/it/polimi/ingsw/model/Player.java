@@ -3,6 +3,13 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.ArrayList;
 
+/**
+ * A player is constructed on his unique name. It has his own shelf and points (initialized as 0 and only addable).
+ * Players are called to pick, choose order, and insert tiles from board to shelf. The process is completely checked to
+ * avoid illegal moves.
+ *
+ * @author
+ */
 public class Player {
 
     private final String name;
@@ -13,11 +20,11 @@ public class Player {
 
     private final Shelf shelf;
 
-    public Player(String name) {
+    public Player(String name, int personalGoalNumber) {
         this.name = name;
         points = 0;
         shelf = new Shelf();
-        personalGoal = new PersonalGoal();
+        personalGoal = new PersonalGoal(personalGoalNumber);
     }
 
     public String getName(){

@@ -3,6 +3,13 @@ import java.sql.RowIdLifetime;
 import java.util.List;
 import java.io.*;
 
+/**
+ * The shelf is a matrix of tiles. Common goals can read the shelf to execute the check. Player cannot pick more tiles
+ * than they can insert. It's also checked whether the shelf is full in order to give the end game token points to the first
+ * who has it filled.
+ *
+ * @author
+ */
 public class Shelf {
      private final int rowLength=6 ;
      private final int columnLength=5;
