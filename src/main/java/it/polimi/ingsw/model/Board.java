@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
 /**
@@ -121,7 +123,7 @@ public class Board {
         return false;
     }
 
-    private boolean checkSelection(List<Coordinates> selection) {
+    private boolean checkSelection(@NotNull List<Coordinates> selection) {
         //checks the player has chosen max 3 tiles
         if(selection.size()>3)
             return false;
@@ -143,7 +145,7 @@ public class Board {
 
     }
 
-    private void emptyTiles(List<Coordinates> selection) {
+    private void emptyTiles(@NotNull List<Coordinates> selection) {
         selection.forEach((e)->spaces[e.x()][e.y()]=Tile.EMPTY);
     }
 
@@ -197,7 +199,7 @@ public class Board {
      * @param y is y of coordinate
      * @return a list of adjacent Tile
      */
-    private List<Tile> adjacentTile(int x, int y){
+    private @NotNull List<Tile> adjacentTile(int x, int y){
 
         List<Tile> adjTile = new ArrayList<>();
 
@@ -224,7 +226,7 @@ public class Board {
         return adjTile;
     }
 
-    public Tile getTileInBoard(Coordinates coordinates) {
+    public Tile getTileInBoard(@NotNull Coordinates coordinates) {
         return spaces[coordinates.x()][coordinates.y()];
     }
 

@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * The end game token is given when the first player fills the shelf.
  * It is contained as an optional in Board.java, and tells whether the game is to end if not present.
@@ -26,7 +28,7 @@ public class EndGameToken {
      * @param player is the player to give points to
      * @author Francesco Ostidich
      */
-    public void assignPoints(Player player) {
+    public void assignPoints(@NotNull Player player) {
         player.addPoints(endGamePoints);
     }
 
