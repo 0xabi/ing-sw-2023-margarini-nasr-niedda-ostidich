@@ -1,15 +1,17 @@
 package it.polimi.ingsw.model;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * GameModel must bee the only class which, via an interface, talks to the controller.
  * It collects all the method from another classes the composes a player turn, besides generation and conclusion of a game match.
- * GameModel.class is itself enough to have the match keeping going.
+ * GameModel.java is itself enough to have the match keeping going.
  * In the game generation phase the GameModel constructor constructs directly or indirectly the necessary objects
  * (it also makes sure to have different common and personal goals); eventually it starts a turns cycle, repeatedly until
- * a shelf is full (optional value in Board.class). At the end points are calculated and sent to the controller: points
+ * a shelf is full (optional value in Board.java). At the end points are calculated and sent to the controller: points
  * are mapped with players' names (in the scenario of a tie game, the controller is able to get a list of player's name
  * to get knowledge of the turns progression and consequently to announce a winner).
  *
@@ -31,7 +33,7 @@ public class GameModel {
      * @author Francesco Ostidich
      * @param names is the list with the players names got from the controller, used for construct the player objects
      */
-    public GameModel(List<String> names) {
+    public GameModel(@NotNull List<String> names) {
         board = new Board(names.size());
         commonGoalConstructor();
         playerListConstructor(names);
@@ -57,7 +59,7 @@ public class GameModel {
      * @author Francesco Ostidich
      * @param names is the list with the players names got from the controller, used for construct the player objects
      */
-    private void playerListConstructor(List<String> names) {
+    private void playerListConstructor(@NotNull List<String> names) {
         Random random = new Random();
         Set<Integer> personalGoalNumbersSet = new HashSet<>();
         while(personalGoalNumbersSet.size() < names.size())
@@ -79,7 +81,7 @@ public class GameModel {
      * - common goals checked <br>
      * - common goals points assigned <br>
      * - check if the board is to be filled <br>
-     * - if the optional in Board.class is present:<br>
+     * - if the optional in Board.java is present:<br>
      * &#32&#32&#32- checks if the player's shelf is filled<br>
      * &#32&#32&#32- assigns points of the end game token if its filled</p>
      *
@@ -127,7 +129,7 @@ public class GameModel {
     }
 
     /**
-     * Checks for a players connection in order to continue the turn cycle. Otherwise the turn should be played randomly,
+     * Checks for a players connection in order to continue the turn cycle. Otherwise, the turn should be played randomly,
      * or skipped if no action has been taken yet.
      *
      * @TODO

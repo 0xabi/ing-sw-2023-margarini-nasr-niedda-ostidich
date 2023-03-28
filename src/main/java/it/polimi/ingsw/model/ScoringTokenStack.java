@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import it.polimi.ingsw.model.exceptions.ConfigFileNotFoundException;
 import it.polimi.ingsw.model.exceptions.NoPlayerNumberException;
+import it.polimi.ingsw.model.exceptions.NoTokensForPlayerNumberException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,7 +25,7 @@ public class ScoringTokenStack {
             JsonObject tokensObject = tokensElement.getAsJsonObject();
 
             JsonArray jsonTokens = tokensObject.get(String.valueOf(playerNumber)).getAsJsonArray();
-            if(jsonTokens.contains(null)) throw new NoPlayerNumberException("no player number config defined");
+            if(jsonTokens.contains(null)) throw new NoTokensForPlayerNumberException("no player number config defined");
             for(int i = 0; i < jsonTokens.size(); i++)
                 tokenStack.add(jsonTokens.get(i).getAsInt());
         } catch (FileNotFoundException e) {

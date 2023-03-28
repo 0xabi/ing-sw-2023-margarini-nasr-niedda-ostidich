@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import it.polimi.ingsw.model.exceptions.ConfigFileNotFoundException;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,8 +24,6 @@ import java.util.stream.Collectors;
  */
 public class PersonalGoal {
 
-    private final Set<PersonalGoal> alreadyChosen = new HashSet<>();
-
     private final Map<Tile, Coordinates> matches = new HashMap<>();
 
     private final Map<Integer, Integer> points = new HashMap<>();
@@ -34,7 +33,7 @@ public class PersonalGoal {
      *
      * @param personalGoalNumber is the number the GameModel has sorted to generate an exact personal goal
      * @throws ConfigFileNotFoundException if config json files are not readable by FileReader
-     * @author: Francesco
+     * @author Francesco Ostidich
      */
     public PersonalGoal(int personalGoalNumber) {
         pointsConstructor();
@@ -97,7 +96,7 @@ public class PersonalGoal {
      * @author Francesco Ostidich
      * @param player is the player to check the matches and add points to
      */
-    public void assignPoints(Player player) {
+    public void assignPoints(@NotNull Player player) {
         player.addPoints(points.get(matchesShared(player.getShelf())));
     }
 
