@@ -19,7 +19,7 @@ public class TwoNoRepetitionColumns extends CommonGoal {
     private boolean checkCol(Shelf shelf, int col)
     {
         ArrayList<Tile> checkedList = new ArrayList<>();
-        int row = shelf.getRow();
+        int row = shelf.getRowNumber();
         boolean different = true;
         int nDifferent =0;
         Tile current;
@@ -64,7 +64,7 @@ public class TwoNoRepetitionColumns extends CommonGoal {
     public boolean check(Shelf shelf) {
 
         int count = 0;
-        int col = shelf.getColumn();
+        int col = shelf.getColumnNumber();
 
         //for each column
         for(int i=0;i<col;i++)

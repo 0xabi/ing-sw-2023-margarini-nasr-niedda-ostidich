@@ -33,7 +33,7 @@ public class Stair extends CommonGoal {
 
     private boolean Stairs(int column, Shelf shelf){
 
-        if (column == shelf.getColumn()-1) return true;
+        if (column == shelf.getColumnNumber()-1) return true;
         if(shelf.getTilesInColumn(column) > shelf.getTilesInColumn(column+1)) return Stairs(column+1, shelf);
 
         return false;
@@ -41,7 +41,7 @@ public class Stair extends CommonGoal {
 
     private boolean ReverseStairs(int column, Shelf shelf){
 
-        if (column == shelf.getColumn()-1) return true;
+        if (column == shelf.getColumnNumber()-1) return true;
         if(shelf.getTilesInColumn(column) < shelf.getTilesInColumn(column+1)) return Stairs(column+1, shelf);
 
         return false;

@@ -79,7 +79,7 @@ public class Board {
 
     }
 
-    public void setEndGameToken(Optional<EndGameToken> endGameToken) {
+    public void setEndGameToken(@SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<EndGameToken> endGameToken) {
         this.endGameToken = endGameToken;
     }
 

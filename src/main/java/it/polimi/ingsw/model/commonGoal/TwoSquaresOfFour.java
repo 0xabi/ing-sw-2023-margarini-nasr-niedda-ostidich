@@ -20,8 +20,8 @@ public class TwoSquaresOfFour extends CommonGoal {
     {
         int x = cords.x();
         int y = cords.y();
-        int row = shelf.getRow()-1;
-        int col = shelf.getColumn()-1;
+        int row = shelf.getRowNumber()-1;
+        int col = shelf.getColumnNumber()-1;
         Tile type = shelf.getPosition(cords);
         Tile checkType;
 
@@ -73,8 +73,8 @@ public class TwoSquaresOfFour extends CommonGoal {
     {
         int x = cords.x();
         int y = cords.y();
-        int row = shelf.getRow()-1;
-        int col = shelf.getColumn()-1;
+        int row = shelf.getRowNumber()-1;
+        int col = shelf.getColumnNumber()-1;
 
         //not out of the shelf
         if(y+DIM_SQUARE-1 <=  col && x+DIM_SQUARE-1 <= row )
@@ -114,8 +114,8 @@ public class TwoSquaresOfFour extends CommonGoal {
     private int countIsolatedSquares(Shelf shelf)
     {
         int count=0;
-        int row = shelf.getRow() -1;
-        int col = shelf.getColumn() -1;
+        int row = shelf.getRowNumber() -1;
+        int col = shelf.getColumnNumber() -1;
         Coordinates currentCoordinate;
 
        for(int x=0;x<=row;x++)

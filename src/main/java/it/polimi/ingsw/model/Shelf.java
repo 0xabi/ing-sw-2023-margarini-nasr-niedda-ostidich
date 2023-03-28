@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 /**
@@ -11,32 +13,32 @@ import java.util.List;
  */
 public class Shelf {
 
-    private static final int rowLength = 6;
+    private static final int rowNumber = 6;
 
-    private static final int columnLength = 5;
+    private static final int columnNumber = 5;
 
     private final Tile[][] positions;
 
     public Shelf(){
-        positions = new Tile[rowLength][columnLength];
-        for(int i = 0; i < rowLength; i++)
-            for(int j = 0; j < columnLength; j++)
+        positions = new Tile[rowNumber][columnNumber];
+        for(int i = 0; i < rowNumber; i++)
+            for(int j = 0; j < columnNumber; j++)
                 positions[i][j] = null;
     }
 
-    public int getRow(){
-        return rowLength;
+    public static int getRowNumber(){
+        return rowNumber;
     }
 
-    public int getColumn(){
-        return columnLength;
+    public static int getColumnNumber(){
+        return columnNumber;
     }
 
     public Tile[][] getPositions() {
         return positions;
     }
 
-    public Tile getPosition(Coordinates coordinates) {
+    public Tile getPosition(@NotNull Coordinates coordinates) {
         return positions[coordinates.x()][coordinates.y()];
     }
 
@@ -52,13 +54,13 @@ public class Shelf {
     }
 
     public int getTilesInColumn(int column){
-        for(int i = 0; i < rowLength; i++)
-            if(positions[i][column] != null) return rowLength-i;
-        return rowLength;
+        for(int i = 0; i < rowNumber; i++)
+            if(positions[i][column] != null) return rowNumber -i;
+        return rowNumber;
     }
 
     public boolean isFull(){
-        for(int i = 0; i < rowLength; i++)
+        for(int i = 0; i < rowNumber; i++)
             if(positions[i][0] == null) return false;
         return true;
     }
