@@ -30,7 +30,7 @@ public class PersonalGoal {
     private final Map<Integer, Integer> points = new HashMap<>();
 
     /**
-     * Class constructor for PersonalGoal attributes.
+     * Class constructor.
      *
      * @param personalGoalNumber is the number the GameModel has sorted to generate an exact personal goal
      * @throws ConfigFileNotFoundException if config json files are not readable by FileReader
