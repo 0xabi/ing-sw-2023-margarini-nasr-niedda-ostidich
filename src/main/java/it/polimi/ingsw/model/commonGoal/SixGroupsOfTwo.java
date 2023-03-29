@@ -22,7 +22,7 @@ public class SixGroupsOfTwo extends CommonGoal {
      */
     @Override
     public boolean check(@NotNull Shelf shelf) {
-        //check
+        //TODO check method is to be written
         return false;
     }
 

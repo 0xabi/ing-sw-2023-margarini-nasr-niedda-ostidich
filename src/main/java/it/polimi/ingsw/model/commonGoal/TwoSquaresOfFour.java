@@ -15,10 +15,19 @@ import org.jetbrains.annotations.NotNull;
 public class TwoSquaresOfFour extends CommonGoal {
 
     private final int DIM_SQUARE = 2;
-    private final int TIMES=2;
 
-    private boolean isolatedSquare(@NotNull Shelf shelf, @NotNull Coordinates cords)
-    {
+    private final int TIMES = 2;
+
+    /**
+     * //TODO java doc is to be written
+     *
+     * @param shelf
+     * @param cords
+     * @return
+     * @author Abdullah Nasr
+     */
+    private boolean isolatedSquare(@NotNull Shelf shelf, @NotNull Coordinates cords) {
+        //FIXME warnings to be looked at
         int x = cords.x();
         int y = cords.y();
         int row = shelf.getRowNumber()-1;
@@ -70,8 +79,17 @@ public class TwoSquaresOfFour extends CommonGoal {
 
         return true;
     }
-    private boolean checkSquareToBottomRight(@NotNull Shelf shelf, @NotNull Coordinates cords)
-    {
+
+    /**
+     * //TODO java doc is to be written
+     *
+     * @param shelf
+     * @param cords
+     * @return
+     * @author Abdullah Nasr
+     */
+    private boolean checkSquareToBottomRight(@NotNull Shelf shelf, @NotNull Coordinates cords) {
+        //FIXME warnings to be looked at
         int x = cords.x();
         int y = cords.y();
         int row = shelf.getRowNumber()-1;
@@ -112,8 +130,15 @@ public class TwoSquaresOfFour extends CommonGoal {
         return false;
     }
 
-    private int countIsolatedSquares(@NotNull Shelf shelf)
-    {
+    /**
+     * //TODO java doc is to be written
+     *
+     * @param shelf
+     * @return
+     * @author Abdullah Nasr
+     */
+    private int countIsolatedSquares(@NotNull Shelf shelf) {
+        //FIXME warnings to be looked at
         int count=0;
         int row = shelf.getRowNumber() -1;
         int col = shelf.getColumnNumber() -1;
@@ -138,7 +163,7 @@ public class TwoSquaresOfFour extends CommonGoal {
      */
     @Override
     public boolean check(@NotNull Shelf shelf) {
-
+        //FIXME warnings to be looked at
         if(countIsolatedSquares(shelf)>=TIMES)
             return true;
 

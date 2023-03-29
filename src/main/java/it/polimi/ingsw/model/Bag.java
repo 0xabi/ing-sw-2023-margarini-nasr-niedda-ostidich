@@ -15,6 +15,11 @@ public class Bag {
 
     private final Map<Tile, Integer> tilesLeft;
 
+    /**
+     * Class constructor.
+     *
+     * @author Edoardo Margarini
+     */
     public Bag() {
         tilesLeft = new HashMap<>();
 
@@ -23,14 +28,32 @@ public class Bag {
                 tilesLeft.put(tile, totalQuantity);
     }
 
+    /**
+     * //TODO java doc is to be written
+     *
+     * @param tile
+     * @author Edoardo Margarini
+     */
     public void addTile(Tile tile) {
         tilesLeft.put(tile, tilesLeft.get(tile)+1);
     }
 
+    /**
+     * //TODO java doc is to be written
+     *
+     * @param tile
+     * @author Edoardo Margarini
+     */
     private void removeTile(Tile tile){
         tilesLeft.put(tile,tilesLeft.get(tile)-1);
     }
 
+    /**
+     * //TODO java doc is to be written
+     *
+     * @return
+     * @author Edoardo Margarini
+     */
     public Tile draw(){
         Random random = new Random();
         int number = random.nextInt(5);

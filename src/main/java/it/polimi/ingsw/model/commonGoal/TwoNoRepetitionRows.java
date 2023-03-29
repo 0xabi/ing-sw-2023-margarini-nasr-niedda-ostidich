@@ -17,10 +17,19 @@ import java.util.ArrayList;
 public class TwoNoRepetitionRows extends CommonGoal {
 
     private final int NUM_DIFFERENT_TILES = 5;
-    private final int TIMES=2;
 
-    private boolean checkRow(@NotNull Shelf shelf, int row)
-    {
+    private final int TIMES = 2;
+
+    /**
+     * //TODO java doc is to be written
+     *
+     * @param shelf
+     * @param row
+     * @return
+     * @author Adullah Nasr
+     */
+    private boolean checkRow(@NotNull Shelf shelf, int row) {
+        //FIXME warnings to be looked at
         ArrayList<Tile> checkedList = new ArrayList<>();
         int col = shelf.getColumnNumber();
         boolean different = true;
@@ -58,6 +67,7 @@ public class TwoNoRepetitionRows extends CommonGoal {
      */
     @Override
     public boolean check(@NotNull Shelf shelf) {
+        //FIXME warnings to be looked at
         int count = 0;
         int row = shelf.getRowNumber();
 

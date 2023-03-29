@@ -25,7 +25,14 @@ public class Board {
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     private Optional<EndGameToken> endGameToken;
 
+    /**
+     * //TODO java doc to be written
+     *
+     * @param num
+     * @author Edoardo Margarini
+     */
     public Board(int num) {
+        //FIXME method should read from json
         spaces = new Tile[rowLength][columnLength];
         endGameToken = Optional.of(new EndGameToken());
 
@@ -81,27 +88,62 @@ public class Board {
 
     }
 
+    /**
+     * //TODO java doc is to be written
+     *
+     * @param endGameToken
+     * @author Edoardo Margarini
+     */
     public void setEndGameToken(@SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<EndGameToken> endGameToken) {
         this.endGameToken = endGameToken;
     }
 
+    /**
+     * //TODO java doc is to be written
+     *
+     * @return
+     * @author Edoardo Margarini
+     */
     public Tile[][] getSpaces() {
         return spaces;
     }
 
+    /**
+     * //TODO java doc is to be written
+     *
+     * @param spaces
+     * @author Edoardo Margarini
+     */
     public void setSpaces(Tile[][] spaces) {
         this.spaces = spaces;
     }
 
+    /**
+     * //TODO java doc is to be written
+     *
+     * @return
+     * @author Edoardo Margarini
+     */
     public Optional<EndGameToken> getEndGameToken() {
         return endGameToken;
     }
 
+    /**
+     * //TODO java doc is to be written
+     *
+     * @return
+     * @author Edoardo Margarini
+     */
     private boolean checkNoMoreTurns() {
-        //check if it is the last turn of the last cycle
+        //TODO method code is to be written
         return false;
     }
 
+    /**
+     * //TODO java doc is to be written
+     *
+     * @author Edoardo Margarini
+     */
     public void refill() {
         //puts back in the back the ones left on the board
         emptyBoardInBag();
@@ -115,6 +157,13 @@ public class Board {
             }
     }
 
+    /**
+     * //TODO java doc is to be written
+     *
+     * @param selection
+     * @return
+     * @author Edoardo Margarini
+     */
     public boolean selectTiles(List<Coordinates> selection) {
         if(checkSelection(selection)) {
             emptyTiles(selection);
@@ -123,6 +172,13 @@ public class Board {
         return false;
     }
 
+    /**
+     * //TODO java doc is to be written
+     *
+     * @param selection
+     * @return
+     * @author Edoardo Margarini
+     */
     private boolean checkSelection(@NotNull List<Coordinates> selection) {
         //checks the player has chosen max 3 tiles
         if(selection.size()>3)
@@ -145,12 +201,18 @@ public class Board {
 
     }
 
+    /**
+     * //TODO java doc is to be written
+     *
+     * @param selection
+     * @author Edoardo Margarini
+     */
     private void emptyTiles(@NotNull List<Coordinates> selection) {
         selection.forEach((e)->spaces[e.x()][e.y()]=Tile.EMPTY);
     }
 
     /**
-     * Checks if the board isRefillable.
+     * Checks if the board is refillable.
      *
      * @author Edoardo Margarini
      */
@@ -173,7 +235,8 @@ public class Board {
      * @param y is y of coordinate
      * @return true or false
      */
-    private boolean isCompletelyFree(int x, int y){
+    private boolean isCompletelyFree(int x, int y) {
+        //FIXME warning to be looked at, input should be Coordinates obj
         if(adjacentTile(x,y).contains(Tile.CATS))
             return false;
         if(adjacentTile(x,y).contains(Tile.BOOKS))
@@ -200,7 +263,7 @@ public class Board {
      * @return a list of adjacent Tile
      */
     private @NotNull List<Tile> adjacentTile(int x, int y){
-
+        //FIXME input should be Coordinates obj
         List<Tile> adjTile = new ArrayList<>();
 
         if(x>7)
@@ -226,10 +289,22 @@ public class Board {
         return adjTile;
     }
 
+    /**
+     * //TODO java doc is to be written
+     *
+     * @param coordinates
+     * @return
+     * @author Edoardo Margarini
+     */
     public Tile getTileInBoard(@NotNull Coordinates coordinates) {
         return spaces[coordinates.x()][coordinates.y()];
     }
 
+    /**
+     * //TODO java doc is to be written
+     *
+     * @author Edoardo Margarini
+     */
     private void emptyBoardInBag() {
 
         for (int i = 0; i < rowLength; i++)
