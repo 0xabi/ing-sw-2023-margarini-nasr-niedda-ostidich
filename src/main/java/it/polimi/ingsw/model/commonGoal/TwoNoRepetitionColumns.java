@@ -4,25 +4,41 @@ import it.polimi.ingsw.model.CommonGoal;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.Shelf;
 import it.polimi.ingsw.model.Tile;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public class CommonGoal10 extends CommonGoal {
+/**
+ * Two columns each formed by 6 different types of tiles.
+ *
+ * @author Abdullah Nasr
+ */
+public class TwoNoRepetitionColumns extends CommonGoal {
 
-    private final int NUM_DIFFERENT_TILES = 5;
+    private final int NUM_DIFFERENT_TILES = 6;
+
     private final int TIMES=2;
 
-    private boolean checkRow(Shelf shelf, int row)
-    {
+    /**
+     * //TODO java doc is to be written
+     *
+     * @param shelf
+     * @param col
+     * @return
+     * @author Abdullah Nasr
+     */
+    private boolean checkCol(@NotNull Shelf shelf, int col) {
+        //FIXME warnings to be looked at
         ArrayList<Tile> checkedList = new ArrayList<>();
-        int col = shelf.getColumn();
+        int row = shelf.getRowNumber();
         boolean different = true;
         int nDifferent =0;
         Tile current;
 
-        for(int j=0;j<col;j++)
+
+        for(int j=0;j<row;j++)
         {
-            current = shelf.getPosition(new Coordinates(j,row));
+            current = shelf.getPosition(new Coordinates(j,col));
 
             if(current!=null)
             {
@@ -41,19 +57,25 @@ public class CommonGoal10 extends CommonGoal {
                         return true;
 
                 }
+
             }
         }
         return false;
     }
-    @Override
-    public boolean check(Shelf shelf) {
-        int count = 0;
-        int row = shelf.getRow();
 
-        //for each row
-        for(int i=0;i<row;i++)
+    /**
+     * @author Abdullah Nasr
+     */
+    @Override
+    public boolean check(@NotNull Shelf shelf) {
+        //FIXME warnings to be looked at
+        int count = 0;
+        int col = shelf.getColumnNumber();
+
+        //for each column
+        for(int i=0;i<col;i++)
         {
-            if(checkRow(shelf,i))
+            if(checkCol(shelf,i))
             {
                 count++;
 

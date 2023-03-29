@@ -22,18 +22,18 @@ public class CommonGoalFactory {
         Random random = new Random();
         int i = random.nextInt(1, 13);
         return switch (i) {
-            case 1 -> new CommonGoal1();
-            case 2 -> new CommonGoal2();
-            case 3 -> new CommonGoal3();
-            case 4 -> new CommonGoal4();
-            case 5 -> new CommonGoal5();
-            case 6 -> new CommonGoal6();
-            case 7 -> new CommonGoal7();
-            case 8 -> new CommonGoal8();
-            case 9 -> new CommonGoal9();
-            case 10 -> new CommonGoal10();
-            case 11 -> new CommonGoal11();
-            case 12 -> new CommonGoal12();
+            case 1 -> new SixGroupsOfTwo();
+            case 2 -> new FourGroupsOfFour();
+            case 3 -> new Corners();
+            case 4 -> new TwoSquaresOfFour();
+            case 5 -> new ThreeColumnsOfSix();
+            case 6 -> new EightTilesNoPattern();
+            case 7 -> new OneDiagonalOfFive();
+            case 8 -> new FourRowsOfFive();
+            case 9 -> new TwoNoRepetitionColumns();
+            case 10 -> new TwoNoRepetitionRows();
+            case 11 -> new FiveTilesX();
+            case 12 -> new Stair();
             default -> throw new CommonGoalNotPresentException("unexpected value -> " + i);
         };
     }

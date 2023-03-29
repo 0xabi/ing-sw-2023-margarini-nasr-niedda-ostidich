@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
 /**
@@ -8,7 +10,7 @@ import java.util.*;
  * Player selection is sent via a list of coordinates, which are checked for legality, and if they are, emptied from the board.
  * An optional containing an end game token tells whether the game match is to be finished at the end of the turn's cycle.
  *
- * @author
+ * @author Edoardo Margarini
  */
 public class Board {
 
@@ -20,9 +22,17 @@ public class Board {
 
     private final Bag bag = new Bag();
 
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     private Optional<EndGameToken> endGameToken;
 
+    /**
+     * //TODO java doc to be written
+     *
+     * @param num
+     * @author Edoardo Margarini
+     */
     public Board(int num) {
+        //FIXME method should read from json
         spaces = new Tile[rowLength][columnLength];
         endGameToken = Optional.of(new EndGameToken());
 
@@ -78,27 +88,62 @@ public class Board {
 
     }
 
-    public void setEndGameToken(Optional<EndGameToken> endGameToken) {
+    /**
+     * //TODO java doc is to be written
+     *
+     * @param endGameToken
+     * @author Edoardo Margarini
+     */
+    public void setEndGameToken(@SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<EndGameToken> endGameToken) {
         this.endGameToken = endGameToken;
     }
 
+    /**
+     * //TODO java doc is to be written
+     *
+     * @return
+     * @author Edoardo Margarini
+     */
     public Tile[][] getSpaces() {
         return spaces;
     }
 
+    /**
+     * //TODO java doc is to be written
+     *
+     * @param spaces
+     * @author Edoardo Margarini
+     */
     public void setSpaces(Tile[][] spaces) {
         this.spaces = spaces;
     }
 
+    /**
+     * //TODO java doc is to be written
+     *
+     * @return
+     * @author Edoardo Margarini
+     */
     public Optional<EndGameToken> getEndGameToken() {
         return endGameToken;
     }
 
+    /**
+     * //TODO java doc is to be written
+     *
+     * @return
+     * @author Edoardo Margarini
+     */
     private boolean checkNoMoreTurns() {
-        //check if it is the last turn of the last cycle
+        //TODO method code is to be written
         return false;
     }
 
+    /**
+     * //TODO java doc is to be written
+     *
+     * @author Edoardo Margarini
+     */
     public void refill() {
         //puts back in the back the ones left on the board
         emptyBoardInBag();
@@ -110,12 +155,15 @@ public class Board {
                     spaces[i][j] = t;
                 }
             }
-
-
-
-
     }
 
+    /**
+     * //TODO java doc is to be written
+     *
+     * @param selection
+     * @return
+     * @author Edoardo Margarini
+     */
     public boolean selectTiles(List<Coordinates> selection) {
         if(checkSelection(selection)) {
             emptyTiles(selection);
@@ -124,7 +172,14 @@ public class Board {
         return false;
     }
 
-    public boolean checkSelection(List<Coordinates> selection) {
+    /**
+     * //TODO java doc is to be written
+     *
+     * @param selection
+     * @return
+     * @author Edoardo Margarini
+     */
+    private boolean checkSelection(@NotNull List<Coordinates> selection) {
         //checks the player has chosen max 3 tiles
         if(selection.size()>3)
             return false;
@@ -146,14 +201,20 @@ public class Board {
 
     }
 
-    private void emptyTiles(List<Coordinates> selection) {
+    /**
+     * //TODO java doc is to be written
+     *
+     * @param selection
+     * @author Edoardo Margarini
+     */
+    private void emptyTiles(@NotNull List<Coordinates> selection) {
         selection.forEach((e)->spaces[e.x()][e.y()]=Tile.EMPTY);
     }
 
     /**
-     * checks if the board isRefillable
+     * Checks if the board is refillable.
      *
-     * @author Edoardo
+     * @author Edoardo Margarini
      */
     public void checkToRefill() {
 
@@ -163,18 +224,19 @@ public class Board {
                     return;
             }
 
-        return true;
     }
 
 
     /**
-     *checks if a tile has no other adjacent tiles
-     * @author Edoardo
+     * Checks if a tile has no other adjacent tiles.
+     *
+     * @author Edoardo Margarini
      * @param x is x of coordinate
      * @param y is y of coordinate
      * @return true or false
      */
-    private boolean isCompletelyFree(int x, int y){
+    private boolean isCompletelyFree(int x, int y) {
+        //FIXME warning to be looked at, input should be Coordinates obj
         if(adjacentTile(x,y).contains(Tile.CATS))
             return false;
         if(adjacentTile(x,y).contains(Tile.BOOKS))
@@ -193,14 +255,15 @@ public class Board {
     }
 
     /**
-     *Adjacent tile
-     * @author Edoardo
+     * Finds adjacent tiles of a specific coordinate.
+     *
+     * @author Edoardo Margarini
      * @param x is x of coordinate
      * @param y is y of coordinate
      * @return a list of adjacent Tile
      */
-    private List<Tile> adjacentTile(int x, int y){
-
+    private @NotNull List<Tile> adjacentTile(int x, int y){
+        //FIXME input should be Coordinates obj
         List<Tile> adjTile = new ArrayList<>();
 
         if(x>7)
@@ -226,10 +289,22 @@ public class Board {
         return adjTile;
     }
 
-    public Tile getTileInBoard(Coordinates coordinates) {
+    /**
+     * //TODO java doc is to be written
+     *
+     * @param coordinates
+     * @return
+     * @author Edoardo Margarini
+     */
+    public Tile getTileInBoard(@NotNull Coordinates coordinates) {
         return spaces[coordinates.x()][coordinates.y()];
     }
 
+    /**
+     * //TODO java doc is to be written
+     *
+     * @author Edoardo Margarini
+     */
     private void emptyBoardInBag() {
 
         for (int i = 0; i < rowLength; i++)

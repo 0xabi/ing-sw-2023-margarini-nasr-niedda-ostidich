@@ -7,7 +7,7 @@ import java.util.*;
  * It's called to draw tiles when the board is to be refilled (if there are any tile left of that type in the bag).
  * Before the refill, tiles remaining on the board should be emptied in bag.
  *
- * @author
+ * @author Edoardo Margarini
  */
 public class Bag {
 
@@ -15,25 +15,45 @@ public class Bag {
 
     private final Map<Tile, Integer> tilesLeft;
 
+    /**
+     * Class constructor.
+     *
+     * @author Edoardo Margarini
+     */
     public Bag() {
         tilesLeft = new HashMap<>();
 
-        tilesLeft.put(Tile.CATS, totalQuantity);
-        tilesLeft.put(Tile.BOOKS, totalQuantity);
-        tilesLeft.put(Tile.FRAMES, totalQuantity);
-        tilesLeft.put(Tile.GAMES, totalQuantity);
-        tilesLeft.put(Tile.PLANTS, totalQuantity);
-        tilesLeft.put(Tile.TROPHIES, totalQuantity);
+        for(Tile tile: Tile.values())
+            if(!tile.equals(Tile.EMPTY))
+                tilesLeft.put(tile, totalQuantity);
     }
 
+    /**
+     * //TODO java doc is to be written
+     *
+     * @param tile
+     * @author Edoardo Margarini
+     */
     public void addTile(Tile tile) {
         tilesLeft.put(tile, tilesLeft.get(tile)+1);
     }
 
+    /**
+     * //TODO java doc is to be written
+     *
+     * @param tile
+     * @author Edoardo Margarini
+     */
     private void removeTile(Tile tile){
         tilesLeft.put(tile,tilesLeft.get(tile)-1);
     }
 
+    /**
+     * //TODO java doc is to be written
+     *
+     * @return
+     * @author Edoardo Margarini
+     */
     public Tile draw(){
         Random random = new Random();
         int number = random.nextInt(5);

@@ -86,7 +86,6 @@ public class GameModel {
      * &#32&#32&#32- assigns points of the end game token if its filled</p>
      *
      * @author Francesco Ostidich
-     * @return boolean value true signify cycle completed without problems
      */
     public void turnCycle() {
         List<Coordinates> choiceCoordinates;
@@ -130,14 +129,13 @@ public class GameModel {
      * Checks for a players connection in order to continue the turn cycle. Otherwise, the turn should be played randomly,
      * or skipped if no action has been taken yet.
      *
-     * @TODO
-     *
      * @param player is the player to check connection of
      * @return boolean value true if the player is still connected and playing
      */
     @SuppressWarnings("SameReturnValue")
     private boolean checkForPlayerConnection(Player player) {
         //makes sure the player is still connected and playing
+        //TODO method code is to be written when controller is understood
         return true;
     }
 
