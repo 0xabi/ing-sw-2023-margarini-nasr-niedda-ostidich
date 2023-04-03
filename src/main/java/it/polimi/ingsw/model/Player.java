@@ -90,12 +90,12 @@ public class Player {
      * @author Pietro Andrea Niedda
      */
     public List<Coordinates> pickTiles(Board board) {
-        /**
-         int x = 0, y = 0;
+        
+         int x = 0, y = 0, picks =checkAvailablePickNumber();
          ArrayList<Coordinates> list = new ArrayList<>();
          Scanner scanner = new Scanner(System.in);
 
-         for(int i = 0; i < checkAvailablePickNumber(); i++){
+         for(int i = 0; i < picks; i++){
          do{
          System.out.println("Choose x");
          x = scanner.nextInt();
@@ -108,7 +108,7 @@ public class Player {
 
          System.out.println("done?");
          if(scanner.nextLine() == "y") i=4;
-         }**/
+         }
 
         return null;
     }
