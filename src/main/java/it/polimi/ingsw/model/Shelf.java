@@ -28,7 +28,7 @@ public class Shelf {
         positions = new Tile[rowNumber][columnNumber];
         for(int i = 0; i < rowNumber; i++)
             for(int j = 0; j < columnNumber; j++)
-                positions[i][j] = null;
+                positions[i][j] = Tile.EMPTY;
     }
 
     /**
@@ -80,11 +80,18 @@ public class Shelf {
      * @param tiles
      * @author Pietro Andrea Niedda
      */
-    public boolean insertInColumn(List<Tile> tiles, int column) {
-        //TODO method code is to be written
-        //inserts tiles in column with list order
-        //uses method checkSpaceInColumn()
-        return false;
+    public boolean insertInColumn(List<Tile> tiles, int column) {int index = 1;
+
+        int index = 1;
+
+        while(index < rowLength + 1 && positions[index-1][column] == Tile.EMPTY) index++;
+
+        for(int i = 0; i < tiles.size(); i++){
+            positions[i][column] = tiles.get(i);
+            index--;
+        }
+
+        return true;
     }
 
     /**
@@ -96,9 +103,12 @@ public class Shelf {
      * @author Pietro Andrea Niedda
      */
     private boolean checkSpaceInColumn(int selectionLength, int column) {
-        //TODO method code is to be written
-        //checks the remaining space in a certain column
-        return false;
+        int availableSpace=0;
+        for(int i = 0; i < rowNumber; i++)
+            if(positions[i][column] != Tile.EMPTY) availableSpace = rowNumber -i;
+
+        if(availableSpace < selectionLength) return false;
+        return true;
     }
 
     /**
@@ -110,7 +120,7 @@ public class Shelf {
      */
     public int getTilesInColumn(int column){
         for(int i = 0; i < rowNumber; i++)
-            if(positions[i][column] != null) return rowNumber -i;
+            if(positions[i][column] != Tile.EMPTY) return rowNumber -i;
         return rowNumber;
     }
 
