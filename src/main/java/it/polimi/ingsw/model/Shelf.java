@@ -13,9 +13,9 @@ import java.util.List;
  */
 public class Shelf {
 
-    private static final int rowNumber = 6;
+    private final int rowNumber = 6;
 
-    private static final int columnNumber = 5;
+    private final int columnNumber = 5;
 
     private final Tile[][] positions;
 
@@ -36,7 +36,7 @@ public class Shelf {
      * @return the shelf's row number
      * @author Abdullah Nasr
      */
-    public static int getRowNumber(){
+    public int getRowNumber(){
         return rowNumber;
     }
 
@@ -44,9 +44,9 @@ public class Shelf {
      *
      *
      * @return the shelf's column number
-     * @author Pietro Andrea Niedda
+     * @author Abdullah Nasr
      */
-    public static int getColumnNumber(){
+    public int getColumnNumber(){
         return columnNumber;
     }
 

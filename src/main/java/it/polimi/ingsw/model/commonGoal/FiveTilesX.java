@@ -18,8 +18,8 @@ public class FiveTilesX extends CommonGoal {
     @Override
     public boolean check(@NotNull Shelf shelf) {
         Tile[][] matrix = shelf.getPositions();
-        for(int i = 1; i < Shelf.getRowNumber(); i++)
-            for(int j = 1; j < Shelf.getColumnNumber(); j++)
+        for(int i = 1; i < shelf.getRowNumber(); i++)
+            for(int j = 1; j < shelf.getColumnNumber(); j++)
                 if(matrix[i][j].equals(matrix[i-1][j-1]) &&
                         matrix[i][j].equals(matrix[i-1][j+1]) &&
                         matrix[i][j].equals(matrix[i+1][j-1]) &&
