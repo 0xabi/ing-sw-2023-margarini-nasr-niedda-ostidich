@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
-import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,7 +9,7 @@ import java.util.List;
  * than they can insert. It's also checked whether the shelf is full in order to give the end game token points to the first
  * who has it filled.
  *
- * @author Pietro Andrea Niedda
+ * @author Abdullah Nasr
  */
 public class Shelf {
 
@@ -22,7 +22,7 @@ public class Shelf {
     /**
      * Class constructor.
      *
-     * @author Pietro Andrea Niedda
+     * @author Abdullah Nasr
      */
     public Shelf(){
         positions = new Tile[rowNumber][columnNumber];
@@ -32,19 +32,18 @@ public class Shelf {
     }
 
     /**
-     * //TODO java doc is to be written
      *
-     * @return
-     * @author Pietro Andrea Niedda
+     * @return the shelf's row number
+     * @author Abdullah Nasr
      */
     public static int getRowNumber(){
         return rowNumber;
     }
 
     /**
-     * //TODO java doc is to be written
      *
-     * @return
+     *
+     * @return the shelf's column number
      * @author Pietro Andrea Niedda
      */
     public static int getColumnNumber(){
@@ -52,71 +51,79 @@ public class Shelf {
     }
 
     /**
-     * //TODO java doc is to be written
      *
-     * @return
-     * @author Pietro Andrea Niedda
+     * @return the array containing the tiles
+     * @author Abdullah Nasr
      */
     public Tile[][] getPositions() {
         return positions;
     }
 
     /**
-     * //TODO java doc is to be written
      *
-     * @return
-     * @param coordinates
-     * @author Pietro Andrea Niedda
+     * @return a tile specified by a valid coordinates , null for invalid coordinates.
+     * @param coordinates tile's position to pick
+     * @author Abdullah Nasr
      */
-    public Tile getPosition(@NotNull Coordinates coordinates) {
+    public Tile getPosition(Coordinates coordinates) {
+
+        if(coordinates==null || coordinates.x()>=rowNumber || coordinates.y()>=columnNumber)
+            return null;
+
         return positions[coordinates.x()][coordinates.y()];
     }
 
     /**
-     * //TODO java doc is to be written
      *
-     * @return
-     * @param column
-     * @param tiles
-     * @author Pietro Andrea Niedda
+     * @return true for success insertion of tiles into the specified column, false otherwise
+     * @param column The column number to insert into the specified tiles
+     * @param tiles A list of tiles to insert into the specified column
+     * @author Abdullah Nasr
      */
-    public boolean insertInColumn(List<Tile> tiles, int column) {int index = 1;
+    public boolean insertInColumn(List<Tile> tiles, int column) {
 
-        int index = 1;
+        List<Tile> tilesList = new ArrayList<>(tiles);
+        int freeSpace = checkSpaceInColumn(tilesList.size(), column);
 
-        while(index < rowLength + 1 && positions[index-1][column] == Tile.EMPTY) index++;
+        //if there is enough space to put the tiles
+        if (freeSpace!=0)
+        {
+            while(!tilesList.isEmpty())
+            {
+                positions[freeSpace-1][column]=tilesList.get(0);
+                tilesList.remove(0);
+                freeSpace--;
+            }
 
-        for(int i = 0; i < tiles.size(); i++){
-            positions[i][column] = tiles.get(i);
-            index--;
+            return true;
+
         }
 
-        return true;
+        return false;
     }
 
     /**
-     * //TODO java doc is to be written
      *
-     * @return
-     * @param column
-     * @param selectionLength
-     * @author Pietro Andrea Niedda
+     * @return the number of free slots, 0 if there isn't enough free slots to put all the tiles
+     * @param column the shelf's column selected to insert the tiles
+     * @param selectionLength the number of tiles to insert into the selected column
+     * @author Abdullah Nasr
      */
-    private boolean checkSpaceInColumn(int selectionLength, int column) {
-        int availableSpace=0;
-        for(int i = 0; i < rowNumber; i++)
-            if(positions[i][column] != Tile.EMPTY) availableSpace = rowNumber -i;
+    private int checkSpaceInColumn(int selectionLength, int column) {
 
-        if(availableSpace < selectionLength) return false;
-        return true;
+        int emptySlots = rowNumber-getTilesInColumn(column);
+
+        if (emptySlots >= selectionLength)
+            return emptySlots;
+
+        return 0;
     }
 
     /**
-     * //TODO java doc is to be written
      *
-     * @return
-     * @param column
-     * @author Pietro Andrea Niedda
+     * @return the number of the tiles present in the specified column
+     * @param column the column in which to count the tiles
+     * @author Abdullah Nasr
      */
     public int getTilesInColumn(int column){
         for(int i = 0; i < rowNumber; i++)
@@ -125,14 +132,13 @@ public class Shelf {
     }
 
     /**
-     * //TODO java doc is to be written
      *
-     * @return
-     * @author Pietro Andrea Niedda
+     * @return true if the shelf is full, false otherwise
+     * @author Abdullah Nasr
      */
     public boolean isFull(){
-        for(int i = 0; i < rowNumber; i++)
-            if(positions[i][0] == null) return false;
+        for(int i = 0; i < columnNumber; i++)
+            if(positions[0][i] == Tile.EMPTY) return false;
         return true;
     }
 
