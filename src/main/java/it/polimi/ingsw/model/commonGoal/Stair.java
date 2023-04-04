@@ -20,8 +20,8 @@ public class Stair extends CommonGoal {
     public boolean check(@NotNull Shelf shelf) {
         boolean ctrl;
 
-        if(shelf.getTilesInColumn(Shelf.getColumnNumber()-1) == shelf.getTilesInColumn(Shelf.getColumnNumber()-2)+1) {
-            ctrl = ReverseStairs(Shelf.getColumnNumber()-1, shelf);
+        if(shelf.getTilesInColumn(shelf.getColumnNumber()-1) == shelf.getTilesInColumn(shelf.getColumnNumber()-2)+1) {
+            ctrl = ReverseStairs(shelf.getColumnNumber()-1, shelf);
             if(ctrl) return true;
         }
         if(shelf.getTilesInColumn(0) == shelf.getTilesInColumn(1)+1) {
@@ -41,7 +41,7 @@ public class Stair extends CommonGoal {
      */
     private boolean Stairs(int column, @NotNull Shelf shelf) {
 
-        if(column == Shelf.getColumnNumber()-1) return true;
+        if(column == shelf.getColumnNumber()-1) return true;
         if(shelf.getTilesInColumn(column) == shelf.getTilesInColumn(column+1)+1) return Stairs(column+1, shelf);
 
         return false;
