@@ -51,30 +51,102 @@ public class TwoSquaresOfFourTest {
     @Test
     public void check_TwoIsolatedSquareDifferentTypes_ReturnTrue()
     {
+        tilesToInsert.add(Tile.CATS);
+        tilesToInsert.add(Tile.CATS);
+
+        int col = shelf.getColumnNumber() -1;
+
+        assertTrue(shelf.insertInColumn(tilesToInsert,col));
+        assertTrue(shelf.insertInColumn(tilesToInsert,col-1));
+
+        tilesToInsert.clear();
+
+        tilesToInsert.add(Tile.TROPHIES);
+        tilesToInsert.add(Tile.TROPHIES);
+
+        assertTrue(shelf.insertInColumn(tilesToInsert,0));
+        assertTrue(shelf.insertInColumn(tilesToInsert,1));
+
+        assertTrue(cg.check(shelf));
 
     }
 
     @Test
     public void check_TwoIsolatedSquareSameTypes_ReturnTrue()
     {
+        tilesToInsert.add(Tile.CATS);
+        tilesToInsert.add(Tile.CATS);
 
+        int col = shelf.getColumnNumber() -1;
+
+        assertTrue(shelf.insertInColumn(tilesToInsert,col));
+        assertTrue(shelf.insertInColumn(tilesToInsert,col-1));
+        assertTrue(shelf.insertInColumn(tilesToInsert,0));
+        assertTrue(shelf.insertInColumn(tilesToInsert,1));
+
+        assertTrue(cg.check(shelf));
     }
 
     @Test
     public void check_TwoNoIsolatedSquare_ReturnFalse()
     {
+        tilesToInsert.add(Tile.CATS);
+        tilesToInsert.add(Tile.CATS);
 
+        int col = shelf.getColumnNumber() -1;
+
+        assertTrue(shelf.insertInColumn(tilesToInsert,col));
+        assertTrue(shelf.insertInColumn(tilesToInsert,col-1));
+        assertTrue(shelf.insertInColumn(tilesToInsert,col-2));
+        assertTrue(shelf.insertInColumn(tilesToInsert,col-3));
+
+        assertFalse(cg.check(shelf));
     }
 
     @Test
     public void check_TwoDifferentAdjacentSquare_ReturnTrue()
     {
+        tilesToInsert.add(Tile.CATS);
+        tilesToInsert.add(Tile.CATS);
 
+        int col = shelf.getColumnNumber() -1;
+
+        assertTrue(shelf.insertInColumn(tilesToInsert,col));
+        assertTrue(shelf.insertInColumn(tilesToInsert,col-1));
+
+        tilesToInsert.clear();
+
+        tilesToInsert.add(Tile.TROPHIES);
+        tilesToInsert.add(Tile.TROPHIES);
+
+        assertTrue(shelf.insertInColumn(tilesToInsert,col-2));
+        assertTrue(shelf.insertInColumn(tilesToInsert,col-3));
+
+        assertTrue(cg.check(shelf));
     }
 
     @Test
     public void check_NoTwoSquares_ReturnFalse()
     {
+        tilesToInsert.add(Tile.CATS);
+        tilesToInsert.add(Tile.CATS);
+
+        int col = shelf.getColumnNumber() -1;
+
+        assertTrue(shelf.insertInColumn(tilesToInsert,col));
+        assertTrue(shelf.insertInColumn(tilesToInsert,col-1));
+
+        tilesToInsert.clear();
+
+        tilesToInsert.add(Tile.TROPHIES);
+        tilesToInsert.add(Tile.TROPHIES);
+
+        assertTrue(shelf.insertInColumn(tilesToInsert,col-2));
+
+        tilesToInsert.add(Tile.TROPHIES);
+        assertTrue(shelf.insertInColumn(tilesToInsert,col-3));
+
+        assertFalse(cg.check(shelf));
 
     }
 
