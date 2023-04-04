@@ -19,22 +19,25 @@ public class TwoSquaresOfFour extends CommonGoal {
     private final int TIMES = 2;
 
     /**
-     * //TODO java doc is to be written
      *
-     * @param shelf
-     * @param cords
-     * @return
+     * <p>check if the square in the specified coordinates is isolated i.e there are no
+     * tiles of the same type adjacent to the contour tiles of the square.
+     * </p>
+     * @param shelf the player's shelf
+     * @param cords the coordinates in which to check if the square is isolated
+     * @return {@code true} if the square is isolated, {@code false} otherwise
      * @author Abdullah Nasr
      */
     private boolean isolatedSquare(@NotNull Shelf shelf, @NotNull Coordinates cords) {
-        //FIXME warnings to be looked at
         int x = cords.x();
         int y = cords.y();
-        int row = shelf.getRowNumber()-1;
-        int col = shelf.getColumnNumber()-1;
+        int row;
+        int col;
         Tile type = shelf.getPosition(cords);
         Tile checkType;
 
+        row = shelf.getRowNumber()-1;
+        col = shelf.getColumnNumber()-1;
 
         for(int i=0;i<DIM_SQUARE;i++)
         {
@@ -81,19 +84,23 @@ public class TwoSquaresOfFour extends CommonGoal {
     }
 
     /**
-     * //TODO java doc is to be written
-     *
-     * @param shelf
-     * @param cords
-     * @return
+     * <p>
+     * check if there is a square of dimension {@code DIM_SQUARE} in the specified coordinates
+     * the square begins from the specified coordinates and ends to the bottom right
+     * </p>
+     * @param shelf the player's shelf in which to check for the presence of a square in the specified coordinates
+     * @param cords the coordinates in which to check for the presence of a square
+     * @return {@code true} if there is a square of dimension {@code DIM_SQUARE} in the specified coordinates, {@code false} otherwise
      * @author Abdullah Nasr
      */
     private boolean checkSquareToBottomRight(@NotNull Shelf shelf, @NotNull Coordinates cords) {
-        //FIXME warnings to be looked at
         int x = cords.x();
         int y = cords.y();
-        int row = shelf.getRowNumber()-1;
-        int col = shelf.getColumnNumber()-1;
+        int row;
+        int col;
+
+        row = shelf.getRowNumber()-1;
+        col = shelf.getColumnNumber()-1;
 
         //not out of the shelf
         if(y+DIM_SQUARE-1 <=  col && x+DIM_SQUARE-1 <= row )
@@ -109,7 +116,7 @@ public class TwoSquaresOfFour extends CommonGoal {
                     currentTile = shelf.getPosition(new Coordinates(x+i,y+j));
                     nextTile = shelf.getPosition(new Coordinates(x+i,y+j+1));
 
-                    if(currentTile==null || nextTile==null || currentTile!=nextTile)
+                    if(nextTile==null || currentTile!=nextTile)
                         return false;
                 }
 
@@ -120,25 +127,25 @@ public class TwoSquaresOfFour extends CommonGoal {
                     currentTile = shelf.getPosition(new Coordinates(x+i,y));
                     nextTile = shelf.getPosition(new Coordinates(x+i+1,y));
 
-                    if(currentTile==null || nextTile==null || currentTile!=nextTile)
+                    if(nextTile==null || currentTile!=nextTile)
                         return false;
                 }
             }
-
             return true;
         }
         return false;
     }
 
     /**
-     * //TODO java doc is to be written
-     *
-     * @param shelf
-     * @return
+     * <p>
+     * screen all the shelf to count the number of isolated squares i.e the square that do not have
+     * tiles of the same type adjacent to the contour tiles of the square itself.
+     * </p>
+     * @param shelf player's shelf
+     * @return the number of isolated squares found in the shelf
      * @author Abdullah Nasr
      */
     private int countIsolatedSquares(@NotNull Shelf shelf) {
-        //FIXME warnings to be looked at
         int count=0;
         int row = shelf.getRowNumber() -1;
         int col = shelf.getColumnNumber() -1;
@@ -163,11 +170,7 @@ public class TwoSquaresOfFour extends CommonGoal {
      */
     @Override
     public boolean check(@NotNull Shelf shelf) {
-        //FIXME warnings to be looked at
-        if(countIsolatedSquares(shelf)>=TIMES)
-            return true;
-
-        return false;
+        return countIsolatedSquares(shelf) >= TIMES;
     }
 
 }
