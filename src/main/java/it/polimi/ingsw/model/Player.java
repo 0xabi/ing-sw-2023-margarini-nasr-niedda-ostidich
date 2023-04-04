@@ -1,5 +1,7 @@
 package it.polimi.ingsw.model;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * A player is constructed on his unique name. It has his own shelf and points (initialized as 0 and only addable).
@@ -102,9 +104,9 @@ public class Player {
          System.out.println("Choose y");
          y = scanner.nextInt();
          list.add(new Coordinates(x, y));
-         if(!board.checkSelection(x, y))
+         if(!board.checkSelection(list))
          System.out.println("invalid pick, try again");
-         }while(!board.checkSelection(x, y));
+         }while(!board.checkSelection(list));
 
          System.out.println("done?");
          if(scanner.nextLine() == "y") i=4;
@@ -122,8 +124,8 @@ public class Player {
     private int checkAvailablePickNumber() {
         int picks=3;
 
-        for(int i = 0; i < shelf.getColumn(); i++)
-            if((shelf.getRow() - shelf.getTilesInColumn(i)) < picks) picks = shelf.getRow() - shelf.getTilesInColumn(i);
+        for(int i = 0; i < shelf.getColumnNumber(); i++)
+            if((shelf.getColumnNumber() - shelf.getTilesInColumn(i)) < picks) picks = shelf.getRowNumber() - shelf.getTilesInColumn(i);
 
         return picks;
     }
@@ -147,7 +149,7 @@ public class Player {
      * @return
      * @author Pietro Andrea Niedda
      */
-    private int getColumnChoice() {
+    private int getColumnChoice(List<Tile> tiles) {
         int column;
         Scanner scanner = new Scanner(System.in);
 
@@ -156,12 +158,12 @@ public class Player {
         while(true){
             column = scanner.nextInt();
 
-            if((column < shelf.getColumn() && column > -1) && shelf.getTilesInColumn(column) != shelf.getColumn() && tiles.size() > (shelf.getColumn() - shelf.getTilesInColumn(column)))
+            if((column < shelf.getColumnNumber() && column > -1) && shelf.getTilesInColumn(column) != shelf.getColumnNumber() && tiles.size() > (shelf.getColumnNumber() - shelf.getTilesInColumn(column)))
                 return column;
 
             System.out.println("Invalid value, try again");
         }
-        return 0;
+
     }
 
     /**

@@ -179,7 +179,7 @@ public class Board {
      * @return
      * @author Edoardo Margarini
      */
-    private boolean checkSelection(@NotNull List<Coordinates> selection) {
+    public boolean checkSelection(@NotNull List<Coordinates> selection) {
         //checks the player has chosen max 3 tiles
         if(selection.size()>3)
             return false;
