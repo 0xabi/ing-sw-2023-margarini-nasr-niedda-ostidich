@@ -11,6 +11,10 @@ import org.jetbrains.annotations.NotNull;
  */
 public class OneDiagonalOfFive extends CommonGoal {
 
+    public OneDiagonalOfFive(int playerNumber) {
+        super(playerNumber);
+    }
+
     /**
      * @author Edoardo Margarini
      */

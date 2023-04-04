@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.CommonGoal;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.Shelf;
 import it.polimi.ingsw.model.Tile;
+import it.polimi.ingsw.model.exceptions.NoPlayerNumberException;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -17,6 +18,18 @@ public class TwoSquaresOfFour extends CommonGoal {
     private final int DIM_SQUARE = 2;
 
     private final int TIMES = 2;
+
+
+    /**
+     * <p>Class constructor.</p>
+     * <p>It calls the super class constructor to generate tokens stack and given players map.</p>
+     * @param playerNumber is the number of player of the game match
+     * @author Abdullah Nasr
+     */
+    public TwoSquaresOfFour(int playerNumber)
+    {
+        super(playerNumber);
+    }
 
     /**
      *
@@ -166,11 +179,24 @@ public class TwoSquaresOfFour extends CommonGoal {
     }
 
     /**
+     * <p>
+     * Return how many times i have to do the common goal's pattern to earn the points
+     * </p>
+     * @return the number of times I have to satisfy the pattern to satisfy the common goal.
+     * @author Abdullah Nasr
+     */
+    public int getTimesOfPattern()
+    {
+        return TIMES;
+    }
+
+
+    /**
      * @author Abdullah Nasr
      */
     @Override
     public boolean check(@NotNull Shelf shelf) {
-        return countIsolatedSquares(shelf) >= TIMES;
+        return countIsolatedSquares(shelf) >= getTimesOfPattern();
     }
 
 }

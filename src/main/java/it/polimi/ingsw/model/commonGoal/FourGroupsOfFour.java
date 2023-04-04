@@ -16,6 +16,10 @@ public class FourGroupsOfFour extends CommonGoal {
 
     private static final int tilesInGroup = 4;
 
+    public FourGroupsOfFour(int playerNumber) {
+        super(playerNumber);
+    }
+
     /**
      * @author Edoardo Margarini
      */

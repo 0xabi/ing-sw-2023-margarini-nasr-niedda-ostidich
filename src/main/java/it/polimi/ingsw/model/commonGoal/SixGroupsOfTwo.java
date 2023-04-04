@@ -17,6 +17,10 @@ public class SixGroupsOfTwo extends CommonGoal {
 
     private static final int tilesInGroup = 2;
 
+    public SixGroupsOfTwo(int playerNumber) {
+        super(playerNumber);
+    }
+
     /**
      * @author Edoardo Margarini
      */

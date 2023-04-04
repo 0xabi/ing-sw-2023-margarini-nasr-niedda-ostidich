@@ -20,6 +20,10 @@ public class ThreeColumnsOfSix extends CommonGoal {
 
     private static final int tilesTypes = 3;
 
+    public ThreeColumnsOfSix(int playerNumber) {
+        super(playerNumber);
+    }
+
     /**
      * @author Francesco Ostidich
      */

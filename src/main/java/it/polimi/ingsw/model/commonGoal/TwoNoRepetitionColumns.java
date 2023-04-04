@@ -20,6 +20,16 @@ public class TwoNoRepetitionColumns extends CommonGoal {
     private final int TIMES=2;
 
     /**
+     * <p>Class constructor.</p>
+     * <p>It calls the super class constructor to generate tokens stack and given players map.</p>
+     * @param playerNumber is the number of player of the game match
+     * @author Abdullah Nasr
+     */
+    public TwoNoRepetitionColumns(int playerNumber) {
+        super(playerNumber);
+    }
+
+    /**
      * //TODO java doc is to be written
      *
      * @param shelf

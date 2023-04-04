@@ -28,29 +28,29 @@ public class GameModel {
     private final List<Player> players = new LinkedList<>();
 
     /**
+     * Constructs both the common goals, while being sure they are different.
+     *
+     * @author Francesco Ostidich
+     */
+    private void commonGoalConstructor(int playerNumber) {
+        commonGoal1 = CommonGoalFactory.getCommonGoal(playerNumber);
+        CommonGoal commonGoalTemp = CommonGoalFactory.getCommonGoal(playerNumber);
+        while(commonGoalTemp.equals(commonGoal1)) {
+            commonGoalTemp = CommonGoalFactory.getCommonGoal(playerNumber);
+        }
+        commonGoal2 = commonGoalTemp;
+    }
+
+    /**
      * Class constructor.
      *
      * @author Francesco Ostidich
      * @param names is the list with the players names got from the controller, used for construct the player objects
      */
-    public GameModel(@NotNull List<String> names) {
+    public GameModel(@NotNull List<String> names, int playerNumber) {
         board = new Board(names.size());
-        commonGoalConstructor();
+        commonGoalConstructor(playerNumber);
         playerListConstructor(names);
-    }
-
-    /**
-     * Constructs both the common goals, while being sure they are different.
-     *
-     * @author Francesco Ostidich
-     */
-    private void commonGoalConstructor() {
-        commonGoal1 = CommonGoalFactory.getCommonGoal();
-        CommonGoal commonGoalTemp = CommonGoalFactory.getCommonGoal();
-        while(commonGoalTemp.equals(commonGoal1)) {
-            commonGoalTemp = CommonGoalFactory.getCommonGoal();
-        }
-        commonGoal2 = commonGoalTemp;
     }
 
     /**

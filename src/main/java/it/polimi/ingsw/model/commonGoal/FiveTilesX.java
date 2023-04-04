@@ -12,6 +12,10 @@ import org.jetbrains.annotations.NotNull;
  */
 public class FiveTilesX extends CommonGoal {
 
+    public FiveTilesX(int playerNumber) {
+        super(playerNumber);
+    }
+
     /**
      * @author Francesco Ostidich
      */

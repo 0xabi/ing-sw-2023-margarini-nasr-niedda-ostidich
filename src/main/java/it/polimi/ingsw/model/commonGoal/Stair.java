@@ -13,6 +13,10 @@ import org.jetbrains.annotations.NotNull;
  */
 public class Stair extends CommonGoal {
 
+    public Stair(int playerNumber) {
+        super(playerNumber);
+    }
+
     /**
      * @author Pietro Andrea Niedda
      */

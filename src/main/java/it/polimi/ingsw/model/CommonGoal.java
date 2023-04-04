@@ -19,16 +19,6 @@ public abstract class CommonGoal {
 
     private final Map<Integer, Player> givenPlayers;
 
-    /**
-     * <p>Class constructor (default).</p>
-     * <p>This constructor is not available since a player number parameter should be required.</p>
-     *
-     * @author Francesco Ostidich
-     * @throws NoPlayerNumberException if no player number is provided
-     */
-    public CommonGoal() {
-        throw new NoPlayerNumberException("no player number provided");
-    }
 
     /**
      * <p>Class constructor.</p>
@@ -36,7 +26,6 @@ public abstract class CommonGoal {
      *
      * @author Francesco Ostidich
      * @param playerNumber is the number of player of the game match
-     * @throws NoPlayerNumberException if no player number is provided
      */
     public CommonGoal(int playerNumber) {
         tokens = new ScoringTokenStack(playerNumber);

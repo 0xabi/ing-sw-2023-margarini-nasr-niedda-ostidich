@@ -18,6 +18,10 @@ public class EightTilesNoPattern extends CommonGoal {
 
     private static final int sameTypeTiles = 8;
 
+    public EightTilesNoPattern(int playerNumber) {
+        super(playerNumber);
+    }
+
     /**
      * @author Pietro Andrea Niedda
      */

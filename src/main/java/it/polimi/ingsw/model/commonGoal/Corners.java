@@ -12,6 +12,10 @@ import org.jetbrains.annotations.NotNull;
  */
 public class Corners extends CommonGoal {
 
+    public Corners(int playerNumber) {
+        super(playerNumber);
+    }
+
     /**
      * @author Pietro Andrea Niedda
      */

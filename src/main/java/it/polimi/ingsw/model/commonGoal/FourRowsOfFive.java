@@ -20,6 +20,10 @@ public class FourRowsOfFive extends CommonGoal {
 
     private static final int tilesTypes = 3;
 
+    public FourRowsOfFive(int playerNumber) {
+        super(playerNumber);
+    }
+
     /**
      * @author Francesco Ostidich
      */
