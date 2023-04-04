@@ -82,8 +82,19 @@ public class Shelf {
      */
     public boolean insertInColumn(List<Tile> tiles, int column) {
 
-        List<Tile> tilesList = new ArrayList<>(tiles);
-        int freeSpace = checkSpaceInColumn(tilesList.size(), column);
+        List<Tile> tilesList;
+        int freeSpace;
+
+        //check input
+        if (tiles==null || tiles.contains(Tile.EMPTY) || column>=columnNumber)
+        {
+            return false;
+        }
+
+        tilesList = new ArrayList<>(tiles);
+
+        //calculate free space
+        freeSpace=checkSpaceInColumn(tilesList.size(), column);
 
         //if there is enough space to put the tiles
         if (freeSpace!=0)
@@ -126,9 +137,17 @@ public class Shelf {
      * @author Abdullah Nasr
      */
     public int getTilesInColumn(int column){
-        for(int i = 0; i < rowNumber; i++)
-            if(positions[i][column] != Tile.EMPTY) return rowNumber -i;
-        return rowNumber;
+
+        //check valid column
+        if(column<columnNumber)
+        {
+            //count empty spaces
+            for(int i = 0; i < rowNumber; i++)
+                if(positions[i][column] != Tile.EMPTY) return rowNumber -i;
+
+        }
+
+        return 0;
     }
 
     /**
