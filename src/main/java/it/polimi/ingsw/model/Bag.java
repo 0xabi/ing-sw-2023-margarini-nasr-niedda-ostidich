@@ -64,4 +64,10 @@ public class Bag {
         return Tile.values()[number];
     }
 
+    public int size(){
+        return tilesLeft.values()
+                .stream()
+                .mapToInt(Integer::valueOf)
+                .sum();
+    }
 }
