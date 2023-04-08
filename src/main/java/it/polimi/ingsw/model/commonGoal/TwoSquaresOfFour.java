@@ -60,7 +60,7 @@ public class TwoSquaresOfFour extends CommonGoal {
              {
                  checkType = shelf.getPosition(new Coordinates(x-1,y+i));
 
-                 if(checkType!=null && type==checkType)
+                 if(checkType!=Tile.EMPTY && type==checkType)
                      return false;
              }
 
@@ -69,7 +69,7 @@ public class TwoSquaresOfFour extends CommonGoal {
              {
                  checkType = shelf.getPosition(new Coordinates(x+DIM_SQUARE,y+i));
 
-                 if(checkType!=null && type==checkType)
+                 if(checkType!=Tile.EMPTY && type==checkType)
                      return false;
              }
 
@@ -78,7 +78,7 @@ public class TwoSquaresOfFour extends CommonGoal {
             {
                 checkType = shelf.getPosition(new Coordinates(x+i,y-1));
 
-                if(checkType!=null && type==checkType)
+                if(checkType!=Tile.EMPTY && type==checkType)
                     return false;
             }
 
@@ -87,7 +87,7 @@ public class TwoSquaresOfFour extends CommonGoal {
             {
                 checkType = shelf.getPosition(new Coordinates(x+i,y+DIM_SQUARE));
 
-                if(checkType!=null && type==checkType)
+                if(checkType!=Tile.EMPTY && type==checkType)
                     return false;
             }
 
@@ -129,7 +129,7 @@ public class TwoSquaresOfFour extends CommonGoal {
                     currentTile = shelf.getPosition(new Coordinates(x+i,y+j));
                     nextTile = shelf.getPosition(new Coordinates(x+i,y+j+1));
 
-                    if(nextTile==null || currentTile!=nextTile)
+                    if(nextTile==Tile.EMPTY || currentTile!=nextTile)
                         return false;
                 }
 
@@ -140,7 +140,7 @@ public class TwoSquaresOfFour extends CommonGoal {
                     currentTile = shelf.getPosition(new Coordinates(x+i,y));
                     nextTile = shelf.getPosition(new Coordinates(x+i+1,y));
 
-                    if(nextTile==null || currentTile!=nextTile)
+                    if(nextTile==Tile.EMPTY || currentTile!=nextTile)
                         return false;
                 }
             }
@@ -178,25 +178,13 @@ public class TwoSquaresOfFour extends CommonGoal {
        return count;
     }
 
-    /**
-     * <p>
-     * Return how many times i have to do the common goal's pattern to earn the points
-     * </p>
-     * @return the number of times I have to satisfy the pattern to satisfy the common goal.
-     * @author Abdullah Nasr
-     */
-    public int getTimesOfPattern()
-    {
-        return TIMES;
-    }
-
 
     /**
      * @author Abdullah Nasr
      */
     @Override
     public boolean check(@NotNull Shelf shelf) {
-        return countIsolatedSquares(shelf) >= getTimesOfPattern();
+        return countIsolatedSquares(shelf) >= TIMES;
     }
 
 }

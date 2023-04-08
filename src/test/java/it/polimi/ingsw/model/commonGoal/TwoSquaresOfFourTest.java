@@ -17,7 +17,7 @@ public class TwoSquaresOfFourTest {
     private ArrayList<Tile> tilesToInsert;
     CommonGoal cg;
 
-    int numOfPlayers=3;
+    private final int numOfPlayers=3;
 
     @Before
     public void init()
@@ -149,7 +149,4 @@ public class TwoSquaresOfFourTest {
         assertFalse(cg.check(shelf));
 
     }
-
-
-
 }

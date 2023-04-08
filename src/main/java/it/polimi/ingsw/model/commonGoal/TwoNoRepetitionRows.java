@@ -31,53 +31,72 @@ public class TwoNoRepetitionRows extends CommonGoal {
     }
 
     /**
-     * //TODO java doc is to be written
-     *
-     * @param shelf
-     * @param row
-     * @return
-     * @author Adullah Nasr
+     * <p>
+     * check if the number of different tiles in front of each other in the column is equal to the number {@code NUM_DIFFERENT_TILES}
+     * </p>
+     * @param shelf the player's shelf
+     * @param row the row in which to check repetition
+     * @return true if the number of different tiles in front of each other in the row is equal to the number {@code NUM_DIFFERENT_TILES}, false otherwise
+     * @author Abdullah Nasr
      */
     private boolean checkRow(@NotNull Shelf shelf, int row) {
-        //FIXME warnings to be looked at
         ArrayList<Tile> checkedList = new ArrayList<>();
         int col = shelf.getColumnNumber();
         boolean different = true;
         int nDifferent =0;
+        int index=0;
         Tile current;
 
-        for(int j=0;j<col;j++)
+        //scroll right until a Tile
+        current = shelf.getPosition(new Coordinates(row,index));
+        while(current!=null&&current==Tile.EMPTY)
         {
-            current = shelf.getPosition(new Coordinates(j,row));
+            index++;
+            current = shelf.getPosition(new Coordinates(row,index));
+        }
 
-            if(current!=null)
+        //can't count num_different_tiles
+        if(col-index<NUM_DIFFERENT_TILES)
+            return false;
+
+
+        for(;index<col;index++)
+        {
+            current = shelf.getPosition(new Coordinates(row,index));
+
+
+            for (Tile t: checkedList)
             {
-                for (Tile t: checkedList)
-                {
-                    if(t==current)
-                        different=false;
-                }
+                if(t==current)
+                    different=false;
+            }
 
-                if(different)
-                {
-                    nDifferent++;
-                    checkedList.add(current);
-
-                    if(nDifferent>=NUM_DIFFERENT_TILES)
-                        return true;
-
-                }
+            if(different)
+            {
+                nDifferent++;
+                checkedList.add(current);
+            }
+            else
+            {
+                nDifferent=0;
+                checkedList.clear();
+                checkedList.add(current);
             }
         }
-        return false;
+
+        return nDifferent>=NUM_DIFFERENT_TILES;
     }
 
     /**
+     * <p>
+     *  count the number of row that have the number of different tiles in front of each other equal to the number {@code NUM_DIFFERENT_TILES}
+     * </p>
+     * @param shelf the player's shelf
+     * @return the number of rows that satisfy the pattern
      * @author Abdullah Nasr
      */
-    @Override
-    public boolean check(@NotNull Shelf shelf) {
-        //FIXME warnings to be looked at
+    private int countRowsWithDifferentTiles(Shelf shelf)
+    {
         int count = 0;
         int row = shelf.getRowNumber();
 
@@ -87,13 +106,19 @@ public class TwoNoRepetitionRows extends CommonGoal {
             if(checkRow(shelf,i))
             {
                 count++;
-
-                if(count>=TIMES)
-                    return true;
             }
         }
 
-        return false;
+        return count;
+    }
+
+
+    /**
+     * @author Abdullah Nasr
+     */
+    @Override
+    public boolean check(@NotNull Shelf shelf) {
+        return countRowsWithDifferentTiles(shelf)>=TIMES;
     }
 
 }
