@@ -21,9 +21,6 @@ public class FourGroupsOfFour extends CommonGoal {
     private static final int tilesInGroup = 4;
 
     Tile[][] copy;
-    Queue<Coordinates> queue = new LinkedList<Coordinates>();
-    private final int DIM_GROUP= 4;
-    private final int TIMES = 4;
 
     public FourGroupsOfFour(int playerNumber) {
         super(playerNumber);
@@ -35,17 +32,18 @@ public class FourGroupsOfFour extends CommonGoal {
     @Override
     public boolean check(@NotNull Shelf shelf) {
 
-        copy = shelf.getPositions();
+        copy = Arrays.copyOf(shelf.getPositions(),shelf.getColumnNumber()*shelf.getRowNumber() );
+
         int count=0;
 
         for (int i = 0; i < shelf.getRowNumber(); i++)
             for (int j = 0; j < shelf.getColumnNumber(); j++)
                 if (copy[i][j] != Tile.EMPTY && copy[i][j] !=null) { //se è piena allora cerco di capire se fa parte di un gruppo di 4 caselle adiacenti
-                    if(BelongToABlock(i,j)==DIM_GROUP)
+                    if(BelongToABlock(i,j)==tilesInGroup )
                        count++;
                 }
 
-        if(count>=TIMES)
+        if(count>=groupsNumber)
             return true;
         return false;
     }
@@ -83,9 +81,10 @@ public class FourGroupsOfFour extends CommonGoal {
         return adjTile;
     }
 
-
     private int BelongToABlock( int x, int y){
         int count=0;
+
+        Queue<Coordinates> queue= new LinkedList<Coordinates>();
 
         for(Coordinates e : adjacentTile(x,y)){
             queue.add(e);
@@ -102,7 +101,7 @@ public class FourGroupsOfFour extends CommonGoal {
             ytemp=queue.peek().y();
             queue.remove();
             for(Coordinates e : adjacentTile(xtemp, ytemp)){
-               if(!queue.stream().toList().contains(e))
+                if(!queue.stream().toList().contains(e))
                     queue.add(e);
             }
             copy[xtemp][ytemp]=Tile.EMPTY;
@@ -111,5 +110,7 @@ public class FourGroupsOfFour extends CommonGoal {
 
         return count;
     }
+
+
 
 }
