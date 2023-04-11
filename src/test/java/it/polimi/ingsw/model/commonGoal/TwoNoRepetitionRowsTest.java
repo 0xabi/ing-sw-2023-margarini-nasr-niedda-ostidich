@@ -16,7 +16,7 @@ public class TwoNoRepetitionRowsTest {
     private Shelf shelf;
     private ArrayList<Tile> tilesToInsert;
     CommonGoal cg;
-    private final int numOfPlayers=3;
+    private static final int numOfPlayers = 3;
 
     @Before
     public void init()

@@ -16,9 +16,9 @@ import java.util.*;
  */
 public class FourGroupsOfFour extends CommonGoal {
 
-    Tile[][] copy;
+    private Tile[][] copy;
 
-    Queue<Coordinates> queue = new LinkedList<>();
+    private final Queue<Coordinates> queue = new LinkedList<>();
 
     private static final int dimGroup = 4;
 

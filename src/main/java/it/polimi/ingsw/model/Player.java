@@ -1,7 +1,9 @@
 package it.polimi.ingsw.model;
-import java.util.ArrayList;
+
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * A player is constructed on his unique name. It has his own shelf and points (initialized as 0 and only addable).
@@ -92,26 +94,7 @@ public class Player {
      * @author Pietro Andrea Niedda
      */
     public List<Coordinates> pickTiles(Board board) {
-        
-         int x = 0, y = 0, picks =checkAvailablePickNumber();
-         ArrayList<Coordinates> list = new ArrayList<>();
-         Scanner scanner = new Scanner(System.in);
-
-         for(int i = 0; i < picks; i++){
-         do{
-         System.out.println("Choose x");
-         x = scanner.nextInt();
-         System.out.println("Choose y");
-         y = scanner.nextInt();
-         list.add(new Coordinates(x, y));
-         if(!board.checkSelection(list))
-         System.out.println("invalid pick, try again");
-         }while(!board.checkSelection(list));
-
-         System.out.println("done?");
-         if(scanner.nextLine() == "y") i=4;
-         }
-
+        //TODO method code is to be written when socket and RMI are implemented
         return null;
     }
 
@@ -122,11 +105,10 @@ public class Player {
      * @author Pietro Andrea Niedda
      */
     private int checkAvailablePickNumber() {
-        int picks=3;
-
+        int picks = 3;
         for(int i = 0; i < shelf.getColumnNumber(); i++)
-            if((shelf.getColumnNumber() - shelf.getTilesInColumn(i)) < picks) picks = shelf.getRowNumber() - shelf.getTilesInColumn(i);
-
+            if((shelf.getColumnNumber() - shelf.getTilesInColumn(i)) < picks)
+                picks = shelf.getRowNumber() - shelf.getTilesInColumn(i);
         return picks;
     }
 
@@ -137,10 +119,7 @@ public class Player {
      * @author Pietro Andrea Niedda
      */
     public void insertTiles(List<Tile> tiles) {
-        int column = getColumnChoice(tiles);
-
-        chooseOrder(tiles);
-        shelf.insertInColumn(tiles, column);
+        shelf.insertInColumn(chooseOrder(tiles), getColumnChoice(tiles));
     }
 
     /**
@@ -150,20 +129,8 @@ public class Player {
      * @author Pietro Andrea Niedda
      */
     private int getColumnChoice(List<Tile> tiles) {
-        int column;
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Choose column");
-
-        while(true){
-            column = scanner.nextInt();
-
-            if((column < shelf.getColumnNumber() && column > -1) && shelf.getTilesInColumn(column) != shelf.getColumnNumber() && tiles.size() > (shelf.getColumnNumber() - shelf.getTilesInColumn(column)))
-                return column;
-
-            System.out.println("Invalid value, try again");
-        }
-
+        //TODO method code is to be written when socket and RMI are implemented
+        return 0;
     }
 
     /**
@@ -172,28 +139,10 @@ public class Player {
      * @param tiles
      * @author Pietro Andrea Niedda
      */
-    private void chooseOrder(List<Tile> tiles) {
-        Scanner scanner = new Scanner(System.in);
-        ArrayList<Tile> temp = new ArrayList<>();
-        ArrayList<Integer> choosenIndex = new ArrayList<>();
-
-        int index = 0;
-
-        for(int i = 0; i < tiles.size(); i++){
-
-            do {
-                index = scanner.nextInt();
-
-                if((index <tiles.size() && index > -1) || choosenIndex.contains(index))
-                    System.out.println("Invalid value, try again");
-                temp.add(tiles.get(index));
-            }while(!(index < tiles.size() && index > -1) && !choosenIndex.contains(index));
-
-            choosenIndex.add(index);
-            temp.add(tiles.get(index));
-        }
-
-        tiles = temp;
+    @Contract(pure = true)
+    private @Nullable List<Tile> chooseOrder(List<Tile> tiles) {
+        //TODO method code is to be written when socket and RMI are implemented
+        return null;
     }
 
 }

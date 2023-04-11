@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,11 +28,11 @@ public class BagTest{
 
     @Test
     public void bagSizeAfterDrawShouldBe127(){
-        board.setSpace(4, 1, board.getBag().draw());
-        board.setSpace(4, 2, board.getBag().draw());
-        board.setSpace(4, 3, board.getBag().draw());
-        board.setSpace(5, 2, board.getBag().draw());
-        board.setSpace(3, 2, board.getBag().draw());
+        board.setSpace(new Coordinates(4, 1), board.getBag().draw());
+        board.setSpace(new Coordinates(4, 2), board.getBag().draw());
+        board.setSpace(new Coordinates(4, 3), board.getBag().draw());
+        board.setSpace(new Coordinates(5, 2), board.getBag().draw());
+        board.setSpace(new Coordinates(3, 2), board.getBag().draw());
         assertEquals(22*6-5,board.getBag().size());
     }
 }

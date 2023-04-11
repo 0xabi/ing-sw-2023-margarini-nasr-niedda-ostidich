@@ -11,6 +11,17 @@ import java.util.Random;
  */
 public class CommonGoalFactory {
 
+    private static final int commonGoalNumber = 12;
+
+    /**
+     * Getter for common goal number.
+     * @return common goal number constant
+     * @author Francesco Ostidich
+     */
+    public static int getCommonGoalNumber() {
+        return commonGoalNumber;
+    }
+
     /**
      * Returns a random common goal.
      *

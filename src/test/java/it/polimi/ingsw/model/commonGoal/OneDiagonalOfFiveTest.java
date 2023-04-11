@@ -14,10 +14,12 @@ import static org.junit.Assert.*;
 public class OneDiagonalOfFiveTest {
 
     private Shelf shelf;
-    private ArrayList<Tile> tilesToInsert;
-    CommonGoal cg;
 
-    int numOfPlayers=3;
+    private ArrayList<Tile> tilesToInsert;
+
+    private CommonGoal cg;
+
+    private static final int numOfPlayers = 3;
     @Before
     public void init()
     {

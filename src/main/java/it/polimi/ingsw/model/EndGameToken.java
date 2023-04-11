@@ -13,16 +13,6 @@ public class EndGameToken {
     private static final int endGamePoints = 1;
 
     /**
-     * Getter method to get end game points constant.
-     *
-     * @return end game points value
-     * @author Francesco Ostidich
-     */
-    public static int getEndGamePoints() {
-        return endGamePoints;
-    }
-
-    /**
      * It assigns end game token's points to the player who got the first shelf filled.
      *
      * @param player is the player to give points to

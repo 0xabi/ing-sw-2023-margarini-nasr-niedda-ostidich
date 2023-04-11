@@ -64,10 +64,16 @@ public class Bag {
         return Tile.values()[number];
     }
 
+    /**
+     * //TODO java doc is to be written
+     * @author Edoardo Margarini
+     * @return
+     */
     public int size(){
         return tilesLeft.values()
                 .stream()
                 .mapToInt(Integer::valueOf)
                 .sum();
     }
+
 }

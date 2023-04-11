@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.exceptions.NoPlayerNumberException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;

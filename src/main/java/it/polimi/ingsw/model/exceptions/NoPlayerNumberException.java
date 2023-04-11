@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model.exceptions;
 
 /**
- * Exception pops out if CommonGoal.java constructor does not get a parameter.
+ * Exception pops out if the players number requiring action is not considered in the implication.
  *
  * @author Francesco Ostidich
  */

@@ -1,8 +1,7 @@
 package it.polimi.ingsw.model.exceptions;
 
 /**
- * Exception pops out if the common goal number that is being extracted does not couple with a common goal in the
- * CommonGoalFactory.java.
+ * Exception pops out if the common goal number that is being extracted does not couple with a common goal in the factory.
  *
  * @author Francesco Ostidich
  */

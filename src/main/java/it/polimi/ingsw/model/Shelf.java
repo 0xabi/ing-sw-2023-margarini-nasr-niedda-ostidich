@@ -1,7 +1,7 @@
 package it.polimi.ingsw.model;
 
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -13,9 +13,9 @@ import java.util.List;
  */
 public class Shelf {
 
-    private final int rowNumber = 6;
+    private static final int rowNumber = 6;
 
-    private final int columnNumber = 5;
+    private static final int columnNumber = 5;
 
     private final Tile[][] positions;
 
@@ -27,8 +27,7 @@ public class Shelf {
     public Shelf(){
         positions = new Tile[rowNumber][columnNumber];
         for(int i = 0; i < rowNumber; i++)
-            for(int j = 0; j < columnNumber; j++)
-                positions[i][j] = Tile.EMPTY;
+            Arrays.fill(positions[i], Tile.EMPTY);
     }
 
     /**
@@ -86,8 +85,7 @@ public class Shelf {
         int freeSpace;
 
         //check input
-        if (tiles==null || tiles.contains(Tile.EMPTY) || column>=columnNumber)
-        {
+        if (tiles==null || tiles.contains(Tile.EMPTY) || column>=columnNumber) {
             return false;
         }
 
@@ -97,10 +95,8 @@ public class Shelf {
         freeSpace=checkSpaceInColumn(tilesList.size(), column);
 
         //if there is enough space to put the tiles
-        if (freeSpace!=0)
-        {
-            while(!tilesList.isEmpty())
-            {
+        if (freeSpace!=0) {
+            while(!tilesList.isEmpty()) {
                 positions[freeSpace-1][column]=tilesList.get(0);
                 tilesList.remove(0);
                 freeSpace--;
@@ -139,8 +135,7 @@ public class Shelf {
     public int getTilesInColumn(int column){
 
         //check valid column
-        if(column<columnNumber)
-        {
+        if(column<columnNumber) {
             //count empty spaces
             for(int i = 0; i < rowNumber; i++)
                 if(positions[i][column] != Tile.EMPTY) return rowNumber -i;
@@ -155,7 +150,7 @@ public class Shelf {
      * @return true if the shelf is full, false otherwise
      * @author Abdullah Nasr
      */
-    public boolean isFull(){
+    public boolean isFull() {
         for(int i = 0; i < columnNumber; i++)
             if(positions[0][i] == Tile.EMPTY) return false;
         return true;

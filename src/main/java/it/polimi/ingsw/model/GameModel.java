@@ -63,13 +63,13 @@ public class GameModel {
         Random random = new Random();
         Set<Integer> personalGoalNumbersSet = new HashSet<>();
         while(personalGoalNumbersSet.size() < names.size())
-            personalGoalNumbersSet.add(random.nextInt(1, 13));
+            personalGoalNumbersSet.add(random.nextInt(1, CommonGoalFactory.getCommonGoalNumber()+1));
         Stack<Integer> personalGoalNumbers = new Stack<>();
-        Set<Boolean> dummy = personalGoalNumbersSet.stream().map(personalGoalNumbers::add).collect(Collectors.toSet());
+        @SuppressWarnings("unused") Set<Boolean> dummy = personalGoalNumbersSet.stream().map(personalGoalNumbers::add).collect(Collectors.toSet());
 
         int playerNumber = names.size();
         for(int i = 0; i < playerNumber; i++)
-            players.add(new Player(names.get(random.nextInt(0, names.size())), personalGoalNumbers.pop()));
+            players.add(new Player(names.get(random.nextInt(0, playerNumber)), personalGoalNumbers.pop()));
     }
 
     /**
@@ -96,7 +96,7 @@ public class GameModel {
             choiceCoordinates = player.pickTiles(board);
             for(Coordinates coordinates: choiceCoordinates)
                 choiceTiles.add(board.getTileInBoard(coordinates));
-            while(!board.selectTiles(choiceCoordinates)) {
+            while(board.selectTiles(choiceCoordinates).isEmpty()) {
                 choiceCoordinates = player.pickTiles(board);
                 choiceTiles.clear();
                 for(Coordinates coordinates: choiceCoordinates)
@@ -134,8 +134,8 @@ public class GameModel {
      */
     @SuppressWarnings("SameReturnValue")
     private boolean checkForPlayerConnection(Player player) {
+        //TODO method code is to be written when socket and RMI are implemented
         //makes sure the player is still connected and playing
-        //TODO method code is to be written when controller is understood
         return true;
     }
 
