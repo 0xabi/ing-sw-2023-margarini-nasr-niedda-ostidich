@@ -31,6 +31,7 @@ public class FourGroupsOfFour extends CommonGoal {
     /**
      * @author Edoardo Margarini
      */
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public boolean check(@NotNull Shelf shelf) {
 
@@ -47,7 +48,15 @@ public class FourGroupsOfFour extends CommonGoal {
         return count >= times;
     }
 
-
+    /**
+     * //TODO java doc is to be written
+     *
+     * @param x
+     * @param y
+     * @return
+     * @author Edoardo Margarini
+     */
+    @SuppressWarnings("DuplicatedCode")
     private @NotNull List<Coordinates> adjacentTile(int x, int y) {
 
         List<Coordinates> adjTile = new ArrayList<>();
@@ -79,15 +88,19 @@ public class FourGroupsOfFour extends CommonGoal {
         return adjTile;
     }
 
-
+    /**
+     * //TODO java doc is to be written
+     *
+     * @param x
+     * @param y
+     * @return
+     * @author Edoardo Margarini
+     */
+    @SuppressWarnings("DuplicatedCode")
     private int BelongToABlock(int x, int y) {
         int count=0;
 
-        Queue<Coordinates> queue= new LinkedList<Coordinates>();
-
-        for(Coordinates e : adjacentTile(x,y)){
-            queue.add(e);
-        }
+        Queue<Coordinates> queue = new LinkedList<>(adjacentTile(x, y));
         copy[x][y]=Tile.EMPTY;
         count++;
 

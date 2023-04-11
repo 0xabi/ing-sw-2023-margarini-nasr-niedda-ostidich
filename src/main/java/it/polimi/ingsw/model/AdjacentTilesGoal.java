@@ -20,9 +20,6 @@ import java.util.*;
  */
 public class AdjacentTilesGoal {
 
-    /**
-     * map number of tiles to points
-     */
     private static final Map<Integer, Integer> groupPoints = getGroupPointsFromFile();
 
     private static Tile[][] copy;
@@ -34,9 +31,9 @@ public class AdjacentTilesGoal {
      * It assigns points to the player based on the groups it has managed to build up.
      *
      * @param player is the player to give points to
-     * @author Francesco Ostidich
+     * @author Abdullah Nasr
      */
-    public static void assignPoints(Player player) {
+    public static void assignPoints(@NotNull Player player) {
         player.addPoints(calculatePoints(player.getShelf()));
     }
 
@@ -46,32 +43,30 @@ public class AdjacentTilesGoal {
      * @param y coordinate y
      * @author Abdullah Nasr
      */
-    private static int countTilesBlock( int x, int y){
+    @SuppressWarnings("DuplicatedCode")
+    private static int countTilesBlock(int x, int y){
         int count=0;
-        int xtemp;
-        int ytemp;
+        int xTemp;
+        int yTemp;
 
         currAdjTiles.addAll(adjacentTile(x, y));
-
         copy[x][y]=Tile.EMPTY;
         count++;
 
-        while(currAdjTiles.size()>0){
+        while(currAdjTiles.size()>0) {
 
-            xtemp=currAdjTiles.peek().x();
-            ytemp=currAdjTiles.peek().y();
+            xTemp=currAdjTiles.peek().x();
+            yTemp=currAdjTiles.peek().y();
             currAdjTiles.remove();
-            for(Coordinates e : adjacentTile(xtemp, ytemp)){
+            for(Coordinates e : adjacentTile(xTemp, yTemp)){
                 if(!currAdjTiles.stream().toList().contains(e))
                     currAdjTiles.add(e);
             }
-            copy[xtemp][ytemp]=Tile.EMPTY;
+            copy[xTemp][yTemp]=Tile.EMPTY;
             count++;
         }
-
         return count;
     }
-
 
     /**
      * returns the points gained by the player with adjacent item tiles rules
@@ -79,7 +74,7 @@ public class AdjacentTilesGoal {
      * @return the total points gained with adjacent item tiles rules
      * @author Abdullah Nasr
      */
-    private static int calculatePoints(Shelf shelf) {
+    private static int calculatePoints(@NotNull Shelf shelf) {
         int count;
         int totPoints =0;
         int maxTilesGroup = new ArrayList<>(groupPoints.keySet()).get(groupPoints.size()-1);
@@ -107,7 +102,8 @@ public class AdjacentTilesGoal {
      * @return a list of coordinates with the adjacent tiles of tile in coordinate x,y
      * @author Abdullah Nasr
      */
-    private static List<Coordinates> adjacentTile(int x, int y) {
+    @SuppressWarnings("DuplicatedCode")
+    private static @NotNull List<Coordinates> adjacentTile(int x, int y) {
 
         List<Coordinates> adjTile = new ArrayList<>();
 
@@ -138,7 +134,6 @@ public class AdjacentTilesGoal {
 
         return adjTile;
     }
-
 
     /**
      * Generates a map with group points, retrieving data from json config file.

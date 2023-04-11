@@ -132,9 +132,9 @@ public class GameModel {
      * @param player is the player to check connection of
      * @return boolean value true if the player is still connected and playing
      */
+    //TODO method code is to be written when socket and RMI are implemented
     @SuppressWarnings("SameReturnValue")
     private boolean checkForPlayerConnection(Player player) {
-        /* TODO method code is to be written when socket and RMI are implemented */
         return true;
     }
 

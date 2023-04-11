@@ -93,8 +93,8 @@ public class Player {
      * @param board
      * @author Pietro Andrea Niedda
      */
+    //TODO method code is to be written when socket and RMI are implemented
     public List<Coordinates> pickTiles(Board board) {
-        /* TODO method code is to be written when socket and RMI are implemented */
         return null;
     }
 
@@ -128,8 +128,8 @@ public class Player {
      * @return
      * @author Pietro Andrea Niedda
      */
+    //TODO method code is to be written when socket and RMI are implemented
     private int getColumnChoice(List<Tile> tiles) {
-        /* TODO method code is to be written when socket and RMI are implemented */
         return 0;
     }
 
@@ -139,9 +139,9 @@ public class Player {
      * @param tiles
      * @author Pietro Andrea Niedda
      */
+    //TODO method code is to be written when socket and RMI are implemented
     @Contract(pure = true)
     private @Nullable List<Tile> chooseOrder(List<Tile> tiles) {
-        /* TODO method code is to be written when socket and RMI are implemented */
         return null;
     }
 

@@ -16,9 +16,9 @@ import java.util.*;
  */
 public class SixGroupsOfTwo extends CommonGoal {
 
-    Tile[][] copy;
+    private Tile[][] copy;
 
-    Queue<Coordinates> queue = new LinkedList<>();
+    private final Queue<Coordinates> queue = new LinkedList<>();
 
     private static final int dimGroup = 2;
 
@@ -31,6 +31,7 @@ public class SixGroupsOfTwo extends CommonGoal {
     /**
      * @author Edoardo Margarini
      */
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public boolean check(@NotNull Shelf shelf) {
 
@@ -40,20 +41,26 @@ public class SixGroupsOfTwo extends CommonGoal {
 
         for (int i = 0; i < shelf.getRowNumber(); i++)
             for (int j = 0; j < shelf.getColumnNumber(); j++)
-                if (copy[i][j] != Tile.EMPTY && copy[i][j] !=null) { //se è piena allora cerco di capire se fa parte di un gruppo di 4 caselle adiacenti
-                    if(BelongToABlock(i,j)==tilesInGroup )
+                if (copy[i][j] != Tile.EMPTY && copy[i][j] !=null) { //if it's full, checks whether part of a 2-tiles group
+                    if(BelongToABlock(i,j)==dimGroup )
                         count++;
                 }
 
-        if(count>=groupsNumber)
-            return true;
-        return false;
+        return count >= times;
     }
 
+    /**
+     * //TODO java doc is to be written
+     *
+     * @param x
+     * @param y
+     * @return
+     * @author Edoardo Margarini
+     */
+    @SuppressWarnings("DuplicatedCode")
+    private @NotNull List<Coordinates> adjacentTile(int x, int y) {
 
-    private List<Coordinates> adjacentTile(int x, int y) {
-
-        List<Coordinates> adjTile = new ArrayList<Coordinates>();
+        List<Coordinates> adjTile = new ArrayList<>();
 
         if (x <= 4)
             if(copy[x + 1][y]==copy[x][y] && copy[x][y]!=null &&copy[x][y]!=Tile.EMPTY){
@@ -83,36 +90,38 @@ public class SixGroupsOfTwo extends CommonGoal {
         return adjTile;
     }
 
-    private int BelongToABlock( int x, int y){
+    /**
+     * //TODO java doc is to be written
+     *
+     * @param x
+     * @param y
+     * @return
+     * @author Edoardo Margarini
+     */
+    @SuppressWarnings("DuplicatedCode")
+    private int BelongToABlock(int x, int y){
         int count=0;
 
-        Queue<Coordinates> queue= new LinkedList<Coordinates>();
-
-        for(Coordinates e : adjacentTile(x,y)){
-            queue.add(e);
-        }
+        Queue<Coordinates> queue = new LinkedList<>(adjacentTile(x, y));
         copy[x][y]=Tile.EMPTY;
         count++;
 
-        int xtemp=0;
-        int ytemp=0;
+        int xTemp=0;
+        int yTemp=0;
 
         while(queue.size()>0){
 
-            xtemp=queue.peek().x();
-            ytemp=queue.peek().y();
+            xTemp=queue.peek().x();
+            yTemp=queue.peek().y();
             queue.remove();
-            for(Coordinates e : adjacentTile(xtemp, ytemp)){
+            for(Coordinates e : adjacentTile(xTemp, yTemp)){
                 if(!queue.stream().toList().contains(e))
                     queue.add(e);
             }
-            copy[xtemp][ytemp]=Tile.EMPTY;
+            copy[xTemp][yTemp]=Tile.EMPTY;
             count++;
         }
-
         return count;
     }
-
-
 
 }
