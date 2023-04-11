@@ -1,9 +1,7 @@
 package it.polimi.ingsw.model;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.model.exceptions.ConfigFileNotFoundException;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,7 +9,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * The personal goal card is represented with a map of six elements where the tiles are the keys of a coordinate.
@@ -26,7 +23,7 @@ public class PersonalGoal {
 
     private final Map<Tile, Coordinates> matches = new HashMap<>();
 
-    private final Map<Integer, Integer> points = new HashMap<>();
+    private  final Map<Integer, Integer> points = new HashMap<>();
 
     /**
      * Class constructor.
@@ -47,16 +44,13 @@ public class PersonalGoal {
      * @author Francesco Ostidich
      */
     private void pointsConstructor() {
+        Gson gson = new Gson();
         File input = new File("src/main/java/it/polimi/ingsw/model/configFiles/personalGoalPointsMap.json");
         try {
             JsonElement pointsElement = JsonParser.parseReader(new FileReader(input));
-            JsonObject pointsObject = pointsElement.getAsJsonObject();
+            points.putAll(gson.fromJson(pointsElement, new TypeToken<HashMap<Integer, Integer>>() {}.getType()));
 
-            points.keySet().addAll(pointsObject.keySet().stream().
-                    map(Integer::valueOf).
-                    collect(Collectors.toSet()));
 
-            points.replaceAll((k, v) -> pointsObject.get(String.valueOf(k)).getAsInt());
         } catch (FileNotFoundException e) {
             throw new ConfigFileNotFoundException("personalGoalPointsMap not found");
         }
@@ -77,12 +71,15 @@ public class PersonalGoal {
 
             JsonArray jsonCoordinates;
             for(Tile tile: Tile.values()) {
-                jsonCoordinates = matchesObject.
-                        get(String.valueOf(personalGoalNumber)).
-                        getAsJsonObject().
-                        get(tile.toString()).
-                        getAsJsonArray();
-                matches.put(tile, new Coordinates(jsonCoordinates.get(0).getAsInt(), jsonCoordinates.get(1).getAsInt()));
+                if (tile!=Tile.EMPTY)
+                {
+                    jsonCoordinates = matchesObject.
+                            get(String.valueOf(personalGoalNumber)).
+                            getAsJsonObject().
+                            get(tile.toString().toUpperCase()).
+                            getAsJsonArray();
+                    matches.put(tile, new Coordinates(jsonCoordinates.get(0).getAsInt(), jsonCoordinates.get(1).getAsInt()));
+                }
             }
         } catch (FileNotFoundException e) {
             throw new ConfigFileNotFoundException("personalGoalMatchesMap not found");
