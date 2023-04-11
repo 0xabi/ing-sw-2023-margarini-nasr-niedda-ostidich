@@ -40,7 +40,7 @@ public class FourRowsOfFive extends CommonGoal {
             if(tiles.size()>=tilesTypes) count++;
             tiles.clear();
         }
-        return count>=linesNumber;
+        return count >= linesNumber;
     }
 
 }

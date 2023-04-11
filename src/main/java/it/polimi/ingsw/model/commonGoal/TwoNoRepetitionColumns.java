@@ -15,9 +15,9 @@ import java.util.ArrayList;
  */
 public class TwoNoRepetitionColumns extends CommonGoal {
 
-    private final int NUM_DIFFERENT_TILES = 6;
+    private static final int numDifferentTiles = 6;
 
-    private final int TIMES=2;
+    private static final int times = 2;
 
     /**
      * <p>Class constructor.</p>
@@ -38,6 +38,7 @@ public class TwoNoRepetitionColumns extends CommonGoal {
      * @return true if the number of different tiles in front of each other in the column is equal to the number {@code NUM_DIFFERENT_TILES}, false otherwise
      * @author Abdullah Nasr
      */
+    @SuppressWarnings("DuplicatedCode")
     private boolean checkCol(@NotNull Shelf shelf, int col) {
         ArrayList<Tile> checkedList = new ArrayList<>();
         int row = shelf.getRowNumber();
@@ -46,43 +47,36 @@ public class TwoNoRepetitionColumns extends CommonGoal {
         int index=0;
         Tile current;
 
-        //scroll down until a Tile
         current = shelf.getPosition(new Coordinates(index,col));
-        while(current!=null&&current==Tile.EMPTY)
-        {
+        while(current == Tile.EMPTY) {
             index++;
             current = shelf.getPosition(new Coordinates(index,col));
         }
 
         //can't count num_different_tiles
-        if(row-index<NUM_DIFFERENT_TILES)
+        if(row-index < numDifferentTiles)
             return false;
 
-        for(;index<row;index++)
-        {
+        for(;index<row;index++) {
             current = shelf.getPosition(new Coordinates(index,col));
-
-
-            for (Tile t: checkedList)
-            {
-                if(t==current)
-                    different=false;
+            for (Tile t: checkedList) {
+                if (t == current) {
+                    different = false;
+                    break;
+                }
             }
-
-            if(different)
-            {
+            if(different) {
                 nDifferent++;
                 checkedList.add(current);
             }
-            else
-            {
+            else {
                 nDifferent=0;
                 checkedList.clear();
                 checkedList.add(current);
             }
         }
 
-        return nDifferent>=NUM_DIFFERENT_TILES;
+        return nDifferent >= numDifferentTiles;
     }
 
     /**
@@ -99,10 +93,8 @@ public class TwoNoRepetitionColumns extends CommonGoal {
         int col = shelf.getColumnNumber();
 
         //for each column
-        for(int i=0;i<col;i++)
-        {
-            if(checkCol(shelf,i))
-            {
+        for(int i = 0; i < col; i++) {
+            if(checkCol(shelf, i)) {
                 count++;
             }
         }
@@ -116,7 +108,7 @@ public class TwoNoRepetitionColumns extends CommonGoal {
     @Override
     public boolean check(@NotNull Shelf shelf) {
 
-        return countColumnsWithDifferentTiles(shelf)>=TIMES;
+        return countColumnsWithDifferentTiles(shelf)>= times;
 
     }
 

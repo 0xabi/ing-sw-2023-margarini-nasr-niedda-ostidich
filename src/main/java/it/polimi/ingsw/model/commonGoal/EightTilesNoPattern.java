@@ -38,7 +38,7 @@ public class EightTilesNoPattern extends CommonGoal {
             count = 0;
             for(int i = 0; i < shelf.getColumnNumber(); i++)
                 for(int j = 0; j < shelf.getRowNumber(); j++)
-                    if(shelf.getPosition(new Coordinates(i, j)) != tile.EMPTY &&
+                    if(shelf.getPosition(new Coordinates(i, j)) != Tile.EMPTY &&
                             shelf.getPosition(new Coordinates(i, j)) == tile) count++;
             if(count >= sameTypeTiles) return true;
         }

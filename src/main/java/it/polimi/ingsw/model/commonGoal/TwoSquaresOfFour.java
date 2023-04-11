@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.CommonGoal;
 import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.Shelf;
 import it.polimi.ingsw.model.Tile;
-import it.polimi.ingsw.model.exceptions.NoPlayerNumberException;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -15,9 +14,9 @@ import org.jetbrains.annotations.NotNull;
  */
 public class TwoSquaresOfFour extends CommonGoal {
 
-    private final int DIM_SQUARE = 2;
+    private static final int dimSquare = 2;
 
-    private final int TIMES = 2;
+    private static final int times = 2;
 
 
     /**
@@ -48,34 +47,28 @@ public class TwoSquaresOfFour extends CommonGoal {
         int col;
         Tile type = shelf.getPosition(cords);
         Tile checkType;
-
         row = shelf.getRowNumber()-1;
         col = shelf.getColumnNumber()-1;
 
-        for(int i=0;i<DIM_SQUARE;i++)
-        {
-
+        for(int i = 0; i< dimSquare; i++) {
             //check up
-             if(x!=0)
-             {
-                 checkType = shelf.getPosition(new Coordinates(x-1,y+i));
+            if(x!=0) {
+                checkType = shelf.getPosition(new Coordinates(x-1,y+i));
 
-                 if(checkType!=Tile.EMPTY && type==checkType)
-                     return false;
-             }
+                if(checkType!=Tile.EMPTY && type==checkType)
+                    return false;
+            }
 
-             //check down
-             if(x+DIM_SQUARE-1!=row)
-             {
-                 checkType = shelf.getPosition(new Coordinates(x+DIM_SQUARE,y+i));
+            //check down
+            if(x+dimSquare-1 != row) {
+                checkType = shelf.getPosition(new Coordinates(x+dimSquare,y+i));
 
-                 if(checkType!=Tile.EMPTY && type==checkType)
-                     return false;
-             }
+                if(checkType!=Tile.EMPTY && type==checkType)
+                    return false;
+            }
 
             //check left
-            if(y!=0)
-            {
+            if(y!=0) {
                 checkType = shelf.getPosition(new Coordinates(x+i,y-1));
 
                 if(checkType!=Tile.EMPTY && type==checkType)
@@ -83,9 +76,8 @@ public class TwoSquaresOfFour extends CommonGoal {
             }
 
             //check right
-            if(y+DIM_SQUARE-1!=col)
-            {
-                checkType = shelf.getPosition(new Coordinates(x+i,y+DIM_SQUARE));
+            if(y+dimSquare-1 != col) {
+                checkType = shelf.getPosition(new Coordinates(x+i,y+dimSquare));
 
                 if(checkType!=Tile.EMPTY && type==checkType)
                     return false;
@@ -111,32 +103,26 @@ public class TwoSquaresOfFour extends CommonGoal {
         int y = cords.y();
         int row;
         int col;
-
         row = shelf.getRowNumber()-1;
         col = shelf.getColumnNumber()-1;
 
         //not out of the shelf
-        if(y+DIM_SQUARE-1 <=  col && x+DIM_SQUARE-1 <= row )
-        {
-            for(int i=0;i<DIM_SQUARE;i++)
-            {
+        if(y+dimSquare-1 <=  col && x+dimSquare-1 <= row) {
+            for(int i = 0; i < dimSquare; i++) {
                 Tile currentTile;
                 Tile nextTile;
 
                 //check if the row have the same type
-                for(int j=0;j<DIM_SQUARE-1;j++)
-                {
+                for(int j = 0; j < dimSquare-1; j++) {
                     currentTile = shelf.getPosition(new Coordinates(x+i,y+j));
                     nextTile = shelf.getPosition(new Coordinates(x+i,y+j+1));
 
                     if(nextTile==Tile.EMPTY || currentTile!=nextTile)
-                        return false;
-                }
+                        return false;}
 
                 //check if the current row is the same to the next row
                 //it's enough to check the first tile of the row because the row check we did
-                if(i!=DIM_SQUARE-1)
-                {
+                if(i != dimSquare-1) {
                     currentTile = shelf.getPosition(new Coordinates(x+i,y));
                     nextTile = shelf.getPosition(new Coordinates(x+i+1,y));
 
@@ -164,18 +150,14 @@ public class TwoSquaresOfFour extends CommonGoal {
         int col = shelf.getColumnNumber() -1;
         Coordinates currentCoordinate;
 
-       for(int x=0;x<=row;x++)
-       {
-           for(int y=0;y<=col;y++)
-           {
+        for(int x=0;x<=row;x++) {
+            for(int y=0;y<=col;y++) {
                 currentCoordinate = new Coordinates(x,y);
-
                 if(checkSquareToBottomRight(shelf,currentCoordinate) && isolatedSquare(shelf, currentCoordinate))
                     count++;
-           }
-       }
-
-       return count;
+            }
+        }
+        return count;
     }
 
 
@@ -184,7 +166,7 @@ public class TwoSquaresOfFour extends CommonGoal {
      */
     @Override
     public boolean check(@NotNull Shelf shelf) {
-        return countIsolatedSquares(shelf) >= TIMES;
+        return countIsolatedSquares(shelf) >= times;
     }
 
 }

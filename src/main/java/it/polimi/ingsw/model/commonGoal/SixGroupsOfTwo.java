@@ -1,8 +1,13 @@
 package it.polimi.ingsw.model.commonGoal;
 
 import it.polimi.ingsw.model.CommonGoal;
+import it.polimi.ingsw.model.Coordinates;
 import it.polimi.ingsw.model.Shelf;
+import it.polimi.ingsw.model.Tile;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * Six groups each containing at least 2 tiles of the same type (not necessarily in the depicted shape).
@@ -12,10 +17,13 @@ import org.jetbrains.annotations.NotNull;
  */
 public class SixGroupsOfTwo extends CommonGoal {
 
+    Tile[][] copy;
 
-    private static final int groupsNumber = 6;
+    Queue<Coordinates> queue = new LinkedList<>();
 
-    private static final int tilesInGroup = 2;
+    private static final int dimGroup = 2;
+
+    private static final int times = 6;
 
     public SixGroupsOfTwo(int playerNumber) {
         super(playerNumber);

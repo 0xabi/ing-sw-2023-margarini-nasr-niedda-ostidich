@@ -16,14 +16,13 @@ import java.util.*;
  */
 public class FourGroupsOfFour extends CommonGoal {
 
-    private static final int groupsNumber = 4;
-
-    private static final int tilesInGroup = 4;
-
     Tile[][] copy;
-    Queue<Coordinates> queue = new LinkedList<Coordinates>();
-    private final int DIM_GROUP= 4;
-    private final int TIMES = 4;
+
+    Queue<Coordinates> queue = new LinkedList<>();
+
+    private static final int dimGroup = 4;
+
+    private static final int times = 4;
 
     public FourGroupsOfFour(int playerNumber) {
         super(playerNumber);
@@ -40,42 +39,39 @@ public class FourGroupsOfFour extends CommonGoal {
 
         for (int i = 0; i < shelf.getRowNumber(); i++)
             for (int j = 0; j < shelf.getColumnNumber(); j++)
-                if (copy[i][j] != Tile.EMPTY && copy[i][j] !=null) { //se è piena allora cerco di capire se fa parte di un gruppo di 4 caselle adiacenti
-                    if(BelongToABlock(i,j)==DIM_GROUP)
+                if (copy[i][j] != Tile.EMPTY && copy[i][j] !=null) { //if it's full, checks whether part of a 4-tiles group
+                    if(BelongToABlock(i,j)== dimGroup)
                        count++;
                 }
 
-        if(count>=TIMES)
-            return true;
-        return false;
+        return count >= times;
     }
 
 
-    private List<Coordinates> adjacentTile(int x, int y) {
+    private @NotNull List<Coordinates> adjacentTile(int x, int y) {
 
-        List<Coordinates> adjTile = new ArrayList<Coordinates>();
+        List<Coordinates> adjTile = new ArrayList<>();
 
         if (x <= 4)
-            if(copy[x + 1][y]==copy[x][y] && copy[x][y]!=null &&copy[x][y]!=Tile.EMPTY){
+            if(copy[x + 1][y]==copy[x][y] && copy[x][y]!=null &&copy[x][y]!=Tile.EMPTY) {
                 Coordinates coords = new Coordinates(x+1,y);
                 adjTile.add(coords);
             }
 
-
         if (x>=1)
-            if(copy[x - 1][y]==copy[x][y] && copy[x][y]!=null &&copy[x][y]!=Tile.EMPTY){
+            if(copy[x - 1][y]==copy[x][y] && copy[x][y]!=null &&copy[x][y]!=Tile.EMPTY) {
                 Coordinates coords = new Coordinates(x-1,y);
                 adjTile.add(coords);
             }
 
         if (y <= 3)
-            if(copy[x ][y+1]==copy[x][y] && copy[x][y]!=null &&copy[x][y]!=Tile.EMPTY){
+            if(copy[x ][y+1]==copy[x][y] && copy[x][y]!=null &&copy[x][y]!=Tile.EMPTY) {
                 Coordinates coords = new Coordinates(x,y+1);
                 adjTile.add(coords);
             }
 
         if (y >= 1)
-            if(copy[x ][y-1]==copy[x][y] && copy[x][y]!=null &&copy[x][y]!=Tile.EMPTY){
+            if(copy[x ][y-1]==copy[x][y] && copy[x][y]!=null &&copy[x][y]!=Tile.EMPTY) {
                 Coordinates coords = new Coordinates(x,y-1);
                 adjTile.add(coords);
             }
@@ -84,28 +80,26 @@ public class FourGroupsOfFour extends CommonGoal {
     }
 
 
-    private int BelongToABlock( int x, int y){
+    private int BelongToABlock( int x, int y) {
         int count=0;
 
-        for(Coordinates e : adjacentTile(x,y)){
-            queue.add(e);
-        }
+        queue.addAll(adjacentTile(x, y));
         copy[x][y]=Tile.EMPTY;
         count++;
 
-        int xtemp=0;
-        int ytemp=0;
+        int xTemp;
+        int yTemp;
 
         while(queue.size()>0){
 
-            xtemp=queue.peek().x();
-            ytemp=queue.peek().y();
+            xTemp=queue.peek().x();
+            yTemp=queue.peek().y();
             queue.remove();
-            for(Coordinates e : adjacentTile(xtemp, ytemp)){
+            for(Coordinates e : adjacentTile(xTemp, yTemp)){
                if(!queue.stream().toList().contains(e))
                     queue.add(e);
             }
-            copy[xtemp][ytemp]=Tile.EMPTY;
+            copy[xTemp][yTemp] = Tile.EMPTY;
             count++;
         }
 

@@ -37,10 +37,10 @@ public class ThreeColumnsOfSix extends CommonGoal {
                 if(matrix[i][j] != null)
                     tiles.add(matrix[i][j]);
             }
-            if(tiles.size()>=tilesTypes) count++;
+            if(tiles.size() >= tilesTypes) count++;
             tiles.clear();
         }
-        return count>=linesNumber;
+        return count >= linesNumber;
     }
 
 }

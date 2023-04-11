@@ -1,6 +1,5 @@
 package it.polimi.ingsw.model;
 
-import java.io.File;
 import java.util.*;
 
 
