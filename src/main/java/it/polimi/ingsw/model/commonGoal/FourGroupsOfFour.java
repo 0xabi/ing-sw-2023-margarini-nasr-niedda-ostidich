@@ -34,7 +34,7 @@ public class FourGroupsOfFour extends CommonGoal {
     @Override
     public boolean check(@NotNull Shelf shelf) {
 
-        copy = shelf.getPositions();
+        copy = Arrays.copyOf(shelf.getPositions(),shelf.getColumnNumber()*shelf.getRowNumber() );
         int count=0;
 
         for (int i = 0; i < shelf.getRowNumber(); i++)
@@ -80,10 +80,14 @@ public class FourGroupsOfFour extends CommonGoal {
     }
 
 
-    private int BelongToABlock( int x, int y) {
+    private int BelongToABlock(int x, int y) {
         int count=0;
 
-        queue.addAll(adjacentTile(x, y));
+        Queue<Coordinates> queue= new LinkedList<Coordinates>();
+
+        for(Coordinates e : adjacentTile(x,y)){
+            queue.add(e);
+        }
         copy[x][y]=Tile.EMPTY;
         count++;
 
