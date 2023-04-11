@@ -134,8 +134,7 @@ public class GameModel {
      */
     @SuppressWarnings("SameReturnValue")
     private boolean checkForPlayerConnection(Player player) {
-        //TODO method code is to be written when socket and RMI are implemented
-        //makes sure the player is still connected and playing
+        /* TODO method code is to be written when socket and RMI are implemented */
         return true;
     }
 
