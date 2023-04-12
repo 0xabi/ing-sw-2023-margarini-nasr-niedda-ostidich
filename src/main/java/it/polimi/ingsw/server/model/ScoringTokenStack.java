@@ -29,7 +29,7 @@ public class ScoringTokenStack {
      * @throws ConfigFileNotFoundException if FileReader cannot read from json config file
      * @author Francesco Ostidich
      */
-    public ScoringTokenStack(int playerNumber) {
+    protected ScoringTokenStack(int playerNumber) {
         tokenStack = new Stack<>();
         File input = new File("src/main/java/it/polimi/ingsw/resources/configFiles/scoringTokenStack.json");
         try {
@@ -51,7 +51,7 @@ public class ScoringTokenStack {
      * @return the respective popped token points
      * @author Francesco Ostidich
      */
-    public int pop() {
+    protected int pop() {
         return tokenStack.pop();
     }
     

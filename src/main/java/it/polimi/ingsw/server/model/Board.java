@@ -35,7 +35,7 @@ public class Board {
      * @author Edoardo Margarini
      * @param num is players number
      */
-    public Board(int num) {
+    protected Board(int num) {
         spaces = new Tile[rowLength][columnLength];
         endGameToken = Optional.of(new EndGameToken());
 
@@ -62,7 +62,7 @@ public class Board {
      * //TODO java doc is to be written
      * @author Edoardo Margarini
      */
-    public void setEndGameToken(@SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<EndGameToken> endGameToken) {
+    protected void setEndGameToken(@SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<EndGameToken> endGameToken) {
         this.endGameToken = endGameToken;
     }
 
@@ -71,7 +71,7 @@ public class Board {
      * @author Edoardo Margarini
      * @return
      */
-    public Tile[][] getSpaces() {
+    protected Tile[][] getSpaces() {
         return spaces;
     }
 
@@ -79,7 +79,7 @@ public class Board {
      * //TODO java doc is to be written
      * @author Edoardo Margarini
      */
-    public void setSpace(@NotNull Coordinates coords, Tile tile){
+    protected void setSpace(@NotNull Coordinates coords, Tile tile){
         spaces[coords.x()][coords.y()]=tile;
     }
 
@@ -88,7 +88,7 @@ public class Board {
      * @author Edoardo Margarini
      * @return
      */
-    public Bag getBag(){
+    protected Bag getBag(){
         return bag;
     }
 
@@ -97,7 +97,7 @@ public class Board {
      * @author Edoardo Margarini
      * @return
      */
-    public Optional<EndGameToken> getEndGameToken() {
+    protected Optional<EndGameToken> getEndGameToken() {
         return endGameToken;
     }
 
@@ -116,7 +116,7 @@ public class Board {
      * //TODO java doc is to be written
      * @author Edoardo Margarini
      */
-    public void refill() {
+    protected void refill() {
         //puts back the ones left on the board
         emptyBoardInBag();
 
@@ -135,7 +135,7 @@ public class Board {
      * @param selection
      * @return
      */
-    public List<Tile> selectTiles(List<Coordinates> selection) {
+    protected List<Tile> selectTiles(List<Coordinates> selection) {
 
         List<Tile> list = new LinkedList<>();
 
@@ -155,7 +155,7 @@ public class Board {
      * @param selection is a list of coords of the board
      * @return true if every check has positive feedback, false if one check has negative feedback
      * */
-    public boolean checkSelection(@NotNull List<Coordinates> selection) {
+    protected boolean checkSelection(@NotNull List<Coordinates> selection) {
         //checks the player has chosen max 3 tiles
         if(selection.size()>3)
             return false;
@@ -218,7 +218,7 @@ public class Board {
      * @author Edoardo Margarini
      * @return true or false
      */
-    public boolean checkToRefill() {
+    protected boolean checkToRefill() {
 
         for(int i = 0; i < rowLength; i++)
             for(int j = 0; j < columnLength; j++) {
@@ -280,7 +280,7 @@ public class Board {
      * @param coordinates
      * @return
      */
-    public Tile getTileInBoard(@NotNull Coordinates coordinates) {
+    protected Tile getTileInBoard(@NotNull Coordinates coordinates) {
         return spaces[coordinates.x()][coordinates.y()];
     }
 

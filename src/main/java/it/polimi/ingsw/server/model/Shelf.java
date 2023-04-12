@@ -24,7 +24,7 @@ public class Shelf {
      *
      * @author Abdullah Nasr
      */
-    public Shelf(){
+    protected Shelf(){
         positions = new Tile[rowNumber][columnNumber];
         for(int i = 0; i < rowNumber; i++)
             Arrays.fill(positions[i], Tile.EMPTY);
@@ -64,7 +64,7 @@ public class Shelf {
      * @param coordinates tile's position to pick
      * @author Abdullah Nasr
      */
-    public Tile getPosition(Coordinates coordinates) {
+    protected Tile getPosition(Coordinates coordinates) {
 
         if(coordinates==null || coordinates.x()>=rowNumber || coordinates.y()>=columnNumber)
             return null;
@@ -79,7 +79,7 @@ public class Shelf {
      * @param tiles A list of tiles to insert into the specified column
      * @author Abdullah Nasr
      */
-    public boolean insertInColumn(List<Tile> tiles, int column) {
+    protected boolean insertInColumn(List<Tile> tiles, int column) {
 
         List<Tile> tilesList;
         int freeSpace;
@@ -132,7 +132,7 @@ public class Shelf {
      * @param column the column in which to count the tiles
      * @author Abdullah Nasr
      */
-    public int getTilesInColumn(int column){
+    protected int getTilesInColumn(int column){
 
         //check valid column
         if(column<columnNumber) {
@@ -150,7 +150,7 @@ public class Shelf {
      * @return true if the shelf is full, false otherwise
      * @author Abdullah Nasr
      */
-    public boolean isFull() {
+    protected boolean isFull() {
         for(int i = 0; i < columnNumber; i++)
             if(positions[0][i] == Tile.EMPTY) return false;
         return true;

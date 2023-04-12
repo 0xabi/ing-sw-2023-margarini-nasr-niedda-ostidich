@@ -20,7 +20,7 @@ public class Bag {
      *
      * @author Edoardo Margarini
      */
-    public Bag() {
+    protected Bag() {
         tilesLeft = new HashMap<>();
 
         for(Tile tile: Tile.values())
@@ -34,7 +34,7 @@ public class Bag {
      * @param tile
      * @author Edoardo Margarini
      */
-    public void addTile(Tile tile) {
+    protected void addTile(Tile tile) {
         tilesLeft.put(tile, tilesLeft.get(tile)+1);
     }
 
@@ -54,7 +54,7 @@ public class Bag {
      * @return
      * @author Edoardo Margarini
      */
-    public Tile draw(){
+    protected Tile draw(){
         Random random = new Random();
         int number = random.nextInt(5);
         while(tilesLeft.get(Tile.values()[number])<=0) { //if a tile has no quantity retry the draw
@@ -69,7 +69,7 @@ public class Bag {
      * @author Edoardo Margarini
      * @return
      */
-    public int size(){
+    protected int size(){
         return tilesLeft.values()
                 .stream()
                 .mapToInt(Integer::valueOf)

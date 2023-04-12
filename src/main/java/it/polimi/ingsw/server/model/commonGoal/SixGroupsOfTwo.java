@@ -106,8 +106,8 @@ public class SixGroupsOfTwo extends CommonGoal {
         copy[x][y]=Tile.EMPTY;
         count++;
 
-        int xTemp=0;
-        int yTemp=0;
+        int xTemp;
+        int yTemp;
 
         while(queue.size()>0){
 

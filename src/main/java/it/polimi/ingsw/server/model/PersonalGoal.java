@@ -32,7 +32,7 @@ public class PersonalGoal {
      * @throws ConfigFileNotFoundException if config json files are not readable by FileReader
      * @author Francesco Ostidich
      */
-    public PersonalGoal(int personalGoalNumber) {
+    protected PersonalGoal(int personalGoalNumber) {
         pointsConstructor();
         matchesConstructor(personalGoalNumber);
     }
@@ -93,7 +93,7 @@ public class PersonalGoal {
      * @author Francesco Ostidich
      * @param player is the player to check the matches and add points to
      */
-    public void assignPoints(@NotNull Player player) {
+    protected void assignPoints(@NotNull Player player) {
         player.addPoints(points.get(matchesShared(player.getShelf())));
     }
 

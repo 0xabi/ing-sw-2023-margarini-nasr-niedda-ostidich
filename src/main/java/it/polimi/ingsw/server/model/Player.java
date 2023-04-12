@@ -29,7 +29,7 @@ public class Player {
      * @param personalGoalNumber is the sorted out number for player's personal goal
      * @author Pietro Andrea Niedda
      */
-    public Player(String name, int personalGoalNumber) {
+    protected Player(String name, int personalGoalNumber) {
         this.name = name;
         points = 0;
         shelf = new Shelf();
@@ -42,7 +42,7 @@ public class Player {
      * @return
      * @author Pietro Andrea Niedda
      */
-    public String getName(){
+    protected String getName(){
         return name;
     }
 
@@ -52,7 +52,7 @@ public class Player {
      * @return
      * @author Pietro Andrea Niedda
      */
-    public int getPoints(){
+    protected int getPoints(){
         return points;
     }
 
@@ -62,7 +62,7 @@ public class Player {
      * @return
      * @author Pietro Andrea Niedda
      */
-    public PersonalGoal getPersonalGoal(){
+    protected PersonalGoal getPersonalGoal(){
         return personalGoal;
     }
 
@@ -72,7 +72,7 @@ public class Player {
      * @return
      * @author Pietro Andrea Niedda
      */
-    public Shelf getShelf(){
+    protected Shelf getShelf(){
         return shelf;
     }
 
@@ -82,7 +82,7 @@ public class Player {
      * @param points
      * @author Pietro Andrea Niedda
      */
-    public void addPoints(int points) {
+    protected void addPoints(int points) {
         this.points = this.points + points;
     }
 
@@ -94,7 +94,7 @@ public class Player {
      * @author Pietro Andrea Niedda
      */
     //TODO method code is to be written when socket and RMI are implemented
-    public List<Coordinates> pickTiles(Board board) {
+    protected List<Coordinates> pickTiles(Board board) {
         return null;
     }
 
@@ -118,7 +118,7 @@ public class Player {
      * @param tiles
      * @author Pietro Andrea Niedda
      */
-    public void insertTiles(List<Tile> tiles) {
+    protected void insertTiles(List<Tile> tiles) {
         shelf.insertInColumn(chooseOrder(tiles), getColumnChoice(tiles));
     }
 
