@@ -48,9 +48,9 @@ public class GameModel implements ModelActions {
      * @author Francesco Ostidich
      * @param names is the list with the players names got from the controller, used for construct the player objects
      */
-    public GameModel(@NotNull List<String> names, int playerNumber) {
+    public GameModel(@NotNull List<String> names) {
         board = new Board(names.size());
-        commonGoalConstructor(playerNumber);
+        commonGoalConstructor(names.size());
         playerListConstructor(names);
     }
 

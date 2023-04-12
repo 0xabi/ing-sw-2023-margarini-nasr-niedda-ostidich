@@ -2,6 +2,6 @@ package it.polimi.ingsw.server.model.commonGoal;
 
 import junit.framework.TestCase;
 
-public class CommonGoal5Test extends TestCase {
+public class ThreeColumnsOfSixTest extends TestCase {
 
 }

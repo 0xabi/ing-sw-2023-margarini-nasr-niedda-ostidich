@@ -64,7 +64,7 @@ public class Shelf {
      * @param coordinates tile's position to pick
      * @author Abdullah Nasr
      */
-    protected Tile getPosition(Coordinates coordinates) {
+    public Tile getPosition(Coordinates coordinates) {
 
         if(coordinates==null || coordinates.x()>=rowNumber || coordinates.y()>=columnNumber)
             return null;
@@ -132,7 +132,7 @@ public class Shelf {
      * @param column the column in which to count the tiles
      * @author Abdullah Nasr
      */
-    protected int getTilesInColumn(int column){
+    public int getTilesInColumn(int column){
 
         //check valid column
         if(column<columnNumber) {
