@@ -2,7 +2,7 @@ package it.polimi.ingsw.server.model;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-import it.polimi.ingsw.server.model.exceptions.ConfigFileNotFoundException;
+import it.polimi.ingsw.exceptions.ConfigFileNotFoundException;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;

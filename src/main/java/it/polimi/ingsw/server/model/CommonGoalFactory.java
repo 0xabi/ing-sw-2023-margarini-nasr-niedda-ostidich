@@ -12,7 +12,7 @@ import it.polimi.ingsw.server.model.commonGoal.ThreeColumnsOfSix;
 import it.polimi.ingsw.server.model.commonGoal.TwoNoRepetitionColumns;
 import it.polimi.ingsw.server.model.commonGoal.TwoNoRepetitionRows;
 import it.polimi.ingsw.server.model.commonGoal.TwoSquaresOfFour;
-import it.polimi.ingsw.server.model.exceptions.CommonGoalNotPresentException;
+import it.polimi.ingsw.exceptions.CommonGoalNotPresentException;
 
 import java.util.Random;
 

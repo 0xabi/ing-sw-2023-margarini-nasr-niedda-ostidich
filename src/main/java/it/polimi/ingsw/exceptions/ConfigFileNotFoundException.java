@@ -1,11 +1,11 @@
-package it.polimi.ingsw.server.model.exceptions;
+package it.polimi.ingsw.exceptions;
 
 /**
- * Exception pops out if the file trying to be read contains no desired value.
+ * Exception pops out if the config file is not to be found.
  *
  * @author Francesco Ostidich
  */
-public class ConfigFileNotReadableException extends RuntimeException {
+public class ConfigFileNotFoundException extends RuntimeException {
 
     /**
      * Prints out exception's message.
@@ -13,7 +13,7 @@ public class ConfigFileNotReadableException extends RuntimeException {
      * @author Francesco Ostidich
      * @param s is the string got from exception source
      */
-    public ConfigFileNotReadableException(String s) {
+    public ConfigFileNotFoundException(String s) {
         System.out.println("ConfigFileNotFoundException: " + s + "!");
     }
 

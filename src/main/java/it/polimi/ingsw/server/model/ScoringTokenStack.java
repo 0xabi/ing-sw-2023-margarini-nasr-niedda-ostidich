@@ -4,8 +4,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import it.polimi.ingsw.server.model.exceptions.ConfigFileNotFoundException;
-import it.polimi.ingsw.server.model.exceptions.NoTokensForPlayerNumberException;
+import it.polimi.ingsw.exceptions.ConfigFileNotFoundException;
+import it.polimi.ingsw.exceptions.NoTokensForPlayerNumberException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
