@@ -1,6 +1,8 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.interfaces.ModelActions;
+import it.polimi.ingsw.resources.interfaces.ModelActions;
+import it.polimi.ingsw.resources.Coordinates;
+import it.polimi.ingsw.resources.Tile;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;

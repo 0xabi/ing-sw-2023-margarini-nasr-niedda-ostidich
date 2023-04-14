@@ -1,6 +1,9 @@
 package it.polimi.ingsw.server.model;
 
 import static org.junit.Assert.*;
+
+import it.polimi.ingsw.resources.Coordinates;
+import it.polimi.ingsw.resources.Tile;
 import org.junit.Test;
 import org.junit.After;
 import org.junit.Before;

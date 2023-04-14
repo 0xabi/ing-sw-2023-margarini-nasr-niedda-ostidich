@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.clientController;
 
 import it.polimi.ingsw.client.view.GameView;
-import it.polimi.ingsw.messages.Message;
+import it.polimi.ingsw.resources.Message;
 
 /**
  * The game view controller is to receive messages from the network handler, and consequentially call methods on the view.

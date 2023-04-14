@@ -2,7 +2,7 @@ package it.polimi.ingsw.server.model.commonGoal;
 
 import it.polimi.ingsw.server.model.CommonGoal;
 import it.polimi.ingsw.server.model.Shelf;
-import it.polimi.ingsw.server.model.Tile;
+import it.polimi.ingsw.resources.Tile;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.exceptions;
+package it.polimi.ingsw.resources.exceptions;
 
 /**
  * Exception pops out if the common goal number that is being extracted does not couple with a common goal in the factory.

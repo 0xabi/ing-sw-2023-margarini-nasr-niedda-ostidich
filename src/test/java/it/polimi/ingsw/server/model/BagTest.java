@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.resources.Coordinates;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

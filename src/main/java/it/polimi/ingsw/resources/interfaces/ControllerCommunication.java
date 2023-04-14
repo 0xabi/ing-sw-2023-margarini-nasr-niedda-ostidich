@@ -1,6 +1,6 @@
-package it.polimi.ingsw.interfaces;
+package it.polimi.ingsw.resources.interfaces;
 
-import it.polimi.ingsw.messages.Message;
+import it.polimi.ingsw.resources.Message;
 
 /**
  * Inside the controllers, a class receiving a message must be able to talk to the controller core, which is to

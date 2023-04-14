@@ -1,4 +1,4 @@
-package it.polimi.ingsw.exceptions;
+package it.polimi.ingsw.resources.exceptions;
 
 /**
  * Exception pops out if the players number requiring action is not considered in the implication.

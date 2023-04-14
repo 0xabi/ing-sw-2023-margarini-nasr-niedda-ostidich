@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.virtualView;
 
-import it.polimi.ingsw.interfaces.NetworkManager;
-import it.polimi.ingsw.messages.Message;
+import it.polimi.ingsw.resources.interfaces.NetworkManager;
+import it.polimi.ingsw.resources.Message;
 import it.polimi.ingsw.server.serverController.VirtualViewAccess;
 
 /**

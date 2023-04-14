@@ -1,7 +1,7 @@
-package it.polimi.ingsw.interfaces;
+package it.polimi.ingsw.resources.interfaces;
 
-import it.polimi.ingsw.messages.TileListMessage;
-import it.polimi.ingsw.server.model.Tile;
+import it.polimi.ingsw.resources.messages.TileListMessage;
+import it.polimi.ingsw.resources.Tile;
 
 import java.util.List;
 

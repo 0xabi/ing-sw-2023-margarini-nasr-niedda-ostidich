@@ -4,8 +4,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import it.polimi.ingsw.exceptions.ConfigFileNotFoundException;
-import it.polimi.ingsw.exceptions.ConfigFileNotReadableException;
+import it.polimi.ingsw.resources.exceptions.ConfigFileNotFoundException;
+import it.polimi.ingsw.resources.exceptions.ConfigFileNotReadableException;
+import it.polimi.ingsw.resources.Coordinates;
+import it.polimi.ingsw.resources.Tile;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;

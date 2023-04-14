@@ -1,12 +1,12 @@
 package it.polimi.ingsw.server.serverController;
 
-import it.polimi.ingsw.interfaces.ControllerCommunication;
-import it.polimi.ingsw.interfaces.MessagePackaging;
-import it.polimi.ingsw.interfaces.ViewActions;
-import it.polimi.ingsw.messages.Message;
-import it.polimi.ingsw.messages.TileListMessage;
+import it.polimi.ingsw.resources.interfaces.ControllerCommunication;
+import it.polimi.ingsw.resources.interfaces.MessagePackaging;
+import it.polimi.ingsw.resources.interfaces.ViewActions;
+import it.polimi.ingsw.resources.Message;
+import it.polimi.ingsw.resources.messages.TileListMessage;
 import it.polimi.ingsw.server.model.Board;
-import it.polimi.ingsw.server.model.Tile;
+import it.polimi.ingsw.resources.Tile;
 import it.polimi.ingsw.server.virtualView.GameVirtualView;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.model;
+package it.polimi.ingsw.resources;
 
 /**
  * <p>Enumeration class that defines tiles' types.</p>

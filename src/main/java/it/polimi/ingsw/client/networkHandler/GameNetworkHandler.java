@@ -1,8 +1,8 @@
 package it.polimi.ingsw.client.networkHandler;
 
 import it.polimi.ingsw.client.clientController.NetworkHandlerAccess;
-import it.polimi.ingsw.interfaces.NetworkManager;
-import it.polimi.ingsw.messages.Message;
+import it.polimi.ingsw.resources.interfaces.NetworkManager;
+import it.polimi.ingsw.resources.Message;
 
 /**
  * It receives from client controller the messages to be sent on the connection bus, from client to server.

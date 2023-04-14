@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server.model;
+package it.polimi.ingsw.resources;
 
 /**
  * A record type class make the parameters as private final, and creates by itself methods to get them: x() and y()

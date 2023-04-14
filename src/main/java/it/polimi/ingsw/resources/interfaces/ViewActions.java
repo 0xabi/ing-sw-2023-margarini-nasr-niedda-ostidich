@@ -1,4 +1,4 @@
-package it.polimi.ingsw.interfaces;
+package it.polimi.ingsw.resources.interfaces;
 
 import it.polimi.ingsw.server.model.Board;
 

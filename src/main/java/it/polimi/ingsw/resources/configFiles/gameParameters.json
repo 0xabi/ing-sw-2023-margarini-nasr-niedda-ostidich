@@ -1,0 +1,9 @@
+{
+  "boardRowLength": 9,
+  "boardColumnLength": 9,
+  "bagTotalQuantity": 22,
+  "shelfRowNumber": 6,
+  "shelfColumnNumber": 5,
+  "commonGoalNumber": 13,
+  "endGameTokenPoints": 1
+}

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.messages;
+package it.polimi.ingsw.resources;
 
 /**
  * A message is an object which encapsulates an information to be serialized and sent via a solid connection.

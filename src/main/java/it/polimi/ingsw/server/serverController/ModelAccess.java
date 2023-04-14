@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.serverController;
 
-import it.polimi.ingsw.interfaces.ModelActions;
+import it.polimi.ingsw.resources.interfaces.ModelActions;
 import it.polimi.ingsw.server.model.GameModel;
 
 import java.util.List;

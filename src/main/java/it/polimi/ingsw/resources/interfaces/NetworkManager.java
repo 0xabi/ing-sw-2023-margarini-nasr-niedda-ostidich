@@ -1,6 +1,6 @@
-package it.polimi.ingsw.interfaces;
+package it.polimi.ingsw.resources.interfaces;
 
-import it.polimi.ingsw.messages.Message;
+import it.polimi.ingsw.resources.Message;
 
 /**
  * Collects the methods to call when data is to be sent via Socket or RMI.

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.view;
 
-import it.polimi.ingsw.interfaces.ViewActions;
+import it.polimi.ingsw.resources.interfaces.ViewActions;
 import it.polimi.ingsw.server.model.Board;
 
 public class GameView implements ViewActions {

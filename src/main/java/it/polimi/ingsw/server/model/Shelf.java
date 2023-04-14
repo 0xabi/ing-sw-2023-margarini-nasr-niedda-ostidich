@@ -1,5 +1,8 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.resources.Coordinates;
+import it.polimi.ingsw.resources.Tile;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

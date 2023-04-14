@@ -1,4 +1,4 @@
-package it.polimi.ingsw.exceptions;
+package it.polimi.ingsw.resources.exceptions;
 
 /**
  * Exception pops out if there's no points values for the player number provided during the scoring token stack

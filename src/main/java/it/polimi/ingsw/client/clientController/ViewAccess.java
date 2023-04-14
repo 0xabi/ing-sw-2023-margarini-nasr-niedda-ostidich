@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.clientController;
 
 import it.polimi.ingsw.client.view.GameView;
-import it.polimi.ingsw.interfaces.ViewActions;
+import it.polimi.ingsw.resources.interfaces.ViewActions;
 import it.polimi.ingsw.server.model.Board;
 
 /**

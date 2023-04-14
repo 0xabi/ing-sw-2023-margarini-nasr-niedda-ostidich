@@ -1,7 +1,11 @@
-package it.polimi.ingsw.interfaces;
+package it.polimi.ingsw.resources.interfaces;
+
+import it.polimi.ingsw.resources.Tile;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Stack;
 
 /**
  * Defines all the actions doable on the model.
@@ -9,6 +13,31 @@ import java.util.Map;
  * @author Francesco Ostidich
  */
 public interface ModelActions {
+
+    Tile[][] getBoard();
+
+    Map<Tile, Integer> getBag();
+
+    Optional<Integer> getEndGameToken();
+
+    String getCommonGoal1();
+
+    String getCommonGoal2();
+
+    Stack<Integer> getCommonGoal1tokens();
+
+    Stack<Integer> getCommonGoal2tokens();
+
+    Map<Integer, String> getCommonGoal1GivenPlayers();
+
+    Map<Integer, String> getCommonGoal2GivenPlayers();
+
+    Map<String, Integer> getPlayersPoints();
+
+    Map<String, Integer> getPlayersPersonalGoal();
+
+    Map<String, Tile[][]> getPlayersShelf();
+
 
     /**
      * <p>When the turn cycle is finished, and at least a shelf is filled, points are being processed and sent to the controller
