@@ -8,6 +8,7 @@ import java.util.List;
 /**
  * Based on the event and on the type of information to send, there should be methods to wrap data in a message object accordingly.
  * For example, every class that implements this interface, should in theory have different message IDs.
+ * Methods defined in this class automatically adds player's ID and message's ID to the envelope.
  *
  * @author Francesco Ostidich
  */

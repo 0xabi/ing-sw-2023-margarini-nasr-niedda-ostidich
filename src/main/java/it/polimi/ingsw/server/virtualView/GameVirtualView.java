@@ -25,8 +25,13 @@ public class GameVirtualView implements NetworkManager {
     }
 
     @Override
-    public void send(Message message) {
+    public void sendMessage(Message message) {
 
+    }
+
+    @Override
+    public Message retrieveFromQueue() {
+        return null;
     }
 
 }
