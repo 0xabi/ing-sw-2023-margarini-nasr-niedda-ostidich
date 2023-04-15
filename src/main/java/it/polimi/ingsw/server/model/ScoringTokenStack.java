@@ -54,5 +54,14 @@ public class ScoringTokenStack {
     protected int pop() {
         return tokenStack.pop();
     }
-    
+
+    /**
+     * Getter for token stack
+     *
+     * @return scoring token points stack
+     * @author Francesco Ostidich
+     */
+    public Stack<Integer> getTokenStack() {
+        return tokenStack;
+    }
 }

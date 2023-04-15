@@ -13,6 +13,8 @@ import org.jetbrains.annotations.NotNull;
  */
 public class Stair extends CommonGoal {
 
+    private static final String commonGoalName = "Stair";
+
     public Stair(int playerNumber) {
         super(playerNumber);
     }
@@ -67,4 +69,11 @@ public class Stair extends CommonGoal {
         return false;
     }
 
+    /**
+     * @author Pietro Andrea Niedda
+     */
+    @Override
+    public String getCommonGoalName() {
+        return commonGoalName;
+    }
 }

@@ -24,6 +24,8 @@ public class FourGroupsOfFour extends CommonGoal {
 
     private static final int times = 4;
 
+    private static final String commonGoalName = "FourGroupsOfFour";
+
     public FourGroupsOfFour(int playerNumber) {
         super(playerNumber);
     }
@@ -123,4 +125,11 @@ public class FourGroupsOfFour extends CommonGoal {
         return count;
     }
 
+    /**
+     * @author Edoardo Margarini
+     */
+    @Override
+    public String getCommonGoalName() {
+        return commonGoalName;
+    }
 }

@@ -12,6 +12,8 @@ import org.jetbrains.annotations.NotNull;
  */
 public class FiveTilesX extends CommonGoal {
 
+    private static final String commonGoalName = "FiveTilesX";
+
     public FiveTilesX(int playerNumber) {
         super(playerNumber);
     }
@@ -32,4 +34,11 @@ public class FiveTilesX extends CommonGoal {
         return false;
     }
 
+    /**
+     * @author Francesco Ostidich
+     */
+    @Override
+    public String getCommonGoalName() {
+        return commonGoalName;
+    }
 }

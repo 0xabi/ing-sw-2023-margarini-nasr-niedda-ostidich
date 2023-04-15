@@ -18,8 +18,11 @@ public class EndGameToken {
      * @param player is the player to give points to
      * @author Francesco Ostidich
      */
-    protected void assignPoints(@NotNull Player player) {
+    protected static void assignPoints(@NotNull Player player) {
         player.addPoints(endGamePoints);
     }
 
+    public static int getEndGamePoints() {
+        return endGamePoints;
+    }
 }

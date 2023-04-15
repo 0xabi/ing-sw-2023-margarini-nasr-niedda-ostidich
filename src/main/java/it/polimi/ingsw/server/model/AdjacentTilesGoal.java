@@ -159,4 +159,13 @@ public class AdjacentTilesGoal {
         return map;
     }
 
+    /**
+     * Getter for adjacent goal group points.
+     *
+     * @author Abdullah Nasr
+     * @return groups points map
+     */
+    public static Map<Integer, Integer> getGroupPoints() {
+        return groupPoints;
+    }
 }

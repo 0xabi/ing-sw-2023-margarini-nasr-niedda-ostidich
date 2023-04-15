@@ -20,6 +20,8 @@ public class ThreeColumnsOfSix extends CommonGoal {
 
     private static final int tilesTypes = 3;
 
+    private static final String commonGoalName = "ThreeColumnsOfSix";
+
     public ThreeColumnsOfSix(int playerNumber) {
         super(playerNumber);
     }
@@ -41,6 +43,14 @@ public class ThreeColumnsOfSix extends CommonGoal {
             tiles.clear();
         }
         return count >= linesNumber;
+    }
+
+    /**
+     * @author Francesco Ostidich
+     */
+    @Override
+    public String getCommonGoalName() {
+        return commonGoalName;
     }
 
 }

@@ -12,6 +12,8 @@ import org.jetbrains.annotations.NotNull;
  */
 public class Corners extends CommonGoal {
 
+    private static final String commonGoalName = "Corners";
+
     public Corners(int playerNumber) {
         super(playerNumber);
     }
@@ -33,6 +35,14 @@ public class Corners extends CommonGoal {
                     ((shelf.getPosition(co1) == shelf.getPosition(co4)));
         return false;
 
+    }
+
+    /**
+     * @author Pietro Andrea Niedda
+     */
+    @Override
+    public String getCommonGoalName() {
+        return commonGoalName;
     }
 
 }

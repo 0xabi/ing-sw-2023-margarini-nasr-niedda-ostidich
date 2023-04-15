@@ -19,6 +19,8 @@ public class TwoNoRepetitionColumns extends CommonGoal {
 
     private static final int times = 2;
 
+    private static final String commonGoalName = "TwoNoRepetitionColumns";
+
     /**
      * <p>Class constructor.</p>
      * <p>It calls the super class constructor to generate tokens stack and given players map.</p>
@@ -112,4 +114,11 @@ public class TwoNoRepetitionColumns extends CommonGoal {
 
     }
 
+    /**
+     * @author Adbullah Nasr
+     */
+    @Override
+    public String getCommonGoalName() {
+        return commonGoalName;
+    }
 }

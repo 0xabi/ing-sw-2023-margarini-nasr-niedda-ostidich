@@ -78,4 +78,8 @@ public class Bag {
                 .sum();
     }
 
+    public Map<Tile, Integer> getTilesLeft() {
+        return tilesLeft;
+    }
+
 }

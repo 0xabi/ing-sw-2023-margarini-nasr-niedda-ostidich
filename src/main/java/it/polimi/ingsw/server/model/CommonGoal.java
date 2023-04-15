@@ -18,7 +18,6 @@ public abstract class CommonGoal {
 
     private final Map<Integer, Player> givenPlayers;
 
-
     /**
      * <p>Class constructor.</p>
      * <p>It generates tokens stack and given players map.</p>
@@ -59,6 +58,24 @@ public abstract class CommonGoal {
      */
     protected void assignPoints(@NotNull Player player) {
         player.addPoints(tokens.pop());
+    }
+
+    /**
+     * Getter for common goal name.
+     *
+     * @author Francesco Ostidich
+     * @return name string
+     */
+    public abstract String getCommonGoalName();
+
+    /**
+     * Getter for common goal scoring token stack.
+     *
+     * @return token points stack
+     * @author Francesco Ostidich
+     */
+    public ScoringTokenStack getTokens() {
+        return tokens;
     }
 
 }

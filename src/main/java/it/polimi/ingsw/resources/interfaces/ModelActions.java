@@ -61,7 +61,7 @@ public interface ModelActions {
      * @author Francesco Ostidich
      * @return tokens stack
      */
-    Stack<Integer> getCommonGoal1tokens();
+    Stack<Integer> getCommonGoal1Tokens();
 
     /**
      * Getter for common goal 2's tokens.
@@ -69,7 +69,7 @@ public interface ModelActions {
      * @author Francesco Ostidich
      * @return tokens stack
      */
-    Stack<Integer> getCommonGoal2tokens();
+    Stack<Integer> getCommonGoal2Tokens();
 
     /**
      * Getter for common goal 1's given players.
@@ -239,5 +239,13 @@ public interface ModelActions {
      * @return check's outcome
      */
     boolean checkPlayerShelfIsFull(String playerName);
+
+    /**
+     * Returns players' names sorted as the turn cycle order.
+     *
+     * @author Francesco Ostidich
+     * @return players' names list sorted as the turn cycle is played
+     */
+    List<String> getTurnCycleOrder();
 
 }

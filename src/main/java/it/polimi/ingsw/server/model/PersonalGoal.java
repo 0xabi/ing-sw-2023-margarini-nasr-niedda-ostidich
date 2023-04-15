@@ -25,7 +25,7 @@ public class PersonalGoal {
 
     private final Map<Tile, Coordinates> matches = new HashMap<>();
 
-    private  final Map<Integer, Integer> points = new HashMap<>();
+    private static final Map<Integer, Integer> points = pointsConstructor();
 
     /**
      * Class constructor.
@@ -35,7 +35,6 @@ public class PersonalGoal {
      * @author Francesco Ostidich
      */
     protected PersonalGoal(int personalGoalNumber) {
-        pointsConstructor();
         matchesConstructor(personalGoalNumber);
     }
 
@@ -45,14 +44,15 @@ public class PersonalGoal {
      * @throws ConfigFileNotFoundException if file is not readable by FileReader
      * @author Francesco Ostidich
      */
-    private void pointsConstructor() {
+    private static @NotNull Map<Integer, Integer> pointsConstructor() {
+        Map<Integer, Integer> pointsTmp = new HashMap<>();
+
         Gson gson = new Gson();
         File input = new File("src/main/java/it/polimi/ingsw/resources/configFiles/personalGoalPointsMap.json");
         try {
             JsonElement pointsElement = JsonParser.parseReader(new FileReader(input));
-            points.putAll(gson.fromJson(pointsElement, new TypeToken<HashMap<Integer, Integer>>() {}.getType()));
-
-
+            pointsTmp.putAll(gson.fromJson(pointsElement, new TypeToken<HashMap<Integer, Integer>>() {}.getType()));
+            return pointsTmp;
         } catch (FileNotFoundException e) {
             throw new ConfigFileNotFoundException("personalGoalPointsMap not found");
         }
@@ -114,6 +114,26 @@ public class PersonalGoal {
             }
         }
         return matchesNumber;
+    }
+
+    /**
+     * Getter for personal goal points.
+     *
+     * @author Francesco Ostidich
+     * @return points map
+     */
+    public static Map<Integer, Integer> getPoints() {
+        return points;
+    }
+
+    /**
+     * Getter for personal goal matches.
+     *
+     * @author Francesco Ostidich
+     * @return matches map
+     */
+    public Map<Tile, Coordinates> getMatches() {
+        return matches;
     }
 
 }

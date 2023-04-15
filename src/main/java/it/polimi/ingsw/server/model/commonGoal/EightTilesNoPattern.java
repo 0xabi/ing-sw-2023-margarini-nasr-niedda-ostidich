@@ -18,6 +18,8 @@ public class EightTilesNoPattern extends CommonGoal {
 
     private static final int sameTypeTiles = 8;
 
+    private static final String commonGoalName = "EightTilesNoPattern";
+
     public EightTilesNoPattern(int playerNumber) {
         super(playerNumber);
     }
@@ -44,6 +46,14 @@ public class EightTilesNoPattern extends CommonGoal {
         }
 
         return false;
+    }
+
+    /**
+     * @author Pietro Andrea Niedda
+     */
+    @Override
+    public String getCommonGoalName() {
+        return commonGoalName;
     }
 
 }

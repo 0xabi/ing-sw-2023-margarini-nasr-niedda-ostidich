@@ -24,6 +24,8 @@ public class SixGroupsOfTwo extends CommonGoal {
 
     private static final int times = 6;
 
+    private static final String commonGoalName = "SixGroupsOfTwo";
+
     public SixGroupsOfTwo(int playerNumber) {
         super(playerNumber);
     }
@@ -124,4 +126,11 @@ public class SixGroupsOfTwo extends CommonGoal {
         return count;
     }
 
+    /**
+     * @author Edoardo Margarini
+     */
+    @Override
+    public String getCommonGoalName() {
+        return commonGoalName;
+    }
 }

@@ -12,6 +12,8 @@ import org.jetbrains.annotations.NotNull;
  */
 public class OneDiagonalOfFive extends CommonGoal {
 
+    private static final String commonGoalName = "OneDiagonalOfFive";
+
     public OneDiagonalOfFive(int playerNumber) {
         super(playerNumber);
     }
@@ -50,4 +52,11 @@ public class OneDiagonalOfFive extends CommonGoal {
         return counter < 4;
     }
 
+    /**
+     * @author Edoardo Margarini
+     */
+    @Override
+    public String getCommonGoalName() {
+        return commonGoalName;
+    }
 }

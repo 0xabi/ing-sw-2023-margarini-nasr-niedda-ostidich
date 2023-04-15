@@ -20,6 +20,8 @@ public class FourRowsOfFive extends CommonGoal {
 
     private static final int tilesTypes = 3;
 
+    private static final String commonGoalName = "FourRowsOfFive";
+
     public FourRowsOfFive(int playerNumber) {
         super(playerNumber);
     }
@@ -43,4 +45,11 @@ public class FourRowsOfFive extends CommonGoal {
         return count >= linesNumber;
     }
 
+    /**
+     * @author Francesco Ostidich
+     */
+    @Override
+    public String getCommonGoalName() {
+        return commonGoalName;
+    }
 }

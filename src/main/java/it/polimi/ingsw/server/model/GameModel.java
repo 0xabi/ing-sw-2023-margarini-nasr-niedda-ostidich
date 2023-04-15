@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.resources.exceptions.PlayerNotFoundException;
 import it.polimi.ingsw.resources.interfaces.ModelActions;
 import it.polimi.ingsw.resources.Coordinates;
 import it.polimi.ingsw.resources.Tile;
@@ -31,6 +32,18 @@ public class GameModel implements ModelActions {
     private final List<Player> players = new LinkedList<>();
 
     /**
+     * Class constructor.
+     *
+     * @author Francesco Ostidich
+     * @param names is the list with the players names got from the controller, used for construct the player objects
+     */
+    public GameModel(@NotNull List<String> names) {
+        board = new Board(names.size());
+        commonGoalConstructor(names.size());
+        playerListConstructor(names);
+    }
+
+    /**
      * Constructs both the common goals, while being sure they are different.
      *
      * @author Francesco Ostidich
@@ -42,18 +55,6 @@ public class GameModel implements ModelActions {
             commonGoalTemp = CommonGoalFactory.getCommonGoal(playerNumber);
         }
         commonGoal2 = commonGoalTemp;
-    }
-
-    /**
-     * Class constructor.
-     *
-     * @author Francesco Ostidich
-     * @param names is the list with the players names got from the controller, used for construct the player objects
-     */
-    public GameModel(@NotNull List<String> names) {
-        board = new Board(names.size());
-        commonGoalConstructor(names.size());
-        playerListConstructor(names);
     }
 
     /**
@@ -75,100 +76,200 @@ public class GameModel implements ModelActions {
             players.add(new Player(names.get(random.nextInt(0, playerNumber)), personalGoalNumbers.pop()));
     }
 
-    /**
-     * <p>For each player in the game, the method lets him play a single turn.</p>
-     * <p>Order of a turn actions: <br>
-     * - player picks tiles <br>
-     * - player choose order <br>
-     * - player insert tiles in his shelf <br>
-     * - common goals checked <br>
-     * - common goals points assigned <br>
-     * - check if the board is to be filled <br>
-     * - if the optional in Board.java is present:<br>
-     * &#32&#32&#32- checks if the player's shelf is filled<br>
-     * &#32&#32&#32- assigns points of the end game token if its filled</p>
-     *
-     * @author Francesco Ostidich
-     */
-    public void turnCycle() {
-        List<Coordinates> choiceCoordinates;
-        List<Tile> choiceTiles = new LinkedList<>();
+    @Override
+    public Tile[][] getBoard() {
+        return board.getSpaces();
+    }
 
+    @Override
+    public Map<Tile, Integer> getBag() {
+        return board.getBag().getTilesLeft();
+    }
+
+    @Override
+    public Optional<Integer> getEndGameToken() {
+        if(board.getEndGameToken().isPresent())
+            return Optional.of(EndGameToken.getEndGamePoints());
+        else
+            return Optional.empty();
+    }
+
+    @Override
+    public String getCommonGoal1() {
+        return commonGoal1.getCommonGoalName();
+    }
+
+    @Override
+    public String getCommonGoal2() {
+        return commonGoal2.getCommonGoalName();
+    }
+
+    @Override
+    public Stack<Integer> getCommonGoal1Tokens() {
+        return commonGoal1.getTokens().getTokenStack();
+    }
+
+    @Override
+    public Stack<Integer> getCommonGoal2Tokens() {
+        return commonGoal2.getTokens().getTokenStack();
+    }
+
+    @Override
+    public Map<Integer, String> getCommonGoal1GivenPlayers() {
+        Map<Integer, String> stringMap = new HashMap<>();
+        for(int token: commonGoal1.getGivenPlayers().keySet()) {
+            stringMap.put(token, commonGoal1.getGivenPlayers().get(token).getName());
+        }
+        return stringMap;
+    }
+
+    @Override
+    public Map<Integer, String> getCommonGoal2GivenPlayers() {
+        Map<Integer, String> stringMap = new HashMap<>();
+        for(int token: commonGoal2.getGivenPlayers().keySet()) {
+            stringMap.put(token, commonGoal2.getGivenPlayers().get(token).getName());
+        }
+        return stringMap;
+    }
+
+    @Override
+    public int getPlayerPoints(String playerName) {
         for(Player player: players) {
+            if(playerName.equals(player.getName()))
+                return player.getPoints();
+        }
+        throw new PlayerNotFoundException("name string not found in any player of the match");
+    }
 
-            choiceCoordinates = player.pickTiles(board);
-            for(Coordinates coordinates: choiceCoordinates)
-                choiceTiles.add(board.getTileInBoard(coordinates));
-            while(board.selectTiles(choiceCoordinates).isEmpty()) {
-                choiceCoordinates = player.pickTiles(board);
-                choiceTiles.clear();
-                for(Coordinates coordinates: choiceCoordinates)
-                    choiceTiles.add(board.getTileInBoard(coordinates));
-            }
+    @Override
+    public Map<Tile, Coordinates> getPlayerPersonalGoal(String playerName) {
+        for(Player player: players) {
+            if(playerName.equals(player.getName()))
+                return player.getPersonalGoal().getMatches();
+        }
+        throw new PlayerNotFoundException("name string not found in any player of the match");
+    }
 
-            player.insertTiles(choiceTiles);
+    @Override
+    public Tile[][] getPlayerShelf(String playerName) {
+        for(Player player: players) {
+            if(playerName.equals(player.getName()))
+                return player.getShelf().getPositions();
+        }
+        throw new PlayerNotFoundException("name string not found in any player of the match");
+    }
 
-            if(!commonGoal1.getGivenPlayers().containsValue(player) &&
-                    commonGoal1.check(player.getShelf())) {
+    @Override
+    public Map<Integer, Integer> getPersonalGoalPoints() {
+        return PersonalGoal.getPoints();
+    }
+
+    @Override
+    public Map<Integer, Integer> getAdjacentGoalPoints() {
+        return AdjacentTilesGoal.getGroupPoints();
+    }
+
+    @Override
+    public void assignEndGameTokenPoints(String playerName) {
+        for(Player player: players) {
+            if(playerName.equals(player.getName()))
+                EndGameToken.assignPoints(player);
+        }
+        throw new PlayerNotFoundException("name string not found in any player of the match");
+    }
+
+    @Override
+    public void assignAdjacentGoalPoints(String playerName) {
+        for(Player player: players) {
+            if(playerName.equals(player.getName()))
+                AdjacentTilesGoal.assignPoints(player);
+        }
+        throw new PlayerNotFoundException("name string not found in any player of the match");
+    }
+
+    @Override
+    public void refill() {
+        board.refill();
+    }
+
+    @Override
+    public boolean checkToRefill() {
+        return board.checkToRefill();
+    }
+
+    @Override
+    public List<Tile> selectTilesOnBoard(List<Coordinates> selection) {
+        return board.selectTiles(selection);
+    }
+
+    @Override
+    public boolean checkSelection(List<Coordinates> selection) {
+        return board.checkSelection(selection);
+    }
+
+    @Override
+    public boolean checkCommonGoal1(String playerName) {
+        for(Player player: players) {
+            if(playerName.equals(player.getName()))
+                return commonGoal1.check(player.getShelf());
+        }
+        throw new PlayerNotFoundException("name string not found in any player of the match");
+    }
+
+    @Override
+    public boolean checkCommonGoal2(String playerName) {
+        for(Player player: players) {
+            if(playerName.equals(player.getName()))
+                return commonGoal2.check(player.getShelf());
+        }
+        throw new PlayerNotFoundException("name string not found in any player of the match");
+    }
+
+    @Override
+    public void assignCommonGoal1Points(String playerName) {
+        for(Player player: players) {
+            if(playerName.equals(player.getName()))
                 commonGoal1.assignPoints(player);
-            }
-            if(!commonGoal2.getGivenPlayers().containsValue(player) &&
-                    commonGoal2.check(player.getShelf())) {
-                commonGoal2.assignPoints(player);
-            }
-
-            board.checkToRefill();
-
-            if(player.getShelf().isFull()) {
-                board.getEndGameToken().ifPresent(endGameToken -> {
-                    endGameToken.assignPoints(player);
-                    board.setEndGameToken(Optional.empty());
-                });
-            }
         }
+        throw new PlayerNotFoundException("name string not found in any player of the match");
     }
 
-    /**
-     * Checks for a players connection in order to continue the turn cycle. Otherwise, the turn should be played randomly,
-     * or skipped if no action has been taken yet.
-     *
-     * @param player is the player to check connection of
-     * @return boolean value true if the player is still connected and playing
-     */
-    //TODO method code is to be written when socket and RMI are implemented
-    @SuppressWarnings("SameReturnValue")
-    private boolean checkForPlayerConnection(Player player) {
-        return true;
-    }
-
-    /**
-     * <p>When the turn cycle is finished, and at least a shelf is filled, points are being processed and sent to the controller
-     * in a map.</p>
-     * <p>Order of actions to calculate points:<br>
-     * - personal goals are calculated<br>
-     * - adjacent tiles goals are calculated</p>
-     * <p>Controller should call method GameModel.getTurnCycleOrder() if there's a tie scenario, in order to
-     * choose a winner</p>
-     * @author Francesco Ostidich
-     * @return the map with players' names as keys and respective points as values
-     */
-    public Map<String, Integer> calculatePoints() {
-        Map<String, Integer> playersPoints = new HashMap<>();
+    @Override
+    public void assignCommonGoal2Points(String playerName) {
         for(Player player: players) {
-            player.getPersonalGoal().assignPoints(player);
-            AdjacentTilesGoal.assignPoints(player);
-            playersPoints.put(player.getName(), player.getPoints());
+            if(playerName.equals(player.getName()))
+                commonGoal2.assignPoints(player);
         }
-        return playersPoints;
+        throw new PlayerNotFoundException("name string not found in any player of the match");
     }
 
-    /**
-     * <p>Used in case of a tie</p>
-     * <p>Returns the list of players' names based on the turn cycle order</p>
-     *
-     * @author Francesco Ostidich
-     * @return the list of players' names sorted as the turn cycle was played
-     */
+    @Override
+    public void playerInsertTilesInShelf(String playerName, List<Tile> tiles, int column) {
+        for(Player player: players) {
+            if(playerName.equals(player.getName()))
+                player.insertTiles(tiles, column);
+        }
+        throw new PlayerNotFoundException("name string not found in any player of the match");
+    }
+
+    @Override
+    public void assignPersonalGoalPoints(String playerName) {
+        for(Player player: players) {
+            if(playerName.equals(player.getName()))
+                player.getPersonalGoal().assignPoints(player);
+        }
+        throw new PlayerNotFoundException("name string not found in any player of the match");
+    }
+
+    @Override
+    public boolean checkPlayerShelfIsFull(String playerName) {
+        for(Player player: players) {
+            if(playerName.equals(player.getName()))
+                return player.getShelf().isFull();
+        }
+        throw new PlayerNotFoundException("name string not found in any player of the match");
+    }
+
     public List<String> getTurnCycleOrder() {
         List<String> namesOrder = new LinkedList<>();
         for(Player player: players) {

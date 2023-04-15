@@ -1,10 +1,6 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.resources.Coordinates;
 import it.polimi.ingsw.resources.Tile;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 

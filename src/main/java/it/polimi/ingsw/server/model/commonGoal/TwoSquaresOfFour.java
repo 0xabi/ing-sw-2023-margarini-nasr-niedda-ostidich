@@ -18,6 +18,7 @@ public class TwoSquaresOfFour extends CommonGoal {
 
     private static final int times = 2;
 
+    private static final String commonGoalName = "TwoSquaresOfFour";
 
     /**
      * <p>Class constructor.</p>
@@ -160,13 +161,20 @@ public class TwoSquaresOfFour extends CommonGoal {
         return count;
     }
 
-
     /**
      * @author Abdullah Nasr
      */
     @Override
     public boolean check(@NotNull Shelf shelf) {
         return countIsolatedSquares(shelf) >= times;
+    }
+
+    /**
+     * @author Abdullah Nasr
+     */
+    @Override
+    public String getCommonGoalName() {
+        return commonGoalName;
     }
 
 }

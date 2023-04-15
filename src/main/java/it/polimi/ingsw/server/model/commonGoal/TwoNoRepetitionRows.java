@@ -20,6 +20,8 @@ public class TwoNoRepetitionRows extends CommonGoal {
 
     private static final int times = 2;
 
+    private static final String commonGoalName = "TwoNoRepetitionRows";
+
     /**
      * <p>Class constructor.</p>
      * <p>It calls the super class constructor to generate tokens stack and given players map.</p>
@@ -110,4 +112,11 @@ public class TwoNoRepetitionRows extends CommonGoal {
         return countRowsWithDifferentTiles(shelf) >= times;
     }
 
+    /**
+     * @author Abdullah Nasr
+     */
+    @Override
+    public String getCommonGoalName() {
+        return commonGoalName;
+    }
 }
