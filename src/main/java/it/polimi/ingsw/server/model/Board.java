@@ -106,17 +106,6 @@ public class Board {
     /**
      * //TODO java doc is to be written
      * @author Edoardo Margarini
-     * @return
-     */
-    private boolean checkNoMoreTurns() {
-        //TODO method code is to be written
-        //check if it is the last turn of the last cycle
-        return false;
-    }
-
-    /**
-     * //TODO java doc is to be written
-     * @author Edoardo Margarini
      */
     protected void refill() {
         //puts back the ones left on the board

@@ -3,6 +3,7 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.resources.Coordinates;
 import it.polimi.ingsw.resources.Tile;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -92,18 +93,6 @@ public class Player {
      * //TODO java doc is to be written
      *
      * @return
-     * @param board
-     * @author Pietro Andrea Niedda
-     */
-    //TODO method code is to be written when socket and RMI are implemented
-    protected List<Coordinates> pickTiles(Board board) {
-        return null;
-    }
-
-    /**
-     * //TODO java doc is to be written
-     *
-     * @return
      * @author Pietro Andrea Niedda
      */
     private int checkAvailablePickNumber() {
@@ -120,31 +109,8 @@ public class Player {
      * @param tiles
      * @author Pietro Andrea Niedda
      */
-    protected void insertTiles(List<Tile> tiles) {
-        shelf.insertInColumn(chooseOrder(tiles), getColumnChoice(tiles));
-    }
-
-    /**
-     * //TODO java doc is to be written
-     *
-     * @return
-     * @author Pietro Andrea Niedda
-     */
-    //TODO method code is to be written when socket and RMI are implemented
-    private int getColumnChoice(List<Tile> tiles) {
-        return 0;
-    }
-
-    /**
-     * //TODO java doc is to be written
-     *
-     * @param tiles
-     * @author Pietro Andrea Niedda
-     */
-    //TODO method code is to be written when socket and RMI are implemented
-    @Contract(pure = true)
-    private @Nullable List<Tile> chooseOrder(List<Tile> tiles) {
-        return null;
+    protected void insertTiles(List<Tile> tiles, int column) {
+        shelf.insertInColumn((tiles), column);
     }
 
 }
