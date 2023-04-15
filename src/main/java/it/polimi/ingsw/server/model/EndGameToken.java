@@ -22,7 +22,13 @@ public class EndGameToken {
         player.addPoints(endGamePoints);
     }
 
-    public static int getEndGamePoints() {
+    /**
+     * Getter for end game points
+     *
+     * @author Francesco Ostidich
+     * @return end game token points number
+     */
+    public int getEndGamePoints() {
         return endGamePoints;
     }
 }

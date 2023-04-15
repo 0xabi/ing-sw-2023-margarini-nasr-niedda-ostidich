@@ -88,10 +88,7 @@ public class GameModel implements ModelActions {
 
     @Override
     public Optional<Integer> getEndGameToken() {
-        if(board.getEndGameToken().isPresent())
-            return Optional.of(EndGameToken.getEndGamePoints());
-        else
-            return Optional.empty();
+        return board.getEndGameToken().map(EndGameToken::getEndGamePoints);
     }
 
     @Override
