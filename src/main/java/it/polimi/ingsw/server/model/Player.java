@@ -91,7 +91,7 @@ public class Player {
      * @return
      * @author Pietro Andrea Niedda
      */
-    private int checkAvailablePickNumber() {
+    protected int checkAvailablePickNumber() {
         int picks = 3;
         for(int i = 0; i < shelf.getColumnNumber(); i++)
             if((shelf.getColumnNumber() - shelf.getTilesInColumn(i)) < picks)

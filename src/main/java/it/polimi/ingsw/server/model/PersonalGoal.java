@@ -23,19 +23,24 @@ import java.util.*;
  */
 public class PersonalGoal {
 
+    private static final int personalGoalNumber = 12;
+
     private final Map<Tile, Coordinates> matches = new HashMap<>();
 
     private static final Map<Integer, Integer> points = pointsConstructor();
 
+    private final int personalGoalID;
+
     /**
      * Class constructor.
      *
-     * @param personalGoalNumber is the number the GameModel has sorted to generate an exact personal goal
+     * @param personalGoalID is the number the GameModel has sorted to generate an exact personal goal
      * @throws ConfigFileNotFoundException if config json files are not readable by FileReader
      * @author Francesco Ostidich
      */
-    protected PersonalGoal(int personalGoalNumber) {
-        matchesConstructor(personalGoalNumber);
+    protected PersonalGoal(int personalGoalID) {
+        this.personalGoalID = personalGoalID;
+        matchesConstructor(personalGoalID);
     }
 
     /**
@@ -136,4 +141,23 @@ public class PersonalGoal {
         return matches;
     }
 
+    /**
+     * Getter for personal goal ID number.
+     *
+     * @author Francesco Ostidich
+     * @return personal goal ID number
+     */
+    public int getPersonalGoalID() {
+        return personalGoalID;
+    }
+
+    /**
+     * Getter for personal goal number.
+     *
+     * @author Francesco Ostidich
+     * @return personal goal number
+     */
+    public static int getPersonalGoalNumber() {
+        return personalGoalNumber;
+    }
 }

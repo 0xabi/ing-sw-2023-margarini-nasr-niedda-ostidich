@@ -106,6 +106,15 @@ public interface ModelActions {
     Map<Tile, Coordinates> getPlayerPersonalGoal(String playerName);
 
     /**
+     * Getter for player's personal goal ID number.
+     *
+     * @author Francesco Ostidich
+     * @param playerName is the player's name string
+     * @return personal goal's ID number
+     */
+    int getPlayerPersonalGoalID(String playerName);
+
+    /**
      * Getter for player's shelf.
      *
      * @author Francesco Ostidich
@@ -222,6 +231,15 @@ public interface ModelActions {
      * @param column is the chosen column number
      */
     void playerInsertTilesInShelf(String playerName, List<Tile> tiles, int column);
+
+    /**
+     * Check's what the available tile's number to pick is.
+     *
+     * @author Francesco Ostidich
+     * @param playerName is the player's name string
+     * @return check's outcome
+     */
+    int checkAvailablePickNumber(String playerName);
 
     /**
      * Assigns personal goal matches points to player.

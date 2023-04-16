@@ -7,7 +7,6 @@ import it.polimi.ingsw.resources.Tile;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * GameModel must be the only class which, via an interface, talks to the controller.
@@ -63,17 +62,20 @@ public class GameModel implements ModelActions {
      * @author Francesco Ostidich
      * @param names is the list with the players names got from the controller, used for construct the player objects
      */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private void playerListConstructor(@NotNull List<String> names) {
         Random random = new Random();
-        Set<Integer> personalGoalNumbersSet = new HashSet<>();
-        while(personalGoalNumbersSet.size() < names.size())
-            personalGoalNumbersSet.add(random.nextInt(1, CommonGoalFactory.getCommonGoalNumber()+1));
-        Stack<Integer> personalGoalNumbers = new Stack<>();
-        @SuppressWarnings("unused") Set<Boolean> dummy = personalGoalNumbersSet.stream().map(personalGoalNumbers::add).collect(Collectors.toSet());
+        Set<Integer> personalGoalNumberSet = new HashSet<>();
+        while(personalGoalNumberSet.size() < names.size())
+            personalGoalNumberSet.add(random.nextInt(1, PersonalGoal.getPersonalGoalNumber()+1));
+        Stack<Integer> personalGoalNumberStack = new Stack<>();
+        personalGoalNumberSet.stream().map(personalGoalNumberStack::add);
 
-        int playerNumber = names.size();
-        for(int i = 0; i < playerNumber; i++)
-            players.add(new Player(names.get(random.nextInt(0, playerNumber)), personalGoalNumbers.pop()));
+        Set<Player> playerSet = new HashSet<>();
+        for(String playerName: names) {
+            playerSet.add(new Player(playerName, personalGoalNumberStack.pop()));
+        }
+        playerSet.stream().map(players::add);
     }
 
     @Override
@@ -143,6 +145,15 @@ public class GameModel implements ModelActions {
         for(Player player: players) {
             if(playerName.equals(player.getName()))
                 return player.getPersonalGoal().getMatches();
+        }
+        throw new PlayerNotFoundException("name string not found in any player of the match");
+    }
+
+    @Override
+    public int getPlayerPersonalGoalID(String playerName) {
+        for(Player player: players) {
+            if(playerName.equals(player.getName()))
+                return player.getPersonalGoal().getPersonalGoalID();
         }
         throw new PlayerNotFoundException("name string not found in any player of the match");
     }
@@ -245,6 +256,15 @@ public class GameModel implements ModelActions {
         for(Player player: players) {
             if(playerName.equals(player.getName()))
                 player.insertTiles(tiles, column);
+        }
+        throw new PlayerNotFoundException("name string not found in any player of the match");
+    }
+
+    @Override
+    public int checkAvailablePickNumber(String playerName) {
+        for(Player player: players) {
+            if(playerName.equals(player.getName()))
+                return player.checkAvailablePickNumber();
         }
         throw new PlayerNotFoundException("name string not found in any player of the match");
     }

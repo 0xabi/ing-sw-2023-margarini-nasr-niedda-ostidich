@@ -21,6 +21,4 @@ public interface NetworkManager {
 
     Message retrieveFromQueue();
 
-
-
 }
