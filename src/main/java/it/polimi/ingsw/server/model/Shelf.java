@@ -27,7 +27,7 @@ public class Shelf {
      *
      * @author Abdullah Nasr
      */
-    protected Shelf(){
+    public Shelf(){
         positions = new Tile[rowNumber][columnNumber];
         for(int i = 0; i < rowNumber; i++)
             Arrays.fill(positions[i], Tile.EMPTY);
@@ -82,7 +82,7 @@ public class Shelf {
      * @param tiles A list of tiles to insert into the specified column
      * @author Abdullah Nasr
      */
-    protected boolean insertInColumn(List<Tile> tiles, int column) {
+    public boolean insertInColumn(List<Tile> tiles, int column) {
 
         List<Tile> tilesList;
         int freeSpace;

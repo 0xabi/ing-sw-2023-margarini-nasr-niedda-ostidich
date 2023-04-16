@@ -25,7 +25,7 @@ public abstract class CommonGoal {
      * @author Francesco Ostidich
      * @param playerNumber is the number of player of the game match
      */
-    protected CommonGoal(int playerNumber) {
+    public CommonGoal(int playerNumber) {
         tokens = new ScoringTokenStack(playerNumber);
         givenPlayers = new HashMap<>();
     }
@@ -48,7 +48,7 @@ public abstract class CommonGoal {
      * @return boolean true if check succeeds.
      * @author Francesco Ostidich
      */
-    protected abstract boolean check(Shelf shelf);
+    public abstract boolean check(Shelf shelf);
 
     /**
      * Assigns points to the player if check is true.

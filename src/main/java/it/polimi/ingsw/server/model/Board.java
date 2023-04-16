@@ -37,7 +37,7 @@ public class Board {
      * @author Edoardo Margarini
      * @param num is players number
      */
-    protected Board(int num) {
+    public Board(int num) {
         spaces = new Tile[rowLength][columnLength];
         endGameToken = Optional.of(new EndGameToken());
 
