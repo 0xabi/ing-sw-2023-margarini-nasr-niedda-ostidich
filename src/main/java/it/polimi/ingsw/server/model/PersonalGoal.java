@@ -34,7 +34,7 @@ public class PersonalGoal {
      * @throws ConfigFileNotFoundException if config json files are not readable by FileReader
      * @author Francesco Ostidich
      */
-    protected PersonalGoal(int personalGoalNumber) {
+    public PersonalGoal(int personalGoalNumber) {
         matchesConstructor(personalGoalNumber);
     }
 

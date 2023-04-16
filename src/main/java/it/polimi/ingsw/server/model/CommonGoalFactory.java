@@ -41,7 +41,7 @@ public class CommonGoalFactory {
      * @throws CommonGoalNotPresentException if the random generated number does not belong to a respective common goal constructor
      * @author Francesco Ostidich
      */
-    protected static CommonGoal getCommonGoal(int playerNumber) {
+    public static CommonGoal getCommonGoal(int playerNumber) {
         Random random = new Random();
         int i = random.nextInt(1, 13);
         return switch (i) {

@@ -28,7 +28,7 @@ public class Player {
      * @param personalGoalNumber is the sorted out number for player's personal goal
      * @author Pietro Andrea Niedda
      */
-    protected Player(String name, int personalGoalNumber) {
+    public Player(String name, int personalGoalNumber) {
         this.name = name;
         points = 0;
         shelf = new Shelf();

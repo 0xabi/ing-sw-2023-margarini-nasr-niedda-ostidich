@@ -35,7 +35,7 @@ public class AdjacentTilesGoal {
      * @param player is the player to give points to
      * @author Abdullah Nasr
      */
-    protected static void assignPoints(@NotNull Player player) {
+    public static void assignPoints(@NotNull Player player) {
         player.addPoints(calculatePoints(player.getShelf()));
     }
 

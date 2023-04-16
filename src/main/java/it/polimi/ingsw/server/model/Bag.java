@@ -22,7 +22,7 @@ public class Bag {
      *
      * @author Edoardo Margarini
      */
-    protected Bag() {
+    public Bag() {
         tilesLeft = new HashMap<>();
 
         for(Tile tile: Tile.values())
