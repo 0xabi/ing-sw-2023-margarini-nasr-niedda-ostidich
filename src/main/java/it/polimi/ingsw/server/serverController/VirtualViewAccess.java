@@ -127,7 +127,7 @@ public class VirtualViewAccess implements ViewActions, MessagePackaging {
     }
 
     @Override
-    public void updateGameRoom() {
+    public void updateGameRoom(GameRoom gameRoom) {
 
     }
 
@@ -142,7 +142,7 @@ public class VirtualViewAccess implements ViewActions, MessagePackaging {
     }
 
     @Override
-    public void givePersonalGoals(int personalGoal) {
+    public void givePersonalGoals(List<Integer> personalGoal) {
 
     }
 
@@ -157,7 +157,7 @@ public class VirtualViewAccess implements ViewActions, MessagePackaging {
     }
 
     @Override
-    public List<Tile> chooseOrder(List<Coordinates> selection) {
+    public List<Tile> chooseOrder(List<Tile> selection) {
         return null;
     }
 

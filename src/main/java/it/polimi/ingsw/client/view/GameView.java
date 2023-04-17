@@ -7,7 +7,7 @@ import it.polimi.ingsw.resources.interfaces.ViewActions;
 
 import java.util.*;
 
-public class GameView implements ViewActions {
+public abstract class GameView implements ViewActions {
 
     private final Map<String, Integer> gameParameters;
 
@@ -17,7 +17,7 @@ public class GameView implements ViewActions {
 
     private boolean endGameToken;
 
-    private final Map<Tile, Integer> bag;
+    private Map<Tile, Integer> bag;
 
     private String commonGoal1;
 
@@ -35,7 +35,7 @@ public class GameView implements ViewActions {
 
     private final List<Integer> playerPoints;
 
-    private final List<Integer> playerPersonalGoals;
+    private List<Integer> playerPersonalGoals;
 
     private String IPAddress;
 
@@ -49,6 +49,66 @@ public class GameView implements ViewActions {
         playerPersonalGoals = new LinkedList<>();
     }
 
+    public List<String> getNames() {
+        return names;
+    }
+
+    public Map<String, Integer> getGameParameters() {
+        return gameParameters;
+    }
+
+    public Map<Tile, Integer> getBag() {
+        return bag;
+    }
+
+    public Map<Integer, String> getCommonGoal1GivenPlayers() {
+        return commonGoal1GivenPlayers;
+    }
+
+    public Stack<Integer> getCommonGoal1TokenStack() {
+        return commonGoal1TokenStack;
+    }
+
+    public List<Tile[][]> getPlayerShelves() {
+        return playerShelves;
+    }
+
+    public Stack<Integer> getCommonGoal2TokenStack() {
+        return commonGoal2TokenStack;
+    }
+
+    public String getCommonGoal1() {
+        return commonGoal1;
+    }
+
+    public String getCommonGoal2() {
+        return commonGoal2;
+    }
+
+    public Map<Integer, String> getCommonGoal2GivenPlayers() {
+        return commonGoal2GivenPlayers;
+    }
+
+    public Tile[][] getBoard() {
+        return board;
+    }
+
+    public List<Integer> getPlayerPersonalGoals() {
+        return playerPersonalGoals;
+    }
+
+    public List<Integer> getPlayerPoints() {
+        return playerPoints;
+    }
+
+    public String getIPAddress() {
+        return IPAddress;
+    }
+
+    public boolean getEndGameToken() {
+        return endGameToken;
+    }
+
     @Override
     public void setGameParameters(Map<String, Integer> gameParameters) {
         this.gameParameters.putAll(gameParameters);
@@ -57,12 +117,12 @@ public class GameView implements ViewActions {
 
     @Override
     public void turnCycleOrder(List<String> names) {
-
+        this.names.addAll(names);
     }
 
     @Override
     public void updateBoard(Tile[][] board) {
-
+        this.board = board;
     }
 
     @Override
@@ -72,131 +132,106 @@ public class GameView implements ViewActions {
 
     @Override
     public void updateBag(Map<Tile, Integer> tilesLeft) {
-
+        this.bag = tilesLeft;
     }
 
     @Override
     public void updateCommonGoal1TokenStack(Stack<Integer> tokenStack) {
-
+        this.commonGoal1TokenStack = tokenStack;
     }
 
     @Override
     public void updateCommonGoal1GivenPlayers(Map<Integer, String> givenPlayer) {
-
+        this.commonGoal1GivenPlayers = givenPlayer;
     }
 
     @Override
     public void updateCommonGoal2TokenStack(Stack<Integer> tokenStack) {
-
+        this.commonGoal1TokenStack = tokenStack;
     }
 
     @Override
     public void updateCommonGoal2GivenPlayers(Map<Integer, String> givenPlayer) {
-
+        this.commonGoal1GivenPlayers = givenPlayer;
     }
 
     @Override
     public void updatePlayerShelves(List<Tile[][]> shelves) {
-
+        for(int i = 0; i < names.size(); i++) {
+            if(shelves.get(i) != null) {
+                playerShelves.set(i, shelves.get(i));
+            }
+        }
     }
 
     @Override
     public void updatePlayerPoints(List<Integer> points) {
-
+        for(int i = 0; i < names.size(); i++) {
+            if(points.get(i) != null) {
+                playerPoints.set(i, points.get(i));
+            }
+        }
     }
 
     @Override
-    public void start() {
-
-    }
+    public abstract void start();
 
     @Override
-    public String chooseIPAddress() {
-        return null;
-    }
+    public abstract String chooseIPAddress();
 
     @Override
-    public String choosePlayerName() {
-        return null;
-    }
+    public abstract String choosePlayerName();
 
     @Override
-    public String chooseNewOrJoin() {
-        return null;
-    }
+    public abstract String chooseNewOrJoin();
 
     @Override
-    public String chooseNewGameName() {
-        return null;
-    }
+    public abstract String chooseNewGameName();
 
     @Override
-    public int chooseNewGamePlayerNumber() {
-        return 0;
-    }
+    public abstract int chooseNewGamePlayerNumber();
 
     @Override
-    public void updateGameRoom() {
-
-    }
+    public abstract void updateGameRoom(GameRoom gameRoom);
 
     @Override
-    public void notifyGameHasStared() {
-
-    }
+    public abstract void notifyGameHasStared();
 
     @Override
-    public String chooseGameRoom(List<GameRoom> rooms) {
-        return null;
-    }
+    public abstract String chooseGameRoom(List<GameRoom> rooms);
 
     @Override
-    public void givePersonalGoals(int personalGoal) {
-
+    public void givePersonalGoals(List<Integer> personalGoals) {
+        playerPersonalGoals = personalGoals;
     }
 
     @Override
     public void giveCommonGoals(String commonGoal1, String commonGoal2) {
-
+        this.commonGoal1 = commonGoal1;
+        this.commonGoal2 = commonGoal2;
     }
 
     @Override
-    public List<Coordinates> pickTiles(int availablePickNumber) {
-        return null;
-    }
+    public abstract List<Coordinates> pickTiles(int availablePickNumber);
 
     @Override
-    public List<Tile> chooseOrder(List<Coordinates> selection) {
-        return null;
-    }
+    public abstract List<Tile> chooseOrder(List<Tile> selection);
 
     @Override
-    public int chooseColumn() {
-        return 0;
-    }
+    public abstract int chooseColumn();
 
     @Override
-    public void assignCommonGoalPoints(String playerName, int token) {
-
-    }
+    public abstract void assignCommonGoalPoints(String playerName, int token);
 
     @Override
-    public void assignPersonalGoalPoints(Map<String, Integer> points) {
-
-    }
+    public abstract void assignPersonalGoalPoints(Map<String, Integer> points);
 
     @Override
-    public void assignAdjacentGoalPoints(Map<String, Integer> points) {
-
-    }
+    public abstract void assignAdjacentGoalPoints(Map<String, Integer> points);
 
     @Override
-    public void announceWinner(String winnerName, Map<String, Integer> points) {
-
-    }
+    public abstract void announceWinner(String winnerName, Map<String, Integer> points);
 
     @Override
-    public String waitForEndGameAction() {
-        return null;
-    }
+    public abstract String waitForEndGameAction();
 }

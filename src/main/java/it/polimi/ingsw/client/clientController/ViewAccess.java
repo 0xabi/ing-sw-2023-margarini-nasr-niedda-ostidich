@@ -116,7 +116,7 @@ public class ViewAccess implements ViewActions {
     }
 
     @Override
-    public void updateGameRoom() {
+    public void updateGameRoom(GameRoom gameRoom) {
 
     }
 
@@ -131,7 +131,7 @@ public class ViewAccess implements ViewActions {
     }
 
     @Override
-    public void givePersonalGoals(int personalGoal) {
+    public void givePersonalGoals(List<Integer> personalGoal) {
 
     }
 
@@ -146,7 +146,7 @@ public class ViewAccess implements ViewActions {
     }
 
     @Override
-    public List<Tile> chooseOrder(List<Coordinates> selection) {
+    public List<Tile> chooseOrder(List<Tile> selection) {
         return null;
     }
 

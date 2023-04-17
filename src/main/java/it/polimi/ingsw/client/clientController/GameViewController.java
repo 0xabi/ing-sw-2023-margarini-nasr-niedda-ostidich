@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.clientController;
 
-import it.polimi.ingsw.client.view.GameView;
+import it.polimi.ingsw.client.view.CLI;
+import it.polimi.ingsw.client.view.GUI;
 import it.polimi.ingsw.resources.Message;
 
 /**
@@ -21,9 +22,12 @@ public class GameViewController {
      *
      * @author Francesco Ostidich
      */
-    public GameViewController() {
+    public GameViewController(boolean GUI) {
         networkHandlerAccess = new NetworkHandlerAccess(this);
-        viewAccess = new ViewAccess(new GameView());
+        if(GUI)
+            viewAccess = new ViewAccess(new GUI());
+        else
+            viewAccess = new ViewAccess(new CLI());
     }
 
     /**

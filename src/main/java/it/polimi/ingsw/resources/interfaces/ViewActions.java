@@ -14,66 +14,263 @@ import java.util.Stack;
  *
  * @author Francesco Ostidich
  */
-public interface ViewActions { //TODO java doc to be written
+public interface ViewActions {
 
+      /**
+       * Lets the view know all the game parameter constants (the ones contained in gameParameter.json).
+       * This should be called immediately so the game view knows dimensions to build objects.
+       *
+       * @author Francesco Ostidich
+       * @param gameParameters is the map with game parameters
+       */
       void setGameParameters(Map<String, Integer> gameParameters);
 
+      /**
+       * Gives the view knowledge of the turn cycle order by player name.
+       * The first player (already randomly chosen) is the one with the chair.
+       * In a tie scenario it's helpful to have a single winner pop out.
+       *
+       * @author Francesco Ostidich
+       * @param names is the players' name list
+       */
       void turnCycleOrder(List<String> names);
 
+      /**
+       * The board stored in the view is updated and printed if needed.
+       *
+       * @author Francesco Ostidich
+       * @param board is the board matrix
+       */
       void updateBoard(Tile[][] board);
 
+      /**
+       * The end game token stored in the view is updated and printed if needed.
+       *
+       * @author Francesco Ostidich
+       * @param present is the end game token boolean
+       */
       void updateEndGameToken(boolean present);
 
+      /**
+       * The bag stored in the view is updated and printed if needed.
+       *
+       * @author Francesco Ostidich
+       * @param tilesLeft is the bag map
+       */
       void updateBag(Map<Tile, Integer> tilesLeft);
 
+      /**
+       * The common goal scoring token stack stored in the view is updated and printed if needed.
+       *
+       * @author Francesco Ostidich
+       * @param tokenStack is the scoring token stack
+       */
       void updateCommonGoal1TokenStack(Stack<Integer> tokenStack);
 
+      /**
+       * The common goal given players map stored in the view is updated and printed if needed.
+       *
+       * @author Francesco Ostidich
+       * @param givenPlayer is the given player map
+       */
       void updateCommonGoal1GivenPlayers(Map<Integer, String> givenPlayer);
 
+      /**
+       * The common goal scoring token stack stored in the view is updated and printed if needed.
+       *
+       * @author Francesco Ostidich
+       * @param tokenStack is the scoring token stack
+       */
       void updateCommonGoal2TokenStack(Stack<Integer> tokenStack);
 
+      /**
+       * The common goal given players map stored in the view is updated and printed if needed.
+       *
+       * @author Francesco Ostidich
+       * @param givenPlayer is the given player map
+       */
       void updateCommonGoal2GivenPlayers(Map<Integer, String> givenPlayer);
 
+      /**
+       * The players' shelves stored in the view are updated and printed if needed.
+       *
+       * @author Francesco Ostidich
+       * @param shelves are the players' shelves
+       */
       void updatePlayerShelves(List<Tile[][]> shelves);
 
+      /**
+       * The players' points stored in the view are updated and printed if needed.
+       *
+       * @author Francesco Ostidich
+       * @param points are the players' points
+       */
       void updatePlayerPoints(List<Integer> points);
 
+      /**
+       * When game is initially loaded, requires a start button to be pressed in order to get first options to choose.
+       *
+       * @author Francesco Ostidich
+       */
       void start();
 
+      /**
+       * When player wants to connect to server is required to write the server's IP address.
+       * "localhost" is accepted.
+       *
+       * @author Francesco Ostidich
+       * @return IP address string written by the player ("x.x.x.x")
+       */
       String chooseIPAddress();
 
+      /**
+       * When player wants to enter games is required to write his nickname.
+       *
+       * @author Francesco Ostidich
+       * @return nickname written by the player
+       */
       String choosePlayerName();
 
+      /**
+       * When player wants to play is required to choose between creating a new game room or enter one already opened.
+       *
+       * @author Francesco Ostidich
+       * @return player's selection ("new" or "join")
+       */
       String chooseNewOrJoin();
 
+      /**
+       * After deciding to create new game room, player has to set a name for it.
+       *
+       * @author Francesco Ostidich
+       * @return game room name written by the player
+       */
       String chooseNewGameName();
 
+      /**
+       * After deciding to create new game room, player has to set a player number for it.
+       *
+       * @author Francesco Ostidich
+       * @return game room player number written by the player
+       */
       int chooseNewGamePlayerNumber();
 
-      void updateGameRoom();
+      /**
+       * When a player is in a game room, and its information changes (for example a player enters),
+       * it needs to be updated in view.
+       *
+       * @author Francesco Ostidich
+       */
+      void updateGameRoom(GameRoom gameRoom);
 
+      /**
+       * When game room has reached player number set, it notifies all the client connected that game is started
+       * and GUI has to change, showing initial game graphic.
+       *
+       * @author Francesco Ostidich
+       */
       void notifyGameHasStared();
 
+      /**
+       * When player wants to join a game, he has to select a room between the ones provided by the server.
+       * "refresh" or "back" strings calls different actions.
+       *
+       * @author Francesco Ostidich
+       * @param rooms is the game rooms availability list
+       * @return game room selected string
+       */
       String chooseGameRoom(List<GameRoom> rooms);
 
-      void givePersonalGoals(int personalGoal);
+      /**
+       * When game starts, personal goals must be forwarded to game view in order to be printed.
+       * In CLI, in order to print personal goal, personalGoalMatches.json is to be read.
+       *
+       * @author Francesco Ostidich
+       * @param personalGoal is the personal goal ID number
+       */
+      void givePersonalGoals(List<Integer> personalGoal);
 
+      /**
+       * When game starts, common goals must be forwarded to game view in order to be printed.
+       * In CLI, in order to print common goal, commonGoalDescription.json is to be read.
+       *
+       * @author Francesco Ostidich
+       * @param commonGoal1 is the common goal 1 ID string
+       * @param commonGoal2 is the common goal 2 ID string
+       */
       void giveCommonGoals(String commonGoal1, String commonGoal2);
 
+      /**
+       * When player is called to pick on the board, an available max tiles number to be picked is passed.
+       * Coordinates picked are returned.
+       *
+       * @author Francesco Ostidich
+       * @param availablePickNumber is the max number of tiles to be picked
+       * @return Coordinates of boards picked
+       */
       List<Coordinates> pickTiles(int availablePickNumber);
 
-      List<Tile> chooseOrder(List<Coordinates> selection);
+      /**
+       * After picked coordinates are checked if legals, player is asked to choose insertion order of the tiles.
+       *
+       * @author Francesco Ostidich
+       * @param selection is the picked tile list
+       * @return picked tile list ordered for shelf's insertion
+       */
+      List<Tile> chooseOrder(List<Tile> selection);
 
+      /**
+       * After picked tiles order is defined, player is asked to choose a shelf column to insert the tiles.
+       *
+       * @author Francesco Ostidich
+       * @return column number chosen for shelf's insertion
+       */
       int chooseColumn();
 
+      /**
+       * After player's turn, common goal points are checked if to be given, and if that's the case, pops token to the player.
+       * View is to print this process.
+       *
+       * @author Francesco Ostidich
+       * @param playerName is player's name to pop the token to
+       * @param token is point token popped
+       */
       void assignCommonGoalPoints(String playerName, int token);
 
+      /**
+       * When game's last turn is played, personal goal are calculated and forwarded to the view.
+       * Only personal goal points are communicated, in order to print them, players points aren't updated here.
+       *
+       * @author Francesco Ostidich
+       * @param points is the personal goal assigned points map
+       */
       void assignPersonalGoalPoints(Map<String, Integer> points);
 
+      /**
+       * When game's last turn is played, adjacent goal are calculated and forwarded to the view.
+       * Only adjacent goal points are communicated, in order to print them, players points aren't updated here.
+       *
+       * @author Francesco Ostidich
+       * @param points is the adjacent goal assigned points map
+       */
       void assignAdjacentGoalPoints(Map<String, Integer> points);
 
+      /**
+       * When game is finished, winner name is told and all players' points are forwarded to be printed.
+       *
+       * @author Francesco Ostidich
+       * @param winnerName is the winner player's name string
+       * @param points is the players' end game points map
+       */
       void announceWinner(String winnerName, Map<String, Integer> points);
 
+      /**
+       * When game is showing end games statistics and nothing else is doable for the ending game,
+       * player is waited for actions like "backToLobby" or "playAgain".
+       *
+       * @author Francesco Ostidich
+       * @return command string for end game action.
+       */
       String waitForEndGameAction();
 
 }
