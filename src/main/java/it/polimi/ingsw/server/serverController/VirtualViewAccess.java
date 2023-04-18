@@ -190,4 +190,14 @@ public class VirtualViewAccess implements ViewActions, MessagePackaging {
     public String waitForEndGameAction() {
         return null;
     }
+
+    @Override
+    public String justScanChat() {
+        return null;
+    }
+
+    @Override
+    public void justPrintChat(String message) {
+
+    }
 }

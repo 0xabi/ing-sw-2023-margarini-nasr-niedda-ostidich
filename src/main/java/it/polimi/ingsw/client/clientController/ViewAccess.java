@@ -179,4 +179,14 @@ public class ViewAccess implements ViewActions {
     public String waitForEndGameAction() {
         return null;
     }
+
+    @Override
+    public String justScanChat() {
+        return null;
+    }
+
+    @Override
+    public void justPrintChat(String message) {
+
+    }
 }

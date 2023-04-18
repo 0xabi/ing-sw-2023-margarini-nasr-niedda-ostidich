@@ -273,4 +273,19 @@ public interface ViewActions {
        */
       String waitForEndGameAction();
 
+      /**
+       * Method is always opened on other thread, only chat messages are received.
+       *
+       * @author Francesco Ostidich
+       * @return message string
+       */
+      String justScanChat();
+
+      /**
+       * Method is always opened on other thread, only chat messages are showed.
+       *
+       * @author Francesco Ostidich
+       * @param message message string
+       */
+      void justPrintChat(String message);
 }

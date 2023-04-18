@@ -98,4 +98,14 @@ public class GUI extends GameView {
         return null;
     }
 
+    @Override
+    public String justScanChat() {
+        return null;
+    }
+
+    @Override
+    public void justPrintChat(String message) {
+
+    }
+
 }
