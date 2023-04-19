@@ -96,31 +96,65 @@ public class VirtualViewAccess implements ViewActions, MessagePackaging {
 
     }
 
+    /**
+     * <p>{@inheritDoc}</p>
+     * Not used by the server, only by the client.
+     *
+     * @author Francesco Ostidich
+     */
     @Override
-    public void start() {
+    public void start() {}
 
-    }
-
+    /**
+     * <p>{@inheritDoc}</p>
+     * Not used by the server, only by the client.
+     *
+     * @author Francesco Ostidich
+     */
     @Override
     public String chooseIPAddress() {
         return null;
     }
 
+    /**
+     * <p>{@inheritDoc}</p>
+     * Not used by the server, only by the client.
+     *
+     * @author Francesco Ostidich
+     */
     @Override
     public String choosePlayerName() {
         return null;
     }
 
+    /**
+     * <p>{@inheritDoc}</p>
+     * Not used by the server, only by the client.
+     *
+     * @author Francesco Ostidich
+     */
     @Override
     public String chooseNewOrJoin() {
         return null;
     }
 
+    /**
+     * <p>{@inheritDoc}</p>
+     * Not used by the server, only by the client.
+     *
+     * @author Francesco Ostidich
+     */
     @Override
     public String chooseNewGameName() {
         return null;
     }
 
+    /**
+     * <p>{@inheritDoc}</p>
+     * Not used by the server, only by the client.
+     *
+     * @author Francesco Ostidich
+     */
     @Override
     public int chooseNewGamePlayerNumber() {
         return 0;
@@ -132,10 +166,21 @@ public class VirtualViewAccess implements ViewActions, MessagePackaging {
     }
 
     @Override
+    public void updateGameRooms(List<GameRoom> gameRooms) {
+
+    }
+
+    @Override
     public void notifyGameHasStared() {
 
     }
 
+    /**
+     * <p>{@inheritDoc}</p>
+     * Not used by the server, only by the client.
+     *
+     * @author Francesco Ostidich
+     */
     @Override
     public String chooseGameRoom(List<GameRoom> rooms) {
         return null;
@@ -186,6 +231,12 @@ public class VirtualViewAccess implements ViewActions, MessagePackaging {
 
     }
 
+    /**
+     * <p>{@inheritDoc}</p>
+     * Not used by the server, only by the client.
+     *
+     * @author Francesco Ostidich
+     */
     @Override
     public String waitForEndGameAction() {
         return null;

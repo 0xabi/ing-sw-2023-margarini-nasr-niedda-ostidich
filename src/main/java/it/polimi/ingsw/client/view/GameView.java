@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.view;
 
-import it.polimi.ingsw.resources.Coordinates;
 import it.polimi.ingsw.resources.GameRoom;
 import it.polimi.ingsw.resources.Tile;
 import it.polimi.ingsw.resources.interfaces.ViewActions;
@@ -16,6 +15,8 @@ import java.util.*;
  * @author Francesco Ostidich
  */
 public abstract class GameView implements ViewActions {
+
+    private static final int timeout = 20;
 
     private final Map<String, Integer> gameParameters;
 
@@ -47,6 +48,8 @@ public abstract class GameView implements ViewActions {
 
     private String IPAddress;
 
+    private List<GameRoom> gameRooms;
+
     /**
      * Class constructor.
      *
@@ -60,6 +63,7 @@ public abstract class GameView implements ViewActions {
         playerShelves = new LinkedList<>();
         playerPoints = new LinkedList<>();
         playerPersonalGoals = new LinkedList<>();
+        gameRooms = new ArrayList<>();
     }
 
     /**
@@ -203,6 +207,16 @@ public abstract class GameView implements ViewActions {
     }
 
     /**
+     * Getter for game rooms.
+     *
+     * @author Francesco Ostidich
+     * @return game rooms list
+     */
+    public List<GameRoom> getGameRooms() {
+        return gameRooms;
+    }
+
+    /**
      * Getter for end game token.
      *
      * @author Francesco Ostidich
@@ -210,6 +224,16 @@ public abstract class GameView implements ViewActions {
      */
     public boolean getEndGameToken() {
         return endGameToken;
+    }
+
+    /**
+     * Getter for timeout.
+     *
+     * @author Francesco Ostidich
+     * @return time out seconds
+     */
+    public static int getTimeout() {
+        return timeout;
     }
 
     /**
@@ -251,6 +275,28 @@ public abstract class GameView implements ViewActions {
     @Override
     public void updateBag(Map<Tile, Integer> tilesLeft) {
         this.bag = tilesLeft;
+    }
+
+    /**
+     * @author Francesco Ostidich
+     */
+    @Override
+    public void updateGameRooms(List<GameRoom> gameRooms) {
+        this.gameRooms = gameRooms;
+    }
+
+    /**
+     * @author Francesco Ostidich
+     */
+    @Override
+    public void updateGameRoom(GameRoom gameRoom) {
+        for(int i = 0; i < gameRooms.size(); i++) {
+            if(gameRooms.get(i).gameRoomName().equals(gameRoom.gameRoomName())) {
+                gameRooms.set(i, gameRoom);
+                return;
+            }
+        }
+        gameRooms.add(gameRoom);
     }
 
     /**
@@ -309,33 +355,6 @@ public abstract class GameView implements ViewActions {
         }
     }
 
-    @Override
-    public abstract void start();
-
-    @Override
-    public abstract String chooseIPAddress();
-
-    @Override
-    public abstract String choosePlayerName();
-
-    @Override
-    public abstract String chooseNewOrJoin();
-
-    @Override
-    public abstract String chooseNewGameName();
-
-    @Override
-    public abstract int chooseNewGamePlayerNumber();
-
-    @Override
-    public abstract void updateGameRoom(GameRoom gameRoom);
-
-    @Override
-    public abstract void notifyGameHasStared();
-
-    @Override
-    public abstract String chooseGameRoom(List<GameRoom> rooms);
-
     /**
      * @author Francesco Ostidich
      */
@@ -352,35 +371,5 @@ public abstract class GameView implements ViewActions {
         this.commonGoal1 = commonGoal1;
         this.commonGoal2 = commonGoal2;
     }
-
-    @Override
-    public abstract List<Coordinates> pickTiles(int availablePickNumber);
-
-    @Override
-    public abstract List<Tile> chooseOrder(List<Tile> selection);
-
-    @Override
-    public abstract int chooseColumn();
-
-    @Override
-    public abstract void assignCommonGoalPoints(String playerName, int token);
-
-    @Override
-    public abstract void assignPersonalGoalPoints(Map<String, Integer> points);
-
-    @Override
-    public abstract void assignAdjacentGoalPoints(Map<String, Integer> points);
-
-    @Override
-    public abstract void announceWinner(String winnerName, Map<String, Integer> points);
-
-    @Override
-    public abstract String waitForEndGameAction();
-
-    @Override
-    public abstract String justScanChat();
-
-    @Override
-    public abstract void justPrintChat(String message);
 
 }

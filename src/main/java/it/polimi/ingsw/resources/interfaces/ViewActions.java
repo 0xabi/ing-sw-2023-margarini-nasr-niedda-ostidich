@@ -159,12 +159,21 @@ public interface ViewActions {
        * When a player is in a game room, and its information changes (for example a player enters),
        * it needs to be updated in view.
        *
+       * @param gameRoom is game room to update
        * @author Francesco Ostidich
        */
       void updateGameRoom(GameRoom gameRoom);
 
       /**
-       * When game room has reached player number set, it notifies all the client connected that game is started
+       * After player connection to server, when he wants to join a room, the list of all rooms is passed to client.
+       *
+       * @author Francesco Ostidich
+       * @param gameRooms are game rooms to update
+       */
+      void updateGameRooms(List<GameRoom> gameRooms);
+
+      /**
+       * When game room has reached player number set, it notifies all the clients connected that game is started
        * and GUI has to change, showing initial game graphic.
        *
        * @author Francesco Ostidich
@@ -266,7 +275,7 @@ public interface ViewActions {
 
       /**
        * When game is showing end games statistics and nothing else is doable for the ending game,
-       * player is waited for actions like "backToLobby" or "playAgain".
+       * player is waited for actions like "backToLobby".
        *
        * @author Francesco Ostidich
        * @return command string for end game action.

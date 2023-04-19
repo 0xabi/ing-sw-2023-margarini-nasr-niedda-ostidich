@@ -117,11 +117,6 @@ public class CLI extends GameView {
     }
 
     @Override
-    public void updateGameRoom(GameRoom gameRoom) {
-
-    }
-
-    @Override
     public void notifyGameHasStared() {
     }
 
