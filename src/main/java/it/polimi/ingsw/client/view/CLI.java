@@ -67,29 +67,32 @@ public class CLI extends GameView {
      */
     private boolean isIPAddress(@NotNull String IP) {
         if(IP.equals("localhost")) return true;
-        int j = 0, k = 0;
-        char[] temp = new char[3];
-        for(int i = 0; i < 4; i++) {
-            while(IP.charAt(j) != '.') {
-                try {
-                    temp[k] = IP.charAt(j);
-                } catch(IndexOutOfBoundsException e) {
+        String[] chunks;
+
+        if(IP==null)
+            return false;
+
+        chunks = IP.split("\\.");
+
+        if(chunks.length!=4)
+            return false;
+
+        try
+        {
+            for(String number : chunks)
+            {
+                int num = Integer.parseInt(number);
+
+                if (num<0 || num>255)
                     return false;
-                }
-                k++;
-                j++;
-            }
-            j++;
-            k = 0;
-            String tempString = String.copyValueOf(temp);
-            try {
-                if (Integer.parseInt(tempString) < 0 || Integer.parseInt(tempString) > 256)
-                    return false;
-            } catch(NumberFormatException e) {
-                return false;
             }
         }
-        return IP.length() == j;
+        catch(NumberFormatException e)
+        {
+            return false;
+        }
+
+        return true;
     }
 
     @Override
@@ -214,7 +217,7 @@ public class CLI extends GameView {
      */
     private String playerMessage(String inputMessage, int timeOut) {
         int i = timeOut + 1;
-        System.out.print(inputMessage + " ");
+        System.out.print(5 + " ");
         dataMessage = null;
         while(dataMessage == null && i > 0) {
             try {
