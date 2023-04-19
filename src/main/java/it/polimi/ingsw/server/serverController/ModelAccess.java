@@ -86,6 +86,11 @@ public class ModelAccess implements ModelActions {
     }
 
     @Override
+    public int getPlayerPersonalGoalID(String playerName) {
+        return 0;
+    }
+
+    @Override
     public Tile[][] getPlayerShelf(String playerName) {
         return gameModel.getPlayerShelf(playerName);
     }
@@ -153,6 +158,11 @@ public class ModelAccess implements ModelActions {
     @Override
     public void playerInsertTilesInShelf(String playerName, List<Tile> tiles, int column) {
         gameModel.playerInsertTilesInShelf(playerName, tiles, column);
+    }
+
+    @Override
+    public int checkAvailablePickNumber(String playerName) {
+        return 0;
     }
 
     @Override
