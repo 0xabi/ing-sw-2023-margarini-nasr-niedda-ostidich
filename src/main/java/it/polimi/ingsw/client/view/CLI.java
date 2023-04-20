@@ -27,6 +27,9 @@ public class CLI extends GameView {
     private static final int LEN_COL_CREATOR_NAME=12;
 
     private static final int LEN_COL_PLAYERS=7;
+
+    public static final int LEN_PREFIX = 5;
+
     private String chatMessage = "";
 
     private String dataMessage = "";
@@ -180,14 +183,71 @@ public class CLI extends GameView {
 
     /**
      *
+     * @param roomName
+     * @param creatorName
+     * @param players
+     * @param lenMaxRoomName
+     * @param lenMaxCreatorName
+     * @return
+     * @author Abdullah Nasr
+     */
+    private String getRowRoomTable(String roomName, String creatorName, String players, int lenMaxRoomName, int lenMaxCreatorName)
+    {
+        int distance = 0;
+        int marginDistance=0;
+        String rowRoomTable="";
+
+        //content header
+        rowRoomTable+="| ";
+
+        distance = lenMaxRoomName - roomName.length();
+        marginDistance=distance/2;
+
+        rowRoomTable+=" ".repeat(marginDistance)+roomName;
+
+        marginDistance = distance%2!=0 ? marginDistance+1 : marginDistance;
+
+        rowRoomTable+=" ".repeat(marginDistance)+" | ";
+
+        //creator name
+        distance = lenMaxCreatorName - creatorName.length();
+        marginDistance=distance/2;
+
+        rowRoomTable+=" ".repeat(marginDistance)+creatorName;
+
+        marginDistance = distance%2!=0 ? marginDistance+1 : marginDistance;
+
+        rowRoomTable+=" ".repeat(marginDistance)+" | ";
+
+        //players
+        distance = LEN_COL_PLAYERS - players.length();
+        marginDistance=distance/2;
+
+        rowRoomTable+=" ".repeat(marginDistance)+players;
+
+        marginDistance = distance%2!=0 ? marginDistance+1 : marginDistance;
+
+        rowRoomTable+=" ".repeat(marginDistance)+" | ";
+
+        //bottom header
+        rowRoomTable+="\n";
+        rowRoomTable+="+-"+"-".repeat(lenMaxRoomName)+"-+-"+"-".repeat(lenMaxCreatorName)+"-+-"+"-".repeat(LEN_COL_PLAYERS)+"-+\n";
+
+        return rowRoomTable;
+    }
+
+    /**
+     *
      * @param rooms
      * @return
      * @author Abdullah Nasr
      */
-    private String getTableGameRoom(@NotNull List<GameRoom> rooms)
+    public String getTableGameRoom(List<GameRoom> rooms)
     {
+        String tableGameRoom = "";
         int lenMaxRoomName = 0;
         int lenMaxCreatorName = 0;
+        int numRoom=1;
 
         //get the max len of creator/room name to autosize the table
         for(GameRoom gr : rooms)
@@ -205,7 +265,35 @@ public class CLI extends GameView {
             }
         }
 
-        return null;
+        lenMaxRoomName = Math.max(lenMaxRoomName, LEN_COL_ROOM_NAME);
+        lenMaxCreatorName = Math.max(lenMaxCreatorName, LEN_COL_CREATOR_NAME);
+
+        //to insert also the number of the row in front of the room name
+        lenMaxRoomName+=LEN_PREFIX;
+
+        //upper header
+        tableGameRoom+="+-"+"-".repeat(lenMaxRoomName)+"-+-"+"-".repeat(lenMaxCreatorName)+"-+-"+"-".repeat(LEN_COL_PLAYERS)+"-+"+"\n";
+        tableGameRoom+= getRowRoomTable("Room name","Creator name","Players",lenMaxRoomName,lenMaxCreatorName);
+
+        for (GameRoom gr : rooms)
+        {
+            String players = gr.enteredPlayers().size()+"/"+gr.totalPlayers();
+            tableGameRoom+=getRowRoomTable("["+numRoom+"] "+gr.gameRoomName(),gr.creatorName(),players,lenMaxRoomName,lenMaxCreatorName);
+            numRoom++;
+        }
+
+        return tableGameRoom;
+    }
+
+    /**
+     *
+     * @param answer
+     * @param rooms
+     * @return
+     */
+    private boolean isGameRoomValid(String answer, List<GameRoom> rooms)
+    {
+        return false;
     }
 
 
@@ -215,9 +303,16 @@ public class CLI extends GameView {
     @Override
     public String chooseGameRoom(List<GameRoom> rooms) {
 
-        String msg = getTableGameRoom(rooms);
+        String gameRoomTable = getTableGameRoom(rooms);
+        String answer;
 
-        return null;
+        answer = playerMessage(gameRoomTable+"\nType the room name or insert the number of row: ");
+        while(!isGameRoomValid(gameRoomTable,rooms))
+        {
+            answer = playerMessage(gameRoomTable+"\nInvalid game room!\nType the room name or insert the number of row: ");
+        }
+
+        return answer;
     }
 
     @Override
@@ -296,7 +391,8 @@ public class CLI extends GameView {
             String temp = scanner.nextLine();
             if(temp.startsWith(prefix))
                 chatMessage = temp.substring(prefix.length());
-            else dataMessage = temp;
+            else
+                dataMessage = temp;
         }
     }
 
