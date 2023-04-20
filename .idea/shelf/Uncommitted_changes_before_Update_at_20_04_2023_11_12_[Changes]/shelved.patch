@@ -1,0 +1,53 @@
+Index: src/main/java/it/polimi/ingsw/client/view/CLI.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.polimi.ingsw.client.view;\r\n\r\nimport it.polimi.ingsw.resources.Coordinates;\r\nimport it.polimi.ingsw.resources.GameRoom;\r\nimport it.polimi.ingsw.resources.Tile;\r\nimport org.jetbrains.annotations.NotNull;\r\n\r\nimport java.util.List;\r\nimport java.util.Map;\r\nimport java.util.Scanner;\r\n\r\n/**\r\n * CLI class is to implement GameView UI abstract class.\r\n * Going in depth, methods called here print something and open a scanner to retrieve returnable information,\r\n * to be passed to the controller.\r\n * Checks to see if scanned data is valid is implemented here.\r\n *\r\n * @author Francesco Ostidich\r\n */\r\npublic class CLI extends GameView {\r\n\r\n    private String chatMessage;\r\n\r\n    private String dataMessage;\r\n\r\n    private final Thread scannerThread;\r\n\r\n    /**\r\n     * Class constructor.\r\n     *\r\n     * @author Francesco Ostidich\r\n     */\r\n    public CLI() {\r\n        super();\r\n        chatMessage = null;\r\n        dataMessage = null;\r\n        scannerThread = new Thread(this::scan);\r\n        scannerThread.start();\r\n    }\r\n\r\n    /**\r\n     * @author Francesco Ostidich\r\n     */\r\n    @Override\r\n    public void start() {\r\n        System.out.println(\"My Shelfie\\nLoading...\");\r\n    }\r\n\r\n    /**\r\n     * @author Francesco Ostidich\r\n     */\r\n    @Override\r\n    public String chooseIPAddress() {\r\n        String scannedIP = playerMessage(\"Choose IP address!\");\r\n        while(!isIPAddress(scannedIP)) {\r\n            scannedIP = playerMessage(\"Wrong input!\\nChoose IP address!\");\r\n        }\r\n        return scannedIP;\r\n    }\r\n\r\n    /**\r\n     * When IP address string is scanned, it needs to be checked if in right format.\r\n     *\r\n     * @author Francesco Ostidich\r\n     * @param IP is the IP address string\r\n     * @return check's outcome\r\n     */\r\n    private boolean isIPAddress(@NotNull String IP) {\r\n        if(IP.equals(\"localhost\")) return true;\r\n        String[] chunks;\r\n\r\n        if(IP==null)\r\n            return false;\r\n\r\n        chunks = IP.split(\"\\\\.\");\r\n\r\n        if(chunks.length!=4)\r\n            return false;\r\n\r\n        try\r\n        {\r\n            for(String number : chunks)\r\n            {\r\n                int num = Integer.parseInt(number);\r\n\r\n                if (num<0 || num>255)\r\n                    return false;\r\n            }\r\n        }\r\n        catch(NumberFormatException e)\r\n        {\r\n            return false;\r\n        }\r\n\r\n        return true;\r\n    }\r\n\r\n    @Override\r\n    public String choosePlayerName() {\r\n        String scannedIP = playerMessage(\"Choose player name!\");\r\n        while(scannedIP.equals(\"\")) {\r\n            scannedIP = playerMessage(\"Wrong input!\\nChoose player name!\");\r\n        }\r\n        return scannedIP;\r\n    }\r\n\r\n    @Override\r\n    public String chooseNewOrJoin() {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public String chooseNewGameName() {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public int chooseNewGamePlayerNumber() {\r\n        return 0;\r\n    }\r\n\r\n    @Override\r\n    public void notifyGameHasStared() {\r\n    }\r\n\r\n    @Override\r\n    public String chooseGameRoom(List<GameRoom> rooms) {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public List<Coordinates> pickTiles(int availablePickNumber) {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public List<Tile> chooseOrder(List<Tile> selection) {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public int chooseColumn() {\r\n        return 0;\r\n    }\r\n\r\n    @Override\r\n    public void assignCommonGoalPoints(String playerName, int token) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void assignPersonalGoalPoints(Map<String, Integer> points) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void assignAdjacentGoalPoints(Map<String, Integer> points) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public void announceWinner(String winnerName, Map<String, Integer> points) {\r\n\r\n    }\r\n\r\n    @Override\r\n    public String waitForEndGameAction() {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public String justScanChat() {\r\n        while(chatMessage == null) {\r\n            try {\r\n                //noinspection BusyWait\r\n                Thread.sleep(1000);\r\n            } catch (InterruptedException ignored) {\r\n            }\r\n        }\r\n        String temp = chatMessage;\r\n        chatMessage = null;\r\n        return temp;\r\n    }\r\n\r\n    /**\r\n     * @author Francesco Ostidich\r\n     */\r\n    @Override\r\n    public void justPrintChat(String message) {\r\n        System.out.println(message);\r\n    }\r\n\r\n    /**\r\n     * Scanner is always open on separated thread.\r\n     * If message written is of chat type it's written in chatMessage, otherwise in dataMessage.\r\n     *\r\n     * @author Francesco Ostidich\r\n     */\r\n    private void scan() {\r\n        String prefix = \"/msg \";\r\n        while(true) {\r\n            Scanner scanner = new Scanner(System.in);\r\n            String temp = scanner.nextLine();\r\n            if(temp.startsWith(prefix))\r\n                chatMessage = temp.substring(prefix.length());\r\n            else dataMessage = temp;\r\n        }\r\n    }\r\n\r\n    /**\r\n     * Method returns player inserted string (null if timout time is reached).\r\n     *\r\n     * @author Francesco Ostidich\r\n     * @param timeOut is the timeout number in second\r\n     * @param inputMessage is the message to print posting the requested data\r\n     * @return player's written data\r\n     */\r\n    private String playerMessage(String inputMessage, int timeOut) {\r\n        int i = timeOut + 1;\r\n        System.out.print(5 + \" \");\r\n        dataMessage = null;\r\n        while(dataMessage == null && i > 0) {\r\n            try {\r\n                //noinspection BusyWait\r\n                Thread.sleep(1000);\r\n            } catch (InterruptedException ignored) {\r\n            } finally {\r\n                i--;\r\n                System.out.print(i + \" \");\r\n            }\r\n        }\r\n        System.out.println();\r\n        String temp = dataMessage;\r\n        dataMessage = null;\r\n        return temp;\r\n    }\r\n\r\n    /**\r\n     * Method returns player inserted string (no timeout is waited).\r\n     *\r\n     * @author Francesco Ostidich\r\n     * @param  inputMessage is the message to print posting the requested data\r\n     * @return player's written data\r\n     */\r\n    private String playerMessage(String inputMessage) {\r\n        System.out.print(inputMessage + \" \");\r\n        dataMessage = null;\r\n        while(dataMessage == null) {\r\n            try {\r\n                //noinspection BusyWait\r\n                Thread.sleep(1000);\r\n            } catch (InterruptedException ignored) {\r\n            }\r\n        }\r\n        System.out.println();\r\n        String temp = dataMessage;\r\n        dataMessage = null;\r\n        return temp;\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/it/polimi/ingsw/client/view/CLI.java b/src/main/java/it/polimi/ingsw/client/view/CLI.java
+--- a/src/main/java/it/polimi/ingsw/client/view/CLI.java	(revision c49b126a58b303645ccfc8ef34123003773ac076)
++++ b/src/main/java/it/polimi/ingsw/client/view/CLI.java	(date 1681922447305)
+@@ -68,30 +68,19 @@
+     private boolean isIPAddress(@NotNull String IP) {
+         if(IP.equals("localhost")) return true;
+         String[] chunks;
+-
+-        if(IP==null)
+-            return false;
+-
+         chunks = IP.split("\\.");
+-
+         if(chunks.length!=4)
+             return false;
+-
+-        try
+-        {
+-            for(String number : chunks)
+-            {
++        try{
++            for(String number : chunks) {
+                 int num = Integer.parseInt(number);
+-
+                 if (num<0 || num>255)
+                     return false;
+             }
+         }
+-        catch(NumberFormatException e)
+-        {
++        catch(NumberFormatException e) {
+             return false;
+         }
+-
+         return true;
+     }
+ 
+@@ -217,7 +206,7 @@
+      */
+     private String playerMessage(String inputMessage, int timeOut) {
+         int i = timeOut + 1;
+-        System.out.print(5 + " ");
++        System.out.print(inputMessage + " ");
+         dataMessage = null;
+         while(dataMessage == null && i > 0) {
+             try {

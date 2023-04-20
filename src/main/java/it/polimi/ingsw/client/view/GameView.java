@@ -16,7 +16,7 @@ import java.util.*;
  */
 public abstract class GameView implements ViewActions {
 
-    private static final int timeout = 20;
+    private static final int TIMEOUT = 20;
 
     private final Map<String, Integer> gameParameters;
 
@@ -50,6 +50,8 @@ public abstract class GameView implements ViewActions {
 
     private List<GameRoom> gameRooms;
 
+    private boolean gameEnded;
+
     /**
      * Class constructor.
      *
@@ -64,6 +66,15 @@ public abstract class GameView implements ViewActions {
         playerPoints = new LinkedList<>();
         playerPersonalGoals = new LinkedList<>();
         gameRooms = new ArrayList<>();
+        gameEnded = false;
+    }
+
+    public void endGame() {
+        this.gameEnded = false;
+    }
+
+    public boolean isGameEnded() {
+        return gameEnded;
     }
 
     /**
@@ -233,7 +244,7 @@ public abstract class GameView implements ViewActions {
      * @return time out seconds
      */
     public static int getTimeout() {
-        return timeout;
+        return TIMEOUT;
     }
 
     /**

@@ -4,6 +4,7 @@ import it.polimi.ingsw.resources.Coordinates;
 import it.polimi.ingsw.resources.GameRoom;
 import it.polimi.ingsw.resources.Tile;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
@@ -19,17 +20,18 @@ import java.util.Scanner;
  */
 public class CLI extends GameView {
 
-    private final int MAX_PLAYER=4;
-    private final int LEN_COL_ROOM_NAME=9;
-    private final int LEN_COL_CREATOR_NAME=12;
-    private final int LEN_COL_PLAYERS=7;
-    private String chatMessage="";
+    private static final int MAX_PLAYER=4;
 
-    private String dataMessage="";
+    private static final int LEN_COL_ROOM_NAME=9;
+
+    private static final int LEN_COL_CREATOR_NAME=12;
+
+    private static final int LEN_COL_PLAYERS=7;
+    private String chatMessage = "";
+
+    private String dataMessage = "";
 
     private final Thread scannerThread;
-
-
 
     /**
      * Class constructor.
@@ -55,9 +57,9 @@ public class CLI extends GameView {
      */
     @Override
     public String chooseIPAddress() {
-        String scannedIP = playerMessage("Choose IP address!",10);
+        String scannedIP = playerMessage("Choose IP address:");
         while(!isIPAddress(scannedIP)) {
-            scannedIP = playerMessage("Wrong input!\nChoose IP address!");
+            scannedIP = playerMessage("Wrong input!\nChoose IP address:");
         }
         return scannedIP;
     }
@@ -72,30 +74,19 @@ public class CLI extends GameView {
     private boolean isIPAddress(@NotNull String IP) {
         if(IP.equals("localhost")) return true;
         String[] chunks;
-
-        if(IP==null)
-            return false;
-
         chunks = IP.split("\\.");
-
         if(chunks.length!=4)
             return false;
-
-        try
-        {
-            for(String number : chunks)
-            {
+        try{
+            for(String number : chunks) {
                 int num = Integer.parseInt(number);
-
                 if (num<0 || num>255)
                     return false;
             }
         }
-        catch(NumberFormatException e)
-        {
+        catch(NumberFormatException e) {
             return false;
         }
-
         return true;
     }
 
@@ -105,7 +96,7 @@ public class CLI extends GameView {
      * @return
      * @author Abdullah Nasr
      */
-    private Integer getNumFroString(String input)
+    private @Nullable Integer getNumFromString(String input)
     {
         try
         {
@@ -120,9 +111,9 @@ public class CLI extends GameView {
 
     @Override
     public String choosePlayerName() {
-        String scannedIP = playerMessage("Choose player name!");
-        while(scannedIP.equals("")) {
-            scannedIP = playerMessage("Wrong input!\nChoose player name!");
+        String scannedIP = playerMessage("Choose player name:");
+        while(scannedIP.isBlank()) {
+            scannedIP = playerMessage("Wrong input!\nChoose player name:");
         }
         return scannedIP;
     }
@@ -133,12 +124,12 @@ public class CLI extends GameView {
      */
     @Override
     public String chooseNewOrJoin() {
-        String answer = playerMessage("Type [new] to create new game or [join] to join into an existing game: ");
+        String answer = playerMessage("Type [new] to create new game or [join] to join an existing game:");
         answer = answer.trim().toLowerCase();
 
         while(!answer.equals("new") && !answer.equals("join"))
         {
-            answer = playerMessage("Wrong input!\nType [new] to create new game or [join] to join into an existing game: ");
+            answer = playerMessage("Wrong input!\nType [new] to create new game or [join] to join an existing game:");
             answer=answer.trim().toLowerCase();
         }
 
@@ -151,10 +142,10 @@ public class CLI extends GameView {
      */
     @Override
     public String chooseNewGameName() {
-        String gameName = playerMessage("Choose an existing game name: ");
+        String gameName = playerMessage("Choose a new game name:");
         while(gameName.isBlank())
         {
-            gameName = playerMessage("Wrong input!\nChoose an existing game name: ");
+            gameName = playerMessage("Wrong input!\nChoose a new game name:");
         }
 
         return gameName;
@@ -166,13 +157,13 @@ public class CLI extends GameView {
     @Override
     public int chooseNewGamePlayerNumber() {
         Integer numPlayer;
-        String input =  playerMessage("Choose the number of the player["+MAX_PLAYER+"max players"+"]: ");
-        numPlayer = getNumFroString(input);
+        String input =  playerMessage("Choose the number of players [max "+MAX_PLAYER+" players"+"]:");
+        numPlayer = getNumFromString(input);
 
         while(numPlayer==null||numPlayer<2||numPlayer>MAX_PLAYER)
         {
-            input =  playerMessage("Please insert a valid number of player!\nChoose the number of the player: ");
-            numPlayer = getNumFroString(input);
+            input =  playerMessage("Please insert a valid number of player!\nChoose the number of the player:");
+            numPlayer = getNumFromString(input);
         }
 
         return numPlayer;
@@ -193,7 +184,7 @@ public class CLI extends GameView {
      * @return
      * @author Abdullah Nasr
      */
-    private String getTableGameRoom(List<GameRoom> rooms)
+    private String getTableGameRoom(@NotNull List<GameRoom> rooms)
     {
         int lenMaxRoomName = 0;
         int lenMaxCreatorName = 0;
@@ -261,7 +252,8 @@ public class CLI extends GameView {
 
     @Override
     public void announceWinner(String winnerName, Map<String, Integer> points) {
-
+        //body
+        endGame();
     }
 
     @Override
@@ -302,21 +294,9 @@ public class CLI extends GameView {
         Scanner scanner = new Scanner(System.in);
         while(true) {
             String temp = scanner.nextLine();
-            if(temp.startsWith(prefix)) {
-
-                    chatMessage = temp.substring(prefix.length());
-
-                    //chatMessage.notifyAll();
-
-            }
-            else {
-
-                    dataMessage = temp;
-                    System.out.println(Thread.currentThread().getName());
-                    //dataMessage.notifyAll();
-
-
-            }
+            if(temp.startsWith(prefix))
+                chatMessage = temp.substring(prefix.length());
+            else dataMessage = temp;
         }
     }
 
@@ -327,9 +307,7 @@ public class CLI extends GameView {
      * @param timeOut is the timeout number in second
      * @param inputMessage is the message to print posting the requested data
      * @return player's written data
-     *
      */
-
     private String playerMessage(String inputMessage, int timeOut) {
         int i = timeOut + 1;
         System.out.print(inputMessage + " ");
@@ -358,11 +336,7 @@ public class CLI extends GameView {
      * @return player's written data
      */
     private String playerMessage(String inputMessage) {
-
         System.out.print(inputMessage + " ");
-        System.out.println(Thread.currentThread().getName());
-
-
         dataMessage = null;
         while(dataMessage == null) {
             try {
@@ -376,4 +350,5 @@ public class CLI extends GameView {
         dataMessage = null;
         return temp;
     }
+
 }

@@ -21,9 +21,9 @@ import java.util.*;
  */
 public class Board {
 
-    private static final int rowLength = 9;
+    private static final int ROW_LENGTH = 9;
 
-    private static final int columnLength = 9;
+    private static final int COLUMN_LENGTH = 9;
 
     private final Tile[][] spaces;
 
@@ -38,7 +38,7 @@ public class Board {
      * @param num is players number
      */
     public Board(int num) {
-        spaces = new Tile[rowLength][columnLength];
+        spaces = new Tile[ROW_LENGTH][COLUMN_LENGTH];
         endGameToken = Optional.of(new EndGameToken());
 
         File input = new File("src/main/java/it/polimi/ingsw/resources/configFiles/boardSpacesMatrix.json");
@@ -47,11 +47,11 @@ public class Board {
             JsonObject spacesObject = spacesElement.getAsJsonObject();
 
             JsonArray jsonSpaces = spacesObject.get(String.valueOf(num)).getAsJsonArray();
-            for(int i = 0; i < rowLength; i++)
-                for(int j = 0; j < columnLength; j++) {
-                    if(jsonSpaces.get(rowLength*j + i).getAsInt() == 0) //22 = 9*2 + 4
+            for(int i = 0; i < ROW_LENGTH; i++)
+                for(int j = 0; j < COLUMN_LENGTH; j++) {
+                    if(jsonSpaces.get(ROW_LENGTH *j + i).getAsInt() == 0) //22 = 9*2 + 4
                         spaces[i][j] = null;
-                    else if(jsonSpaces.get(rowLength*j + i).getAsInt() == 1)
+                    else if(jsonSpaces.get(ROW_LENGTH *j + i).getAsInt() == 1)
                         spaces[i][j] = Tile.EMPTY;
                     else throw new ConfigFileNotReadableException("cannot read values else than 1 or 0");
                 }
@@ -111,8 +111,8 @@ public class Board {
         //puts back the ones left on the board
         emptyBoardInBag();
 
-        for (int i = 0; i < rowLength; i++)
-            for (int j = 0; j < columnLength; j++) {
+        for (int i = 0; i < ROW_LENGTH; i++)
+            for (int j = 0; j < COLUMN_LENGTH; j++) {
                 if (spaces[i][j]== Tile.EMPTY) {
                     Tile t=bag.draw();
                     spaces[i][j] = t;
@@ -211,8 +211,8 @@ public class Board {
      */
     protected boolean checkToRefill() {
 
-        for(int i = 0; i < rowLength; i++)
-            for(int j = 0; j < columnLength; j++) {
+        for(int i = 0; i < ROW_LENGTH; i++)
+            for(int j = 0; j < COLUMN_LENGTH; j++) {
                 if(!isCompletelyFree(new Coordinates(i, j)) && spaces[i][j]!=null && spaces[i][j]!=Tile.EMPTY)
                     return false;
             }
@@ -242,7 +242,7 @@ public class Board {
 
         List<Tile> adjTile = new LinkedList<>();
 
-        if(coords.x()>rowLength)
+        if(coords.x()> ROW_LENGTH)
             adjTile.add(null);
         else
             adjTile.add(spaces[coords.x()+1][coords.y()]);
@@ -252,7 +252,7 @@ public class Board {
         else
             adjTile.add(spaces[coords.x()-1][coords.y()]);
 
-        if(coords.y()>columnLength)
+        if(coords.y()> COLUMN_LENGTH)
             adjTile.add(null);
         else
             adjTile.add(spaces[coords.x()][coords.y()+1]);
@@ -280,8 +280,8 @@ public class Board {
      * @author Edoardo Margarini
      */
     private void emptyBoardInBag() {
-        for (int i = 0; i < rowLength; i++)
-            for (int j = 0; j < columnLength; j++) {
+        for (int i = 0; i < ROW_LENGTH; i++)
+            for (int j = 0; j < COLUMN_LENGTH; j++) {
                 if (spaces[i][j] != null && spaces[i][j] != Tile.EMPTY) {
                     bag.addTile(spaces[i][j]);
                     spaces[i][j] = Tile.EMPTY;

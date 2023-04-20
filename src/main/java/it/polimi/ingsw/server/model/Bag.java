@@ -13,7 +13,7 @@ import java.util.*;
  */
 public class Bag {
 
-    private static final int totalQuantity = 22;
+    private static final int TOTAL_QUANTITY = 22;
 
     private final Map<Tile, Integer> tilesLeft;
 
@@ -27,7 +27,7 @@ public class Bag {
 
         for(Tile tile: Tile.values())
             if(!tile.equals(Tile.EMPTY))
-                tilesLeft.put(tile, totalQuantity);
+                tilesLeft.put(tile, TOTAL_QUANTITY);
     }
 
     /**

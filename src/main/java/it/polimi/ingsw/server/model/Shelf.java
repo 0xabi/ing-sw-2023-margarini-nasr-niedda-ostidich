@@ -16,9 +16,9 @@ import java.util.List;
  */
 public class Shelf {
 
-    private static final int rowNumber = 6;
+    private static final int ROW_NUMBER = 6;
 
-    private static final int columnNumber = 5;
+    private static final int COLUMN_NUMBER = 5;
 
     private final Tile[][] positions;
 
@@ -28,8 +28,8 @@ public class Shelf {
      * @author Abdullah Nasr
      */
     public Shelf(){
-        positions = new Tile[rowNumber][columnNumber];
-        for(int i = 0; i < rowNumber; i++)
+        positions = new Tile[ROW_NUMBER][COLUMN_NUMBER];
+        for(int i = 0; i < ROW_NUMBER; i++)
             Arrays.fill(positions[i], Tile.EMPTY);
     }
 
@@ -39,7 +39,7 @@ public class Shelf {
      * @author Abdullah Nasr
      */
     public int getRowNumber(){
-        return rowNumber;
+        return ROW_NUMBER;
     }
 
     /**
@@ -49,7 +49,7 @@ public class Shelf {
      * @author Abdullah Nasr
      */
     public int getColumnNumber(){
-        return columnNumber;
+        return COLUMN_NUMBER;
     }
 
     /**
@@ -69,7 +69,7 @@ public class Shelf {
      */
     public Tile getPosition(Coordinates coordinates) {
 
-        if(coordinates==null || coordinates.x()>=rowNumber || coordinates.y()>=columnNumber)
+        if(coordinates==null || coordinates.x()>= ROW_NUMBER || coordinates.y()>= COLUMN_NUMBER)
             return null;
 
         return positions[coordinates.x()][coordinates.y()];
@@ -88,7 +88,7 @@ public class Shelf {
         int freeSpace;
 
         //check input
-        if (tiles==null || tiles.contains(Tile.EMPTY) || column>=columnNumber) {
+        if (tiles==null || tiles.contains(Tile.EMPTY) || column>= COLUMN_NUMBER) {
             return false;
         }
 
@@ -121,7 +121,7 @@ public class Shelf {
      */
     private int checkSpaceInColumn(int selectionLength, int column) {
 
-        int emptySlots = rowNumber-getTilesInColumn(column);
+        int emptySlots = ROW_NUMBER -getTilesInColumn(column);
 
         if (emptySlots >= selectionLength)
             return emptySlots;
@@ -138,10 +138,10 @@ public class Shelf {
     public int getTilesInColumn(int column){
 
         //check valid column
-        if(column<columnNumber) {
+        if(column< COLUMN_NUMBER) {
             //count empty spaces
-            for(int i = 0; i < rowNumber; i++)
-                if(positions[i][column] != Tile.EMPTY) return rowNumber -i;
+            for(int i = 0; i < ROW_NUMBER; i++)
+                if(positions[i][column] != Tile.EMPTY) return ROW_NUMBER -i;
 
         }
 
@@ -154,7 +154,7 @@ public class Shelf {
      * @author Abdullah Nasr
      */
     protected boolean isFull() {
-        for(int i = 0; i < columnNumber; i++)
+        for(int i = 0; i < COLUMN_NUMBER; i++)
             if(positions[0][i] == Tile.EMPTY) return false;
         return true;
     }

@@ -1,37 +1,57 @@
 package it.polimi.ingsw.server.virtualView;
 
-import it.polimi.ingsw.resources.interfaces.NetworkManager;
-import it.polimi.ingsw.resources.Message;
-import it.polimi.ingsw.server.serverController.VirtualViewAccess;
+import it.polimi.ingsw.resources.interfaces.ViewActions;
+import java.util.Map;
 
 /**
- * It receives from server controller the messages to be sent on the connection bus, from server to client.
- * From the clients receives messages to forward to the server controller.
- *
- * @author Francesco Ostidich
+ * Receives connection requests from clients and builds game rooms.
+ * When a game room is ready to play, it should be received by the lobby builder which starts the game.
  */
-public class GameVirtualView implements NetworkManager {
+public class GameVirtualView {
 
-    private final VirtualViewAccess virtualViewAccess;
+    private Map<String, ViewActions> gameRoomReady;
+
+    private final Thread startThread;
 
     /**
      * Class constructor.
      *
      * @author Francesco Ostidich
-     * @param virtualViewAccess manages the bridge between virtual view and server controller
      */
-    public GameVirtualView(VirtualViewAccess virtualViewAccess) {
-        this.virtualViewAccess = virtualViewAccess;
+    public GameVirtualView() {
+        startThread = new Thread(this::start);
+        startThread.start();
     }
 
-    @Override
-    public void sendMessage(Message message) {
-
+    /**
+     * Method called by main method. When a game room is filled its passed up by this method.
+     * This method is always active on a separate thread.
+     *
+     * @return client name and view object map
+     */
+    public Map<String, ViewActions> waitForClients() {
+        synchronized(this) {
+            try {
+                wait();
+            } catch (InterruptedException ignored) {
+            }
+            return gameRoomReady;
+        }
     }
 
-    @Override
-    public Message retrieveFromQueue() {
-        return null;
+    /**
+     * Activate the gameVirtualView, so it can be listening for clients requests.
+     * Method has its own thread, and it is up for all server run time.
+     */
+    public void start() {
+        //noinspection InfiniteLoopStatement
+        while(true) {
+            //manage game room requests from clients
+            //when a game room is ready and put in the attribute ->
+            synchronized(this) {
+                this.notifyAll();
+            }
+        }
     }
 
 }

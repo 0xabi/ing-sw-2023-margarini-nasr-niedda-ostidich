@@ -23,7 +23,7 @@ import java.util.*;
  */
 public class PersonalGoal {
 
-    private static final int personalGoalNumber = 12;
+    private static final int PERSONAL_GOAL_NUMBER = 12;
 
     private final Map<Tile, Coordinates> matches = new HashMap<>();
 
@@ -158,6 +158,6 @@ public class PersonalGoal {
      * @return personal goal number
      */
     public static int getPersonalGoalNumber() {
-        return personalGoalNumber;
+        return PERSONAL_GOAL_NUMBER;
     }
 }

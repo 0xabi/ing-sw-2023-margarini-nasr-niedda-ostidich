@@ -1,12 +1,9 @@
-package it.polimi.ingsw.server.serverController;
+package it.polimi.ingsw.server.virtualView;
 
 import it.polimi.ingsw.resources.Coordinates;
 import it.polimi.ingsw.resources.GameRoom;
-import it.polimi.ingsw.resources.interfaces.MessagePackaging;
 import it.polimi.ingsw.resources.interfaces.ViewActions;
-import it.polimi.ingsw.resources.messages.TileListMessage;
 import it.polimi.ingsw.resources.Tile;
-import it.polimi.ingsw.server.virtualView.GameVirtualView;
 
 import java.util.List;
 import java.util.Map;
@@ -18,26 +15,14 @@ import java.util.Stack;
  *
  * @author Francesco Ostidich
  */
-public class VirtualViewAccess implements ViewActions, MessagePackaging {
-
-    private final GameVirtualView gameVirtualView;
-
-    private final GameModelController gameModelController;
+public class VirtualViewAccess implements ViewActions {
 
     /**
      * Class constructor.
      *
      * @author Francesco Ostidich
-     * @param gameModelController processes events and data
      */
-    public VirtualViewAccess(GameModelController gameModelController) {
-        this.gameVirtualView = new GameVirtualView(this);
-        this.gameModelController = gameModelController;
-    }
-
-    @Override
-    public TileListMessage tileToInsertOrdered(List<Tile> tiles) {
-        return null;
+    public VirtualViewAccess() {
     }
 
     @Override
@@ -251,4 +236,10 @@ public class VirtualViewAccess implements ViewActions, MessagePackaging {
     public void justPrintChat(String message) {
 
     }
+
+    @Override
+    public void endGame() {
+
+    }
+
 }

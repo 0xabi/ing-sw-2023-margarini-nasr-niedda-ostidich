@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class EndGameToken {
 
-    private static final int endGamePoints = 1;
+    private static final int END_GAME_POINTS = 1;
 
     /**
      * It assigns end game token's points to the player who got the first shelf filled.
@@ -19,7 +19,7 @@ public class EndGameToken {
      * @author Francesco Ostidich
      */
     protected static void assignPoints(@NotNull Player player) {
-        player.addPoints(endGamePoints);
+        player.addPoints(END_GAME_POINTS);
     }
 
     /**
@@ -29,6 +29,6 @@ public class EndGameToken {
      * @return end game token points number
      */
     public int getEndGamePoints() {
-        return endGamePoints;
+        return END_GAME_POINTS;
     }
 }

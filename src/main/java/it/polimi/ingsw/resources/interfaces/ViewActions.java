@@ -17,6 +17,13 @@ import java.util.Stack;
 public interface ViewActions {
 
       /**
+       * Setter for game ended.
+       *
+       * @author Francesco Ostidich
+       */
+      void endGame();
+
+      /**
        * Lets the view know all the game parameter constants (the ones contained in gameParameter.json).
        * This should be called immediately so the game view knows dimensions to build objects.
        *
@@ -297,4 +304,5 @@ public interface ViewActions {
        * @param message message string
        */
       void justPrintChat(String message);
+
 }

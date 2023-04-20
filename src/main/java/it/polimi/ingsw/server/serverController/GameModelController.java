@@ -1,9 +1,11 @@
 package it.polimi.ingsw.server.serverController;
 
-import it.polimi.ingsw.resources.Message;
+import it.polimi.ingsw.resources.interfaces.ViewActions;
 import it.polimi.ingsw.server.model.GameModel;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * The game model controller is to decide actions to make based on game state and messages received.
@@ -14,41 +16,30 @@ import java.util.List;
  */
 public class GameModelController {
 
-    private final VirtualViewAccess virtualViewAccess;
+    private final Map<String, ViewActions> clientViews;
+
+    private final List<String> turnCycleOrder;
 
     private final ModelAccess modelAccess;
-
-    private List<String> names;
 
     /**
      * Class constructor.
      *
-     * @param virtualViewAccess is the bridge between server controller and virtual view
-     * @param modelAccess       is the bridge between server controller and model
+     * @param clientViews is the map referencing view objects of respective players
      * @author Francesco Ostidich
      */
-    public GameModelController(VirtualViewAccess virtualViewAccess, ModelAccess modelAccess) {
-        waitForPlayers();
-        this.virtualViewAccess = new VirtualViewAccess(this);
-        this.modelAccess = new ModelAccess(new GameModel(names));
+    public GameModelController(@NotNull Map<String, ViewActions> clientViews) {
+        this.clientViews = clientViews;
+        this.modelAccess = new ModelAccess(new GameModel(clientViews.keySet().stream().toList()));
+        turnCycleOrder = modelAccess.getTurnCycleOrder();
     }
 
     /**
-     * Waits for players to enter the lobby. Writes their names on the names list.
+     * Starts and plays until the end a match between players provided.
      *
      * @author Francesco Ostidich
      */
-    private void waitForPlayers() {
-
-    }
-
-    /**
-     * Switches between actions to do based on the content of the message.
-     *
-     * @author Francesco Ostidich
-     * @param message contains information to be processed
-     */
-    protected void processMessage(Message message) {
+    public void playMatch() {
 
     }
 

@@ -11,4 +11,4 @@ import java.util.LinkedList;
  * @param totalPlayers is the maximum capacity of the game room
  * @param enteredPlayers is the list of players that have already entered the game room
  */
-public record GameRoom(String gameRoomName, String creatorName, int totalPlayers, LinkedList<ClientData> enteredPlayers) {}
+public record GameRoom(String gameRoomName, String creatorName, int totalPlayers, LinkedList<String> enteredPlayers) {}
