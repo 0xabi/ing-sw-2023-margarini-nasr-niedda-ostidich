@@ -20,6 +20,9 @@ import java.util.Scanner;
 public class CLI extends GameView {
 
     private final int MAX_PLAYER=4;
+    private final int LEN_COL_ROOM_NAME=9;
+    private final int LEN_COL_CREATOR_NAME=12;
+    private final int LEN_COL_PLAYERS=7;
     private String chatMessage="";
 
     private String dataMessage="";
@@ -184,9 +187,45 @@ public class CLI extends GameView {
         playerMessage("Game started!\n");
     }
 
+    /**
+     *
+     * @param rooms
+     * @return
+     * @author Abdullah Nasr
+     */
+    private String getTableGameRoom(List<GameRoom> rooms)
+    {
+        int lenMaxRoomName = 0;
+        int lenMaxCreatorName = 0;
 
+        //get the max len of creator/room name to autosize the table
+        for(GameRoom gr : rooms)
+        {
+            int currentLen = gr.gameRoomName().length();
+            if(currentLen>lenMaxRoomName)
+            {
+                lenMaxRoomName = currentLen;
+            }
+
+            currentLen = gr.creatorName().length();
+            if(currentLen>lenMaxCreatorName)
+            {
+                lenMaxCreatorName = currentLen;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * @author Abdullah Nasr
+     */
     @Override
     public String chooseGameRoom(List<GameRoom> rooms) {
+
+        String msg = getTableGameRoom(rooms);
+
         return null;
     }
 
