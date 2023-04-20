@@ -121,6 +121,11 @@ public class ViewAccess implements ViewActions {
     }
 
     @Override
+    public void updateGameRooms(List<GameRoom> gameRooms) {
+
+    }
+
+    @Override
     public void notifyGameHasStared() {
 
     }
