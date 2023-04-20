@@ -191,15 +191,33 @@ public class CLI extends GameView {
      * @return
      * @author Abdullah Nasr
      */
-    private String getRowRoomTable(String roomName, String creatorName, String players, int lenMaxRoomName, int lenMaxCreatorName)
+    private @NotNull String getRowRoomTable(String roomName, String creatorName, String players, int lenMaxRoomName, int lenMaxCreatorName)
     {
-        int distance = 0;
-        int marginDistance=0;
+        int distance;
+        int marginDistance;
         String rowRoomTable="";
 
         //content header
         rowRoomTable+="| ";
 
+        rowRoomTable = getString(roomName, lenMaxRoomName, rowRoomTable);
+
+        //creator name
+        rowRoomTable = getString(creatorName, lenMaxCreatorName, rowRoomTable);
+
+        //players
+        rowRoomTable = getString(players, LEN_COL_PLAYERS, rowRoomTable);
+
+        //bottom header
+        rowRoomTable+="\n";
+        rowRoomTable+="+-"+"-".repeat(lenMaxRoomName)+"-+-"+"-".repeat(lenMaxCreatorName)+"-+-"+"-".repeat(LEN_COL_PLAYERS)+"-+\n";
+
+        return rowRoomTable;
+    }
+
+    private @NotNull String getString(@NotNull String roomName, int lenMaxRoomName, String rowRoomTable) {
+        int distance;
+        int marginDistance;
         distance = lenMaxRoomName - roomName.length();
         marginDistance=distance/2;
 
@@ -208,31 +226,6 @@ public class CLI extends GameView {
         marginDistance = distance%2!=0 ? marginDistance+1 : marginDistance;
 
         rowRoomTable+=" ".repeat(marginDistance)+" | ";
-
-        //creator name
-        distance = lenMaxCreatorName - creatorName.length();
-        marginDistance=distance/2;
-
-        rowRoomTable+=" ".repeat(marginDistance)+creatorName;
-
-        marginDistance = distance%2!=0 ? marginDistance+1 : marginDistance;
-
-        rowRoomTable+=" ".repeat(marginDistance)+" | ";
-
-        //players
-        distance = LEN_COL_PLAYERS - players.length();
-        marginDistance=distance/2;
-
-        rowRoomTable+=" ".repeat(marginDistance)+players;
-
-        marginDistance = distance%2!=0 ? marginDistance+1 : marginDistance;
-
-        rowRoomTable+=" ".repeat(marginDistance)+" | ";
-
-        //bottom header
-        rowRoomTable+="\n";
-        rowRoomTable+="+-"+"-".repeat(lenMaxRoomName)+"-+-"+"-".repeat(lenMaxCreatorName)+"-+-"+"-".repeat(LEN_COL_PLAYERS)+"-+\n";
-
         return rowRoomTable;
     }
 
@@ -242,9 +235,9 @@ public class CLI extends GameView {
      * @return
      * @author Abdullah Nasr
      */
-    public String getTableGameRoom(List<GameRoom> rooms)
+    public String getTableGameRoom(@NotNull List<GameRoom> rooms)
     {
-        String tableGameRoom = "";
+        StringBuilder tableGameRoom = new StringBuilder();
         int lenMaxRoomName = 0;
         int lenMaxCreatorName = 0;
         int numRoom=1;
@@ -272,17 +265,17 @@ public class CLI extends GameView {
         lenMaxRoomName+=LEN_PREFIX;
 
         //upper header
-        tableGameRoom+="+-"+"-".repeat(lenMaxRoomName)+"-+-"+"-".repeat(lenMaxCreatorName)+"-+-"+"-".repeat(LEN_COL_PLAYERS)+"-+"+"\n";
-        tableGameRoom+= getRowRoomTable("Room name","Creator name","Players",lenMaxRoomName,lenMaxCreatorName);
+        tableGameRoom.append("+-").append("-".repeat(lenMaxRoomName)).append("-+-").append("-".repeat(lenMaxCreatorName)).append("-+-").append("-".repeat(LEN_COL_PLAYERS)).append("-+").append("\n");
+        tableGameRoom.append(getRowRoomTable("Room name", "Creator name", "Players", lenMaxRoomName, lenMaxCreatorName));
 
         for (GameRoom gr : rooms)
         {
             String players = gr.enteredPlayers().size()+"/"+gr.totalPlayers();
-            tableGameRoom+=getRowRoomTable("["+numRoom+"] "+gr.gameRoomName(),gr.creatorName(),players,lenMaxRoomName,lenMaxCreatorName);
+            tableGameRoom.append(getRowRoomTable("[" + numRoom + "] " + gr.gameRoomName(), gr.creatorName(), players, lenMaxRoomName, lenMaxCreatorName));
             numRoom++;
         }
 
-        return tableGameRoom;
+        return tableGameRoom.toString();
     }
 
     /**
