@@ -8,4 +8,4 @@ package it.polimi.ingsw.resources;
  * @param clientIP is the IP address
  * @param gameRoom is the game room where player is playing
  */
-public record ClientData(String playerName, String clientIP, GameRoom gameRoom) {}
+public record ClientData(String playerName, String clientIP, String gameRoom) {}
