@@ -52,7 +52,15 @@ public class CLI extends GameView {
      */
     @Override
     public void start() {
-        System.out.println("My Shelfie\nLoading...");
+        System.out.println("\n" +
+                "___  ___      _____ _          _  __ _      \n" +
+                "|  \\/  |     /  ___| |        | |/ _(_)     \n" +
+                "| .  . |_   _\\ `--.| |__   ___| | |_ _  ___ \n" +
+                "| |\\/| | | | |`--. \\ '_ \\ / _ \\ |  _| |/ _ \\\n" +
+                "| |  | | |_| /\\__/ / | | |  __/ | | | |  __/\n" +
+                "\\_|  |_/\\__, \\____/|_| |_|\\___|_|_| |_|\\___|\n" +
+                "         __/ |                              \n" +
+                "        |___/                               \n\n\n\n\nLoading...");
     }
 
     /**
