@@ -340,13 +340,6 @@ public class CLI extends GameView {
 
     @Override
     public void announceWinner(String winnerName, Map<String, Integer> points) {
-        //body
-        endGame();
-    }
-
-    @Override
-    public String waitForEndGameAction() {
-        return null;
     }
 
     @Override

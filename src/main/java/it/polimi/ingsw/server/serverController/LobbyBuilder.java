@@ -1,8 +1,9 @@
 package it.polimi.ingsw.server.serverController;
 
-import it.polimi.ingsw.resources.interfaces.ViewActions;
-import it.polimi.ingsw.server.virtualView.GameVirtualView;
-import java.util.Map;
+import it.polimi.ingsw.resources.Message;
+import it.polimi.ingsw.resources.interfaces.ServerNetworkToController;
+
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -14,25 +15,26 @@ import java.util.concurrent.Executors;
  *
  * @author Francesco Ostidich
  */
-public class LobbyBuilder {
+public class LobbyBuilder implements ServerNetworkToController {
 
     private static final ExecutorService executorService = Executors.newCachedThreadPool();
 
-    private static GameVirtualView gameVirtualView;
-
-    public static void main(String[] args) {
-        System.out.println("Starting server...");
-        //noinspection InfiniteLoopStatement
-        while(true) {
-            generateGame(gameVirtualView.waitForClients());
-        }
+    @Override
+    public void startGame(List<String> names) {
+        executorService.submit(() -> {
+            GameServerController gameServerController = new GameServerController(names);
+            gameServerController.playMatch();
+        });
     }
 
-    private static void generateGame(Map<String, ViewActions> clients) {
-        executorService.submit(() -> {
-            GameModelController gameModelController = new GameModelController(clients);
-            gameModelController.playMatch();
-        });
+    @Override
+    public void doAction(Message message) {
+
+    }
+
+    @Override
+    public void disconnected(String playerName) {
+
     }
 
 }

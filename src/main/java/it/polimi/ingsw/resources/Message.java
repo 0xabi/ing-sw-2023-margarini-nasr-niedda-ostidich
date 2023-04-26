@@ -9,7 +9,7 @@ public abstract class Message {
 
     private final String senderID;
 
-    private final String messageID;
+    private final MessageID messageID;
 
     /**
      * Class constructor.
@@ -18,7 +18,7 @@ public abstract class Message {
      * @param messageID is the ID of the message
      * @author Francesco Ostidich
      */
-    public Message(String senderID, String messageID) {
+    public Message(String senderID, MessageID messageID) {
         this.senderID = senderID;
         this.messageID = messageID;
     }
@@ -39,7 +39,8 @@ public abstract class Message {
      * @return the ID of the message
      * @author Francesco Ostidich
      */
-    public String getMessageID() {
+    public MessageID getMessageID() {
         return messageID;
     }
+
 }

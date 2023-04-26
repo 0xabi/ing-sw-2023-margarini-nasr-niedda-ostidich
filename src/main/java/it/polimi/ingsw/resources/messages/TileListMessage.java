@@ -1,6 +1,7 @@
 package it.polimi.ingsw.resources.messages;
 
 import it.polimi.ingsw.resources.Message;
+import it.polimi.ingsw.resources.MessageID;
 import it.polimi.ingsw.resources.Tile;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public class TileListMessage extends Message {
      * @param tiles is the list of tiles picked
      * @author Francesco Ostidich
      */
-    public TileListMessage(String senderID, String messageID, List<Tile> tiles) {
+    public TileListMessage(String senderID, MessageID messageID, List<Tile> tiles) {
         super(senderID, messageID);
         this.tiles = tiles;
     }

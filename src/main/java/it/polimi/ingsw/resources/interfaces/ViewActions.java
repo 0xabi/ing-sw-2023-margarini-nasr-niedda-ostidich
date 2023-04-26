@@ -17,13 +17,6 @@ import java.util.Stack;
 public interface ViewActions {
 
       /**
-       * Setter for game ended.
-       *
-       * @author Francesco Ostidich
-       */
-      void endGame();
-
-      /**
        * Lets the view know all the game parameter constants (the ones contained in gameParameter.json).
        * This should be called immediately so the game view knows dimensions to build objects.
        *
@@ -279,15 +272,6 @@ public interface ViewActions {
        * @param points is the players' end game points map
        */
       void announceWinner(String winnerName, Map<String, Integer> points);
-
-      /**
-       * When game is showing end games statistics and nothing else is doable for the ending game,
-       * player is waited for actions like "backToLobby".
-       *
-       * @author Francesco Ostidich
-       * @return command string for end game action.
-       */
-      String waitForEndGameAction();
 
       /**
        * Method is always opened on other thread, only chat messages are received.

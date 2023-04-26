@@ -50,8 +50,6 @@ public abstract class GameView implements ViewActions {
 
     private List<GameRoom> gameRooms;
 
-    private boolean gameEnded;
-
     /**
      * Class constructor.
      *
@@ -66,15 +64,6 @@ public abstract class GameView implements ViewActions {
         playerPoints = new LinkedList<>();
         playerPersonalGoals = new LinkedList<>();
         gameRooms = new ArrayList<>();
-        gameEnded = false;
-    }
-
-    public void endGame() {
-        this.gameEnded = false;
-    }
-
-    public boolean isGameEnded() {
-        return gameEnded;
     }
 
     /**

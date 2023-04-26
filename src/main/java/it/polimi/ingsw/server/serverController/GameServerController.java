@@ -1,11 +1,9 @@
 package it.polimi.ingsw.server.serverController;
 
-import it.polimi.ingsw.resources.interfaces.ViewActions;
 import it.polimi.ingsw.server.model.GameModel;
-import org.jetbrains.annotations.NotNull;
+import it.polimi.ingsw.server.serverNetwork.GameServerNetwork;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * The game model controller is to decide actions to make based on game state and messages received.
@@ -14,24 +12,26 @@ import java.util.Map;
  *
  * @author Francesco Ostidich
  */
-public class GameModelController {
+public class GameServerController {
 
-    private final Map<String, ViewActions> clientViews;
+    private final List<String> names;
 
-    private final List<String> turnCycleOrder;
+    private final GameModel gameModel;
 
-    private final ModelAccess modelAccess;
+    private static final GameServerNetwork gameServerNetwork = new GameServerNetwork(new LobbyBuilder());
 
     /**
      * Class constructor.
      *
-     * @param clientViews is the map referencing view objects of respective players
+     * @param names is the players' names string list
      * @author Francesco Ostidich
      */
-    public GameModelController(@NotNull Map<String, ViewActions> clientViews) {
-        this.clientViews = clientViews;
-        this.modelAccess = new ModelAccess(new GameModel(clientViews.keySet().stream().toList()));
-        turnCycleOrder = modelAccess.getTurnCycleOrder();
+    public GameServerController(List<String> names) {
+        gameModel = new GameModel(names);
+        this.names = gameModel.getTurnCycleOrder();
+    }
+
+    public static void main(String[] args) {
     }
 
     /**
