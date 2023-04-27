@@ -52,15 +52,21 @@ public class CLI extends GameView {
      */
     @Override
     public void start() {
-        System.out.println("\n" +
-                "___  ___      _____ _          _  __ _      \n" +
-                "|  \\/  |     /  ___| |        | |/ _(_)     \n" +
-                "| .  . |_   _\\ `--.| |__   ___| | |_ _  ___ \n" +
-                "| |\\/| | | | |`--. \\ '_ \\ / _ \\ |  _| |/ _ \\\n" +
-                "| |  | | |_| /\\__/ / | | |  __/ | | | |  __/\n" +
-                "\\_|  |_/\\__, \\____/|_| |_|\\___|_|_| |_|\\___|\n" +
-                "         __/ |                              \n" +
-                "        |___/                               \n\n\n\n\nLoading...");
+        System.out.println("""
+
+                ___  ___      _____ _          _  __ _     \s
+                |  \\/  |     /  ___| |        | |/ _(_)    \s
+                | .  . |_   _\\ `--.| |__   ___| | |_ _  ___\s
+                | |\\/| | | | |`--. \\ '_ \\ / _ \\ |  _| |/ _ \\
+                | |  | | |_| /\\__/ / | | |  __/ | | | |  __/
+                \\_|  |_/\\__, \\____/|_| |_|\\___|_|_| |_|\\___|
+                         __/ |                             \s
+                        |___/                              \s
+
+
+
+
+                Loading...""");
     }
 
     /**
@@ -329,6 +335,11 @@ public class CLI extends GameView {
     @Override
     public int chooseColumn() {
         return 0;
+    }
+
+    @Override
+    public void playerIsPlaying(String playerName) {
+        System.out.println(playerName + "is currently playing his turn");
     }
 
     @Override

@@ -1,46 +1,29 @@
 package it.polimi.ingsw.resources;
 
+import it.polimi.ingsw.resources.exceptions.UnavailableContentSizeException;
+
 /**
  * A message is an object which encapsulates an information to be serialized and sent via a solid connection.
+ * It contains the name of the player, the ID of the method to call and the parameter object.
+ * Casting is required when trying to get the data.
  *
  * @author Francesco Ostidich
+ * @param playerName is the player name of the receiving or sending client
+ * @param messageID is the ID of the method to be called or to respond to
+ * @param contents is the data to transfer
  */
-public abstract class Message {
-
-    private final String senderID;
-
-    private final MessageID messageID;
+public record Message(String playerName, MessageID messageID, Object... contents) {
 
     /**
-     * Class constructor.
+     * If contents array is sized one, method acts like a getter for the only element in the array.
      *
-     * @param senderID  is the ID of the player or of the server game
-     * @param messageID is the ID of the message
      * @author Francesco Ostidich
+     * @return first element of array
+     * @throws UnavailableContentSizeException if contents array has a different size than one
      */
-    public Message(String senderID, MessageID messageID) {
-        this.senderID = senderID;
-        this.messageID = messageID;
-    }
-
-    /**
-     * Getter for senderID.
-     *
-     * @return the ID of the sender
-     * @author Francesco Ostidich
-     */
-    public String getSenderID() {
-        return senderID;
-    }
-
-    /**
-     * Getter for messageID.
-     *
-     * @return the ID of the message
-     * @author Francesco Ostidich
-     */
-    public MessageID getMessageID() {
-        return messageID;
+    public Object content() {
+        if(contents.length != 1) throw new UnavailableContentSizeException("Message.content() is not callable from a message containing 0 or 2+ objects");
+        return contents[0];
     }
 
 }

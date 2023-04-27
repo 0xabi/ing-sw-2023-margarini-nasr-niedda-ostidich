@@ -191,13 +191,21 @@ public interface ViewActions {
       String chooseGameRoom(List<GameRoom> rooms);
 
       /**
-       * When game starts, personal goals must be forwarded to game view in order to be printed.
+       * When game ends, personal goals must be forwarded to game view in order to be printed.
        * In CLI, in order to print personal goal, personalGoalMatches.json is to be read.
+       *
+       * @author Francesco Ostidich
+       * @param personalGoals is the personal goal ID number list
+       */
+      void givePersonalGoals(List<Integer> personalGoals);
+
+      /**
+       * When game starts, player's personal goal is sent.
        *
        * @author Francesco Ostidich
        * @param personalGoal is the personal goal ID number
        */
-      void givePersonalGoals(List<Integer> personalGoal);
+      void givePersonalGoal(int personalGoal);
 
       /**
        * When game starts, common goals must be forwarded to game view in order to be printed.
@@ -235,6 +243,15 @@ public interface ViewActions {
        * @return column number chosen for shelf's insertion
        */
       int chooseColumn();
+
+      /**
+       * When another player is picking tiles, choosing order and choosing column, the view is telling
+       * the name of the player playing.
+       *
+       * @author Francesco Ostidich
+       * @param playerName is the player currently playing
+       */
+      void playerIsPlaying(String playerName);
 
       /**
        * After player's turn, common goal points are checked if to be given, and if that's the case, pops token to the player.

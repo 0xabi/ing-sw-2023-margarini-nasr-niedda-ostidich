@@ -4,12 +4,10 @@ import it.polimi.ingsw.client.view.GameView;
 import it.polimi.ingsw.resources.interfaces.ClientControllerToNetwork;
 
 /**
- * The controller sets the View object to send to the server IP, so it can take full control over it. A method remains opened
- * until match is finished.
- * There are two methods the controller can use, one for RMI and one for Socket.
- * In case of RMI connection, the viewAccess object is directly sent; in case of Socket connection, server receives a virtualView
- * object to treat in the same way. The virtualView calls the same methods and sends packets; when client receives them should
- * call the respective action on the view object it has saved.
+ * When a server message is received, based on player name and on message ID, the right method is called on the view
+ * and waited for return data, to pack and send back.
+ * In case of the "justScanChat" method, when called from the server, a dedicated thread is started so method can always be up and
+ * running.
  */
 public class GameClientNetwork implements ClientControllerToNetwork {
 

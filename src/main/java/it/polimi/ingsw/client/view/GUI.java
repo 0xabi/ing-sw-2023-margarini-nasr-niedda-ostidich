@@ -74,6 +74,10 @@ public class GUI extends GameView {
     }
 
     @Override
+    public void playerIsPlaying(String playerName) {
+    }
+
+    @Override
     public void assignCommonGoalPoints(String playerName, int token) {
 
     }
@@ -91,11 +95,6 @@ public class GUI extends GameView {
     @Override
     public void announceWinner(String winnerName, Map<String, Integer> points) {
 
-    }
-
-    @Override
-    public String waitForEndGameAction() {
-        return null;
     }
 
     @Override

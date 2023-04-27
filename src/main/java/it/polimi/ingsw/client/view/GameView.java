@@ -367,6 +367,12 @@ public abstract class GameView implements ViewActions {
      * @author Francesco Ostidich
      */
     @Override
+    public void givePersonalGoal(int personalGoal) {}
+
+    /**
+     * @author Francesco Ostidich
+     */
+    @Override
     public void giveCommonGoals(String commonGoal1, String commonGoal2) {
         this.commonGoal1 = commonGoal1;
         this.commonGoal2 = commonGoal2;
