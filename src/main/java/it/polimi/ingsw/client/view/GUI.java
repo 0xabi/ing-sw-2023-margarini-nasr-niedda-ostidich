@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client.view;
 
-import it.polimi.ingsw.resources.Coordinates;
 import it.polimi.ingsw.resources.GameRoom;
 import it.polimi.ingsw.resources.Tile;
 
@@ -9,9 +8,10 @@ import java.util.Map;
 
 public class GUI extends GameView {
 
-    public GUI() {
-        super();
+    public GUI(String network) {
+        super(network);
     }
+
 
     @Override
     public void start() {
@@ -19,32 +19,27 @@ public class GUI extends GameView {
     }
 
     @Override
-    public String chooseIPAddress() {
-        return null;
+    public void chooseIPAddress() {
+
     }
 
     @Override
-    public String choosePlayerName() {
-        return null;
+    public void choosePlayerName() {
+
     }
 
     @Override
-    public String chooseNewOrJoin() {
-        return null;
+    public void chooseNewOrJoin() {
+
     }
 
     @Override
-    public String chooseNewGameName() {
-        return null;
+    public void chooseNewGameName() {
+
     }
 
     @Override
-    public int chooseNewGamePlayerNumber() {
-        return 0;
-    }
-
-    @Override
-    public void updateGameRoom(GameRoom gameRoom) {
+    public void chooseNewGamePlayerNumber() {
 
     }
 
@@ -54,27 +49,28 @@ public class GUI extends GameView {
     }
 
     @Override
-    public String chooseGameRoom(List<GameRoom> rooms) {
-        return null;
+    public void chooseGameRoom(List<GameRoom> rooms) {
+
     }
 
     @Override
-    public List<Coordinates> pickTiles(int availablePickNumber) {
-        return null;
+    public void pickTiles(int availablePickNumber) {
+
     }
 
     @Override
-    public List<Tile> chooseOrder(List<Tile> selection) {
-        return null;
+    public void chooseOrder(List<Tile> selection) {
+
     }
 
     @Override
-    public int chooseColumn() {
-        return 0;
+    public void chooseColumn() {
+
     }
 
     @Override
     public void playerIsPlaying(String playerName) {
+
     }
 
     @Override
@@ -98,13 +94,12 @@ public class GUI extends GameView {
     }
 
     @Override
-    public String justScanChat() {
-        return null;
+    public void justScanChat() {
+
     }
 
     @Override
     public void justPrintChat(String message) {
 
     }
-
 }

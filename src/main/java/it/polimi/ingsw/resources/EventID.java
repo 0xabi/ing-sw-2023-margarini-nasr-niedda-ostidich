@@ -1,6 +1,6 @@
 package it.polimi.ingsw.resources;
 
-public enum MessageID {
+public enum EventID {
 
     SET_GAME_PARAMETER,
     TURN_CYCLE_ORDER,
@@ -13,6 +13,9 @@ public enum MessageID {
     UPDATE_COMMON_GOAL_2_GIVEN_PLAYERS,
     UPDATE_PLAYER_SHELVES,
     UPDATE_PLAYER_POINTS,
+    START,
+    CHOOSE_IP_ADDRESS,
+    CHOOSE_PLAYER_NAME,
     CHOOSE_NEW_OR_JOIN,
     CHOOSE_NEW_GAME_NAME,
     CHOOSE_NEW_GAME_PLAYER_NUMBER,
@@ -31,6 +34,6 @@ public enum MessageID {
     ASSIGN_ADJACENT_GOAL_POINTS,
     ANNOUNCE_WINNER,
     JUST_SCAN_CHAT,
-    JUST_PRINT_CHAT,
+    JUST_PRINT_CHAT
 
 }

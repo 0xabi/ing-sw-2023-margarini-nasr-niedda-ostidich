@@ -1,6 +1,5 @@
 package it.polimi.ingsw.resources.interfaces;
 
-import it.polimi.ingsw.resources.Coordinates;
 import it.polimi.ingsw.resources.GameRoom;
 import it.polimi.ingsw.resources.Tile;
 
@@ -119,41 +118,36 @@ public interface ViewActions {
        * "localhost" is accepted.
        *
        * @author Francesco Ostidich
-       * @return IP address string written by the player ("x.x.x.x")
        */
-      String chooseIPAddress();
+      void chooseIPAddress();
 
       /**
        * When player wants to enter games is required to write his nickname.
        *
        * @author Francesco Ostidich
-       * @return nickname written by the player
        */
-      String choosePlayerName();
+      void choosePlayerName();
 
       /**
        * When player wants to play is required to choose between creating a new game room or enter one already opened.
        *
        * @author Francesco Ostidich
-       * @return player's selection ("new" or "join")
        */
-      String chooseNewOrJoin();
+      void chooseNewOrJoin();
 
       /**
        * After deciding to create new game room, player has to set a name for it.
        *
        * @author Francesco Ostidich
-       * @return game room name written by the player
        */
-      String chooseNewGameName();
+      void chooseNewGameName();
 
       /**
        * After deciding to create new game room, player has to set a player number for it.
        *
        * @author Francesco Ostidich
-       * @return game room player number written by the player
        */
-      int chooseNewGamePlayerNumber();
+      void chooseNewGamePlayerNumber();
 
       /**
        * When a player is in a game room, and its information changes (for example a player enters),
@@ -186,9 +180,8 @@ public interface ViewActions {
        *
        * @author Francesco Ostidich
        * @param rooms is the game rooms availability list
-       * @return game room selected string
        */
-      String chooseGameRoom(List<GameRoom> rooms);
+      void chooseGameRoom(List<GameRoom> rooms);
 
       /**
        * When game ends, personal goals must be forwarded to game view in order to be printed.
@@ -223,26 +216,23 @@ public interface ViewActions {
        *
        * @author Francesco Ostidich
        * @param availablePickNumber is the max number of tiles to be picked
-       * @return Coordinates of boards picked
        */
-      List<Coordinates> pickTiles(int availablePickNumber);
+      void pickTiles(int availablePickNumber);
 
       /**
        * After picked coordinates are checked if legals, player is asked to choose insertion order of the tiles.
        *
        * @author Francesco Ostidich
        * @param selection is the picked tile list
-       * @return picked tile list ordered for shelf's insertion
        */
-      List<Tile> chooseOrder(List<Tile> selection);
+      void chooseOrder(List<Tile> selection);
 
       /**
        * After picked tiles order is defined, player is asked to choose a shelf column to insert the tiles.
        *
        * @author Francesco Ostidich
-       * @return column number chosen for shelf's insertion
        */
-      int chooseColumn();
+      void chooseColumn();
 
       /**
        * When another player is picking tiles, choosing order and choosing column, the view is telling
@@ -294,9 +284,8 @@ public interface ViewActions {
        * Method is always opened on other thread, only chat messages are received.
        *
        * @author Francesco Ostidich
-       * @return message string
        */
-      String justScanChat();
+      void justScanChat();
 
       /**
        * Method is always opened on other thread, only chat messages are showed.

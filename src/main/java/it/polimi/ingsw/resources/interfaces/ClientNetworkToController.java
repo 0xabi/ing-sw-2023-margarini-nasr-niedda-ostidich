@@ -7,11 +7,4 @@ package it.polimi.ingsw.resources.interfaces;
  */
 public interface ClientNetworkToController {
 
-    /**
-     * When game ends, before closing connection, game is notified as ended.
-     *
-     * @author Francesco Ostidich
-     */
-    void endGame();
-
 }

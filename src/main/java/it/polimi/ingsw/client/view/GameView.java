@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.view;
 
+import it.polimi.ingsw.client.clientController.GameClientController;
 import it.polimi.ingsw.resources.GameRoom;
 import it.polimi.ingsw.resources.Tile;
 import it.polimi.ingsw.resources.interfaces.ViewActions;
@@ -15,6 +16,8 @@ import java.util.*;
  * @author Francesco Ostidich
  */
 public abstract class GameView implements ViewActions {
+
+    private final GameClientController gameClientController;
 
     private static final int TIMEOUT = 20;
 
@@ -55,7 +58,7 @@ public abstract class GameView implements ViewActions {
      *
      * @author Francesco Ostidich
      */
-    public GameView() {
+    public GameView(String network) {
         gameParameters = new HashMap<>();
         names = new LinkedList<>();
         endGameToken = true;
@@ -64,6 +67,17 @@ public abstract class GameView implements ViewActions {
         playerPoints = new LinkedList<>();
         playerPersonalGoals = new LinkedList<>();
         gameRooms = new ArrayList<>();
+        gameClientController = new GameClientController(this, network);
+    }
+
+    /**
+     * Getter for game client controller.
+     *
+     * @author Francesco Ostidich
+     * @return game client controller
+     */
+    public GameClientController getGameClientController() {
+        return gameClientController;
     }
 
     /**

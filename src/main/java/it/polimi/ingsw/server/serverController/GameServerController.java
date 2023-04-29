@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.serverController;
 
 import it.polimi.ingsw.resources.Message;
-import it.polimi.ingsw.resources.MessageID;
+import it.polimi.ingsw.resources.EventID;
 import it.polimi.ingsw.server.model.GameModel;
 import it.polimi.ingsw.server.serverNetwork.GameServerNetwork;
 
@@ -37,11 +37,11 @@ public class GameServerController {
 
         //EXAMPLES of Message.class usages
 
-        Message playerIsPlayingMessage = new Message("playerName", MessageID.PLAYER_IS_PLAYING, "playingPlayer");
-        Message assignCommonGoalMessage = new Message("playerName", MessageID.ASSIGN_COMMON_GOAL_POINTS, "playerAssigned", 6);
-        Message chooseColumnMessage = new Message("playerName", MessageID.CHOOSE_COLUMN);
+        Message playerIsPlayingMessage = new Message("playerName", EventID.PLAYER_IS_PLAYING, "playingPlayer");
+        Message assignCommonGoalMessage = new Message("playerName", EventID.ASSIGN_COMMON_GOAL_POINTS, "playerAssigned", 6);
+        Message chooseColumnMessage = new Message("playerName", EventID.CHOOSE_COLUMN);
 
-        String name = (String)playerIsPlayingMessage.content();
+        String name = (String) playerIsPlayingMessage.content();
 
         String assigned = (String) assignCommonGoalMessage.contents()[0];
         int points = (int) assignCommonGoalMessage.contents()[1];

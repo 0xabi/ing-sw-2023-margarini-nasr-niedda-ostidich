@@ -9,10 +9,10 @@ import it.polimi.ingsw.resources.exceptions.UnavailableContentSizeException;
  *
  * @author Francesco Ostidich
  * @param playerName is the player name of the receiving or sending client
- * @param messageID is the ID of the method to be called or to respond to
+ * @param eventID is the ID of the method to be called or to respond to
  * @param contents is the data to transfer
  */
-public record Message(String playerName, MessageID messageID, Object... contents) {
+public record Message(String playerName, EventID eventID, Object... contents) {
 
     /**
      * If contents array is sized one, method acts like a getter for the only element in the array.

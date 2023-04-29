@@ -1,12 +1,11 @@
 package it.polimi.ingsw.client.clientController;
 
 import it.polimi.ingsw.client.clientNetwork.GameClientNetwork;
-import it.polimi.ingsw.client.view.CLI;
-import it.polimi.ingsw.client.view.GUI;
 import it.polimi.ingsw.client.view.GameView;
+import it.polimi.ingsw.resources.Event;
+import it.polimi.ingsw.resources.EventID;
 import it.polimi.ingsw.resources.interfaces.ClientNetworkToController;
-
-import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * The game view controller is to receive messages from the network handler, and consequentially call methods on the view.
@@ -17,11 +16,7 @@ import java.util.Objects;
  */
 public class GameClientController implements ClientNetworkToController {
 
-    public static final String NETWORK = "RMI";
-
-    public static final String INTERFACE = "CLI";
-
-    private static final GameView gameView = initializeGameView();
+    private final GameView gameView;
 
     private static GameClientNetwork gameClientNetwork;
 
@@ -30,68 +25,25 @@ public class GameClientController implements ClientNetworkToController {
      *
      * @author Francesco Ostidich
      */
-    public GameClientController() {}
-
-    /**
-     * Based on constant, game view is initialized as GUI or CLI.
-     *
-     * @author Francesco Ostidich
-     * @return CLI or GUI
-     */
-    private static GameView initializeGameView() {
-        if(Objects.equals(INTERFACE, "GUI")) return new GUI();
-        else return new CLI();
-    }
-
-    public static void main(String[] args) {
-        GameClientController gameClientController = new GameClientController();
-        //noinspection ConstantConditions
-        if(NETWORK.equals("RMI"))
-            //noinspection InfiniteLoopStatement
-            do {
-                lobbyActions();
-                gameClientNetwork.connectionRMIToServer();
-                gameClientController.waitForEndGame();
-            } while (true);
-        else
-            //noinspection InfiniteLoopStatement
-            do {
-                lobbyActions();
-                gameClientNetwork.connectionSocketToServer();
-                gameClientController.waitForEndGame();
-            } while (true);
-    }
-
-    /**
-     * While game is playing controller is waiting for the game to end.
-     *
-     * @author Francesco Ostidich
-     */
-    private void waitForEndGame() {
-        synchronized (gameView) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
-    /**
-     * Defines all actions needed from the player before connecting to the server.
-     *
-     * @author Francesco Ostidich
-     */
-    private static void lobbyActions() {
+    public GameClientController(GameView gameView, String network) {
+        this.gameView = gameView;
+        if(network == null) gameClientNetwork.connectionSocketToServer();
+        else if(network.equals("RMI")) gameClientNetwork.connectionRMIToServer();
+        else gameClientNetwork.connectionSocketToServer();
         gameView.start();
-        String IP = gameView.chooseIPAddress();
-        String playerName = gameView.choosePlayerName();
-        gameClientNetwork = new GameClientNetwork(IP, playerName, gameView);
     }
 
-    @Override
-    public synchronized void endGame() {
-        this.notifyAll();
+    /**
+     * Used to pass method request answer to the controller from the view.
+     * It contains switch cases based on event type.
+     *
+     * @author Francesco Ostidich
+     * @param evt is the event information
+     */
+    public void update(@NotNull Event evt) {
+        if(evt.eventName() == EventID.SET_GAME_PARAMETER)
+            System.out.println("Eureka!");
+        else System.out.println("Maybe not Eureka!");
     }
 
 }
