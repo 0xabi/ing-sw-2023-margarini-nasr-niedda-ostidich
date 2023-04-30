@@ -6,6 +6,7 @@ import it.polimi.ingsw.resources.Tile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -88,6 +89,7 @@ public class CLI extends GameView {
         chunks = IP.split("\\.");
         if(chunks.length!=4)
             return false;
+
         try{
             for(String number : chunks) {
                 int num = Integer.parseInt(number);
@@ -318,37 +320,103 @@ public class CLI extends GameView {
 
     @Override
     public List<Coordinates> pickTiles(int availablePickNumber) {
-        return null;
+        int x = 0, y = 0;
+        ArrayList<Coordinates> list = new ArrayList<>();
+        String[] coords;
+        boolean attempt = true;
+
+        for(int i = 0; i < availablePickNumber; i++){
+            do {
+                attempt = true;
+                try {
+                    coords = playerMessage("choose using the following format: x,y\n").split("\\,");
+                    x = Integer.parseInt(coords[0]);
+                    y = Integer.parseInt(coords[1]);
+                }
+                catch (Exception e) {
+                    System.out.println("invalid input, try again ");
+                    attempt = false;
+                }
+            }while(!attempt);
+
+            /*x = Integer.parseInt(coords[0]);
+            y = Integer.parseInt(coords[1]);*/
+            list.add(new Coordinates(x, y));
+
+            if (i < 3 && playerMessage("done?").equals("y")) i = 4;
+        }
+
+        return list;
     }
 
     @Override
     public List<Tile> chooseOrder(List<Tile> selection) {
-        return null;
+        ArrayList<Tile> temp = new ArrayList<>();
+        ArrayList<Integer> choosenIndex = new ArrayList<>();
+
+        int index = 0;
+        System.out.println("Choose order: ");
+
+        for(int i = 0; i < selection.size(); i++){
+
+            do {
+                index = Integer.parseInt(playerMessage("Choose tile in " + i + " position: "));
+
+                if((index <selection.size() && index > -1) || choosenIndex.contains(index))
+                    System.out.println("Invalid value, try again");
+                temp.add(selection.get(index));
+            }while(!(index < selection.size() && index > -1) && !choosenIndex.contains(index));
+
+            choosenIndex.add(index);
+            temp.add(selection.get(index));
+        }
+
+        return temp;
     }
 
     @Override
     public int chooseColumn() {
-        return 0;
+        int column = 0;
+        boolean attempt = true;
+
+        do {
+            attempt = true;
+            try {
+                column = Integer.parseInt(playerMessage("Choose column: "));
+            } catch (Exception e) {
+                System.out.println("invalid input, try again");
+                attempt = false;
+            }
+        }while(!attempt);
+
+        return column;
     }
 
     @Override
     public void assignCommonGoalPoints(String playerName, int token) {
-
+        System.out.println(playerName + " recieved " + token + "points from commongoal");
     }
 
     @Override
     public void assignPersonalGoalPoints(Map<String, Integer> points) {
-
+        for(Map.Entry<String, Integer> entry : points.entrySet()){
+            System.out.println(entry.getKey() + " recieved " + entry.getValue() + "points from Personal goal");
+        }
     }
 
     @Override
     public void assignAdjacentGoalPoints(Map<String, Integer> points) {
-
+        for(Map.Entry<String, Integer> entry : points.entrySet()){
+            System.out.println(entry.getKey() + " recieved " + entry.getValue() + "points from adjacents tiles");
+        }
     }
 
     @Override
     public void announceWinner(String winnerName, Map<String, Integer> points) {
-        //body
+        for(Map.Entry<String, Integer> entry : points.entrySet())
+            System.out.println(entry.getKey() + " has " + entry.getValue() + " points");
+
+        System.out.println("The winner is: " + winnerName);
         endGame();
     }
 
