@@ -1,7 +1,8 @@
 package it.polimi.ingsw.client.clientNetwork;
 
-import it.polimi.ingsw.client.view.GameView;
-import it.polimi.ingsw.resources.interfaces.ClientControllerToNetwork;
+import it.polimi.ingsw.resources.interfaces.ClientController;
+import it.polimi.ingsw.resources.interfaces.ClientNetwork;
+import it.polimi.ingsw.resources.interfaces.ServerController;
 
 /**
  * When a server message is received, based on player name and on message ID, the right method is called on the view
@@ -9,35 +10,46 @@ import it.polimi.ingsw.resources.interfaces.ClientControllerToNetwork;
  * In case of the "justScanChat" method, when called from the server, a dedicated thread is started so method can always be up and
  * running.
  */
-public class GameClientNetwork implements ClientControllerToNetwork {
+public class GameClientNetwork implements ClientNetwork {
 
-    private final String serverIP;
+    private final String connectionType;
 
-    private final String playerName;
+    private ClientController controller;
 
-    private final GameView gameView;
+    private String serverIP;
+
+    private String playerName;
 
     /**
      * Class constructor.
      *
-     * @param serverIP   is the IP the client is trying to connect to
-     * @param playerName is the player's name string
-     * @param gameView   is the view that the server wants to take over
+     * @param connectionType is the type of connection
      * @author Francesco Ostidich
      */
-    public GameClientNetwork(String serverIP, String playerName, GameView gameView) {
+    public GameClientNetwork(String connectionType) {
+        this.connectionType = connectionType;
+    }
+
+    @Override
+    public ServerController connect(String serverIP, String playerName, ClientController controller) {
         this.serverIP = serverIP;
         this.playerName = playerName;
-        this.gameView = gameView;
+        this.controller = controller;
+        return null;
     }
 
     @Override
-    public void connectionRMIToServer() {
+    public void joinRoom(String room) {
 
     }
 
     @Override
-    public void connectionSocketToServer() {
+    public void createNewRoom(String newRoomName, int playerNumber) {
+
+    }
+
+    @Override
+    public void askForRooms() {
 
     }
 

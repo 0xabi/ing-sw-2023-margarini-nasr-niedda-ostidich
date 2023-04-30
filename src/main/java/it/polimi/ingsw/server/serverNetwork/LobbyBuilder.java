@@ -1,7 +1,6 @@
-package it.polimi.ingsw.server.serverController;
+package it.polimi.ingsw.server.serverNetwork;
 
-import it.polimi.ingsw.resources.Message;
-import it.polimi.ingsw.resources.interfaces.ServerNetworkToController;
+import it.polimi.ingsw.server.serverController.GameServerController;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -15,26 +14,21 @@ import java.util.concurrent.Executors;
  *
  * @author Francesco Ostidich
  */
-public class LobbyBuilder implements ServerNetworkToController {
+public class LobbyBuilder {
 
     private static final ExecutorService executorService = Executors.newCachedThreadPool();
 
-    @Override
-    public void startGame(List<String> names) {
+    /**
+     * When a game room is full, match is to be started.
+     *
+     * @author Francesco Ostidich
+     * @param names is the list of players' name
+     */
+    public static void startGame(List<String> names) {
         executorService.submit(() -> {
             GameServerController gameServerController = new GameServerController(names);
             gameServerController.playMatch();
         });
-    }
-
-    @Override
-    public void doAction(Message message) {
-
-    }
-
-    @Override
-    public void disconnected(String playerName) {
-
     }
 
 }

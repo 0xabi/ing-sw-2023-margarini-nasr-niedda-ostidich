@@ -14,7 +14,7 @@ import java.util.Scanner;
  *
  * @author Francesco Ostidich
  */
-public class CLI extends GameView {
+public class CLI extends GameClientView {
 
     private String chatMessage = "";
 
@@ -64,7 +64,7 @@ public class CLI extends GameView {
         while(!InputFormatChecker.isIPAddress(scannedIP)) {
             scannedIP = playerMessage("Wrong input!\nChoose IP address:");
         }
-        getGameClientController().update(new Event(EventID.CHOOSE_IP_ADDRESS, scannedIP));
+        getClientController().update(new Event(EventID.CHOOSE_IP_ADDRESS, scannedIP));
     }
 
     /**
@@ -76,7 +76,7 @@ public class CLI extends GameView {
         while(scannedIP.isBlank()) {
             scannedIP = playerMessage("Wrong input!\nChoose player name:");
         }
-        getGameClientController().update(new Event(EventID.CHOOSE_PLAYER_NAME, scannedIP));
+        getClientController().update(new Event(EventID.CHOOSE_PLAYER_NAME, scannedIP));
     }
 
 
@@ -94,7 +94,7 @@ public class CLI extends GameView {
             answer=answer.trim().toLowerCase();
         }
 
-        getGameClientController().update(new Event(EventID.CHOOSE_NEW_OR_JOIN, answer));
+        getClientController().update(new Event(EventID.CHOOSE_NEW_OR_JOIN, answer));
     }
 
 
@@ -109,7 +109,7 @@ public class CLI extends GameView {
             gameName = playerMessage("Wrong input!\nChoose a new game name:");
         }
 
-        getGameClientController().update(new Event(EventID.CHOOSE_NEW_GAME_NAME, gameName));
+        getClientController().update(new Event(EventID.CHOOSE_NEW_GAME_NAME, gameName));
     }
 
     /**
@@ -127,7 +127,7 @@ public class CLI extends GameView {
             numPlayer = InputFormatChecker.getNumFromString(input);
         }
 
-        getGameClientController().update(new Event(EventID.CHOOSE_NEW_GAME_PLAYER_NUMBER, numPlayer));
+        getClientController().update(new Event(EventID.CHOOSE_NEW_GAME_PLAYER_NUMBER, numPlayer));
     }
 
 
@@ -154,7 +154,7 @@ public class CLI extends GameView {
             answer = playerMessage(gameRoomTable+"\nInvalid game room!\nType the room name or insert the number of row: ");
         }
 
-        getGameClientController().update(new Event(EventID.CHOOSE_GAME_ROOM, answer));
+        getClientController().update(new Event(EventID.CHOOSE_GAME_ROOM, answer));
     }
 
     @Override
@@ -207,7 +207,7 @@ public class CLI extends GameView {
         }
         String temp = chatMessage;
         chatMessage = null;
-        getGameClientController().update(new Event(EventID.JUST_SCAN_CHAT, temp));
+        getClientController().update(new Event(EventID.JUST_SCAN_CHAT, temp));
     }
 
     /**

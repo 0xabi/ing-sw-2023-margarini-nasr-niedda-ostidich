@@ -13,7 +13,7 @@ import java.util.Stack;
  *
  * @author Francesco Ostidich
  */
-public interface ViewActions {
+public interface ClientView {
 
       /**
        * Lets the view know all the game parameter constants (the ones contained in gameParameter.json).
@@ -96,7 +96,7 @@ public interface ViewActions {
        * @author Francesco Ostidich
        * @param shelves are the players' shelves
        */
-      void updatePlayerShelves(List<Tile[][]> shelves);
+      void updatePlayerShelves(Map<String, Tile[][]> shelves);
 
       /**
        * The players' points stored in the view are updated and printed if needed.
@@ -104,7 +104,7 @@ public interface ViewActions {
        * @author Francesco Ostidich
        * @param points are the players' points
        */
-      void updatePlayerPoints(List<Integer> points);
+      void updatePlayerPoints(Map<String, Integer> points);
 
       /**
        * When game is initially loaded, requires a start button to be pressed in order to get first options to choose.
@@ -191,14 +191,6 @@ public interface ViewActions {
        * @param personalGoals is the personal goal ID number list
        */
       void givePersonalGoals(List<Integer> personalGoals);
-
-      /**
-       * When game starts, player's personal goal is sent.
-       *
-       * @author Francesco Ostidich
-       * @param personalGoal is the personal goal ID number
-       */
-      void givePersonalGoal(int personalGoal);
 
       /**
        * When game starts, common goals must be forwarded to game view in order to be printed.

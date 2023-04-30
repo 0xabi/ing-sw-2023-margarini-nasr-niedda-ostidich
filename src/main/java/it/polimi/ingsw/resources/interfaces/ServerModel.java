@@ -13,7 +13,7 @@ import java.util.Stack;
  *
  * @author Francesco Ostidich
  */
-public interface ModelActions {
+public interface ServerModel {
 
     /**
      * Getter for board.

@@ -6,7 +6,7 @@ import it.polimi.ingsw.resources.Tile;
 import java.util.List;
 import java.util.Map;
 
-public class GUI extends GameView {
+public class GUI extends GameClientView {
 
     public GUI(String network) {
         super(network);

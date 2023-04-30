@@ -1,8 +1,9 @@
 package it.polimi.ingsw.server.serverController;
 
 import it.polimi.ingsw.resources.Message;
-import it.polimi.ingsw.resources.EventID;
-import it.polimi.ingsw.server.model.GameModel;
+import it.polimi.ingsw.resources.interfaces.ServerController;
+import it.polimi.ingsw.resources.interfaces.ServerModel;
+import it.polimi.ingsw.server.model.GameServerModel;
 import it.polimi.ingsw.server.serverNetwork.GameServerNetwork;
 
 import java.util.List;
@@ -14,13 +15,17 @@ import java.util.List;
  *
  * @author Francesco Ostidich
  */
-public class GameServerController {
+public class GameServerController implements ServerController {
+
+    private String playerTurn;
+
+    private String playerAction;
 
     private final List<String> names;
 
-    private final GameModel gameModel;
+    private final ServerModel model;
 
-    private static final GameServerNetwork gameServerNetwork = new GameServerNetwork(new LobbyBuilder());
+    private static final GameServerNetwork gameServerNetwork = new GameServerNetwork();
 
     /**
      * Class constructor.
@@ -29,23 +34,8 @@ public class GameServerController {
      * @author Francesco Ostidich
      */
     public GameServerController(List<String> names) {
-        gameModel = new GameModel(names);
-        this.names = gameModel.getTurnCycleOrder();
-    }
-
-    public static void main(String[] args) {
-
-        //EXAMPLES of Message.class usages
-
-        Message playerIsPlayingMessage = new Message("playerName", EventID.PLAYER_IS_PLAYING, "playingPlayer");
-        Message assignCommonGoalMessage = new Message("playerName", EventID.ASSIGN_COMMON_GOAL_POINTS, "playerAssigned", 6);
-        Message chooseColumnMessage = new Message("playerName", EventID.CHOOSE_COLUMN);
-
-        String name = (String) playerIsPlayingMessage.content();
-
-        String assigned = (String) assignCommonGoalMessage.contents()[0];
-        int points = (int) assignCommonGoalMessage.contents()[1];
-
+        model = new GameServerModel(names);
+        this.names = model.getTurnCycleOrder();
     }
 
     /**
@@ -54,6 +44,21 @@ public class GameServerController {
      * @author Francesco Ostidich
      */
     public void playMatch() {
+
+    }
+
+    @Override
+    public void disconnected(String playerName) {
+
+    }
+
+    @Override
+    public void pickTilesRequest(Message message) {
+
+    }
+
+    @Override
+    public void insertTilesRequest(Message message) {
 
     }
 
