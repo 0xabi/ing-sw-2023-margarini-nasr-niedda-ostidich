@@ -32,6 +32,7 @@ public class GameServerNetwork implements ServerNetwork {
      */
     private void waitForClients() {
         //while(true)
+        //when player connects calls roomServices.playerConnected()
     }
 
     @Override

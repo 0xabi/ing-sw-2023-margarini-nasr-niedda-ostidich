@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server.serverController;
 
 import it.polimi.ingsw.resources.Message;
+import it.polimi.ingsw.resources.MessageID;
 import it.polimi.ingsw.resources.interfaces.ClientController;
 import it.polimi.ingsw.resources.interfaces.ServerModel;
 import it.polimi.ingsw.server.model.GameServerModel;
@@ -44,19 +45,36 @@ public class GameServerController extends RoomServices {
      * @author Francesco Ostidich
      */
     public void playMatch() {
-
+        getClients().keySet().forEach(player -> getClients().get(player).notifyGameHasStarted(new Message(player, MessageID.NOTIFY_GAME_HAS_STARTED)));
     }
 
+    /**
+     * @author Francesco Ostidich
+     */
     @Override
     public void disconnectedPlayer(String playerName) {
 
     }
 
+    /**
+     * @author Francesco Ostidich
+     */
+    @Override
+    public void reconnectedPlayer(String playerName) {
+
+    }
+
+    /**
+     * @author Francesco Ostidich
+     */
     @Override
     public void pickTilesRequest(@NotNull Message message) {
 
     }
 
+    /**
+     * @author Francesco Ostidich
+     */
     @Override
     public void insertTilesRequest(Message message) {
 

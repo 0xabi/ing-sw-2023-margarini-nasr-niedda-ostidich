@@ -273,6 +273,13 @@ public interface ClientView {
       void announceWinner(String winnerName, Map<String, Integer> points);
 
       /**
+       * Notify user that connection has been broken and client is trying to reconnect.
+       *
+       * @author Francesco Ostidich
+       */
+      void disconnected();
+
+      /**
        * Method is always opened on other thread, only chat messages are received.
        *
        * @author Francesco Ostidich

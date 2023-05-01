@@ -127,6 +127,11 @@ public class GUI extends GameClientView {
     }
 
     @Override
+    public void disconnected() {
+
+    }
+
+    @Override
     public void justScanChat() {
 
     }
