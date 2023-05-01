@@ -197,6 +197,11 @@ public class CLI extends GameClientView {
     }
 
     @Override
+    public void disconnected() {
+        System.out.println("Disconnected from server. Trying to reconnect...");
+    }
+
+    @Override
     public void justScanChat() {
         while(chatMessage == null) {
             try {

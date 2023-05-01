@@ -19,6 +19,27 @@ public interface ClientController {
     void update(Event event);
 
     /**
+     * If parameters passed to the client controller are unavailable, view is asked to restart.
+     *
+     * @author Francesco Ostidich
+     */
+    void restart();
+
+    /**
+     * If game room name is not available, it asks again for it.
+     *
+     * @author Francesco Ostidich
+     */
+    void roomNameNotAvailable();
+
+    /**
+     * If client disconnects from server the view must tell it.
+     *
+     * @author Francesco Ostidich
+     */
+    void disconnectedFromServer();
+
+    /**
      * When client asks to join a room, the list of rooms is to be sent.
      *
      * @author Francesco Ostidich

@@ -63,17 +63,20 @@ public class GameClientController implements ClientController {
             }
             case CHOOSE_NEW_OR_JOIN -> {
                 if(evt.value().equals("new")) view.chooseNewGamePlayerNumber();
-                else server.askForRooms();
+                else server.askForRooms(new Message(playerName, MessageID.ASK_FOR_ROOMS));
             }
             case CHOOSE_NEW_GAME_PLAYER_NUMBER -> {
                 newRoomPlayerNumber = (int) evt.value();
                 view.chooseNewGameName();
             }
-            case CHOOSE_NEW_GAME_NAME -> server.createNewRoom((String) evt.value(), newRoomPlayerNumber);
+            case CHOOSE_NEW_GAME_NAME -> {
+                if(evt.value().equals("back")) view.chooseNewOrJoin();
+                server.createNewRoom(new Message(playerName, MessageID.CREATE_NEW_ROOM, evt.value(), newRoomPlayerNumber));
+            }
             case CHOOSE_GAME_ROOM -> {
-                if(evt.value().equals("refresh")) server.askForRooms();
+                if(evt.value().equals("refresh")) server.askForRooms(new Message(playerName, MessageID.ASK_FOR_ROOMS));
                 else if(evt.value().equals("back")) view.chooseNewOrJoin();
-                else server.joinRoom((String) evt.value());
+                else server.joinRoom(new Message(playerName, MessageID.JOIN_ROOM, evt.value()));
             }
             case PICK_TILES -> server.pickTilesRequest(new Message(playerName, MessageID.PICK_TILES_REQUEST, evt.value()));
             case CHOOSE_ORDER -> {
@@ -84,6 +87,33 @@ public class GameClientController implements ClientController {
         }
     }
 
+    /**
+     * @author Francesco Ostidich
+     */
+    @Override
+    public void restart() {
+        view.start();
+    }
+
+    /**
+     * @author Francesco Ostidich
+     */
+    @Override
+    public void roomNameNotAvailable() {
+        view.chooseNewGameName();
+    }
+
+    /**
+     * @author Francesco Ostidich
+     */
+    @Override
+    public void disconnectedFromServer() {
+        view.disconnected();
+    }
+
+    /**
+     * @author Francesco Ostidich
+     */
     @Override
     @SuppressWarnings({"unchecked", "StatementWithEmptyBody"})
     public void showRooms(@NotNull Message msg) {
@@ -96,6 +126,9 @@ public class GameClientController implements ClientController {
         } catch (ClassCastException ignored) {}
     }
 
+    /**
+     * @author Francesco Ostidich
+     */
     @Override
     public void showPersonalRoom(@NotNull Message msg) {
         if(!msg.playerName().equals(playerName) ||
@@ -104,6 +137,9 @@ public class GameClientController implements ClientController {
         view.updateGameRoom((GameRoom) msg.content());
     }
 
+    /**
+     * @author Francesco Ostidich
+     */
     @Override
     @SuppressWarnings({"unchecked", "DuplicatedCode", "StatementWithEmptyBody"})
     public void notifyGameHasStarted(@NotNull Message msg) {
@@ -145,6 +181,9 @@ public class GameClientController implements ClientController {
         } catch(ClassCastException ignored) {}
     }
 
+    /**
+     * @author Francesco Ostidich
+     */
     @Override
     @SuppressWarnings({"unchecked", "DuplicatedCode", "StatementWithEmptyBody"})
     public void newTurn(@NotNull Message msg) {
@@ -188,6 +227,9 @@ public class GameClientController implements ClientController {
         } catch (ClassCastException ignored) {}
     }
 
+    /**
+     * @author Francesco Ostidich
+     */
     @Override
     @SuppressWarnings("unchecked")
     public void pickAccepted(@NotNull Message msg) {
@@ -199,6 +241,12 @@ public class GameClientController implements ClientController {
         view.chooseOrder((List<Tile>) msg.content());
     }
 
+    /**
+     * If it is the last turn, end game actions are to be made.
+     *
+     * @author Francesco Ostidich
+     * @param data is the data from the last server message
+     */
     @SuppressWarnings({"unchecked", "StatementWithEmptyBody"})
     private void endGame(Object @NotNull [] data) {
         try {

@@ -3,6 +3,7 @@ package it.polimi.ingsw.client.clientNetwork;
 import it.polimi.ingsw.resources.interfaces.ClientController;
 import it.polimi.ingsw.resources.interfaces.ClientNetwork;
 import it.polimi.ingsw.resources.interfaces.ServerController;
+import it.polimi.ingsw.server.serverController.RoomServices;
 
 /**
  * Asks for connection to the server, and wants the ServerController interface to call methods on it.
@@ -35,6 +36,9 @@ public class GameClientNetwork implements ClientNetwork {
         this.serverIP = serverIP;
         this.playerName = playerName;
         this.controller = controller;
+        //to tweak:
+        ServerController serverController = new RoomServices();
+        if(serverController.onlinePlayers().contains(playerName)) controller.restart();
         return null;
     }
 

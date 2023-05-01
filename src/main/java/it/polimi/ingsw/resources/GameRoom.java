@@ -1,6 +1,6 @@
 package it.polimi.ingsw.resources;
 
-import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Game room information saving.
@@ -11,4 +11,4 @@ import java.util.LinkedList;
  * @param totalPlayers is the maximum capacity of the game room
  * @param enteredPlayers is the list of players that have already entered the game room
  */
-public record GameRoom(String gameRoomName, String creatorName, int totalPlayers, LinkedList<String> enteredPlayers) {}
+public record GameRoom(String gameRoomName, String creatorName, int totalPlayers, List<String> enteredPlayers) {}

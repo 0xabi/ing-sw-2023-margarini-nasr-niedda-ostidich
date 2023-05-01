@@ -1,7 +1,7 @@
 package it.polimi.ingsw.resources.interfaces;
 
 import it.polimi.ingsw.resources.Message;
-import java.util.Map;
+import java.util.Set;
 
 /**
  * Action doable from network to controller.
@@ -11,12 +11,22 @@ import java.util.Map;
 public interface ServerController {
 
     /**
-     * When a game room is full, match is to be started.
+     * In order to discard connection from player with name already registered, the method
+     * tells all the players' name in the rooms.
      *
      * @author Francesco Ostidich
-     * @param names is the list of players' name
+     * @return players' names string set
      */
-    void startGame(Map<String, ClientController> names);
+    Set<String> onlinePlayers();
+
+    /**
+     * When player connects, method is called in order to add it to room services.
+     *
+     * @author Francesco Ostidich
+     * @param playerName is the player's name string
+     * @param client is the client controller interface of the player
+     */
+    void playerConnected(String playerName, ClientController client);
 
     /**
      * When player is declared disconnected, controller is notified by network manager.
@@ -25,6 +35,14 @@ public interface ServerController {
      * @param playerName is the player that has disconnected
      */
     void disconnectedPlayer(String playerName);
+
+    /**
+     * When player is declared reconnected, controller is notified by network manager.
+     *
+     * @author Francesco Ostidich
+     * @param playerName is the player that has reconnected
+     */
+    void reconnectedPlayer(String playerName);
 
     /**
      * When player wants to pick tiles it sends request to server.
@@ -46,24 +64,23 @@ public interface ServerController {
      * Player selects a room to join.
      *
      * @author Francesco Ostidich
-     * @param room is the room selected
+     * @param message is the client message
      */
-    void joinRoom(String room);
+    void joinRoom(Message message);
 
     /**
      * Player wants to create a new room providing information needed.
      *
      * @author Francesco Ostidich
-     * @param newRoomName is the name of the new room
-     * @param playerNumber is the player number of the new room
+     * @param message is the client message
      */
-    void createNewRoom(String newRoomName, int playerNumber);
+    void createNewRoom(Message message);
 
     /**
      * Player asks for available rooms to be joined.
      *
      * @author Francesco Ostidich
      */
-    void askForRooms();
+    void askForRooms(Message message);
 
 }
