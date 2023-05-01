@@ -1,0 +1,34 @@
+.anchor_pane
+{
+    -fx-background-image: url("../graphics/publisherMaterial/banner.png");
+    -fx-background-size: stretch;
+}
+
+
+.btn
+{
+
+    -fx-background-color: #043605;
+    -fx-border-color: white;
+    -fx-border-width: 3;
+    -fx-text-fill: white;
+    -fx-color: white;
+
+    -fx-text-align: center;
+    -fx-font-size: 32 px;
+    -fx-opacity: 90%;
+    -fx-border-radius: 10 10 10 10;
+    -fx-background-radius: 10 10 10 10;
+
+}
+.btn:hover{
+    -fx-opacity: 95%;
+    -fx-cursor: hand;
+}
+
+.btn:pressed
+{
+    -fx-opacity: 100%;
+    -fx-border-width: 4;
+}
+

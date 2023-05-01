@@ -2,6 +2,8 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.view.CLI;
 import it.polimi.ingsw.client.view.GUI;
+import it.polimi.ingsw.client.view.GUIApp;
+import javafx.application.Application;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -20,7 +22,12 @@ public class ClientApp {
             args[0] = old;
             args[1] = null;
         }
-        if(Objects.equals(args[0], "GUI")) new GUI(args[1]);
+        if(Objects.equals(args[0], "GUI"))
+        {
+            GUI gui = new GUI(args[1]);
+            GUIApp.setGui(gui);
+            Application.launch(GUIApp.class);
+        }
         else new CLI(args[1]);
     }
 
