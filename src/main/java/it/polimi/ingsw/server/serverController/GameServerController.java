@@ -1,12 +1,13 @@
 package it.polimi.ingsw.server.serverController;
 
 import it.polimi.ingsw.resources.Message;
-import it.polimi.ingsw.resources.interfaces.ServerController;
+import it.polimi.ingsw.resources.interfaces.ClientController;
 import it.polimi.ingsw.resources.interfaces.ServerModel;
 import it.polimi.ingsw.server.model.GameServerModel;
-import it.polimi.ingsw.server.serverNetwork.GameServerNetwork;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * The game model controller is to decide actions to make based on game state and messages received.
@@ -15,7 +16,7 @@ import java.util.List;
  *
  * @author Francesco Ostidich
  */
-public class GameServerController implements ServerController {
+public class GameServerController extends RoomServices {
 
     private String playerTurn;
 
@@ -25,17 +26,16 @@ public class GameServerController implements ServerController {
 
     private final ServerModel model;
 
-    private static final GameServerNetwork gameServerNetwork = new GameServerNetwork();
-
     /**
      * Class constructor.
      *
-     * @param names is the players' names string list
+     * @param clients is the players' client interfaces map
      * @author Francesco Ostidich
      */
-    public GameServerController(List<String> names) {
-        model = new GameServerModel(names);
+    public GameServerController(@NotNull Map<String, ClientController> clients) {
+        model = new GameServerModel(clients.keySet());
         this.names = model.getTurnCycleOrder();
+        playMatch();
     }
 
     /**
@@ -48,12 +48,12 @@ public class GameServerController implements ServerController {
     }
 
     @Override
-    public void disconnected(String playerName) {
+    public void disconnectedPlayer(String playerName) {
 
     }
 
     @Override
-    public void pickTilesRequest(Message message) {
+    public void pickTilesRequest(@NotNull Message message) {
 
     }
 

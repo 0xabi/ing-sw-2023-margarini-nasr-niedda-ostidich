@@ -63,17 +63,17 @@ public class GameClientController implements ClientController {
             }
             case CHOOSE_NEW_OR_JOIN -> {
                 if(evt.value().equals("new")) view.chooseNewGamePlayerNumber();
-                else clientNetwork.askForRooms();
+                else server.askForRooms();
             }
             case CHOOSE_NEW_GAME_PLAYER_NUMBER -> {
                 newRoomPlayerNumber = (int) evt.value();
                 view.chooseNewGameName();
             }
-            case CHOOSE_NEW_GAME_NAME -> clientNetwork.createNewRoom((String) evt.value(), newRoomPlayerNumber);
+            case CHOOSE_NEW_GAME_NAME -> server.createNewRoom((String) evt.value(), newRoomPlayerNumber);
             case CHOOSE_GAME_ROOM -> {
-                if(evt.value().equals("refresh")) clientNetwork.askForRooms();
+                if(evt.value().equals("refresh")) server.askForRooms();
                 else if(evt.value().equals("back")) view.chooseNewOrJoin();
-                else clientNetwork.joinRoom((String) evt.value());
+                else server.joinRoom((String) evt.value());
             }
             case PICK_TILES -> server.pickTilesRequest(new Message(playerName, MessageID.PICK_TILES_REQUEST, evt.value()));
             case CHOOSE_ORDER -> {

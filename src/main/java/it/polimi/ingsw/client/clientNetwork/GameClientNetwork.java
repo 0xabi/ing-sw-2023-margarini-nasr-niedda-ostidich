@@ -5,10 +5,10 @@ import it.polimi.ingsw.resources.interfaces.ClientNetwork;
 import it.polimi.ingsw.resources.interfaces.ServerController;
 
 /**
- * When a server message is received, based on player name and on message ID, the right method is called on the view
- * and waited for return data, to pack and send back.
- * In case of the "justScanChat" method, when called from the server, a dedicated thread is started so method can always be up and
- * running.
+ * Asks for connection to the server, and wants the ServerController interface to call methods on it.
+ * When "connect" method is called, the connection must be built.
+ * Every action done on the ServerController interface must be forwarded to the server either as RMI or Socket calling
+ * the method directly in the server on the controller.
  */
 public class GameClientNetwork implements ClientNetwork {
 
@@ -36,21 +36,6 @@ public class GameClientNetwork implements ClientNetwork {
         this.playerName = playerName;
         this.controller = controller;
         return null;
-    }
-
-    @Override
-    public void joinRoom(String room) {
-
-    }
-
-    @Override
-    public void createNewRoom(String newRoomName, int playerNumber) {
-
-    }
-
-    @Override
-    public void askForRooms() {
-
     }
 
 }

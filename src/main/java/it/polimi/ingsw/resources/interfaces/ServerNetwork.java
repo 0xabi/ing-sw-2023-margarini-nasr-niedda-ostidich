@@ -15,6 +15,6 @@ public interface ServerNetwork {
     * @author Francesco Ostidich
     * @param names is the match's players' name string list
     */
-   void endGame(List<String> names);
+   void disconnect(List<String> names);
 
 }

@@ -18,10 +18,4 @@ public interface ClientNetwork {
      */
     ServerController connect(String serverIP, String playerName, ClientController view);
 
-    void joinRoom(String room);
-
-    void createNewRoom(String newRoomName, int playerNumber);
-
-    void askForRooms();
-
 }

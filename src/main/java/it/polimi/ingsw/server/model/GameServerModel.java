@@ -36,7 +36,7 @@ public class GameServerModel implements ServerModel {
      * @author Francesco Ostidich
      * @param names is the list with the players names got from the controller, used for construct the player objects
      */
-    public GameServerModel(@NotNull List<String> names) {
+    public GameServerModel(@NotNull Set<String> names) {
         board = new Board(names.size());
         commonGoalConstructor(names.size());
         playerListConstructor(names);
@@ -63,7 +63,7 @@ public class GameServerModel implements ServerModel {
      * @param names is the list with the players names got from the controller, used for construct the player objects
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    private void playerListConstructor(@NotNull List<String> names) {
+    private void playerListConstructor(@NotNull Set<String> names) {
         Random random = new Random();
         Set<Integer> personalGoalNumberSet = new HashSet<>();
         while(personalGoalNumberSet.size() < names.size())
