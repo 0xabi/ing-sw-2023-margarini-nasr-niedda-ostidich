@@ -1,53 +1,23 @@
 package it.polimi.ingsw.client.view;
 
-import it.polimi.ingsw.resources.Event;
-import it.polimi.ingsw.resources.EventID;
 import it.polimi.ingsw.resources.GameRoom;
 import it.polimi.ingsw.resources.Tile;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 public class GUI extends GameClientView {
 
-    private Stage stage;
     public GUI(String network) {
         super(network);
 
     }
-    public void setStage(Stage stage)
-    {
-        this.stage = stage;
-    }
-
-    public void setScene(Stage stage,String nameRes)
-    {
-        try {
-            Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/fxml/"+nameRes+".fxml")));
-            stage.setScene(scene);
-            //stage.show();
-            //nextBtn = (Button)scene.lookup("#nextBtn");
-            //nickTextBox = (TextField) scene.lookup("#nickTextBox");
-            //nextBtn.setOnAction(e->getUsername());
-            System.out.println(this+"Set Scene");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     @Override
     public void start() {
-
-
-    }
-
-    public void loaded()
-    {
-        getClientController().update(new Event(EventID.START,null));
+        GUIApp.setGui(this);
+        GUIApp.setClientController(getClientController());
     }
 
     @Override
@@ -58,7 +28,8 @@ public class GUI extends GameClientView {
     @Override
     public void choosePlayerName() {
 
-        setScene(stage,"player_name");
+        GUIApp.setScene("player_name");
+
     }
 
     @Override

@@ -1,11 +1,12 @@
 package it.polimi.ingsw.client.view;
 
+import it.polimi.ingsw.resources.Event;
+import it.polimi.ingsw.resources.EventID;
+import it.polimi.ingsw.resources.interfaces.ClientController;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
@@ -13,10 +14,18 @@ import java.io.IOException;
 
 public class GUIApp extends Application {
 
+    //functions Player Name Scene
+    public void back()
+    {
+        setScene("home");
+    }
 
     private static Stage stage;
 
     private static GUI gui;
+
+    private static ClientController cc;
+
     public static void main(String[] args)
     {
         launch(args);
@@ -24,31 +33,40 @@ public class GUIApp extends Application {
 
     public void start()
     {
-        gui.loaded();
+        cc.update(new Event(EventID.START,null));
     }
     public void exit()
     {
         Platform.exit();
     }
 
-    public static void setStage(GUI gui)
+    public static void setClientController(ClientController cc)
     {
-        gui.setStage(stage);
+        GUIApp.cc = cc;
     }
+
+
 
     public static void setGui(GUI gui)
     {
         GUIApp.gui = gui;
     }
-    public void setScene(Stage stage,String nameRes)
+
+    public static void setScene(String nameRes)
     {
+        setScene(stage, nameRes);
+    }
+
+    public static void setScene(Stage stage,String nameRes)
+    {
+
         try {
-            Scene scene = new Scene(FXMLLoader.load(getClass().getResource("/fxml/"+nameRes+".fxml")));
+            Scene scene = new Scene(FXMLLoader.load(GUIApp.class.getResource("/fxml/"+nameRes+".fxml")));
             stage.setScene(scene);
             //nextBtn = (Button)scene.lookup("#nextBtn");
             //nickTextBox = (TextField) scene.lookup("#nickTextBox");
             //nextBtn.setOnAction(e->getUsername());
-            System.out.println(this+"Set Scene");
+            //System.out.println(this+"Set Scene");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -61,7 +79,6 @@ public class GUIApp extends Application {
         stage.setResizable(false);
         stage.setTitle("My Shelfie");
         GUIApp.stage = stage;
-        setStage(gui);
         setScene(stage,"home");
         stage.show();
     }

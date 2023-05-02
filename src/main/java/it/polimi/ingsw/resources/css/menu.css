@@ -4,6 +4,19 @@
     -fx-background-size: stretch;
 }
 
+.text
+{
+    -fx-text-fill: white;
+    -fx-font-size: 30 px;
+    -fx-border-color: white;
+}
+
+.text_field
+{
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 24 px;
+}
 
 .btn
 {
@@ -12,7 +25,6 @@
     -fx-border-color: white;
     -fx-border-width: 3;
     -fx-text-fill: white;
-    -fx-color: white;
 
     -fx-text-align: center;
     -fx-font-size: 32 px;

@@ -25,7 +25,7 @@ public class ClientApp {
         if(Objects.equals(args[0], "GUI"))
         {
             GUI gui = new GUI(args[1]);
-            GUIApp.setGui(gui);
+            gui.start();
             Application.launch(GUIApp.class);
         }
         else new CLI(args[1]);

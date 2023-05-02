@@ -39,7 +39,6 @@ public class GameClientController implements ClientController {
     public GameClientController(@NotNull ClientView view, String network) {
         clientNetwork = new GameClientNetwork(network);
         this.view = view;
-        view.start();
     }
 
     /**
