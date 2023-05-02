@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.resources.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -137,7 +138,7 @@ public class CLI extends GameClientView {
     @Override
     public void notifyGameHasStared() {
         playerMessage("Game started!\n");
-    }
+      }
 
     /**
      * @author Abdullah Nasr
@@ -159,17 +160,86 @@ public class CLI extends GameClientView {
 
     @Override
     public void pickTiles(int availablePickNumber) {
+        int x = 0, y = 0;
+        ArrayList<Coordinates> list = new ArrayList<>();
+        String[] coords;
+        boolean attempt = true;
 
+        for(int i = 0; i < availablePickNumber; i++){
+            do {
+                attempt = true;
+                try {
+                    coords = playerMessage("choose using the following format: x,y\n").split("\\,");
+                    x = Integer.parseInt(coords[0]);
+                    y = Integer.parseInt(coords[1]);
+                }
+                catch (Exception e) {
+                    System.out.println("invalid input, try again ");
+                    attempt = false;
+                }
+            }while(!attempt);
+
+            list.add(new Coordinates(x, y));
+
+            if (i < 3 && playerMessage("done?").equals("y")) i = 4;
+        }
+
+        getClientController().update(new Event(EventID.PICK_TILES, list));
     }
 
     @Override
     public void chooseOrder(List<Tile> selection) {
+        ArrayList<Tile> temp = new ArrayList<>();
+        ArrayList<Integer> choosenIndex = new ArrayList<>();
+        boolean imputIsValid = false;
 
+        int index = 0;
+        System.out.println("Choose order: ");
+
+        for(int i = 0; i < selection.size(); i++){
+
+            do{
+                do {
+                    imputIsValid = true;
+                    try {
+                        index = Integer.parseInt(playerMessage("Choose tile in " + i + " position: "));
+                    }
+                    catch (Exception e) {
+                        System.out.println("invalid input, try again ");
+                        imputIsValid = false;
+                    }
+                }while(!imputIsValid);
+
+
+                if((index <selection.size() && index > -1) || choosenIndex.contains(index))
+                    System.out.println("Invalid value, try again");
+
+                else temp.add(selection.get(index));
+            }while(!(index < selection.size() && index > -1) && !choosenIndex.contains(index));
+
+            choosenIndex.add(index);
+            temp.add(selection.get(index));
+        }
+
+        getClientController().update(new Event(EventID.PICK_TILES, temp));
     }
 
     @Override
     public void chooseColumn() {
+        int column = 0;
+        boolean attempt = true;
 
+        do {
+            attempt = true;
+            try {
+                column = Integer.parseInt(playerMessage("Choose column: "));
+            } catch (Exception e) {
+                System.out.println("invalid input, try again");
+                attempt = false;
+            }
+        }while(!attempt);
+
+        getClientController().update(new Event(EventID.CHOOSE_COLUMN, column));
     }
 
     @Override
@@ -179,21 +249,27 @@ public class CLI extends GameClientView {
 
     @Override
     public void assignCommonGoalPoints(String playerName, int token) {
-
+        System.out.println(playerName + " recieved " + token + " points from commongoal");
     }
 
     @Override
     public void assignPersonalGoalPoints(Map<String, Integer> points) {
-
+        for(Map.Entry<String, Integer> entry : points.entrySet())
+            System.out.println(entry.getKey() + " recieved " + entry.getValue() + "points from Personal goal");
     }
 
     @Override
     public void assignAdjacentGoalPoints(Map<String, Integer> points) {
-
+        for(Map.Entry<String, Integer> entry : points.entrySet())
+            System.out.println(entry.getKey() + " recieved " + entry.getValue() + "points from adjacents tiles");
     }
 
     @Override
     public void announceWinner(String winnerName, Map<String, Integer> points) {
+        for(Map.Entry<String, Integer> entry : points.entrySet())
+            System.out.println(entry.getKey() + " has " + entry.getValue() + " points");
+
+        System.out.println("The winner is: " + winnerName);
     }
 
     @Override
