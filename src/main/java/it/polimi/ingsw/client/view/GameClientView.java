@@ -1,8 +1,11 @@
 package it.polimi.ingsw.client.view;
 
+import it.polimi.ingsw.client.clientController.GameClientController;
 import it.polimi.ingsw.resources.GameRoom;
 import it.polimi.ingsw.resources.Tile;
-import it.polimi.ingsw.resources.interfaces.ViewActions;
+import it.polimi.ingsw.resources.interfaces.ClientController;
+import it.polimi.ingsw.resources.interfaces.ClientView;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -14,7 +17,9 @@ import java.util.*;
  *
  * @author Francesco Ostidich
  */
-public abstract class GameView implements ViewActions {
+public abstract class GameClientView implements ClientView {
+
+    private final ClientController clientController;
 
     private static final int TIMEOUT = 20;
 
@@ -36,13 +41,13 @@ public abstract class GameView implements ViewActions {
 
     private Stack<Integer> commonGoal2TokenStack;
 
-    private Map<Integer, String> commonGoal1GivenPlayers;
+    private final Map<Integer, String> commonGoal1GivenPlayers;
 
-    private Map<Integer, String> commonGoal2GivenPlayers;
+    private final Map<Integer, String> commonGoal2GivenPlayers;
 
-    private final List<Tile[][]> playerShelves;
+    private final Map<String, Tile[][]> playerShelves;
 
-    private final List<Integer> playerPoints;
+    private final Map<String, Integer> playerPoints;
 
     private List<Integer> playerPersonalGoals;
 
@@ -50,31 +55,33 @@ public abstract class GameView implements ViewActions {
 
     private List<GameRoom> gameRooms;
 
-    private boolean gameEnded;
-
     /**
      * Class constructor.
      *
      * @author Francesco Ostidich
      */
-    public GameView() {
+    public GameClientView(String network) {
         gameParameters = new HashMap<>();
         names = new LinkedList<>();
         endGameToken = true;
         bag = new HashMap<>();
-        playerShelves = new LinkedList<>();
-        playerPoints = new LinkedList<>();
+        commonGoal1GivenPlayers = new HashMap<>();
+        commonGoal2GivenPlayers = new HashMap<>();
+        playerShelves = new HashMap<>();
+        playerPoints = new HashMap<>();
         playerPersonalGoals = new LinkedList<>();
         gameRooms = new ArrayList<>();
-        gameEnded = false;
+        clientController = new GameClientController(this, network);
     }
 
-    public void endGame() {
-        this.gameEnded = false;
-    }
-
-    public boolean isGameEnded() {
-        return gameEnded;
+    /**
+     * Getter for game client controller.
+     *
+     * @author Francesco Ostidich
+     * @return game client controller
+     */
+    public ClientController getClientController() {
+        return clientController;
     }
 
     /**
@@ -133,7 +140,7 @@ public abstract class GameView implements ViewActions {
      * @author Francesco Ostidich
      * @return shelves list
      */
-    public List<Tile[][]> getPlayerShelves() {
+    public Map<String, Tile[][]> getPlayerShelves() {
         return playerShelves;
     }
 
@@ -203,7 +210,7 @@ public abstract class GameView implements ViewActions {
      * @author Francesco Ostidich
      * @return points number
      */
-    public List<Integer> getPlayerPoints() {
+    public Map<String, Integer> getPlayerPoints() {
         return playerPoints;
     }
 
@@ -322,8 +329,10 @@ public abstract class GameView implements ViewActions {
      * @author Francesco Ostidich
      */
     @Override
-    public void updateCommonGoal1GivenPlayers(Map<Integer, String> givenPlayer) {
-        this.commonGoal1GivenPlayers = givenPlayer;
+    public void updateCommonGoal1GivenPlayers(@NotNull Map<Integer, String> givenPlayer) {
+        for(int token: givenPlayer.keySet()){
+            this.commonGoal1GivenPlayers.replace(token, givenPlayer.get(token));
+        }
     }
 
     /**
@@ -338,19 +347,9 @@ public abstract class GameView implements ViewActions {
      * @author Francesco Ostidich
      */
     @Override
-    public void updateCommonGoal2GivenPlayers(Map<Integer, String> givenPlayer) {
-        this.commonGoal1GivenPlayers = givenPlayer;
-    }
-
-    /**
-     * @author Francesco Ostidich
-     */
-    @Override
-    public void updatePlayerShelves(List<Tile[][]> shelves) {
-        for(int i = 0; i < names.size(); i++) {
-            if(shelves.get(i) != null) {
-                playerShelves.set(i, shelves.get(i));
-            }
+    public void updateCommonGoal2GivenPlayers(@NotNull Map<Integer, String> givenPlayer) {
+        for(int token: givenPlayer.keySet()){
+            this.commonGoal2GivenPlayers.replace(token, givenPlayer.get(token));
         }
     }
 
@@ -358,11 +357,19 @@ public abstract class GameView implements ViewActions {
      * @author Francesco Ostidich
      */
     @Override
-    public void updatePlayerPoints(List<Integer> points) {
-        for(int i = 0; i < names.size(); i++) {
-            if(points.get(i) != null) {
-                playerPoints.set(i, points.get(i));
-            }
+    public void updatePlayerShelves(@NotNull Map<String, Tile[][]> shelves) {
+        for(String player: shelves.keySet()) {
+            playerShelves.replace(player, shelves.get(player));
+        }
+    }
+
+    /**
+     * @author Francesco Ostidich
+     */
+    @Override
+    public void updatePlayerPoints(@NotNull Map<String, Integer> points) {
+        for(String player: points.keySet()) {
+            playerPoints.replace(player, points.get(player));
         }
     }
 

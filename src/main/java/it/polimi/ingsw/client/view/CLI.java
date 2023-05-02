@@ -1,12 +1,7 @@
 package it.polimi.ingsw.client.view;
 
-import it.polimi.ingsw.resources.Coordinates;
-import it.polimi.ingsw.resources.GameRoom;
-import it.polimi.ingsw.resources.Tile;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import it.polimi.ingsw.resources.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -19,17 +14,7 @@ import java.util.Scanner;
  *
  * @author Francesco Ostidich
  */
-public class CLI extends GameView {
-
-    private static final int MAX_PLAYER=4;
-
-    private static final int LEN_COL_ROOM_NAME=9;
-
-    private static final int LEN_COL_CREATOR_NAME=12;
-
-    private static final int LEN_COL_PLAYERS=7;
-
-    public static final int LEN_PREFIX = 5;
+public class CLI extends GameClientView {
 
     private String chatMessage = "";
 
@@ -42,8 +27,8 @@ public class CLI extends GameView {
      *
      * @author Francesco Ostidich
      */
-    public CLI() {
-        super();
+    public CLI(String network) {
+        super(network);
         scannerThread = new Thread(this::scan);
         scannerThread.start();
     }
@@ -53,82 +38,45 @@ public class CLI extends GameView {
      */
     @Override
     public void start() {
-        System.out.println("\n" +
-                "___  ___      _____ _          _  __ _      \n" +
-                "|  \\/  |     /  ___| |        | |/ _(_)     \n" +
-                "| .  . |_   _\\ `--.| |__   ___| | |_ _  ___ \n" +
-                "| |\\/| | | | |`--. \\ '_ \\ / _ \\ |  _| |/ _ \\\n" +
-                "| |  | | |_| /\\__/ / | | |  __/ | | | |  __/\n" +
-                "\\_|  |_/\\__, \\____/|_| |_|\\___|_|_| |_|\\___|\n" +
-                "         __/ |                              \n" +
-                "        |___/                               \n\n\n\n\nLoading...");
+        System.out.println("""
+
+                ___  ___      _____ _          _  __ _     \s
+                |  \\/  |     /  ___| |        | |/ _(_)    \s
+                | .  . |_   _\\ `--.| |__   ___| | |_ _  ___\s
+                | |\\/| | | | |`--. \\ '_ \\ / _ \\ |  _| |/ _ \\
+                | |  | | |_| /\\__/ / | | |  __/ | | | |  __/
+                \\_|  |_/\\__, \\____/|_| |_|\\___|_|_| |_|\\___|
+                         __/ |                             \s
+                        |___/                              \s
+
+
+
+
+                Loading...""");
     }
 
     /**
      * @author Francesco Ostidich
      */
     @Override
-    public String chooseIPAddress() {
+    public void chooseIPAddress() {
         String scannedIP = playerMessage("Choose IP address:");
-        while(!isIPAddress(scannedIP)) {
+        while(!InputFormatChecker.isIPAddress(scannedIP)) {
             scannedIP = playerMessage("Wrong input!\nChoose IP address:");
         }
-        return scannedIP;
+        getClientController().update(new Event(EventID.CHOOSE_IP_ADDRESS, scannedIP));
     }
 
     /**
-     * When IP address string is scanned, it needs to be checked if in right format.
-     *
      * @author Francesco Ostidich
-     * @param IP is the IP address string
-     * @return check's outcome
      */
-    private boolean isIPAddress(@NotNull String IP) {
-        if(IP.equals("localhost")) return true;
-        String[] chunks;
-        chunks = IP.split("\\.");
-        if(chunks.length!=4)
-            return false;
-
-        try{
-            for(String number : chunks) {
-                int num = Integer.parseInt(number);
-                if (num<0 || num>255)
-                    return false;
-            }
-        }
-        catch(NumberFormatException e) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     *
-     * @param input
-     * @return
-     * @author Abdullah Nasr
-     */
-    private @Nullable Integer getNumFromString(String input)
-    {
-        try
-        {
-            return Integer.parseInt(input);
-        }
-        catch(NumberFormatException e)
-        {
-            return null;
-        }
-
-    }
-
     @Override
-    public String choosePlayerName() {
+    public void choosePlayerName() {
         String scannedIP = playerMessage("Choose player name:");
         while(scannedIP.isBlank()) {
             scannedIP = playerMessage("Wrong input!\nChoose player name:");
         }
-        return scannedIP;
+        getClientController().update(new Event(EventID.CHOOSE_PLAYER_NAME, scannedIP));
     }
 
 
@@ -136,7 +84,7 @@ public class CLI extends GameView {
      * @author Abdullah Nasr
      */
     @Override
-    public String chooseNewOrJoin() {
+    public void chooseNewOrJoin() {
         String answer = playerMessage("Type [new] to create new game or [join] to join an existing game:");
         answer = answer.trim().toLowerCase();
 
@@ -146,7 +94,7 @@ public class CLI extends GameView {
             answer=answer.trim().toLowerCase();
         }
 
-        return answer;
+        getClientController().update(new Event(EventID.CHOOSE_NEW_OR_JOIN, answer));
     }
 
 
@@ -154,32 +102,32 @@ public class CLI extends GameView {
      * @author Abdullah Nasr
      */
     @Override
-    public String chooseNewGameName() {
+    public void chooseNewGameName() {
         String gameName = playerMessage("Choose a new game name:");
         while(gameName.isBlank())
         {
             gameName = playerMessage("Wrong input!\nChoose a new game name:");
         }
 
-        return gameName;
+        getClientController().update(new Event(EventID.CHOOSE_NEW_GAME_NAME, gameName));
     }
 
     /**
      * @author Abdullah Nasr
      */
     @Override
-    public int chooseNewGamePlayerNumber() {
+    public void chooseNewGamePlayerNumber() {
         Integer numPlayer;
-        String input =  playerMessage("Choose the number of players [max "+MAX_PLAYER+" players"+"]:");
-        numPlayer = getNumFromString(input);
+        String input =  playerMessage("Choose the number of players [max "+InputFormatChecker.getMaxPlayer()+" players"+"]:");
+        numPlayer = InputFormatChecker.getNumFromString(input);
 
-        while(numPlayer==null||numPlayer<2||numPlayer>MAX_PLAYER)
+        while(numPlayer==null||numPlayer<2||numPlayer>InputFormatChecker.getMaxPlayer())
         {
             input =  playerMessage("Please insert a valid number of player!\nChoose the number of the player:");
-            numPlayer = getNumFromString(input);
+            numPlayer = InputFormatChecker.getNumFromString(input);
         }
 
-        return numPlayer;
+        getClientController().update(new Event(EventID.CHOOSE_NEW_GAME_PLAYER_NUMBER, numPlayer));
     }
 
 
@@ -192,241 +140,69 @@ public class CLI extends GameView {
     }
 
     /**
-     *
-     * @param roomName
-     * @param creatorName
-     * @param players
-     * @param lenMaxRoomName
-     * @param lenMaxCreatorName
-     * @return
-     * @author Abdullah Nasr
-     */
-    private @NotNull String getRowRoomTable(String roomName, String creatorName, String players, int lenMaxRoomName, int lenMaxCreatorName)
-    {
-        int distance;
-        int marginDistance;
-        String rowRoomTable="";
-
-        //content header
-        rowRoomTable+="| ";
-
-        rowRoomTable = getString(roomName, lenMaxRoomName, rowRoomTable);
-
-        //creator name
-        rowRoomTable = getString(creatorName, lenMaxCreatorName, rowRoomTable);
-
-        //players
-        rowRoomTable = getString(players, LEN_COL_PLAYERS, rowRoomTable);
-
-        //bottom header
-        rowRoomTable+="\n";
-        rowRoomTable+="+-"+"-".repeat(lenMaxRoomName)+"-+-"+"-".repeat(lenMaxCreatorName)+"-+-"+"-".repeat(LEN_COL_PLAYERS)+"-+\n";
-
-        return rowRoomTable;
-    }
-
-    private @NotNull String getString(@NotNull String roomName, int lenMaxRoomName, String rowRoomTable) {
-        int distance;
-        int marginDistance;
-        distance = lenMaxRoomName - roomName.length();
-        marginDistance=distance/2;
-
-        rowRoomTable+=" ".repeat(marginDistance)+roomName;
-
-        marginDistance = distance%2!=0 ? marginDistance+1 : marginDistance;
-
-        rowRoomTable+=" ".repeat(marginDistance)+" | ";
-        return rowRoomTable;
-    }
-
-    /**
-     *
-     * @param rooms
-     * @return
-     * @author Abdullah Nasr
-     */
-    public String getTableGameRoom(@NotNull List<GameRoom> rooms)
-    {
-        StringBuilder tableGameRoom = new StringBuilder();
-        int lenMaxRoomName = 0;
-        int lenMaxCreatorName = 0;
-        int numRoom=1;
-
-        //get the max len of creator/room name to autosize the table
-        for(GameRoom gr : rooms)
-        {
-            int currentLen = gr.gameRoomName().length();
-            if(currentLen>lenMaxRoomName)
-            {
-                lenMaxRoomName = currentLen;
-            }
-
-            currentLen = gr.creatorName().length();
-            if(currentLen>lenMaxCreatorName)
-            {
-                lenMaxCreatorName = currentLen;
-            }
-        }
-
-        lenMaxRoomName = Math.max(lenMaxRoomName, LEN_COL_ROOM_NAME);
-        lenMaxCreatorName = Math.max(lenMaxCreatorName, LEN_COL_CREATOR_NAME);
-
-        //to insert also the number of the row in front of the room name
-        lenMaxRoomName+=LEN_PREFIX;
-
-        //upper header
-        tableGameRoom.append("+-").append("-".repeat(lenMaxRoomName)).append("-+-").append("-".repeat(lenMaxCreatorName)).append("-+-").append("-".repeat(LEN_COL_PLAYERS)).append("-+").append("\n");
-        tableGameRoom.append(getRowRoomTable("Room name", "Creator name", "Players", lenMaxRoomName, lenMaxCreatorName));
-
-        for (GameRoom gr : rooms)
-        {
-            String players = gr.enteredPlayers().size()+"/"+gr.totalPlayers();
-            tableGameRoom.append(getRowRoomTable("[" + numRoom + "] " + gr.gameRoomName(), gr.creatorName(), players, lenMaxRoomName, lenMaxCreatorName));
-            numRoom++;
-        }
-
-        return tableGameRoom.toString();
-    }
-
-    /**
-     *
-     * @param answer
-     * @param rooms
-     * @return
-     */
-    private boolean isGameRoomValid(String answer, List<GameRoom> rooms)
-    {
-        return false;
-    }
-
-
-    /**
      * @author Abdullah Nasr
      */
     @Override
-    public String chooseGameRoom(List<GameRoom> rooms) {
+    public void chooseGameRoom(List<GameRoom> rooms) {
 
-        String gameRoomTable = getTableGameRoom(rooms);
+        String gameRoomTable = InputFormatChecker.getTableGameRoom(rooms);
         String answer;
 
         answer = playerMessage(gameRoomTable+"\nType the room name or insert the number of row: ");
-        while(!isGameRoomValid(gameRoomTable,rooms))
+        while(!InputFormatChecker.isGameRoomValid(gameRoomTable,rooms))
         {
             answer = playerMessage(gameRoomTable+"\nInvalid game room!\nType the room name or insert the number of row: ");
         }
 
-        return answer;
+        getClientController().update(new Event(EventID.CHOOSE_GAME_ROOM, answer));
     }
 
     @Override
-    public List<Coordinates> pickTiles(int availablePickNumber) {
-        int x = 0, y = 0;
-        ArrayList<Coordinates> list = new ArrayList<>();
-        String[] coords;
-        boolean attempt = true;
+    public void pickTiles(int availablePickNumber) {
 
-        for(int i = 0; i < availablePickNumber; i++){
-            do {
-                attempt = true;
-                try {
-                    coords = playerMessage("choose using the following format: x,y\n").split("\\,");
-                    x = Integer.parseInt(coords[0]);
-                    y = Integer.parseInt(coords[1]);
-                }
-                catch (Exception e) {
-                    System.out.println("invalid input, try again ");
-                    attempt = false;
-                }
-            }while(!attempt);
-
-            /*x = Integer.parseInt(coords[0]);
-            y = Integer.parseInt(coords[1]);*/
-            list.add(new Coordinates(x, y));
-
-            if (i < 3 && playerMessage("done?").equals("y")) i = 4;
-        }
-
-        return list;
     }
 
     @Override
-    public List<Tile> chooseOrder(List<Tile> selection) {
-        ArrayList<Tile> temp = new ArrayList<>();
-        ArrayList<Integer> choosenIndex = new ArrayList<>();
+    public void chooseOrder(List<Tile> selection) {
 
-        int index = 0;
-        System.out.println("Choose order: ");
-
-        for(int i = 0; i < selection.size(); i++){
-
-            do {
-                index = Integer.parseInt(playerMessage("Choose tile in " + i + " position: "));
-
-                if((index <selection.size() && index > -1) || choosenIndex.contains(index))
-                    System.out.println("Invalid value, try again");
-                temp.add(selection.get(index));
-            }while(!(index < selection.size() && index > -1) && !choosenIndex.contains(index));
-
-            choosenIndex.add(index);
-            temp.add(selection.get(index));
-        }
-
-        return temp;
     }
 
     @Override
-    public int chooseColumn() {
-        int column = 0;
-        boolean attempt = true;
+    public void chooseColumn() {
 
-        do {
-            attempt = true;
-            try {
-                column = Integer.parseInt(playerMessage("Choose column: "));
-            } catch (Exception e) {
-                System.out.println("invalid input, try again");
-                attempt = false;
-            }
-        }while(!attempt);
+    }
 
-        return column;
+    @Override
+    public void playerIsPlaying(String playerName) {
+        System.out.println(playerName + "is currently playing his turn");
     }
 
     @Override
     public void assignCommonGoalPoints(String playerName, int token) {
-        System.out.println(playerName + " recieved " + token + "points from commongoal");
+
     }
 
     @Override
     public void assignPersonalGoalPoints(Map<String, Integer> points) {
-        for(Map.Entry<String, Integer> entry : points.entrySet()){
-            System.out.println(entry.getKey() + " recieved " + entry.getValue() + "points from Personal goal");
-        }
+
     }
 
     @Override
     public void assignAdjacentGoalPoints(Map<String, Integer> points) {
-        for(Map.Entry<String, Integer> entry : points.entrySet()){
-            System.out.println(entry.getKey() + " recieved " + entry.getValue() + "points from adjacents tiles");
-        }
+
     }
 
     @Override
     public void announceWinner(String winnerName, Map<String, Integer> points) {
-        for(Map.Entry<String, Integer> entry : points.entrySet())
-            System.out.println(entry.getKey() + " has " + entry.getValue() + " points");
-
-        System.out.println("The winner is: " + winnerName);
-        endGame();
     }
 
     @Override
-    public String waitForEndGameAction() {
-        return null;
+    public void disconnected() {
+        System.out.println("Disconnected from server. Trying to reconnect...");
     }
 
     @Override
-    public String justScanChat() {
+    public void justScanChat() {
         while(chatMessage == null) {
             try {
                 //noinspection BusyWait
@@ -436,7 +212,7 @@ public class CLI extends GameView {
         }
         String temp = chatMessage;
         chatMessage = null;
-        return temp;
+        getClientController().update(new Event(EventID.JUST_SCAN_CHAT, temp));
     }
 
     /**

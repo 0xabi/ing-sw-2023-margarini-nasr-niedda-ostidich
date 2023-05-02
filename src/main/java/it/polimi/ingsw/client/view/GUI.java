@@ -1,50 +1,49 @@
 package it.polimi.ingsw.client.view;
 
-import it.polimi.ingsw.resources.Coordinates;
 import it.polimi.ingsw.resources.GameRoom;
 import it.polimi.ingsw.resources.Tile;
+import javafx.stage.Stage;
 
 import java.util.List;
 import java.util.Map;
 
-public class GUI extends GameView {
+public class GUI extends GameClientView {
 
-    public GUI() {
-        super();
+    public GUI(String network) {
+        super(network);
+
     }
 
     @Override
     public void start() {
+        GUIApp.setGui(this);
+        GUIApp.setClientController(getClientController());
+    }
+
+    @Override
+    public void chooseIPAddress() {
 
     }
 
     @Override
-    public String chooseIPAddress() {
-        return null;
+    public void choosePlayerName() {
+
+        GUIApp.setScene("player_name");
+
     }
 
     @Override
-    public String choosePlayerName() {
-        return null;
+    public void chooseNewOrJoin() {
+
     }
 
     @Override
-    public String chooseNewOrJoin() {
-        return null;
+    public void chooseNewGameName() {
+
     }
 
     @Override
-    public String chooseNewGameName() {
-        return null;
-    }
-
-    @Override
-    public int chooseNewGamePlayerNumber() {
-        return 0;
-    }
-
-    @Override
-    public void updateGameRoom(GameRoom gameRoom) {
+    public void chooseNewGamePlayerNumber() {
 
     }
 
@@ -54,23 +53,28 @@ public class GUI extends GameView {
     }
 
     @Override
-    public String chooseGameRoom(List<GameRoom> rooms) {
-        return null;
+    public void chooseGameRoom(List<GameRoom> rooms) {
+
     }
 
     @Override
-    public List<Coordinates> pickTiles(int availablePickNumber) {
-        return null;
+    public void pickTiles(int availablePickNumber) {
+
     }
 
     @Override
-    public List<Tile> chooseOrder(List<Tile> selection) {
-        return null;
+    public void chooseOrder(List<Tile> selection) {
+
     }
 
     @Override
-    public int chooseColumn() {
-        return 0;
+    public void chooseColumn() {
+
+    }
+
+    @Override
+    public void playerIsPlaying(String playerName) {
+
     }
 
     @Override
@@ -94,18 +98,17 @@ public class GUI extends GameView {
     }
 
     @Override
-    public String waitForEndGameAction() {
-        return null;
+    public void disconnected() {
+
     }
 
     @Override
-    public String justScanChat() {
-        return null;
+    public void justScanChat() {
+
     }
 
     @Override
     public void justPrintChat(String message) {
 
     }
-
 }

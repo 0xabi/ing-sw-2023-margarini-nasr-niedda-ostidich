@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.resources.exceptions.PlayerNotFoundException;
-import it.polimi.ingsw.resources.interfaces.ModelActions;
+import it.polimi.ingsw.resources.interfaces.ServerModel;
 import it.polimi.ingsw.resources.Coordinates;
 import it.polimi.ingsw.resources.Tile;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +20,7 @@ import java.util.*;
  *
  * @author Francesco Ostidich
  */
-public class GameModel implements ModelActions {
+public class GameServerModel implements ServerModel {
 
     private final Board board;
 
@@ -36,7 +36,7 @@ public class GameModel implements ModelActions {
      * @author Francesco Ostidich
      * @param names is the list with the players names got from the controller, used for construct the player objects
      */
-    public GameModel(@NotNull List<String> names) {
+    public GameServerModel(@NotNull Set<String> names) {
         board = new Board(names.size());
         commonGoalConstructor(names.size());
         playerListConstructor(names);
@@ -63,7 +63,7 @@ public class GameModel implements ModelActions {
      * @param names is the list with the players names got from the controller, used for construct the player objects
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    private void playerListConstructor(@NotNull List<String> names) {
+    private void playerListConstructor(@NotNull Set<String> names) {
         Random random = new Random();
         Set<Integer> personalGoalNumberSet = new HashSet<>();
         while(personalGoalNumberSet.size() < names.size())
