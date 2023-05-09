@@ -6,17 +6,19 @@ import it.polimi.ingsw.resources.MessageID;
 import it.polimi.ingsw.resources.interfaces.ClientController;
 import it.polimi.ingsw.resources.interfaces.ServerController;
 import it.polimi.ingsw.server.serverNetwork.GameServerNetwork;
+import it.polimi.ingsw.server.serverNetwork.Client;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class RoomServices implements ServerController {
+public class RoomServices implements ServerController{
 
     private final Map<String, GameServerController> playerMatch;
 
-    private final Map<String, ClientController> clients;
+    private final Map<String, Client> clients;
 
     private final List<GameRoom> gameRooms;
 
@@ -47,7 +49,7 @@ public class RoomServices implements ServerController {
      * @author Francesco Ostidich
      * @return client controller interfaces mapped on players' name string
      */
-    public Map<String, ClientController> getClients() {
+    public Map<String, Client> getClients() {
         return clients;
     }
 
@@ -55,7 +57,7 @@ public class RoomServices implements ServerController {
      * @author Francesco Ostidich
      */
     @Override
-    public void playerConnected(String playerName, ClientController client) {
+    public void playerConnected(String playerName, Client client) {
         clients.put(playerName, client);
     }
 
@@ -67,13 +69,18 @@ public class RoomServices implements ServerController {
         return playerMatch.keySet();
     }
 
+    @Override
+    public void playerConnected(String playerName, ClientController client) {
+
+    }
+
     /**
      * When a game room is full, match is to be started.
      *
      * @author Francesco Ostidich
      * @param names is the list of players' name
      */
-    public void startGame(Map<String, ClientController> names) {
+    public void startGame(Map<String, Client> names) {
         executorService.submit(() -> {
             GameServerController gsc = new GameServerController(names);
             names.keySet().forEach(player -> playerMatch.put(player, gsc));
@@ -132,7 +139,7 @@ public class RoomServices implements ServerController {
                     !gameRoom.enteredPlayers().contains(msg.playerName())) {
                 gameRoom.enteredPlayers().add(msg.playerName());
                 if(gameRoom.enteredPlayers().size() == gameRoom.totalPlayers()) {
-                    Map<String, ClientController> names = new HashMap<>();
+                    Map<String, Client> names = new HashMap<>();
                     //noinspection ResultOfMethodCallIgnored
                     gameRoom.enteredPlayers().stream().map(player -> names.put(player, clients.get(player)));
                     startGame(names);
@@ -147,11 +154,11 @@ public class RoomServices implements ServerController {
      * @author Francesco Ostidich
      */
     @Override
-    public void createNewRoom(@NotNull Message msg) {
+    public void createNewRoom(@NotNull Message msg) throws IOException {
         if(msg.messageID() != MessageID.CREATE_NEW_ROOM || !(msg.contents()[0] instanceof String) || !clients.containsKey(msg.playerName())) return;
         for (GameRoom room : gameRooms) {
             if (room.gameRoomName().equals(msg.contents()[0]))
-                clients.get(msg.playerName()).roomNameNotAvailable();
+                clients.get(msg.playerName()).send(new Message(msg.playerName(), MessageID.ROOM_NOT_AVAILABLE));
         }
         List<String> enteredPlayers = new LinkedList<>();
         enteredPlayers.add(msg.playerName());
@@ -164,9 +171,9 @@ public class RoomServices implements ServerController {
      * @author Francesco Ostidich
      */
     @Override
-    public void askForRooms(@NotNull Message msg) {
+    public void askForRooms(@NotNull Message msg) throws IOException {
         if(msg.messageID() != MessageID.ASK_FOR_ROOMS || !clients.containsKey(msg.playerName())) return;
-        clients.get(msg.playerName()).showRooms(new Message(msg.playerName(), MessageID.SHOW_ROOMS, gameRooms));
+        clients.get(msg.playerName()).send(new Message(msg.playerName(), MessageID.SHOW_ROOMS, gameRooms));
     }
 
 }
