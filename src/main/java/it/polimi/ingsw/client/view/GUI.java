@@ -1,9 +1,10 @@
 package it.polimi.ingsw.client.view;
 
+import it.polimi.ingsw.client.view.handler.SceneHandler;
 import it.polimi.ingsw.resources.GameRoom;
 import it.polimi.ingsw.resources.Tile;
-import javafx.stage.Stage;
-
+import javafx.fxml.FXMLLoader;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -16,8 +17,7 @@ public class GUI extends GameClientView {
 
     @Override
     public void start() {
-        GUIApp.setGui(this);
-        GUIApp.setClientController(getClientController());
+        SceneHandler.setClientController(getClientController());
     }
 
     @Override
@@ -28,8 +28,7 @@ public class GUI extends GameClientView {
     @Override
     public void choosePlayerName() {
 
-        GUIApp.setScene("player_name");
-
+        SceneHandler.switchScene("player_name");
     }
 
     @Override

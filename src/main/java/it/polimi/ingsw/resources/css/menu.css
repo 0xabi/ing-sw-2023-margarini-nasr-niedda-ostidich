@@ -1,13 +1,16 @@
 .anchor_pane
 {
     -fx-background-image: url("../graphics/publisherMaterial/banner.png");
-    -fx-background-size: stretch;
+    -fx-background-size: cover;
+    -fx-background-position: center;
+    /*-fx-background-repeat: repeat;
+    -fx-background-position: center;*/
 }
 
 .text
 {
     -fx-text-fill: white;
-    -fx-font-size: 30 px;
+    /*-fx-font-size: 30 px;*/
     -fx-border-color: white;
 }
 
@@ -15,7 +18,7 @@
 {
     -fx-background-color: transparent;
     -fx-text-fill: white;
-    -fx-font-size: 24 px;
+    /*-fx-font-size: 24 px;*/
 }
 
 .btn
