@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
@@ -28,9 +30,9 @@ public class Client implements ClientController {
     private final Socket clientSocket;
     private final ObjectOutputStream MessageToClient;
     private final ObjectInputStream MessageFromClient;
-    private final Queue<Message> messageQueue;
+    private final Queue<Message> messageQueue = new LinkedList<>();
 
-    private Queue<Message> pingQueue;
+    private final Queue<Message> pingQueue = new LinkedList<>();
     private final ServerController roomServices;
 
     private String playerName;
@@ -41,7 +43,9 @@ public class Client implements ClientController {
         MessageFromClient = new ObjectInputStream(clientSocket.getInputStream());
         MessageToClient = new ObjectOutputStream(clientSocket.getOutputStream());
         this.roomServices = roomServices;
-        messageQueue = new LinkedList<>();
+        alive = true;
+        setConnectionType("Socket");
+
 
         new Thread(() -> {
             try {
@@ -54,7 +58,7 @@ public class Client implements ClientController {
     }
 
     public boolean PlayerIDisAvailable(@NotNull Message message) {
-        return roomServices.onlinePlayers().contains(message.getPlayerName());
+        return !roomServices.onlinePlayers().contains(message.getPlayerName());
     }
 
     public void send(Message message) throws IOException {
@@ -68,6 +72,7 @@ public class Client implements ClientController {
         while (alive) {
             try {
                 clientMessage = (Message) MessageFromClient.readObject();
+                System.out.println("ho ricevuto un messaggio");
             } catch (IOException | ClassNotFoundException e) {
                 break;
             }
@@ -78,8 +83,9 @@ public class Client implements ClientController {
         }
     }
 
-    public void Sorter() throws IOException {
+    public void Sorter() throws InterruptedException {
         while (alive) {
+            Thread.sleep(1*1000);
             if (messageQueue.size() > 0) {
                 Message msg = messageQueue.remove();
                 try {
@@ -92,8 +98,9 @@ public class Client implements ClientController {
                         case HELLO -> {
                             if (PlayerIDisAvailable(msg)) {
                                 send(new PlayerAccepted(msg.getPlayerName(), MessageID.PLAYER_ACCEPTED));
+                                System.out.println("["+ LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)+"] "+msg.getPlayerName()+" Joined the lobby");
                                 playerName = msg.getPlayerName();
-                                roomServices.playerConnected(msg.getPlayerName(), this);
+                                roomServices.playerConnected(playerName, this);
                                 new Thread(() -> {
                                     try {
                                         CheckDisconnection();
@@ -104,6 +111,8 @@ public class Client implements ClientController {
                         }
                     }
                 } catch (ClassCastException ignored) {
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
                 }
             }
         }
@@ -113,14 +122,14 @@ public class Client implements ClientController {
         Message ping = new Ping(playerName, MessageID.PING);
 
         while (alive) {
-            //noinspection BusyWait
             Thread.sleep(10 * 1000);
 
-            send(ping);
             pingQueue.add(ping);
-            if (pingQueue.size() > 2)
-                //TODO: too many messages are accumulating, so the server is to be updated of client's disconnection
+            send(ping);
+            if (pingQueue.size() > 2) {
+                System.out.println("[" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + "] " + playerName + " Quit the lobby");
                 alive = false;
+            }
         }
     }
 

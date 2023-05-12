@@ -1,11 +1,14 @@
 package it.polimi.ingsw.client.view;
 
+import it.polimi.ingsw.client.clientController.GameClientController;
 import it.polimi.ingsw.resources.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * CLI class is to implement GameView UI abstract class.
@@ -23,6 +26,7 @@ public class CLI extends GameClientView {
 
     private final Thread scannerThread;
 
+
     /**
      * Class constructor.
      *
@@ -32,13 +36,18 @@ public class CLI extends GameClientView {
         super(network);
         scannerThread = new Thread(this::scan);
         scannerThread.start();
+        try {
+            start();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * @author Francesco Ostidich
      */
     @Override
-    public void start() {
+    public void start() throws Exception {
         System.out.println("""
 
                 ___  ___      _____ _          _  __ _     \s
@@ -54,13 +63,15 @@ public class CLI extends GameClientView {
 
 
                 Loading...""");
+
+        getClientController().update(new Event(EventID.START,null));
     }
 
     /**
      * @author Francesco Ostidich
      */
     @Override
-    public void chooseIPAddress() {
+    public void chooseIPAddress() throws Exception {
         String scannedIP = playerMessage("Choose IP address:");
         while (!InputFormatChecker.isIPAddress(scannedIP)) {
             scannedIP = playerMessage("Wrong input!\nChoose IP address:");
@@ -69,10 +80,52 @@ public class CLI extends GameClientView {
     }
 
     /**
+     * When IP address string is scanned, it needs to be checked if in right format.
+     *
      * @author Francesco Ostidich
+     * @param IP is the IP address string
+     * @return check's outcome
      */
+    private boolean isIPAddress(@NotNull String IP) {
+        if(IP.equals("localhost")) return true;
+        String[] chunks;
+        chunks = IP.split("\\.");
+        if(chunks.length!=4)
+            return false;
+        try{
+            for(String number : chunks) {
+                int num = Integer.parseInt(number);
+                if (num<0 || num>255)
+                    return false;
+            }
+        }
+        catch(NumberFormatException e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     *
+     * @param input
+     * @return
+     * @author Abdullah Nasr
+     */
+    private @Nullable Integer getNumFromString(String input)
+    {
+        try
+        {
+            return Integer.parseInt(input);
+        }
+        catch(NumberFormatException e)
+        {
+            return null;
+        }
+
+    }
+
     @Override
-    public void choosePlayerName() {
+    public void choosePlayerName() throws Exception {
         String scannedIP = playerMessage("Choose player name:");
         while (scannedIP.isBlank()) {
             scannedIP = playerMessage("Wrong input!\nChoose player name:");
@@ -85,7 +138,7 @@ public class CLI extends GameClientView {
      * @author Abdullah Nasr
      */
     @Override
-    public void chooseNewOrJoin() {
+    public void chooseNewOrJoin() throws Exception {
         String answer = playerMessage("Type [new] to create new game or [join] to join an existing game:");
         answer = answer.trim().toLowerCase();
 
@@ -102,7 +155,7 @@ public class CLI extends GameClientView {
      * @author Abdullah Nasr
      */
     @Override
-    public void chooseNewGameName() {
+    public void chooseNewGameName() throws Exception {
         String gameName = playerMessage("Choose a new game name:");
         while (gameName.isBlank()) {
             gameName = playerMessage("Wrong input!\nChoose a new game name:");
@@ -115,7 +168,7 @@ public class CLI extends GameClientView {
      * @author Abdullah Nasr
      */
     @Override
-    public void chooseNewGamePlayerNumber() {
+    public void chooseNewGamePlayerNumber() throws Exception {
         Integer numPlayer;
         String input = playerMessage("Choose the number of players [max " + InputFormatChecker.getMaxPlayer() + " players" + "]:");
         numPlayer = InputFormatChecker.getNumFromString(input);
@@ -141,7 +194,7 @@ public class CLI extends GameClientView {
      * @author Abdullah Nasr
      */
     @Override
-    public void chooseGameRoom(List<GameRoom> rooms) {
+    public void chooseGameRoom(List<GameRoom> rooms) throws Exception {
 
         String gameRoomTable = InputFormatChecker.getTableGameRoom(rooms);
         String answer;
@@ -155,7 +208,7 @@ public class CLI extends GameClientView {
     }
 
     @Override
-    public void pickTiles(int availablePickNumber) {
+    public void pickTiles(int availablePickNumber) throws Exception {
         int x = 0, y = 0;
         ArrayList<Coordinates> list = new ArrayList<>();
         String[] coords;
@@ -184,7 +237,7 @@ public class CLI extends GameClientView {
     }
 
     @Override
-    public void chooseOrder(List<Tile> selection) {
+    public void chooseOrder(List<Tile> selection) throws Exception {
         ArrayList<Tile> temp = new ArrayList<>();
         ArrayList<Integer> chosenIndex = new ArrayList<>();
         boolean inputIsValid;
@@ -220,7 +273,7 @@ public class CLI extends GameClientView {
     }
 
     @Override
-    public void chooseColumn() {
+    public void chooseColumn() throws Exception {
         int column = 0;
         boolean attempt;
 
@@ -273,7 +326,7 @@ public class CLI extends GameClientView {
     }
 
     @Override
-    public void justScanChat() {
+    public void justScanChat() throws Exception {
         while (chatMessage == null) {
             try {
                 //noinspection BusyWait

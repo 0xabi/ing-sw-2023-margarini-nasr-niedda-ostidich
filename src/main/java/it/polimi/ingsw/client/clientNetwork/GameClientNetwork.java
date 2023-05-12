@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client.clientNetwork;
 
+import it.polimi.ingsw.client.clientController.GameClientController;
+import it.polimi.ingsw.resources.Event;
 import it.polimi.ingsw.resources.Message;
 import it.polimi.ingsw.resources.MessageID;
 import it.polimi.ingsw.resources.interfaces.ClientController;
@@ -11,6 +13,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
 
@@ -29,7 +32,7 @@ public class GameClientNetwork implements ClientNetwork {
     private ObjectOutputStream MessageToServer;
     private ObjectInputStream MessageFromServer;
 
-    private Queue<Message> messageQueue;
+    private final Queue<Message> messageQueue = new LinkedList<>();
 
     private ClientController controller;
 
@@ -48,25 +51,17 @@ public class GameClientNetwork implements ClientNetwork {
     }
 
     @Override
-    public ServerController connect(String serverIP, String playerName, ClientController controller) {
+    public ServerController connect(String serverIP, String playerName ,ClientController controller) throws IOException {
         this.serverIP = serverIP;
         this.playerName = playerName;
         this.controller = controller;
         boolean connected = false;
         while (Objects.equals(connectionType, "Socket") && !connected) {
-            try (Socket socket = new Socket(serverIP, 8080)) {
-                connected = true;
-                //TODO: connection built
-            } catch (Exception e) {
-                continue;
-            }
+            Socket socket = new Socket(serverIP, 8000);
+            connected = true;
+            this.MessageToServer = new ObjectOutputStream(socket.getOutputStream());
+            this.MessageFromServer = new ObjectInputStream(socket.getInputStream());
 
-            try {
-                this.MessageToServer = new ObjectOutputStream(socket.getOutputStream());
-                this.MessageFromServer = new ObjectInputStream(socket.getInputStream());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
             new Thread(() -> {
                 try {
                     Sorter();
@@ -81,7 +76,6 @@ public class GameClientNetwork implements ClientNetwork {
             } catch (IOException ignored) {
             }
 
-            //TODO: send player's name message to server to be added to the list, otherwise it all to be restarted
 
         }
 
@@ -114,8 +108,9 @@ public class GameClientNetwork implements ClientNetwork {
     }
 
     public void Sorter() throws Exception {
-        //noinspection InfiniteLoopStatement
+
         while (true) { //FIXME: and put while "client is alive"
+            Thread.sleep(1*1000);
             if (messageQueue.size() > 0) {
                 try {
                     Message msg = messageQueue.remove();
@@ -128,12 +123,8 @@ public class GameClientNetwork implements ClientNetwork {
                         case DISCONNECT_PLAYERS -> {
                             //TODO: manage disconnection
                         }
-                        case PLAYER_ACCEPTED -> {
-
-                        }
-                        case PLAYER_NOT_ACCEPTED -> {
-                            //TODO: view is to be restarted
-                        }
+                        case PLAYER_ACCEPTED -> ((GameClientController) controller).getView().chooseNewOrJoin();
+                        case PLAYER_NOT_ACCEPTED -> ((GameClientController) controller).getView().start();
                         case PING -> send(new Pong(playerName, MessageID.PONG));
                     }
                 } catch (ClassCastException ignored) {

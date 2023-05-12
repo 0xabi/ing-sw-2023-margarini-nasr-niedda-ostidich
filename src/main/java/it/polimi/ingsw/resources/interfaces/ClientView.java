@@ -111,7 +111,7 @@ public interface ClientView {
        *
        * @author Francesco Ostidich
        */
-      void start();
+      void start() throws Exception;
 
       /**
        * When player wants to connect to server is required to write the server's IP address.
@@ -119,35 +119,35 @@ public interface ClientView {
        *
        * @author Francesco Ostidich
        */
-      void chooseIPAddress();
+      void chooseIPAddress() throws Exception;
 
       /**
        * When player wants to enter games is required to write his nickname.
        *
        * @author Francesco Ostidich
        */
-      void choosePlayerName();
+      void choosePlayerName() throws Exception;
 
       /**
        * When player wants to play is required to choose between creating a new game room or enter one already opened.
        *
        * @author Francesco Ostidich
        */
-      void chooseNewOrJoin();
+      void chooseNewOrJoin() throws Exception;
 
       /**
        * After deciding to create new game room, player has to set a name for it.
        *
        * @author Francesco Ostidich
        */
-      void chooseNewGameName();
+      void chooseNewGameName() throws Exception;
 
       /**
        * After deciding to create new game room, player has to set a player number for it.
        *
        * @author Francesco Ostidich
        */
-      void chooseNewGamePlayerNumber();
+      void chooseNewGamePlayerNumber() throws Exception;
 
       /**
        * When a player is in a game room, and its information changes (for example a player enters),
@@ -181,7 +181,7 @@ public interface ClientView {
        * @author Francesco Ostidich
        * @param rooms is the game rooms availability list
        */
-      void chooseGameRoom(List<GameRoom> rooms);
+      void chooseGameRoom(List<GameRoom> rooms) throws Exception;
 
       /**
        * When game ends, personal goals must be forwarded to game view in order to be printed.
@@ -209,7 +209,7 @@ public interface ClientView {
        * @author Francesco Ostidich
        * @param availablePickNumber is the max number of tiles to be picked
        */
-      void pickTiles(int availablePickNumber);
+      void pickTiles(int availablePickNumber) throws Exception;
 
       /**
        * After picked coordinates are checked if legals, player is asked to choose insertion order of the tiles.
@@ -217,14 +217,14 @@ public interface ClientView {
        * @author Francesco Ostidich
        * @param selection is the picked tile list
        */
-      void chooseOrder(List<Tile> selection);
+      void chooseOrder(List<Tile> selection) throws Exception;
 
       /**
        * After picked tiles order is defined, player is asked to choose a shelf column to insert the tiles.
        *
        * @author Francesco Ostidich
        */
-      void chooseColumn();
+      void chooseColumn() throws Exception;
 
       /**
        * When another player is picking tiles, choosing order and choosing column, the view is telling
@@ -284,7 +284,7 @@ public interface ClientView {
        *
        * @author Francesco Ostidich
        */
-      void justScanChat();
+      void justScanChat() throws Exception;
 
       /**
        * Method is always opened on other thread, only chat messages are showed.

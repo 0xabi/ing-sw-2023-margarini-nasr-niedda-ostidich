@@ -50,22 +50,28 @@ public class GameClientController implements ClientController {
      * @author Francesco Ostidich
      */
     @SuppressWarnings("unchecked")
-    public void update(@NotNull Event evt) {
+    public void update(@NotNull Event evt) throws Exception {
         switch (evt.eventName()) {
-            case START -> view.choosePlayerName();
-            case CHOOSE_PLAYER_NAME -> {
-                this.playerName = (String) evt.value();
-                view.chooseIPAddress();
+            case START ->{
+                view.choosePlayerName();
             }
-            case CHOOSE_IP_ADDRESS -> {
-                server = clientNetwork.connect((String) evt.value(), playerName, this);
-                if (server == null) return;
-                view.chooseNewOrJoin();
+
+            case CHOOSE_PLAYER_NAME -> {
+                playerName = (String) evt.value();
+                view.chooseIPAddress();
             }
             case CHOOSE_NEW_OR_JOIN -> {
                 if (evt.value().equals("new")) view.chooseNewGamePlayerNumber();
                 else server.askForRooms(new AskForRooms(playerName, MessageID.ASK_FOR_ROOMS));
+
             }
+            case CHOOSE_IP_ADDRESS -> {
+                server = clientNetwork.connect((String) evt.value(), playerName, this);
+                if (server == null) return;
+
+            }
+
+
             case CHOOSE_NEW_GAME_PLAYER_NUMBER -> {
                 newRoomPlayerNumber = (int) evt.value();
                 view.chooseNewGameName();
@@ -95,7 +101,7 @@ public class GameClientController implements ClientController {
      * @author Francesco Ostidich
      */
     @Override
-    public void restart() {
+    public void restart() throws Exception {
         view.start();
     }
 
@@ -103,7 +109,7 @@ public class GameClientController implements ClientController {
      * @author Francesco Ostidich
      */
     @Override
-    public void roomNameNotAvailable(@NotNull RoomNameNotAvailable msg) {
+    public void roomNameNotAvailable(@NotNull RoomNameNotAvailable msg) throws Exception {
         if (!msg.getPlayerName().equals(playerName) ||
                 msg.getMessageID() != MessageID.ROOM_NAME_NOT_AVAILABLE) return;
         view.chooseNewGameName();
@@ -121,7 +127,7 @@ public class GameClientController implements ClientController {
      * @author Francesco Ostidich
      */
     @Override
-    public void showRooms(@NotNull ShowRooms msg) {
+    public void showRooms(@NotNull ShowRooms msg) throws Exception {
         if (!msg.getPlayerName().equals(playerName) ||
                 msg.getMessageID() != MessageID.SHOW_ROOMS) return;
         view.chooseGameRoom(msg.getGameRooms());
@@ -141,7 +147,7 @@ public class GameClientController implements ClientController {
      * @author Francesco Ostidich
      */
     @Override
-    public void notifyGameHasStarted(@NotNull NotifyGameHasStarted msg) {
+    public void notifyGameHasStarted(@NotNull NotifyGameHasStarted msg) throws Exception {
         if (!msg.getPlayerName().equals(playerName) ||
                 msg.getMessageID() != MessageID.NOTIFY_GAME_HAS_STARTED) return;
         view.setGameParameters(msg.getGameParameters());
@@ -172,7 +178,7 @@ public class GameClientController implements ClientController {
      * @author Francesco Ostidich
      */
     @Override
-    public void newTurn(@NotNull NewTurn msg) {
+    public void newTurn(@NotNull NewTurn msg) throws Exception {
         if (!msg.getPlayerName().equals(playerName) ||
                 msg.getMessageID() != MessageID.NEW_TURN) return;
         view.updateBoard(msg.getBoard());
@@ -201,7 +207,7 @@ public class GameClientController implements ClientController {
      * @author Francesco Ostidich
      */
     @Override
-    public void pickAccepted(@NotNull PickAccepted msg) {
+    public void pickAccepted(@NotNull PickAccepted msg) throws Exception {
         if (!msg.getPlayerName().equals(playerName) ||
                 msg.getMessageID() != MessageID.PICK_ACCEPTED) return;
         view.chooseOrder(msg.getPickedTiles());
@@ -220,4 +226,7 @@ public class GameClientController implements ClientController {
         view.announceWinner(msg.getWinner(), msg.getPlayerPoints());
     }
 
+    public ClientView getView(){
+        return view;
+    }
 }

@@ -34,7 +34,7 @@ public class GameServerNetwork implements ServerNetwork {
     public GameServerNetwork(ServerController roomServices){
         this.roomServices = roomServices;
         try {
-            ss = new ServerSocket(8080);
+            ss = new ServerSocket(8000);
             running = true;
         } catch (IOException e){
             running = false;
@@ -49,23 +49,17 @@ public class GameServerNetwork implements ServerNetwork {
      */
     private void waitForClients() {
 
+        System.out.println("Server in ascolto");
 
         while (running) {
             try {
                 Socket client = ss.accept();
-                new Thread(() -> {
-                    try {
-                        new Client(client, roomServices);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }).start();
+                new Client(client, roomServices);
+                System.out.println("["+LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)+"]"+"Connection accepted:"+ client.toString());
 
-                System.out.println("["+LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)+"]");
-                System.out.println("Connection accepted:"+ client.toString());
                 } catch (IOException e) {
-                System.out.println("["+LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)+"]");
-                System.out.println("Connection not accepted");
+                System.out.println("["+LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)+"]"+"Connection not accepted");
+                System.out.println();
                 }
             }
         System.out.println("\nServer Offline");

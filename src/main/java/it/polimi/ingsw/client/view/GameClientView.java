@@ -72,6 +72,7 @@ public abstract class GameClientView implements ClientView {
         playerPersonalGoals = new LinkedList<>();
         gameRooms = new ArrayList<>();
         clientController = new GameClientController(this, network);
+        System.out.println(network);
     }
 
     /**

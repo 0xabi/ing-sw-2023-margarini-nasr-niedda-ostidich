@@ -1,5 +1,6 @@
 package it.polimi.ingsw.resources;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -11,4 +12,4 @@ import java.util.List;
  * @param totalPlayers is the maximum capacity of the game room
  * @param enteredPlayers is the list of players that have already entered the game room
  */
-public record GameRoom(String gameRoomName, String creatorName, int totalPlayers, List<String> enteredPlayers) {}
+public record GameRoom(String gameRoomName, String creatorName, int totalPlayers, List<String> enteredPlayers) implements Serializable {}

@@ -7,7 +7,7 @@ import java.io.IOException;
 public interface ClientNetwork {
 
 
-    ServerController connect(String serverIP, String playerName, ClientController controller);
+    ServerController connect(String serverIP, String playerName, ClientController controller) throws IOException;
 
     void send(Message message) throws IOException;
 }

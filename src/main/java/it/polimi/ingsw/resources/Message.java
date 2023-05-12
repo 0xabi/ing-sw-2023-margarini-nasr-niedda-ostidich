@@ -1,5 +1,7 @@
 package it.polimi.ingsw.resources;
 
+import java.io.Serializable;
+
 /**
  * A message is an object which encapsulates an information to be serialized and sent via a solid connection.
  * It contains the name of the player, the ID of the method to call and the parameter object.
@@ -7,7 +9,7 @@ package it.polimi.ingsw.resources;
  *
  * @author Francesco Ostidich
  */
-public abstract class Message {
+public abstract class Message implements Serializable {
 
     private final String playerName;
 

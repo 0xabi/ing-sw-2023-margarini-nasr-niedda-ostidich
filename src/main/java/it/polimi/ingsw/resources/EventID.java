@@ -35,5 +35,7 @@ public enum EventID {
     ANNOUNCE_WINNER,
     JUST_SCAN_CHAT,
     JUST_PRINT_CHAT,
+    PLAYER_ACCEPTED,
+    PLAYER_NOT_ACCEPTED,
 
 }

@@ -64,7 +64,7 @@ public class RoomServices implements ServerController {
      */
     @Override
     public Set<String> onlinePlayers() {
-        return playerMatch.keySet();
+        return clients.keySet();
     }
 
     /**
@@ -84,7 +84,7 @@ public class RoomServices implements ServerController {
      * @author Francesco Ostidich
      */
     @Override
-    public void disconnectedPlayer(String playerName) {
+    public void disconnectedPlayer(String playerName) throws Exception {
         try {
             playerMatch.get(playerName).disconnectedPlayer(playerName);
         } catch (NullPointerException ignored) {
@@ -106,7 +106,7 @@ public class RoomServices implements ServerController {
      * @author Francesco Ostidich
      */
     @Override
-    public void pickTilesRequest(@NotNull PickTilesRequest message) {
+    public void pickTilesRequest(@NotNull PickTilesRequest message) throws Exception {
         try {
             playerMatch.get(message.getPlayerName()).pickTilesRequest(message);
         } catch (NullPointerException ignored) {
@@ -117,7 +117,7 @@ public class RoomServices implements ServerController {
      * @author Francesco Ostidich
      */
     @Override
-    public void insertTilesRequest(InsertTilesRequest message) {
+    public void insertTilesRequest(InsertTilesRequest message) throws Exception {
         try {
             playerMatch.get(message.getPlayerName()).insertTilesRequest(message);
         } catch (NullPointerException ignored) {
@@ -152,7 +152,7 @@ public class RoomServices implements ServerController {
      * @author Francesco Ostidich
      */
     @Override
-    public void createNewRoom(@NotNull CreateNewRoom msg) {
+    public void createNewRoom(@NotNull CreateNewRoom msg) throws Exception {
         if (msg.getMessageID() != MessageID.CREATE_NEW_ROOM || !clients.containsKey(msg.getPlayerName())) return;
         for (GameRoom room : gameRooms) {
             if (room.gameRoomName().equals(msg.getRoomName())) {
@@ -171,7 +171,7 @@ public class RoomServices implements ServerController {
      * @author Francesco Ostidich
      */
     @Override
-    public void askForRooms(@NotNull AskForRooms msg) {
+    public void askForRooms(@NotNull AskForRooms msg) throws Exception {
         if (msg.getMessageID() != MessageID.ASK_FOR_ROOMS || !clients.containsKey(msg.getPlayerName())) return;
         clients.get(msg.getPlayerName()).showRooms(new ShowRooms(msg.getPlayerName(), MessageID.SHOW_ROOMS, gameRooms));
     }

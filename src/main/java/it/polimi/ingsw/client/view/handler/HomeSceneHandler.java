@@ -28,8 +28,7 @@ public class HomeSceneHandler extends SceneHandler{
     /**
      * @author Abdullah Nasr
      */
-    public void start()
-    {
+    public void start() throws Exception {
         getClientController().update(new Event(EventID.START,null));
     }
 

@@ -16,14 +16,14 @@ public interface ClientController {
      * @author Francesco Ostidich
      * @param event is the view event sent
      */
-    void update(Event event);
+    void update(Event event) throws Exception;
 
     /**
      * If parameters passed to the client controller are unavailable, view is asked to restart.
      *
      * @author Francesco Ostidich
      */
-    void restart();
+    void restart() throws Exception;
 
     /**
      * If client disconnects from server the view must tell it.
@@ -37,7 +37,7 @@ public interface ClientController {
      *
      * @author Francesco Ostidich
      */
-    void roomNameNotAvailable(RoomNameNotAvailable message);
+    void roomNameNotAvailable(RoomNameNotAvailable message) throws Exception;
 
     /**
      * When client asks to join a room, the list of rooms is to be sent.
@@ -45,7 +45,7 @@ public interface ClientController {
      * @author Francesco Ostidich
      * @param message contains the game rooms list
      */
-    void showRooms(ShowRooms message);
+    void showRooms(ShowRooms message) throws Exception;
 
     /**
      * When client asks to create a room, the room is to be updated when requested.
@@ -61,7 +61,7 @@ public interface ClientController {
      * @author Francesco Ostidich
      * @param message contains all starting game information
      */
-    void notifyGameHasStarted(NotifyGameHasStarted message);
+    void notifyGameHasStarted(NotifyGameHasStarted message) throws Exception;
 
     /**
      * When current player ends it turn, all client are updated.
@@ -70,7 +70,7 @@ public interface ClientController {
      * @author Francesco Ostidich
      * @param message contains all information to update
      */
-    void newTurn(NewTurn message);
+    void newTurn(NewTurn message) throws Exception;
 
     /**
      * After choosing coordinates on the board, if they are legitimate,
@@ -79,6 +79,6 @@ public interface ClientController {
      * @author Francesco Ostidich
      * @param message contains chosen tiles' list
      */
-    void pickAccepted(PickAccepted message);
+    void pickAccepted(PickAccepted message) throws Exception;
 
 }

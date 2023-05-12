@@ -59,25 +59,31 @@ public class GameServerController extends RoomServices {
      * @author Francesco Ostidich
      */
     public void playMatch() {
-        getClients().keySet().forEach(player -> getClients().get(player).notifyGameHasStarted(new NotifyGameHasStarted(
-                player,
-                MessageID.NOTIFY_GAME_HAS_STARTED,
-                model.getGameParameters(),
-                model.getTurnCycleOrder(),
-                model.getBoard(),
-                model.getBag(),
-                model.getCommonGoal1Tokens(),
-                model.getCommonGoal2Tokens(),
-                model.getPlayerPersonalGoalID(player),
-                model.getCommonGoal1(),
-                model.getCommonGoal2())));
+        getClients().keySet().forEach(player -> {
+            try {
+                getClients().get(player).notifyGameHasStarted(new NotifyGameHasStarted(
+                        player,
+                        MessageID.NOTIFY_GAME_HAS_STARTED,
+                        model.getGameParameters(),
+                        model.getTurnCycleOrder(),
+                        model.getBoard(),
+                        model.getBag(),
+                        model.getCommonGoal1Tokens(),
+                        model.getCommonGoal2Tokens(),
+                        model.getPlayerPersonalGoalID(player),
+                        model.getCommonGoal1(),
+                        model.getCommonGoal2()));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     /**
      * @author Francesco Ostidich
      */
     @Override
-    public void disconnectedPlayer(String playerName) {
+    public void disconnectedPlayer(String playerName) throws Exception {
         disconnected.add(playerName);
         if (disconnected.size() == names.size()) closeGame(names);
         if (playerTurn.equals(playerName)) {
@@ -101,7 +107,7 @@ public class GameServerController extends RoomServices {
      * @author Francesco Ostidich
      */
     @Override
-    public void pickTilesRequest(@NotNull PickTilesRequest message) {
+    public void pickTilesRequest(@NotNull PickTilesRequest message) throws Exception {
         if (!message.getPlayerName().equals(playerTurn) ||
                 message.getMessageID() != MessageID.PICK_TILES_REQUEST) return;
         if (model.checkSelection(message.getChosenCoordinates())) {
@@ -119,7 +125,7 @@ public class GameServerController extends RoomServices {
      * @author Francesco Ostidich
      */
     @Override
-    public void insertTilesRequest(@NotNull InsertTilesRequest message) {
+    public void insertTilesRequest(@NotNull InsertTilesRequest message) throws Exception {
         if (!message.getPlayerName().equals(playerTurn) ||
                 message.getMessageID() != MessageID.INSERT_TILES_REQUEST) return;
         try {
@@ -158,20 +164,26 @@ public class GameServerController extends RoomServices {
                     winner[0] = player;
                 }
             });
-            names.forEach(client -> getClients().get(client).newTurn(new NewTurn.EndGame(
-                    client,
-                    MessageID.NEW_TURN,
-                    model.getBoard(),
-                    model.getEndGameToken().isPresent(),
-                    model.getBag(),
-                    model.getCommonGoal1Tokens(),
-                    model.getCommonGoal2Tokens(),
-                    shelves,
-                    points,
-                    personalGoals,
-                    personalGoalPoints,
-                    adjacentGoalPoints,
-                    winner[0])));
+            names.forEach(client -> {
+                try {
+                    getClients().get(client).newTurn(new NewTurn.EndGame(
+                            client,
+                            MessageID.NEW_TURN,
+                            model.getBoard(),
+                            model.getEndGameToken().isPresent(),
+                            model.getBag(),
+                            model.getCommonGoal1Tokens(),
+                            model.getCommonGoal2Tokens(),
+                            shelves,
+                            points,
+                            personalGoals,
+                            personalGoalPoints,
+                            adjacentGoalPoints,
+                            winner[0]));
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
             return;
         }
         if (goOn) {
@@ -181,18 +193,24 @@ public class GameServerController extends RoomServices {
                 closeGame(names);
             }
         }
-        names.forEach(client -> getClients().get(client).newTurn(new NewTurn.NextPlayer(
-                client,
-                MessageID.NEW_TURN,
-                model.getBoard(),
-                model.getEndGameToken().isPresent(),
-                model.getBag(),
-                model.getCommonGoal1Tokens(),
-                model.getCommonGoal2Tokens(),
-                shelves,
-                points,
-                model.checkAvailablePickNumber(playerTurn),
-                playerTurn)));
+        names.forEach(client -> {
+            try {
+                getClients().get(client).newTurn(new NewTurn.NextPlayer(
+                        client,
+                        MessageID.NEW_TURN,
+                        model.getBoard(),
+                        model.getEndGameToken().isPresent(),
+                        model.getBag(),
+                        model.getCommonGoal1Tokens(),
+                        model.getCommonGoal2Tokens(),
+                        shelves,
+                        points,
+                        model.checkAvailablePickNumber(playerTurn),
+                        playerTurn));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     /**
