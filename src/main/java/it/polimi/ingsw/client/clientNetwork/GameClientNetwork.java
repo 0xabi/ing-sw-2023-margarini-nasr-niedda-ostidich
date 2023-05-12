@@ -3,17 +3,15 @@ package it.polimi.ingsw.client.clientNetwork;
 import it.polimi.ingsw.resources.Message;
 import it.polimi.ingsw.resources.MessageID;
 import it.polimi.ingsw.resources.interfaces.ClientController;
+import it.polimi.ingsw.resources.interfaces.ClientNetwork;
 import it.polimi.ingsw.resources.interfaces.ServerController;
-import it.polimi.ingsw.server.serverController.RoomServices;
-import it.polimi.ingsw.server.serverNetwork.Client;
+import it.polimi.ingsw.resources.messages.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ConnectException;
 import java.net.Socket;
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import java.util.Objects;
 import java.util.Queue;
 
 /**
@@ -22,9 +20,9 @@ import java.util.Queue;
  * Every action done on the ServerController interface must be forwarded to the server either as RMI or Socket calling
  * the method directly in the server on the controller.
  */
-public class GameClientNetwork{
+public class GameClientNetwork implements ClientNetwork {
 
-    private String connectionType = null;
+    private final String connectionType;
 
     private Socket socket;
 
@@ -49,23 +47,26 @@ public class GameClientNetwork{
         this.connectionType = connectionType;
     }
 
-
-    public void connect(String serverIP, String playerName, ClientController controller) throws Exception {
+    @Override
+    public ServerController connect(String serverIP, String playerName, ClientController controller) {
         this.serverIP = serverIP;
         this.playerName = playerName;
         this.controller = controller;
-          if (connectionType == "Socket") {
-            try (Socket socket = new Socket(serverIP, 8080);) {
-            } catch (SocketException e) {
-                //connessione non stabilita
-                throw new RuntimeException(e);
+        boolean connected = false;
+        while (Objects.equals(connectionType, "Socket") && !connected) {
+            try (Socket socket = new Socket(serverIP, 8080)) {
+                connected = true;
+                //TODO: connection built
+            } catch (Exception e) {
+                continue;
+            }
+
+            try {
+                this.MessageToServer = new ObjectOutputStream(socket.getOutputStream());
+                this.MessageFromServer = new ObjectInputStream(socket.getInputStream());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            this.socket = socket;
-
-            this.MessageToServer = new ObjectOutputStream(socket.getOutputStream());
-            this.MessageFromServer = new ObjectInputStream(socket.getInputStream());
             new Thread(() -> {
                 try {
                     Sorter();
@@ -75,29 +76,37 @@ public class GameClientNetwork{
             }).start();
             new Thread(this::ServerSocketListener).start();
 
-            send(new Message(playerName, MessageID.HELLO));
+            try {
+                send(new Hello(playerName, MessageID.HELLO));
+            } catch (IOException ignored) {
+            }
 
-            //mando un messaggio con nome del player cosi che posso aggiungerlo lato server alla mia lista
-              // se c'è gia un player con lo stesso nome allora sono obbligato a ""restartare"" il tutto.
+            //TODO: send player's name message to server to be added to the list, otherwise it all to be restarted
+
         }
 
+        return new Server(this);
 
     }
 
+    @Override
     public void send(Message message) throws IOException {
-        if (connectionType == "Socket") {
-            MessageToServer.writeObject(message);
+        if (Objects.equals(connectionType, "Socket")) {
+            try {
+                MessageToServer.writeObject(message);
+            } catch (IOException e) {
+                throw new IOException(e);
+            }
         }
     }
 
-    public void ServerSocketListener(){
+    public void ServerSocketListener() {
         Message serverMessage;
-        while (true) { //sistemare e mettere while "client is alive"
+        while (true) { //FIXME: add while "client is alive"
             try {
                 serverMessage = (Message) MessageFromServer.readObject();
             } catch (IOException | ClassNotFoundException e) {
-                //vuol dire che mi sono disconnesso dal server
-                //devo avvisare il client
+                //TODO: client is to be advised that connection with server has fallen
                 break;
             }
             messageQueue.add(serverMessage);
@@ -105,39 +114,30 @@ public class GameClientNetwork{
     }
 
     public void Sorter() throws Exception {
-        while(true){ //sistemare e mettere while "client is alive"
-            if(messageQueue.size() > 0){
-                Message msg = messageQueue.remove();
-                switch(msg.messageID()) {
-                    case NEW_TURN -> {
-                        controller.newTurn(msg);
-                    }
-                    case NOTIFY_GAME_HAS_STARTED -> {
-                        controller.notifyGameHasStarted(msg);
-                    }
-                    case PICK_ACCEPTED -> {
-                        controller.pickAccepted(msg);
-                    }
-                    case SHOW_ROOMS -> {
-                        controller.showRooms(msg);
-                    }
-                    case SHOW_PERSONAL_ROOM -> {
-                        controller.showPersonalRoom(msg);
-                    }
-                    case DISCONNECT_PLAYERS -> {
-                        //gestire disconnessione!
-                    }
-                    case PLAYER_ACCEPTED -> {
+        //noinspection InfiniteLoopStatement
+        while (true) { //FIXME: and put while "client is alive"
+            if (messageQueue.size() > 0) {
+                try {
+                    Message msg = messageQueue.remove();
+                    switch (msg.getMessageID()) {
+                        case NEW_TURN -> controller.newTurn((NewTurn) msg);
+                        case NOTIFY_GAME_HAS_STARTED -> controller.notifyGameHasStarted((NotifyGameHasStarted) msg);
+                        case PICK_ACCEPTED -> controller.pickAccepted((PickAccepted) msg);
+                        case SHOW_ROOMS -> controller.showRooms((ShowRooms) msg);
+                        case SHOW_PERSONAL_ROOM -> controller.showPersonalRoom((ShowPersonalRoom) msg);
+                        case DISCONNECT_PLAYERS -> {
+                            //TODO: manage disconnection
+                        }
+                        case PLAYER_ACCEPTED -> {
 
+                        }
+                        case PLAYER_NOT_ACCEPTED -> {
+                            //TODO: view is to be restarted
+                        }
+                        case PING -> send(new Pong(playerName, MessageID.PONG));
                     }
-                    case PLAYER_NOT_ACCEPTED -> {
-                        //restarto la view
-                    }
-                    case PING -> {
-                        send(new Message(playerName,MessageID.PONG));
-                    }
+                } catch (ClassCastException ignored) {
                 }
-
             }
         }
     }

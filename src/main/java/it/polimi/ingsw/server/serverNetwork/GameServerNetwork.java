@@ -50,7 +50,7 @@ public class GameServerNetwork implements ServerNetwork {
     private void waitForClients() {
 
 
-        while (running == true) {
+        while (running) {
             try {
                 Socket client = ss.accept();
                 new Thread(() -> {

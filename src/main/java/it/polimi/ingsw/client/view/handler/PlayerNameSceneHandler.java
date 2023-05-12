@@ -47,6 +47,7 @@ public class PlayerNameSceneHandler extends SceneHandler{
     public void resize()
     {
 
+        //noinspection DuplicatedCode
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
         double ratio_x = bounds.getWidth()/pane.getPrefWidth();
