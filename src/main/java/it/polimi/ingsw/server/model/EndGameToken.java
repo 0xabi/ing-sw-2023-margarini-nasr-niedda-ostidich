@@ -12,6 +12,12 @@ public class EndGameToken {
 
     private static final int END_GAME_POINTS = 1;
 
+    private final int endGamePoints;
+
+    public EndGameToken() {
+        this.endGamePoints = END_GAME_POINTS;
+    }
+
     /**
      * It assigns end game token's points to the player who got the first shelf filled.
      *
@@ -28,7 +34,8 @@ public class EndGameToken {
      * @author Francesco Ostidich
      * @return end game token points number
      */
-    public int getEndGamePoints() {
+    public static int getEndGamePoints() {
         return END_GAME_POINTS;
     }
+
 }

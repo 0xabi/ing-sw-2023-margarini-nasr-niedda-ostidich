@@ -31,6 +31,16 @@ public class Bag {
     }
 
     /**
+     * Getter for tiles' type total quantity.
+     *
+     * @author Francesco Ostidich
+     * @return total quantity of tiles' type int
+     */
+    public static int getTotalQuantity() {
+        return TOTAL_QUANTITY;
+    }
+
+    /**
      * //TODO java doc is to be written
      *
      * @param tile

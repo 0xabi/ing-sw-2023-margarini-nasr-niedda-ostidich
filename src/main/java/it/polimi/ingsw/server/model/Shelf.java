@@ -27,33 +27,29 @@ public class Shelf {
      *
      * @author Abdullah Nasr
      */
-    public Shelf(){
+    public Shelf() {
         positions = new Tile[ROW_NUMBER][COLUMN_NUMBER];
-        for(int i = 0; i < ROW_NUMBER; i++)
+        for (int i = 0; i < ROW_NUMBER; i++)
             Arrays.fill(positions[i], Tile.EMPTY);
     }
 
     /**
-     *
      * @return the shelf's row number
      * @author Abdullah Nasr
      */
-    public int getRowNumber(){
+    public static int getRowNumber() {
         return ROW_NUMBER;
     }
 
     /**
-     *
-     *
      * @return the shelf's column number
      * @author Abdullah Nasr
      */
-    public int getColumnNumber(){
+    public static int getColumnNumber() {
         return COLUMN_NUMBER;
     }
 
     /**
-     *
      * @return the array containing the tiles
      * @author Abdullah Nasr
      */
@@ -62,24 +58,22 @@ public class Shelf {
     }
 
     /**
-     *
-     * @return a tile specified by a valid coordinates , null for invalid coordinates.
      * @param coordinates tile's position to pick
+     * @return a tile specified by a valid coordinates , null for invalid coordinates.
      * @author Abdullah Nasr
      */
     public Tile getPosition(Coordinates coordinates) {
 
-        if(coordinates==null || coordinates.x()>= ROW_NUMBER || coordinates.y()>= COLUMN_NUMBER)
+        if (coordinates == null || coordinates.x() >= ROW_NUMBER || coordinates.y() >= COLUMN_NUMBER)
             return null;
 
         return positions[coordinates.x()][coordinates.y()];
     }
 
     /**
-     *
-     * @return true for success insertion of tiles into the specified column, false otherwise
      * @param column The column number to insert into the specified tiles
-     * @param tiles A list of tiles to insert into the specified column
+     * @param tiles  A list of tiles to insert into the specified column
+     * @return true for success insertion of tiles into the specified column, false otherwise
      * @author Abdullah Nasr
      */
     public boolean insertInColumn(List<Tile> tiles, int column) {
@@ -88,19 +82,19 @@ public class Shelf {
         int freeSpace;
 
         //check input
-        if (tiles==null || tiles.contains(Tile.EMPTY) || column>= COLUMN_NUMBER) {
+        if (tiles == null || tiles.contains(Tile.EMPTY) || column >= COLUMN_NUMBER) {
             return false;
         }
 
         tilesList = new ArrayList<>(tiles);
 
         //calculate free space
-        freeSpace=checkSpaceInColumn(tilesList.size(), column);
+        freeSpace = checkSpaceInColumn(tilesList.size(), column);
 
         //if there is enough space to put the tiles
-        if (freeSpace!=0) {
-            while(!tilesList.isEmpty()) {
-                positions[freeSpace-1][column]=tilesList.get(0);
+        if (freeSpace != 0) {
+            while (!tilesList.isEmpty()) {
+                positions[freeSpace - 1][column] = tilesList.get(0);
                 tilesList.remove(0);
                 freeSpace--;
             }
@@ -113,15 +107,14 @@ public class Shelf {
     }
 
     /**
-     *
-     * @return the number of free slots, 0 if there isn't enough free slots to put all the tiles
-     * @param column the shelf's column selected to insert the tiles
+     * @param column          the shelf's column selected to insert the tiles
      * @param selectionLength the number of tiles to insert into the selected column
+     * @return the number of free slots, 0 if there isn't enough free slots to put all the tiles
      * @author Abdullah Nasr
      */
     private int checkSpaceInColumn(int selectionLength, int column) {
 
-        int emptySlots = ROW_NUMBER -getTilesInColumn(column);
+        int emptySlots = ROW_NUMBER - getTilesInColumn(column);
 
         if (emptySlots >= selectionLength)
             return emptySlots;
@@ -130,18 +123,17 @@ public class Shelf {
     }
 
     /**
-     *
-     * @return the number of the tiles present in the specified column
      * @param column the column in which to count the tiles
+     * @return the number of the tiles present in the specified column
      * @author Abdullah Nasr
      */
-    public int getTilesInColumn(int column){
+    public int getTilesInColumn(int column) {
 
         //check valid column
-        if(column< COLUMN_NUMBER) {
+        if (column < COLUMN_NUMBER) {
             //count empty spaces
-            for(int i = 0; i < ROW_NUMBER; i++)
-                if(positions[i][column] != Tile.EMPTY) return ROW_NUMBER -i;
+            for (int i = 0; i < ROW_NUMBER; i++)
+                if (positions[i][column] != Tile.EMPTY) return ROW_NUMBER - i;
 
         }
 
@@ -149,13 +141,12 @@ public class Shelf {
     }
 
     /**
-     *
      * @return true if the shelf is full, false otherwise
      * @author Abdullah Nasr
      */
     protected boolean isFull() {
-        for(int i = 0; i < COLUMN_NUMBER; i++)
-            if(positions[0][i] == Tile.EMPTY) return false;
+        for (int i = 0; i < COLUMN_NUMBER; i++)
+            if (positions[0][i] == Tile.EMPTY) return false;
         return true;
     }
 

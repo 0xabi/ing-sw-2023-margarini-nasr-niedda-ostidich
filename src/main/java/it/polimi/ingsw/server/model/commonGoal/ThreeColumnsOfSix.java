@@ -34,8 +34,8 @@ public class ThreeColumnsOfSix extends CommonGoal {
         Tile[][] matrix = shelf.getPositions();
         Set<Tile> tiles = new HashSet<>();
         int count = 0;
-        for(int i = 0; i < shelf.getColumnNumber(); i++) {
-            for(int j = 0; j < shelf.getRowNumber(); j++) {
+        for(int i = 0; i < Shelf.getColumnNumber(); i++) {
+            for(int j = 0; j < Shelf.getRowNumber(); j++) {
                 if(matrix[i][j] != null)
                     tiles.add(matrix[i][j]);
             }

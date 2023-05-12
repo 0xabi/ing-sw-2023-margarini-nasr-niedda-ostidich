@@ -10,44 +10,49 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="pane" prefHeight="380.0" prefWidth="1100.0" styleClass="anchor_pane" stylesheets="@../css/menu.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.handler.PlayerNameSceneHandler">
-   <children>
-      <Button fx:id="back_btn" layoutX="274.0" layoutY="292.0" mnemonicParsing="false" onAction="#back" prefHeight="75.0" prefWidth="130.0" styleClass="btn" stylesheets="@../css/menu.css" text="BACK">
-         <effect>
-            <Reflection fraction="0.26" topOpacity="0.26" />
-         </effect></Button>
-      <ImageView fx:id="logo" fitHeight="158.0" fitWidth="331.0" layoutX="384.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../graphics/publisherMaterial/small_title.png" />
-         </image>
-      </ImageView>
-      <Button fx:id="next_btn" layoutX="708.0" layoutY="292.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="130.0" styleClass="btn" stylesheets="@../css/menu.css" text="NEXT">
-         <effect>
-            <Reflection fraction="0.26" topOpacity="0.26" />
-         </effect></Button>
-      <ImageView fx:id="username_lbl_background" fitHeight="49.0" fitWidth="434.0" layoutX="333.0" layoutY="124.0" pickOnBounds="true">
-         <image>
-            <Image url="@../graphics/misc/sfondo parquet.jpg" />
-         </image>
-         <effect>
-            <BoxBlur height="0.0" width="255.0" />
-         </effect>
-      </ImageView>
-      <Text fx:id="username_lbl" layoutX="445.0" layoutY="158.0" opacity="0.52" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Insert username" textAlignment="CENTER">
-         <font>
-            <Font size="30.0" />
-         </font></Text>
-      <ImageView fx:id="username_txt_background" fitHeight="57.0" fitWidth="442.0" layoutX="330.0" layoutY="185.0" pickOnBounds="true">
-         <image>
-            <Image url="@../graphics/misc/base_pagina2.jpg" />
-         </image>
-         <effect>
-            <BoxBlur width="174.0" />
-         </effect>
-      </ImageView>
-      <TextField fx:id="username_txt" alignment="CENTER" layoutX="330.0" layoutY="185.0" prefHeight="57.0" prefWidth="442.0" promptText="Press here..." styleClass="text_field">
-         <font>
-            <Font size="24.0" />
-         </font></TextField>
-   </children>
+<AnchorPane fx:id="pane" prefHeight="380.0" prefWidth="1100.0" styleClass="anchor_pane" stylesheets="@../css/menu.css"
+            xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="it.polimi.ingsw.client.view.handler.PlayerNameSceneHandler">
+   <Button fx:id="back_btn" layoutX="274.0" layoutY="292.0" mnemonicParsing="false" onAction="#back" prefHeight="75.0"
+           prefWidth="130.0" styleClass="btn" stylesheets="@../css/menu.css" text="BACK">
+      <effect>
+         <Reflection fraction="0.26" topOpacity="0.26"/>
+      </effect>
+   </Button>
+   <ImageView fx:id="logo" fitHeight="158.0" fitWidth="331.0" layoutX="384.0" layoutY="14.0" pickOnBounds="true"
+              preserveRatio="true">
+      <Image url="@../graphics/publisherMaterial/small_title.png"/>
+   </ImageView>
+   <Button fx:id="next_btn" layoutX="708.0" layoutY="292.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="130.0"
+           styleClass="btn" stylesheets="@../css/menu.css" text="NEXT">
+      <effect>
+         <Reflection fraction="0.26" topOpacity="0.26"/>
+      </effect>
+   </Button>
+   <ImageView fx:id="username_lbl_background" fitHeight="49.0" fitWidth="434.0" layoutX="333.0" layoutY="124.0"
+              pickOnBounds="true">
+      <effect>
+         <BoxBlur height="0.0" width="255.0"/>
+      </effect>
+      <Image url="@../graphics/misc/sfondo parquet.jpg"/>
+   </ImageView>
+   <Text fx:id="username_lbl" layoutX="445.0" layoutY="158.0" opacity="0.52" stroke="WHITE" strokeType="OUTSIDE"
+         strokeWidth="0.0" styleClass="text" text="Insert username" textAlignment="CENTER">
+      <font>
+         <Font size="30.0"/>
+      </font>
+   </Text>
+   <ImageView fx:id="username_txt_background" fitHeight="57.0" fitWidth="442.0" layoutX="330.0" layoutY="185.0"
+              pickOnBounds="true">
+      <effect>
+         <BoxBlur width="174.0"/>
+      </effect>
+      <Image url="@../graphics/misc/base_pagina2.jpg"/>
+   </ImageView>
+   <TextField fx:id="username_txt" alignment="CENTER" layoutX="330.0" layoutY="185.0" prefHeight="57.0"
+              prefWidth="442.0" promptText="Press here..." styleClass="text_field">
+      <font>
+         <Font size="24.0"/>
+      </font>
+   </TextField>
 </AnchorPane>

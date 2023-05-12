@@ -17,6 +17,7 @@ import java.util.*;
 
 /**
  * //TODO java doc is to be written
+ *
  * @author Edoardo Margarini
  */
 public class Board {
@@ -34,8 +35,9 @@ public class Board {
 
     /**
      * Class constructor
-     * @author Edoardo Margarini
+     *
      * @param num is players number
+     * @author Edoardo Margarini
      */
     public Board(int num) {
         spaces = new Tile[ROW_LENGTH][COLUMN_LENGTH];
@@ -47,11 +49,11 @@ public class Board {
             JsonObject spacesObject = spacesElement.getAsJsonObject();
 
             JsonArray jsonSpaces = spacesObject.get(String.valueOf(num)).getAsJsonArray();
-            for(int i = 0; i < ROW_LENGTH; i++)
-                for(int j = 0; j < COLUMN_LENGTH; j++) {
-                    if(jsonSpaces.get(ROW_LENGTH *j + i).getAsInt() == 0) //22 = 9*2 + 4
+            for (int i = 0; i < ROW_LENGTH; i++)
+                for (int j = 0; j < COLUMN_LENGTH; j++) {
+                    if (jsonSpaces.get(ROW_LENGTH * j + i).getAsInt() == 0) //22 = 9*2 + 4
                         spaces[i][j] = null;
-                    else if(jsonSpaces.get(ROW_LENGTH *j + i).getAsInt() == 1)
+                    else if (jsonSpaces.get(ROW_LENGTH * j + i).getAsInt() == 1)
                         spaces[i][j] = Tile.EMPTY;
                     else throw new ConfigFileNotReadableException("cannot read values else than 1 or 0");
                 }
@@ -61,7 +63,28 @@ public class Board {
     }
 
     /**
+     * Getter for row length.
+     *
+     * @author Francesco Ostidich
+     * @return row length int
+     */
+    public static int getRowLength() {
+        return ROW_LENGTH;
+    }
+
+    /**
+     * Getter for column length.
+     *
+     * @author Francesco Ostidich
+     * @return column length int
+     */
+    public static int getColumnLength() {
+        return COLUMN_LENGTH;
+    }
+
+    /**
      * //TODO java doc is to be written
+     *
      * @author Edoardo Margarini
      */
     protected void setEndGameToken(@SuppressWarnings("OptionalUsedAsFieldOrParameterType") Optional<EndGameToken> endGameToken) {
@@ -70,8 +93,9 @@ public class Board {
 
     /**
      * //TODO java doc is to be written
-     * @author Edoardo Margarini
+     *
      * @return
+     * @author Edoardo Margarini
      */
     protected Tile[][] getSpaces() {
         return spaces;
@@ -79,25 +103,28 @@ public class Board {
 
     /**
      * //TODO java doc is to be written
+     *
      * @author Edoardo Margarini
      */
-    protected void setSpace(@NotNull Coordinates coords, Tile tile){
-        spaces[coords.x()][coords.y()]=tile;
+    protected void setSpace(@NotNull Coordinates coords, Tile tile) {
+        spaces[coords.x()][coords.y()] = tile;
     }
 
     /**
      * //TODO java doc is to be written
-     * @author Edoardo Margarini
+     *
      * @return
+     * @author Edoardo Margarini
      */
-    protected Bag getBag(){
+    protected Bag getBag() {
         return bag;
     }
 
     /**
      * //TODO java doc is to be written
-     * @author Edoardo Margarini
+     *
      * @return
+     * @author Edoardo Margarini
      */
     protected Optional<EndGameToken> getEndGameToken() {
         return endGameToken;
@@ -105,6 +132,7 @@ public class Board {
 
     /**
      * //TODO java doc is to be written
+     *
      * @author Edoardo Margarini
      */
     protected void refill() {
@@ -113,8 +141,8 @@ public class Board {
 
         for (int i = 0; i < ROW_LENGTH; i++)
             for (int j = 0; j < COLUMN_LENGTH; j++) {
-                if (spaces[i][j]== Tile.EMPTY) {
-                    Tile t=bag.draw();
+                if (spaces[i][j] == Tile.EMPTY) {
+                    Tile t = bag.draw();
                     spaces[i][j] = t;
                 }
             }
@@ -122,16 +150,17 @@ public class Board {
 
     /**
      * //TODO java doc is to be written
-     * @author Edoardo Margarini
+     *
      * @param selection
      * @return
+     * @author Edoardo Margarini
      */
     protected List<Tile> selectTiles(List<Coordinates> selection) {
 
         List<Tile> list = new LinkedList<>();
 
-        if(checkSelection(selection)) {
-            for(Coordinates e : selection)
+        if (checkSelection(selection)) {
+            for (Coordinates e : selection)
                 list.add(spaces[e.x()][e.y()]);
 
             emptyTiles(selection);
@@ -142,53 +171,54 @@ public class Board {
 
     /**
      * A series of checks that allow to know if a move is allowed
-     * @author Edoardo Margarini
+     *
      * @param selection is a list of coords of the board
      * @return true if every check has positive feedback, false if one check has negative feedback
-     * */
+     * @author Edoardo Margarini
+     */
     protected boolean checkSelection(@NotNull List<Coordinates> selection) {
         //checks the player has chosen max 3 tiles
-        if(selection.size()>3)
+        if (selection.size() > 3)
             return false;
 
         //checks the player has chosen available tiles (!=null !=Tile.EMPTY)
-        for(Coordinates e : selection) {
-            if(spaces[e.x()][e.y()]==null || spaces[e.x()][e.y()]==Tile.EMPTY)
+        for (Coordinates e : selection) {
+            if (spaces[e.x()][e.y()] == null || spaces[e.x()][e.y()] == Tile.EMPTY)
                 return false;
         }
 
         //checks the player has chosen tiles that has a free adjacent
-        for(Coordinates e : selection) {
-            if(!adjacentTile(e).contains(null) && !adjacentTile(e).contains(Tile.EMPTY))
+        for (Coordinates e : selection) {
+            if (!adjacentTile(e).contains(null) && !adjacentTile(e).contains(Tile.EMPTY))
                 return false;
         }
 
         //checks the player has chosen 1 single tile, in this case all the tests made are sufficient
-        if(selection.size()==1)
+        if (selection.size() == 1)
             return true;
 
         //checks the player has chosen tiles in column or in row
-        List<Integer> listX=new ArrayList<>();
-        List<Integer> listY=new ArrayList<>();
-        for(Coordinates e : selection){
+        List<Integer> listX = new ArrayList<>();
+        List<Integer> listY = new ArrayList<>();
+        for (Coordinates e : selection) {
             listX.add(e.x());
             listY.add(e.y());
         }
-        if(!listX.stream().allMatch(s -> s.equals(listX.get(0))) && !listY.stream().allMatch(s -> s.equals(listY.get(0))))
+        if (!listX.stream().allMatch(s -> s.equals(listX.get(0))) && !listY.stream().allMatch(s -> s.equals(listY.get(0))))
             return false;
 
 
         List<Integer> list;
 
-        if(Objects.equals(listX.get(0), listX.get(1)))
+        if (Objects.equals(listX.get(0), listX.get(1)))
             list = listY;
         else
             list = listX;
 
         Collections.sort(list);
 
-        for(int i=0;i<list.size();i++){
-            if(list.get(i)!=list.get(0)+i)
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i) != list.get(0) + i)
                 return false;
         }
 
@@ -197,23 +227,25 @@ public class Board {
 
     /**
      * Deletes tiles from board, they are ready to be placed on a shelf
-     * @author Edoardo Margarini
+     *
      * @param selection is a list of coords of the board
+     * @author Edoardo Margarini
      */
     private void emptyTiles(@NotNull List<Coordinates> selection) {
-        selection.forEach((e)->spaces[e.x()][e.y()]=Tile.EMPTY);
+        selection.forEach((e) -> spaces[e.x()][e.y()] = Tile.EMPTY);
     }
 
     /**
      * Checks if the board is refillable
-     * @author Edoardo Margarini
+     *
      * @return true or false
+     * @author Edoardo Margarini
      */
     protected boolean checkToRefill() {
 
-        for(int i = 0; i < ROW_LENGTH; i++)
-            for(int j = 0; j < COLUMN_LENGTH; j++) {
-                if(!isCompletelyFree(new Coordinates(i, j)) && spaces[i][j]!=null && spaces[i][j]!=Tile.EMPTY)
+        for (int i = 0; i < ROW_LENGTH; i++)
+            for (int j = 0; j < COLUMN_LENGTH; j++) {
+                if (!isCompletelyFree(new Coordinates(i, j)) && spaces[i][j] != null && spaces[i][j] != Tile.EMPTY)
                     return false;
             }
 
@@ -223,9 +255,10 @@ public class Board {
 
     /**
      * Checks if a tile has no other adjacent tiles
-     * @author Edoardo Margarini
+     *
      * @param coords of a space in the board
      * @return true or false
+     * @author Edoardo Margarini
      */
     private boolean isCompletelyFree(Coordinates coords) {
         return adjacentTile(coords).contains(Tile.EMPTY) ||
@@ -234,42 +267,44 @@ public class Board {
 
     /**
      * Adjacent tile
-     * @author Edoardo Margarini
+     *
      * @param coords of a space in the board
      * @return a list of adjacent Tile
+     * @author Edoardo Margarini
      */
     private @NotNull List<Tile> adjacentTile(@NotNull Coordinates coords) {
 
         List<Tile> adjTile = new LinkedList<>();
 
-        if(coords.x()> ROW_LENGTH)
+        if (coords.x() > ROW_LENGTH)
             adjTile.add(null);
         else
-            adjTile.add(spaces[coords.x()+1][coords.y()]);
+            adjTile.add(spaces[coords.x() + 1][coords.y()]);
 
-        if(coords.x()<1)
+        if (coords.x() < 1)
             adjTile.add(null);
         else
-            adjTile.add(spaces[coords.x()-1][coords.y()]);
+            adjTile.add(spaces[coords.x() - 1][coords.y()]);
 
-        if(coords.y()> COLUMN_LENGTH)
+        if (coords.y() > COLUMN_LENGTH)
             adjTile.add(null);
         else
-            adjTile.add(spaces[coords.x()][coords.y()+1]);
+            adjTile.add(spaces[coords.x()][coords.y() + 1]);
 
-        if(coords.y()<1)
+        if (coords.y() < 1)
             adjTile.add(null);
         else
-            adjTile.add(spaces[coords.x()][coords.y()-1]);
+            adjTile.add(spaces[coords.x()][coords.y() - 1]);
 
         return adjTile;
     }
 
     /**
      * //TODO java doc is to be written
-     * @author Edoardo Margarini
+     *
      * @param coordinates
      * @return
+     * @author Edoardo Margarini
      */
     protected Tile getTileInBoard(@NotNull Coordinates coordinates) {
         return spaces[coordinates.x()][coordinates.y()];
@@ -277,6 +312,7 @@ public class Board {
 
     /**
      * Puts all the tiles of the board in the bag
+     *
      * @author Edoardo Margarini
      */
     private void emptyBoardInBag() {

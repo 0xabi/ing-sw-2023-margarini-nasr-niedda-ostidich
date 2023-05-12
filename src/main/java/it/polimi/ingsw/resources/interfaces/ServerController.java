@@ -1,6 +1,7 @@
 package it.polimi.ingsw.resources.interfaces;
 
-import it.polimi.ingsw.resources.Message;
+import it.polimi.ingsw.resources.messages.*;
+
 import java.util.Set;
 
 /**
@@ -50,7 +51,7 @@ public interface ServerController {
      * @author Francesco Ostidich
      * @param message is the request message
      */
-    void pickTilesRequest(Message message);
+    void pickTilesRequest(PickTilesRequest message);
 
     /**
      * When player selects order and column, asks the server for insertion.
@@ -58,7 +59,7 @@ public interface ServerController {
      * @author Francesco Ostidich
      * @param message is the request message
      */
-    void insertTilesRequest(Message message);
+    void insertTilesRequest(InsertTilesRequest message);
 
     /**
      * Player selects a room to join.
@@ -66,7 +67,7 @@ public interface ServerController {
      * @author Francesco Ostidich
      * @param message is the client message
      */
-    void joinRoom(Message message);
+    void joinRoom(JoinRoom message);
 
     /**
      * Player wants to create a new room providing information needed.
@@ -74,13 +75,13 @@ public interface ServerController {
      * @author Francesco Ostidich
      * @param message is the client message
      */
-    void createNewRoom(Message message);
+    void createNewRoom(CreateNewRoom message);
 
     /**
      * Player asks for available rooms to be joined.
      *
      * @author Francesco Ostidich
      */
-    void askForRooms(Message message);
+    void askForRooms(AskForRooms message);
 
 }

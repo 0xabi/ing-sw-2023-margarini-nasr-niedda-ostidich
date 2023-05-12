@@ -37,11 +37,11 @@ public class FourGroupsOfFour extends CommonGoal {
     @Override
     public boolean check(@NotNull Shelf shelf) {
 
-        copy = Arrays.copyOf(shelf.getPositions(),shelf.getColumnNumber()*shelf.getRowNumber() );
+        copy = Arrays.copyOf(shelf.getPositions(), Shelf.getColumnNumber()* Shelf.getRowNumber() );
         int count=0;
 
-        for (int i = 0; i < shelf.getRowNumber(); i++)
-            for (int j = 0; j < shelf.getColumnNumber(); j++)
+        for (int i = 0; i < Shelf.getRowNumber(); i++)
+            for (int j = 0; j < Shelf.getColumnNumber(); j++)
                 if (copy[i][j] != Tile.EMPTY && copy[i][j] !=null) { //if it's full, checks whether part of a 4-tiles group
                     if(BelongToABlock(i,j)== dimGroup)
                        count++;

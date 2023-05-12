@@ -3,8 +3,7 @@ package it.polimi.ingsw.client.view;
 import it.polimi.ingsw.client.view.handler.SceneHandler;
 import it.polimi.ingsw.resources.GameRoom;
 import it.polimi.ingsw.resources.Tile;
-import javafx.fxml.FXMLLoader;
-import java.io.IOException;
+
 import java.util.List;
 import java.util.Map;
 

@@ -41,7 +41,7 @@ public class TwoSquaresOfFourTest {
         tilesToInsert.add(Tile.CATS);
         tilesToInsert.add(Tile.CATS);
 
-        int col = shelf.getColumnNumber() -1;
+        int col = Shelf.getColumnNumber() -1;
 
         assertTrue(shelf.insertInColumn(tilesToInsert,col));
         assertTrue(shelf.insertInColumn(tilesToInsert,col-1));
@@ -54,7 +54,7 @@ public class TwoSquaresOfFourTest {
         tilesToInsert.add(Tile.CATS);
         tilesToInsert.add(Tile.CATS);
 
-        int col = shelf.getColumnNumber() -1;
+        int col = Shelf.getColumnNumber() -1;
 
         assertTrue(shelf.insertInColumn(tilesToInsert,col));
         assertTrue(shelf.insertInColumn(tilesToInsert,col-1));
@@ -77,7 +77,7 @@ public class TwoSquaresOfFourTest {
         tilesToInsert.add(Tile.CATS);
         tilesToInsert.add(Tile.CATS);
 
-        int col = shelf.getColumnNumber() -1;
+        int col = Shelf.getColumnNumber() -1;
 
         assertTrue(shelf.insertInColumn(tilesToInsert,col));
         assertTrue(shelf.insertInColumn(tilesToInsert,col-1));
@@ -93,7 +93,7 @@ public class TwoSquaresOfFourTest {
         tilesToInsert.add(Tile.CATS);
         tilesToInsert.add(Tile.CATS);
 
-        int col = shelf.getColumnNumber() -1;
+        int col = Shelf.getColumnNumber() -1;
 
         assertTrue(shelf.insertInColumn(tilesToInsert,col));
         assertTrue(shelf.insertInColumn(tilesToInsert,col-1));
@@ -109,7 +109,7 @@ public class TwoSquaresOfFourTest {
         tilesToInsert.add(Tile.CATS);
         tilesToInsert.add(Tile.CATS);
 
-        int col = shelf.getColumnNumber() -1;
+        int col = Shelf.getColumnNumber() -1;
 
         assertTrue(shelf.insertInColumn(tilesToInsert,col));
         assertTrue(shelf.insertInColumn(tilesToInsert,col-1));
@@ -131,7 +131,7 @@ public class TwoSquaresOfFourTest {
         tilesToInsert.add(Tile.CATS);
         tilesToInsert.add(Tile.CATS);
 
-        int col = shelf.getColumnNumber() -1;
+        int col = Shelf.getColumnNumber() -1;
 
         assertTrue(shelf.insertInColumn(tilesToInsert,col));
         assertTrue(shelf.insertInColumn(tilesToInsert,col-1));

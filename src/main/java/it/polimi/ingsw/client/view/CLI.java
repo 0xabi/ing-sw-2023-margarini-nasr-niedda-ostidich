@@ -62,7 +62,7 @@ public class CLI extends GameClientView {
     @Override
     public void chooseIPAddress() {
         String scannedIP = playerMessage("Choose IP address:");
-        while(!InputFormatChecker.isIPAddress(scannedIP)) {
+        while (!InputFormatChecker.isIPAddress(scannedIP)) {
             scannedIP = playerMessage("Wrong input!\nChoose IP address:");
         }
         getClientController().update(new Event(EventID.CHOOSE_IP_ADDRESS, scannedIP));
@@ -74,7 +74,7 @@ public class CLI extends GameClientView {
     @Override
     public void choosePlayerName() {
         String scannedIP = playerMessage("Choose player name:");
-        while(scannedIP.isBlank()) {
+        while (scannedIP.isBlank()) {
             scannedIP = playerMessage("Wrong input!\nChoose player name:");
         }
         getClientController().update(new Event(EventID.CHOOSE_PLAYER_NAME, scannedIP));
@@ -89,10 +89,9 @@ public class CLI extends GameClientView {
         String answer = playerMessage("Type [new] to create new game or [join] to join an existing game:");
         answer = answer.trim().toLowerCase();
 
-        while(!answer.equals("new") && !answer.equals("join"))
-        {
+        while (!answer.equals("new") && !answer.equals("join")) {
             answer = playerMessage("Wrong input!\nType [new] to create new game or [join] to join an existing game:");
-            answer=answer.trim().toLowerCase();
+            answer = answer.trim().toLowerCase();
         }
 
         getClientController().update(new Event(EventID.CHOOSE_NEW_OR_JOIN, answer));
@@ -105,8 +104,7 @@ public class CLI extends GameClientView {
     @Override
     public void chooseNewGameName() {
         String gameName = playerMessage("Choose a new game name:");
-        while(gameName.isBlank())
-        {
+        while (gameName.isBlank()) {
             gameName = playerMessage("Wrong input!\nChoose a new game name:");
         }
 
@@ -119,12 +117,11 @@ public class CLI extends GameClientView {
     @Override
     public void chooseNewGamePlayerNumber() {
         Integer numPlayer;
-        String input =  playerMessage("Choose the number of players [max "+InputFormatChecker.getMaxPlayer()+" players"+"]:");
+        String input = playerMessage("Choose the number of players [max " + InputFormatChecker.getMaxPlayer() + " players" + "]:");
         numPlayer = InputFormatChecker.getNumFromString(input);
 
-        while(numPlayer==null||numPlayer<2||numPlayer>InputFormatChecker.getMaxPlayer())
-        {
-            input =  playerMessage("Please insert a valid number of player!\nChoose the number of the player:");
+        while (numPlayer == null || numPlayer < 2 || numPlayer > InputFormatChecker.getMaxPlayer()) {
+            input = playerMessage("Please insert a valid number of player!\nChoose the number of the player:");
             numPlayer = InputFormatChecker.getNumFromString(input);
         }
 
@@ -149,10 +146,9 @@ public class CLI extends GameClientView {
         String gameRoomTable = InputFormatChecker.getTableGameRoom(rooms);
         String answer;
 
-        answer = playerMessage(gameRoomTable+"\nType the room name or insert the number of row: ");
-        while(!InputFormatChecker.isGameRoomValid(gameRoomTable,rooms))
-        {
-            answer = playerMessage(gameRoomTable+"\nInvalid game room!\nType the room name or insert the number of row: ");
+        answer = playerMessage(gameRoomTable + "\nType the room name or insert the number of row: ");
+        while (!InputFormatChecker.isGameRoomValid(gameRoomTable, rooms)) {
+            answer = playerMessage(gameRoomTable + "\nInvalid game room!\nType the room name or insert the number of row: ");
         }
 
         getClientController().update(new Event(EventID.CHOOSE_GAME_ROOM, answer));
@@ -163,13 +159,13 @@ public class CLI extends GameClientView {
         int x = 0, y = 0;
         ArrayList<Coordinates> list = new ArrayList<>();
         String[] coords;
-        boolean attempt = true;
+        boolean attempt;
 
         for(int i = 0; i < availablePickNumber; i++){
             do {
                 attempt = true;
                 try {
-                    coords = playerMessage("choose using the following format: x,y\n").split("\\,");
+                    coords = playerMessage("choose using the following format: x,y\n").split(",");
                     x = Integer.parseInt(coords[0]);
                     y = Integer.parseInt(coords[1]);
                 }
@@ -190,8 +186,8 @@ public class CLI extends GameClientView {
     @Override
     public void chooseOrder(List<Tile> selection) {
         ArrayList<Tile> temp = new ArrayList<>();
-        ArrayList<Integer> choosenIndex = new ArrayList<>();
-        boolean imputIsValid = false;
+        ArrayList<Integer> chosenIndex = new ArrayList<>();
+        boolean inputIsValid;
 
         int index = 0;
         System.out.println("Choose order: ");
@@ -200,24 +196,23 @@ public class CLI extends GameClientView {
 
             do{
                 do {
-                    imputIsValid = true;
+                    inputIsValid = true;
                     try {
                         index = Integer.parseInt(playerMessage("Choose tile in " + i + " position: "));
                     }
                     catch (Exception e) {
                         System.out.println("invalid input, try again ");
-                        imputIsValid = false;
+                        inputIsValid = false;
                     }
-                }while(!imputIsValid);
+                }while(!inputIsValid);
 
 
-                if((index <selection.size() && index > -1) || choosenIndex.contains(index))
+                if(!(index <selection.size() && index > -1) || !chosenIndex.contains(index))
                     System.out.println("Invalid value, try again");
-
                 else temp.add(selection.get(index));
-            }while(!(index < selection.size() && index > -1) && !choosenIndex.contains(index));
+            }while(!(index < selection.size() && index > -1) && !chosenIndex.contains(index));
 
-            choosenIndex.add(index);
+            chosenIndex.add(index);
             temp.add(selection.get(index));
         }
 
@@ -227,7 +222,7 @@ public class CLI extends GameClientView {
     @Override
     public void chooseColumn() {
         int column = 0;
-        boolean attempt = true;
+        boolean attempt;
 
         do {
             attempt = true;
@@ -249,19 +244,19 @@ public class CLI extends GameClientView {
 
     @Override
     public void assignCommonGoalPoints(String playerName, int token) {
-        System.out.println(playerName + " recieved " + token + " points from commongoal");
+        System.out.println(playerName + " received " + token + " points from common goal");
     }
 
     @Override
     public void assignPersonalGoalPoints(Map<String, Integer> points) {
         for(Map.Entry<String, Integer> entry : points.entrySet())
-            System.out.println(entry.getKey() + " recieved " + entry.getValue() + "points from Personal goal");
+            System.out.println(entry.getKey() + " received " + entry.getValue() + "points from Personal goal");
     }
 
     @Override
     public void assignAdjacentGoalPoints(Map<String, Integer> points) {
         for(Map.Entry<String, Integer> entry : points.entrySet())
-            System.out.println(entry.getKey() + " recieved " + entry.getValue() + "points from adjacents tiles");
+            System.out.println(entry.getKey() + " received " + entry.getValue() + "points from adjacent tiles");
     }
 
     @Override
@@ -279,7 +274,7 @@ public class CLI extends GameClientView {
 
     @Override
     public void justScanChat() {
-        while(chatMessage == null) {
+        while (chatMessage == null) {
             try {
                 //noinspection BusyWait
                 Thread.sleep(1000);
@@ -308,9 +303,9 @@ public class CLI extends GameClientView {
     private void scan() {
         String prefix = "/msg ";
         Scanner scanner = new Scanner(System.in);
-        while(true) {
+        while (true) {
             String temp = scanner.nextLine();
-            if(temp.startsWith(prefix))
+            if (temp.startsWith(prefix))
                 chatMessage = temp.substring(prefix.length());
             else
                 dataMessage = temp;
@@ -320,16 +315,16 @@ public class CLI extends GameClientView {
     /**
      * Method returns player inserted string (null if timout time is reached).
      *
-     * @author Francesco Ostidich
-     * @param timeOut is the timeout number in second
+     * @param timeOut      is the timeout number in second
      * @param inputMessage is the message to print posting the requested data
      * @return player's written data
+     * @author Francesco Ostidich
      */
     private String playerMessage(String inputMessage, int timeOut) {
         int i = timeOut + 1;
         System.out.print(inputMessage + " ");
         dataMessage = null;
-        while(dataMessage == null && i > 0) {
+        while (dataMessage == null && i > 0) {
             try {
                 //noinspection BusyWait
                 Thread.sleep(1000);
@@ -348,14 +343,14 @@ public class CLI extends GameClientView {
     /**
      * Method returns player inserted string (no timeout is waited).
      *
-     * @author Francesco Ostidich
-     * @param  inputMessage is the message to print posting the requested data
+     * @param inputMessage is the message to print posting the requested data
      * @return player's written data
+     * @author Francesco Ostidich
      */
     private String playerMessage(String inputMessage) {
         System.out.print(inputMessage + " ");
         dataMessage = null;
-        while(dataMessage == null) {
+        while (dataMessage == null) {
             try {
                 //noinspection BusyWait
                 Thread.sleep(1000);

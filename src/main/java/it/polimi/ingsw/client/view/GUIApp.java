@@ -25,7 +25,7 @@ public class GUIApp extends Application {
         double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
 
         //basic properties of the stage
-        Image icon = new Image(getClass().getResource("/graphics/publisherMaterial/icon.png").toString());
+        Image icon = new Image("/graphics/publisherMaterial/icon.png");
         stage.getIcons().add(icon);
         stage.setMaximized(true);
         stage.setTitle("My Shelfie");

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.resources.interfaces;
 
 import it.polimi.ingsw.resources.Event;
-import it.polimi.ingsw.resources.Message;
+import it.polimi.ingsw.resources.messages.*;
 
 /**
  * Groups all the action doable to the client controller
@@ -26,13 +26,6 @@ public interface ClientController {
     void restart();
 
     /**
-     * If game room name is not available, it asks again for it.
-     *
-     * @author Francesco Ostidich
-     */
-    void roomNameNotAvailable();
-
-    /**
      * If client disconnects from server the view must tell it.
      *
      * @author Francesco Ostidich
@@ -40,12 +33,19 @@ public interface ClientController {
     void disconnectedFromServer();
 
     /**
+     * If game room name is not available, it asks again for it.
+     *
+     * @author Francesco Ostidich
+     */
+    void roomNameNotAvailable(RoomNameNotAvailable message);
+
+    /**
      * When client asks to join a room, the list of rooms is to be sent.
      *
      * @author Francesco Ostidich
      * @param message contains the game rooms list
      */
-    void showRooms(Message message);
+    void showRooms(ShowRooms message);
 
     /**
      * When client asks to create a room, the room is to be updated when requested.
@@ -53,7 +53,7 @@ public interface ClientController {
      * @author Francesco Ostidich
      * @param message contains the game room information
      */
-    void showPersonalRoom(Message message);
+    void showPersonalRoom(ShowPersonalRoom message);
 
     /**
      * When game starts, client is updated on every entry information it needs.
@@ -61,7 +61,7 @@ public interface ClientController {
      * @author Francesco Ostidich
      * @param message contains all starting game information
      */
-    void notifyGameHasStarted(Message message);
+    void notifyGameHasStarted(NotifyGameHasStarted message);
 
     /**
      * When current player ends it turn, all client are updated.
@@ -70,7 +70,7 @@ public interface ClientController {
      * @author Francesco Ostidich
      * @param message contains all information to update
      */
-    void newTurn(Message message);
+    void newTurn(NewTurn message);
 
     /**
      * After choosing coordinates on the board, if they are legitimate,
@@ -79,6 +79,6 @@ public interface ClientController {
      * @author Francesco Ostidich
      * @param message contains chosen tiles' list
      */
-    void pickAccepted(Message message);
+    void pickAccepted(PickAccepted message);
 
 }

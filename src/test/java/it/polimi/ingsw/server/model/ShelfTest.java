@@ -45,8 +45,8 @@ public class ShelfTest{
         y=0;
         assertNotNull(shelf.getPosition(new Coordinates(x,y)));
 
-        x=shelf.getRowNumber()-1;
-        y=shelf.getColumnNumber()-1;
+        x= Shelf.getRowNumber()-1;
+        y= Shelf.getColumnNumber()-1;
         assertNotNull(shelf.getPosition(new Coordinates(x,y)));
     }
 
@@ -56,8 +56,8 @@ public class ShelfTest{
         int x;
         int y;
 
-        x = shelf.getColumnNumber();
-        y = shelf.getColumnNumber();
+        x = Shelf.getColumnNumber();
+        y = Shelf.getColumnNumber();
 
         assertNull(shelf.getPosition(new Coordinates(x,y)));
 
@@ -67,7 +67,7 @@ public class ShelfTest{
     @Test
     public void insertInColumn_TilesInput_TilesInShelfWithSuccess()
     {
-        int row = shelf.getRowNumber();
+        int row = Shelf.getRowNumber();
         int col = 0;
 
         tilesToInsert.add(Tile.CATS);
@@ -93,7 +93,7 @@ public class ShelfTest{
         //invalid column
         tilesToInsert.remove(0);
         tilesToInsert.add(Tile.CATS);
-        assertFalse(shelf.insertInColumn(tilesToInsert,shelf.getColumnNumber()));
+        assertFalse(shelf.insertInColumn(tilesToInsert, Shelf.getColumnNumber()));
 
     }
 
@@ -103,7 +103,7 @@ public class ShelfTest{
         int col = 0;
 
         //add tiles and leave 2 spaces
-        for (int i = 0; i < shelf.getRowNumber() - 2; i++)
+        for (int i = 0; i < Shelf.getRowNumber() - 2; i++)
         {
             tilesToInsert.add(Tile.CATS);
         }
@@ -130,26 +130,26 @@ public class ShelfTest{
 
         assertTrue(shelf.insertInColumn(tilesToInsert,col));
 
-        assertEquals(shelf.getRowNumber()-tilesToInsert.size(),shelf.getTilesInColumn(0));
+        assertEquals(Shelf.getRowNumber()-tilesToInsert.size(),shelf.getTilesInColumn(0));
     }
 
     @Test
     public void getTilesInColumn_InvalidColumn_ReturnZero()
     {
-        assertEquals(0,shelf.getTilesInColumn(shelf.getColumnNumber()));
+        assertEquals(0,shelf.getTilesInColumn(Shelf.getColumnNumber()));
     }
 
     @Test
     public void isFull_ShelfFull_ReturnTrue()
     {
         //prepare tiles
-        for(int i=0;i<shelf.getRowNumber();i++)
+        for(int i = 0; i< Shelf.getRowNumber(); i++)
         {
             tilesToInsert.add(Tile.CATS);
         }
 
         //insert tiles in each column
-        for(int i=0;i<shelf.getColumnNumber();i++)
+        for(int i = 0; i< Shelf.getColumnNumber(); i++)
         {
             shelf.insertInColumn(tilesToInsert,i);
         }

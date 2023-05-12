@@ -33,11 +33,12 @@ public class GameServerModel implements ServerModel {
     /**
      * Class constructor.
      *
-     * @author Francesco Ostidich
      * @param names is the list with the players names got from the controller, used for construct the player objects
+     * @author Francesco Ostidich
      */
     public GameServerModel(@NotNull Set<String> names) {
         board = new Board(names.size());
+        board.refill();
         commonGoalConstructor(names.size());
         playerListConstructor(names);
     }
@@ -50,7 +51,7 @@ public class GameServerModel implements ServerModel {
     private void commonGoalConstructor(int playerNumber) {
         commonGoal1 = CommonGoalFactory.getCommonGoal(playerNumber);
         CommonGoal commonGoalTemp = CommonGoalFactory.getCommonGoal(playerNumber);
-        while(commonGoalTemp.equals(commonGoal1)) {
+        while (commonGoalTemp.equals(commonGoal1)) {
             commonGoalTemp = CommonGoalFactory.getCommonGoal(playerNumber);
         }
         commonGoal2 = commonGoalTemp;
@@ -59,23 +60,37 @@ public class GameServerModel implements ServerModel {
     /**
      * Constructs all the player, sorting out different numbers in order to get different personal goals for each one.
      *
-     * @author Francesco Ostidich
      * @param names is the list with the players names got from the controller, used for construct the player objects
+     * @author Francesco Ostidich
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private void playerListConstructor(@NotNull Set<String> names) {
         Random random = new Random();
         Set<Integer> personalGoalNumberSet = new HashSet<>();
-        while(personalGoalNumberSet.size() < names.size())
-            personalGoalNumberSet.add(random.nextInt(1, PersonalGoal.getPersonalGoalNumber()+1));
+        while (personalGoalNumberSet.size() < names.size())
+            personalGoalNumberSet.add(random.nextInt(1, PersonalGoal.getPersonalGoalNumber() + 1));
         Stack<Integer> personalGoalNumberStack = new Stack<>();
         personalGoalNumberSet.stream().map(personalGoalNumberStack::add);
 
         Set<Player> playerSet = new HashSet<>();
-        for(String playerName: names) {
+        for (String playerName : names) {
             playerSet.add(new Player(playerName, personalGoalNumberStack.pop()));
         }
         playerSet.stream().map(players::add);
+    }
+
+    @Override
+    public Map<String, Integer> getGameParameters() {
+        Map<String, Integer> gameParameters = new HashMap<>();
+        gameParameters.put("boardRowLength", Board.getRowLength());
+        gameParameters.put("boardColumnLength", Board.getColumnLength());
+        gameParameters.put("bagTotalQuantity", Bag.getTotalQuantity());
+        gameParameters.put("shelfRowNumber", Shelf.getRowNumber());
+        gameParameters.put("shelfColumnNumber", Shelf.getColumnNumber());
+        gameParameters.put("commonGoalNumber", CommonGoalFactory.getCommonGoalNumber());
+        gameParameters.put("personalGoalNumber", PersonalGoal.getPersonalGoalNumber());
+        gameParameters.put("endGameTokenPoints", EndGameToken.getEndGamePoints());
+        return gameParameters;
     }
 
     @Override
@@ -90,7 +105,8 @@ public class GameServerModel implements ServerModel {
 
     @Override
     public Optional<Integer> getEndGameToken() {
-        return board.getEndGameToken().map(EndGameToken::getEndGamePoints);
+        if (board.getEndGameToken().isPresent()) return Optional.of(EndGameToken.getEndGamePoints());
+        else return Optional.empty();
     }
 
     @Override
@@ -116,7 +132,7 @@ public class GameServerModel implements ServerModel {
     @Override
     public Map<Integer, String> getCommonGoal1GivenPlayers() {
         Map<Integer, String> stringMap = new HashMap<>();
-        for(int token: commonGoal1.getGivenPlayers().keySet()) {
+        for (int token : commonGoal1.getGivenPlayers().keySet()) {
             stringMap.put(token, commonGoal1.getGivenPlayers().get(token).getName());
         }
         return stringMap;
@@ -125,7 +141,7 @@ public class GameServerModel implements ServerModel {
     @Override
     public Map<Integer, String> getCommonGoal2GivenPlayers() {
         Map<Integer, String> stringMap = new HashMap<>();
-        for(int token: commonGoal2.getGivenPlayers().keySet()) {
+        for (int token : commonGoal2.getGivenPlayers().keySet()) {
             stringMap.put(token, commonGoal2.getGivenPlayers().get(token).getName());
         }
         return stringMap;
@@ -133,8 +149,8 @@ public class GameServerModel implements ServerModel {
 
     @Override
     public int getPlayerPoints(String playerName) {
-        for(Player player: players) {
-            if(playerName.equals(player.getName()))
+        for (Player player : players) {
+            if (playerName.equals(player.getName()))
                 return player.getPoints();
         }
         throw new PlayerNotFoundException("name string not found in any player of the match");
@@ -142,8 +158,8 @@ public class GameServerModel implements ServerModel {
 
     @Override
     public Map<Tile, Coordinates> getPlayerPersonalGoal(String playerName) {
-        for(Player player: players) {
-            if(playerName.equals(player.getName()))
+        for (Player player : players) {
+            if (playerName.equals(player.getName()))
                 return player.getPersonalGoal().getMatches();
         }
         throw new PlayerNotFoundException("name string not found in any player of the match");
@@ -151,8 +167,8 @@ public class GameServerModel implements ServerModel {
 
     @Override
     public int getPlayerPersonalGoalID(String playerName) {
-        for(Player player: players) {
-            if(playerName.equals(player.getName()))
+        for (Player player : players) {
+            if (playerName.equals(player.getName()))
                 return player.getPersonalGoal().getPersonalGoalID();
         }
         throw new PlayerNotFoundException("name string not found in any player of the match");
@@ -160,8 +176,8 @@ public class GameServerModel implements ServerModel {
 
     @Override
     public Tile[][] getPlayerShelf(String playerName) {
-        for(Player player: players) {
-            if(playerName.equals(player.getName()))
+        for (Player player : players) {
+            if (playerName.equals(player.getName()))
                 return player.getShelf().getPositions();
         }
         throw new PlayerNotFoundException("name string not found in any player of the match");
@@ -179,18 +195,18 @@ public class GameServerModel implements ServerModel {
 
     @Override
     public void assignEndGameTokenPoints(String playerName) {
-        for(Player player: players) {
-            if(playerName.equals(player.getName()))
+        for (Player player : players) {
+            if (playerName.equals(player.getName()))
                 EndGameToken.assignPoints(player);
         }
         throw new PlayerNotFoundException("name string not found in any player of the match");
     }
 
     @Override
-    public void assignAdjacentGoalPoints(String playerName) {
-        for(Player player: players) {
-            if(playerName.equals(player.getName()))
-                AdjacentTilesGoal.assignPoints(player);
+    public int assignAdjacentGoalPoints(String playerName) {
+        for (Player player : players) {
+            if (playerName.equals(player.getName()))
+                return AdjacentTilesGoal.assignPoints(player);
         }
         throw new PlayerNotFoundException("name string not found in any player of the match");
     }
@@ -217,8 +233,8 @@ public class GameServerModel implements ServerModel {
 
     @Override
     public boolean checkCommonGoal1(String playerName) {
-        for(Player player: players) {
-            if(playerName.equals(player.getName()))
+        for (Player player : players) {
+            if (playerName.equals(player.getName()))
                 return commonGoal1.check(player.getShelf());
         }
         throw new PlayerNotFoundException("name string not found in any player of the match");
@@ -226,8 +242,8 @@ public class GameServerModel implements ServerModel {
 
     @Override
     public boolean checkCommonGoal2(String playerName) {
-        for(Player player: players) {
-            if(playerName.equals(player.getName()))
+        for (Player player : players) {
+            if (playerName.equals(player.getName()))
                 return commonGoal2.check(player.getShelf());
         }
         throw new PlayerNotFoundException("name string not found in any player of the match");
@@ -235,8 +251,8 @@ public class GameServerModel implements ServerModel {
 
     @Override
     public void assignCommonGoal1Points(String playerName) {
-        for(Player player: players) {
-            if(playerName.equals(player.getName()))
+        for (Player player : players) {
+            if (playerName.equals(player.getName()))
                 commonGoal1.assignPoints(player);
         }
         throw new PlayerNotFoundException("name string not found in any player of the match");
@@ -244,8 +260,8 @@ public class GameServerModel implements ServerModel {
 
     @Override
     public void assignCommonGoal2Points(String playerName) {
-        for(Player player: players) {
-            if(playerName.equals(player.getName()))
+        for (Player player : players) {
+            if (playerName.equals(player.getName()))
                 commonGoal2.assignPoints(player);
         }
         throw new PlayerNotFoundException("name string not found in any player of the match");
@@ -253,8 +269,8 @@ public class GameServerModel implements ServerModel {
 
     @Override
     public void playerInsertTilesInShelf(String playerName, List<Tile> tiles, int column) {
-        for(Player player: players) {
-            if(playerName.equals(player.getName()))
+        for (Player player : players) {
+            if (playerName.equals(player.getName()))
                 player.insertTiles(tiles, column);
         }
         throw new PlayerNotFoundException("name string not found in any player of the match");
@@ -262,34 +278,35 @@ public class GameServerModel implements ServerModel {
 
     @Override
     public int checkAvailablePickNumber(String playerName) {
-        for(Player player: players) {
-            if(playerName.equals(player.getName()))
+        for (Player player : players) {
+            if (playerName.equals(player.getName()))
                 return player.checkAvailablePickNumber();
         }
         throw new PlayerNotFoundException("name string not found in any player of the match");
     }
 
     @Override
-    public void assignPersonalGoalPoints(String playerName) {
-        for(Player player: players) {
-            if(playerName.equals(player.getName()))
-                player.getPersonalGoal().assignPoints(player);
+    public int assignPersonalGoalPoints(String playerName) {
+        for (Player player : players) {
+            if (playerName.equals(player.getName()))
+                return player.getPersonalGoal().assignPoints(player);
         }
         throw new PlayerNotFoundException("name string not found in any player of the match");
     }
 
     @Override
     public boolean checkPlayerShelfIsFull(String playerName) {
-        for(Player player: players) {
-            if(playerName.equals(player.getName()))
+        for (Player player : players) {
+            if (playerName.equals(player.getName()))
                 return player.getShelf().isFull();
         }
         throw new PlayerNotFoundException("name string not found in any player of the match");
     }
 
+    @Override
     public List<String> getTurnCycleOrder() {
         List<String> namesOrder = new LinkedList<>();
-        for(Player player: players) {
+        for (Player player : players) {
             namesOrder.add(player.getName());
         }
         return namesOrder;

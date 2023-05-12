@@ -30,7 +30,7 @@ public class CommonGoalFactory {
      * @return common goal number constant
      * @author Francesco Ostidich
      */
-    protected static int getCommonGoalNumber() {
+    public static int getCommonGoalNumber() {
         return COMMON_GOAL_NUMBER;
     }
 

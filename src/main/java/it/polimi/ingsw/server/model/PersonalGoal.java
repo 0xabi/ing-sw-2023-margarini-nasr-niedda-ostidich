@@ -100,8 +100,10 @@ public class PersonalGoal {
      * @author Francesco Ostidich
      * @param player is the player to check the matches and add points to
      */
-    protected void assignPoints(@NotNull Player player) {
-        player.addPoints(points.get(matchesShared(player.getShelf())));
+    protected int assignPoints(@NotNull Player player) {
+        int p = points.get(matchesShared(player.getShelf()));
+        player.addPoints(p);
+        return p;
     }
 
     /**

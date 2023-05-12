@@ -44,7 +44,7 @@ public class TwoNoRepetitionRows extends CommonGoal {
     @SuppressWarnings("DuplicatedCode")
     private boolean checkRow(@NotNull Shelf shelf, int row) {
         ArrayList<Tile> checkedList = new ArrayList<>();
-        int col = shelf.getColumnNumber();
+        int col = Shelf.getColumnNumber();
         boolean different = true;
         int nDifferent =0;
         int index=0;
@@ -92,7 +92,7 @@ public class TwoNoRepetitionRows extends CommonGoal {
      */
     private int countRowsWithDifferentTiles(@NotNull Shelf shelf) {
         int count = 0;
-        int row = shelf.getRowNumber();
+        int row = Shelf.getRowNumber();
 
         //for each row
         for(int i = 0; i < row; i++) {

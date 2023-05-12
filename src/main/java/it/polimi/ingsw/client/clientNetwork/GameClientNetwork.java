@@ -38,8 +38,11 @@ public class GameClientNetwork implements ClientNetwork {
         this.controller = controller;
         //to tweak:
         ServerController serverController = new RoomServices();
-        if(serverController.onlinePlayers().contains(playerName)) controller.restart();
-        return null;
+        if(serverController.onlinePlayers().contains(playerName)) {
+            controller.restart();
+            return null;
+        }
+        return serverController;
     }
 
 }

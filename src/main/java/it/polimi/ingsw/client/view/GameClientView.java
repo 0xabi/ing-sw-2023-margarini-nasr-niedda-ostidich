@@ -77,8 +77,8 @@ public abstract class GameClientView implements ClientView {
     /**
      * Getter for game client controller.
      *
-     * @author Francesco Ostidich
      * @return game client controller
+     * @author Francesco Ostidich
      */
     public ClientController getClientController() {
         return clientController;
@@ -87,8 +87,8 @@ public abstract class GameClientView implements ClientView {
     /**
      * Getter for names.
      *
-     * @author Francesco Ostidich
      * @return names list
+     * @author Francesco Ostidich
      */
     public List<String> getNames() {
         return names;
@@ -97,8 +97,8 @@ public abstract class GameClientView implements ClientView {
     /**
      * Getter for game parameters.
      *
-     * @author Francesco Ostidich
      * @return game parameters map
+     * @author Francesco Ostidich
      */
     public Map<String, Integer> getGameParameters() {
         return gameParameters;
@@ -107,8 +107,8 @@ public abstract class GameClientView implements ClientView {
     /**
      * Getter for bag.
      *
-     * @author Francesco Ostidich
      * @return bag map
+     * @author Francesco Ostidich
      */
     public Map<Tile, Integer> getBag() {
         return bag;
@@ -117,8 +117,8 @@ public abstract class GameClientView implements ClientView {
     /**
      * Getter for common goal 1 give players.
      *
-     * @author Francesco Ostidich
      * @return given players map
+     * @author Francesco Ostidich
      */
     public Map<Integer, String> getCommonGoal1GivenPlayers() {
         return commonGoal1GivenPlayers;
@@ -127,8 +127,8 @@ public abstract class GameClientView implements ClientView {
     /**
      * Getter for common goal 1 token stack.
      *
-     * @author Francesco Ostidich
      * @return tokens stack
+     * @author Francesco Ostidich
      */
     public Stack<Integer> getCommonGoal1TokenStack() {
         return commonGoal1TokenStack;
@@ -137,8 +137,8 @@ public abstract class GameClientView implements ClientView {
     /**
      * Getter for players' shelves.
      *
-     * @author Francesco Ostidich
      * @return shelves list
+     * @author Francesco Ostidich
      */
     public Map<String, Tile[][]> getPlayerShelves() {
         return playerShelves;
@@ -147,8 +147,8 @@ public abstract class GameClientView implements ClientView {
     /**
      * Getter for common goal 2 token stack.
      *
-     * @author Francesco Ostidich
      * @return tokens stack
+     * @author Francesco Ostidich
      */
     public Stack<Integer> getCommonGoal2TokenStack() {
         return commonGoal2TokenStack;
@@ -157,8 +157,8 @@ public abstract class GameClientView implements ClientView {
     /**
      * Getter for common goal 1.
      *
-     * @author Francesco Ostidich
      * @return common goal 1 ID string
+     * @author Francesco Ostidich
      */
     public String getCommonGoal1() {
         return commonGoal1;
@@ -167,8 +167,8 @@ public abstract class GameClientView implements ClientView {
     /**
      * Getter for common goal 2.
      *
-     * @author Francesco Ostidich
      * @return common goal 2 ID string
+     * @author Francesco Ostidich
      */
     public String getCommonGoal2() {
         return commonGoal2;
@@ -177,8 +177,8 @@ public abstract class GameClientView implements ClientView {
     /**
      * Getter for common goal 2 given players.
      *
-     * @author Francesco Ostidich
      * @return given players map
+     * @author Francesco Ostidich
      */
     public Map<Integer, String> getCommonGoal2GivenPlayers() {
         return commonGoal2GivenPlayers;
@@ -187,8 +187,8 @@ public abstract class GameClientView implements ClientView {
     /**
      * Getter for board.
      *
-     * @author Francesco Ostidich
      * @return board matrix
+     * @author Francesco Ostidich
      */
     public Tile[][] getBoard() {
         return board;
@@ -197,8 +197,8 @@ public abstract class GameClientView implements ClientView {
     /**
      * Getter for players' personal goals.
      *
-     * @author Francesco Ostidich
      * @return personal goals IDs list
+     * @author Francesco Ostidich
      */
     public List<Integer> getPlayerPersonalGoals() {
         return playerPersonalGoals;
@@ -207,8 +207,8 @@ public abstract class GameClientView implements ClientView {
     /**
      * Getter for players' points.
      *
-     * @author Francesco Ostidich
      * @return points number
+     * @author Francesco Ostidich
      */
     public Map<String, Integer> getPlayerPoints() {
         return playerPoints;
@@ -217,8 +217,8 @@ public abstract class GameClientView implements ClientView {
     /**
      * Getter for server's IP address.
      *
-     * @author Francesco Ostidich
      * @return IP address string
+     * @author Francesco Ostidich
      */
     public String getIPAddress() {
         return IPAddress;
@@ -227,8 +227,8 @@ public abstract class GameClientView implements ClientView {
     /**
      * Getter for game rooms.
      *
-     * @author Francesco Ostidich
      * @return game rooms list
+     * @author Francesco Ostidich
      */
     public List<GameRoom> getGameRooms() {
         return gameRooms;
@@ -237,8 +237,8 @@ public abstract class GameClientView implements ClientView {
     /**
      * Getter for end game token.
      *
-     * @author Francesco Ostidich
      * @return end game token boolean
+     * @author Francesco Ostidich
      */
     public boolean getEndGameToken() {
         return endGameToken;
@@ -247,8 +247,8 @@ public abstract class GameClientView implements ClientView {
     /**
      * Getter for timeout.
      *
-     * @author Francesco Ostidich
      * @return time out seconds
+     * @author Francesco Ostidich
      */
     public static int getTimeout() {
         return TIMEOUT;
@@ -308,8 +308,8 @@ public abstract class GameClientView implements ClientView {
      */
     @Override
     public void updateGameRoom(GameRoom gameRoom) {
-        for(int i = 0; i < gameRooms.size(); i++) {
-            if(gameRooms.get(i).gameRoomName().equals(gameRoom.gameRoomName())) {
+        for (int i = 0; i < gameRooms.size(); i++) {
+            if (gameRooms.get(i).gameRoomName().equals(gameRoom.gameRoomName())) {
                 gameRooms.set(i, gameRoom);
                 return;
             }
@@ -330,7 +330,7 @@ public abstract class GameClientView implements ClientView {
      */
     @Override
     public void updateCommonGoal1GivenPlayers(@NotNull Map<Integer, String> givenPlayer) {
-        for(int token: givenPlayer.keySet()){
+        for (int token : givenPlayer.keySet()) {
             this.commonGoal1GivenPlayers.replace(token, givenPlayer.get(token));
         }
     }
@@ -348,7 +348,7 @@ public abstract class GameClientView implements ClientView {
      */
     @Override
     public void updateCommonGoal2GivenPlayers(@NotNull Map<Integer, String> givenPlayer) {
-        for(int token: givenPlayer.keySet()){
+        for (int token : givenPlayer.keySet()) {
             this.commonGoal2GivenPlayers.replace(token, givenPlayer.get(token));
         }
     }
@@ -358,7 +358,7 @@ public abstract class GameClientView implements ClientView {
      */
     @Override
     public void updatePlayerShelves(@NotNull Map<String, Tile[][]> shelves) {
-        for(String player: shelves.keySet()) {
+        for (String player : shelves.keySet()) {
             playerShelves.replace(player, shelves.get(player));
         }
     }
@@ -368,7 +368,7 @@ public abstract class GameClientView implements ClientView {
      */
     @Override
     public void updatePlayerPoints(@NotNull Map<String, Integer> points) {
-        for(String player: points.keySet()) {
+        for (String player : points.keySet()) {
             playerPoints.replace(player, points.get(player));
         }
     }

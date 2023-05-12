@@ -35,36 +35,39 @@ public class AdjacentTilesGoal {
      * @param player is the player to give points to
      * @author Abdullah Nasr
      */
-    public static void assignPoints(@NotNull Player player) {
-        player.addPoints(calculatePoints(player.getShelf()));
+    public static int assignPoints(@NotNull Player player) {
+        int p = calculatePoints(player.getShelf());
+        player.addPoints(p);
+        return p;
     }
 
     /**
      * count the number of tiles in the block in coordinate x,y
+     *
      * @param x coordinate x
      * @param y coordinate y
      * @author Abdullah Nasr
      */
     @SuppressWarnings("DuplicatedCode")
-    private static int countTilesBlock(int x, int y){
-        int count=0;
+    private static int countTilesBlock(int x, int y) {
+        int count = 0;
         int xTemp;
         int yTemp;
 
         currAdjTiles.addAll(adjacentTile(x, y));
-        copy[x][y]=Tile.EMPTY;
+        copy[x][y] = Tile.EMPTY;
         count++;
 
-        while(currAdjTiles.size()>0) {
+        while (currAdjTiles.size() > 0) {
 
-            xTemp=currAdjTiles.peek().x();
-            yTemp=currAdjTiles.peek().y();
+            xTemp = currAdjTiles.peek().x();
+            yTemp = currAdjTiles.peek().y();
             currAdjTiles.remove();
-            for(Coordinates e : adjacentTile(xTemp, yTemp)){
-                if(!currAdjTiles.stream().toList().contains(e))
+            for (Coordinates e : adjacentTile(xTemp, yTemp)) {
+                if (!currAdjTiles.stream().toList().contains(e))
                     currAdjTiles.add(e);
             }
-            copy[xTemp][yTemp]=Tile.EMPTY;
+            copy[xTemp][yTemp] = Tile.EMPTY;
             count++;
         }
         return count;
@@ -72,26 +75,27 @@ public class AdjacentTilesGoal {
 
     /**
      * returns the points gained by the player with adjacent item tiles rules
+     *
      * @param shelf player's shelf
      * @return the total points gained with adjacent item tiles rules
      * @author Abdullah Nasr
      */
     private static int calculatePoints(@NotNull Shelf shelf) {
         int count;
-        int totPoints =0;
-        int maxTilesGroup = new ArrayList<>(groupPoints.keySet()).get(groupPoints.size()-1);
+        int totPoints = 0;
+        int maxTilesGroup = new ArrayList<>(groupPoints.keySet()).get(groupPoints.size() - 1);
 
         copy = shelf.getPositions().clone();
 
-        for (int i = 0; i < shelf.getRowNumber(); i++)
-            for (int j = 0; j < shelf.getColumnNumber(); j++)
-                if (copy[i][j] != Tile.EMPTY && copy[i][j] !=null) {
-                    count = countTilesBlock(i,j);
+        for (int i = 0; i < Shelf.getRowNumber(); i++)
+            for (int j = 0; j < Shelf.getColumnNumber(); j++)
+                if (copy[i][j] != Tile.EMPTY && copy[i][j] != null) {
+                    count = countTilesBlock(i, j);
 
-                    if(count >= maxTilesGroup)
-                        totPoints+= groupPoints.get(maxTilesGroup);
-                    else if(groupPoints.containsKey(count))
-                        totPoints+= groupPoints.get(count);
+                    if (count >= maxTilesGroup)
+                        totPoints += groupPoints.get(maxTilesGroup);
+                    else if (groupPoints.containsKey(count))
+                        totPoints += groupPoints.get(count);
                 }
 
         return totPoints;
@@ -99,6 +103,7 @@ public class AdjacentTilesGoal {
 
     /**
      * create a list of coordinates with the adjacent tiles of the tile in coordinate x,y
+     *
      * @param x coordinate x
      * @param y coordinate y
      * @return a list of coordinates with the adjacent tiles of tile in coordinate x,y
@@ -110,27 +115,27 @@ public class AdjacentTilesGoal {
         List<Coordinates> adjTile = new ArrayList<>();
 
         if (x <= 4)
-            if(copy[x + 1][y]==copy[x][y] && copy[x][y]!=null &&copy[x][y]!=Tile.EMPTY){
-                Coordinates coords = new Coordinates(x+1,y);
+            if (copy[x + 1][y] == copy[x][y] && copy[x][y] != null && copy[x][y] != Tile.EMPTY) {
+                Coordinates coords = new Coordinates(x + 1, y);
                 adjTile.add(coords);
             }
 
 
-        if (x>=1)
-            if(copy[x - 1][y]==copy[x][y] && copy[x][y]!=null &&copy[x][y]!=Tile.EMPTY){
-                Coordinates coords = new Coordinates(x-1,y);
+        if (x >= 1)
+            if (copy[x - 1][y] == copy[x][y] && copy[x][y] != null && copy[x][y] != Tile.EMPTY) {
+                Coordinates coords = new Coordinates(x - 1, y);
                 adjTile.add(coords);
             }
 
         if (y <= 3)
-            if(copy[x ][y+1]==copy[x][y] && copy[x][y]!=null &&copy[x][y]!=Tile.EMPTY){
-                Coordinates coords = new Coordinates(x,y+1);
+            if (copy[x][y + 1] == copy[x][y] && copy[x][y] != null && copy[x][y] != Tile.EMPTY) {
+                Coordinates coords = new Coordinates(x, y + 1);
                 adjTile.add(coords);
             }
 
         if (y >= 1)
-            if(copy[x ][y-1]==copy[x][y] && copy[x][y]!=null &&copy[x][y]!=Tile.EMPTY){
-                Coordinates coords = new Coordinates(x,y-1);
+            if (copy[x][y - 1] == copy[x][y] && copy[x][y] != null && copy[x][y] != Tile.EMPTY) {
+                Coordinates coords = new Coordinates(x, y - 1);
                 adjTile.add(coords);
             }
 
@@ -151,7 +156,8 @@ public class AdjacentTilesGoal {
         File input = new File("src/main/java/it/polimi/ingsw/resources/configFiles/adjacentTilesGoalGroupPointsMap.json");
         try {
             JsonElement pointsElement = JsonParser.parseReader(new FileReader(input));
-            map.putAll(gson.fromJson(pointsElement, new TypeToken<HashMap<Integer, Integer>>() {}.getType()));
+            map.putAll(gson.fromJson(pointsElement, new TypeToken<HashMap<Integer, Integer>>() {
+            }.getType()));
 
         } catch (FileNotFoundException e) {
             throw new ConfigFileNotFoundException("personalGoalPointsMap not found");
@@ -162,8 +168,8 @@ public class AdjacentTilesGoal {
     /**
      * Getter for adjacent goal group points.
      *
-     * @author Abdullah Nasr
      * @return groups points map
+     * @author Abdullah Nasr
      */
     public static Map<Integer, Integer> getGroupPoints() {
         return groupPoints;

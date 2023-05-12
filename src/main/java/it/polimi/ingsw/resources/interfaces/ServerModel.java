@@ -16,6 +16,14 @@ import java.util.Stack;
 public interface ServerModel {
 
     /**
+     * Getter for game parameters.
+     *
+     * @author Francesco Ostidich
+     * @return game parameters map
+     */
+    Map<String, Integer> getGameParameters();
+
+    /**
      * Getter for board.
      *
      * @return board matrix
@@ -153,7 +161,7 @@ public interface ServerModel {
      * @author Francesco Ostidich
      * @param playerName is the player's name string
      */
-    void assignAdjacentGoalPoints(String playerName);
+    int assignAdjacentGoalPoints(String playerName);
 
     /**
      * Refills board.
@@ -247,7 +255,7 @@ public interface ServerModel {
      * @author Francesco Ostidich
      * @param playerName is the player's name string
      */
-    void assignPersonalGoalPoints(String playerName);
+    int assignPersonalGoalPoints(String playerName);
 
     /**
      * Checks whether player's shelf is filled.
