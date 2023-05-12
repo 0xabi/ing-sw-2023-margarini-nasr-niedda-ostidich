@@ -8,8 +8,13 @@ import it.polimi.ingsw.resources.interfaces.ClientController;
 import it.polimi.ingsw.resources.interfaces.ServerModel;
 import it.polimi.ingsw.resources.messages.*;
 import it.polimi.ingsw.server.model.GameServerModel;
+import it.polimi.ingsw.server.serverNetwork.Client;
+
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import java.util.*;
 
 /**
@@ -44,7 +49,7 @@ public class GameServerController extends RoomServices {
      * @param clients is the players' client interfaces map
      * @author Francesco Ostidich
      */
-    public GameServerController(@NotNull Map<String, ClientController> clients) {
+    public GameServerController(@NotNull Map<String, Client> clients) {
         playerPhase = Phase.PICK;
         disconnected = new HashSet<>();
         model = new GameServerModel(clients.keySet());

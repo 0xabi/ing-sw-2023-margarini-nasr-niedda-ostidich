@@ -6,8 +6,10 @@ import it.polimi.ingsw.resources.interfaces.ClientController;
 import it.polimi.ingsw.resources.interfaces.ServerController;
 import it.polimi.ingsw.resources.messages.*;
 import it.polimi.ingsw.server.serverNetwork.GameServerNetwork;
+import it.polimi.ingsw.server.serverNetwork.Client;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -16,7 +18,7 @@ public class RoomServices implements ServerController {
 
     private final Map<String, GameServerController> playerMatch;
 
-    private final Map<String, ClientController> clients;
+    private final Map<String, Client> clients;
 
     private final List<GameRoom> gameRooms;
 
@@ -47,7 +49,7 @@ public class RoomServices implements ServerController {
      * @return client controller interfaces mapped on players' name string
      * @author Francesco Ostidich
      */
-    public Map<String, ClientController> getClients() {
+    public Map<String, Client> getClients() {
         return clients;
     }
 
@@ -55,7 +57,7 @@ public class RoomServices implements ServerController {
      * @author Francesco Ostidich
      */
     @Override
-    public void playerConnected(String playerName, ClientController client) {
+    public void playerConnected(String playerName, Client client) {
         clients.put(playerName, client);
     }
 
@@ -73,7 +75,7 @@ public class RoomServices implements ServerController {
      * @param names is the list of players' name
      * @author Francesco Ostidich
      */
-    public void startGame(Map<String, ClientController> names) {
+    public void startGame(Map<String, Client> names) {
         executorService.submit(() -> {
             GameServerController gsc = new GameServerController(names);
             names.keySet().forEach(player -> playerMatch.put(player, gsc));
