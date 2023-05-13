@@ -103,7 +103,15 @@ public class GameClientNetwork implements ClientNetwork {
                 //TODO: client is to be advised that connection with server has fallen
                 break;
             }
-            messageQueue.add(serverMessage);
+            if(serverMessage.getMessageID()==MessageID.PING) {
+                try {
+                    send(new Pong(playerName, MessageID.PONG));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            else
+                messageQueue.add(serverMessage);
         }
     }
 
