@@ -8,13 +8,13 @@ import java.util.List;
 
 public class InputFormatChecker {
 
-    private static final int MAX_PLAYER=4;
+    private static final int MAX_PLAYER = 4;
 
-    private static final int LEN_COL_ROOM_NAME=9;
+    private static final int LEN_COL_ROOM_NAME = 9;
 
-    private static final int LEN_COL_CREATOR_NAME=12;
+    private static final int LEN_COL_CREATOR_NAME = 12;
 
-    private static final int LEN_COL_PLAYERS=7;
+    private static final int LEN_COL_PLAYERS = 7;
 
     private static final int LEN_PREFIX = 5;
 
@@ -26,24 +26,23 @@ public class InputFormatChecker {
     /**
      * When IP address string is scanned, it needs to be checked if in right format.
      *
-     * @author Francesco Ostidich
      * @param IP is the IP address string
      * @return check's outcome
+     * @author Francesco Ostidich
      */
     public static boolean isIPAddress(@NotNull String IP) {
-        if(IP.equals("localhost")) return true;
+        if (IP.equals("localhost")) return true;
         String[] chunks;
         chunks = IP.split("\\.");
-        if(chunks.length!=4)
+        if (chunks.length != 4)
             return false;
-        try{
-            for(String number : chunks) {
+        try {
+            for (String number : chunks) {
                 int num = Integer.parseInt(number);
-                if (num<0 || num>255)
+                if (num < 0 || num > 255)
                     return false;
             }
-        }
-        catch(NumberFormatException e) {
+        } catch (NumberFormatException e) {
             return false;
         }
         return true;
@@ -56,17 +55,12 @@ public class InputFormatChecker {
      * @return respective integer or null if no number is in the string
      * @author Abdullah Nasr
      */
-    public static @Nullable Integer getNumFromString(String input)
-    {
-        try
-        {
+    public static @Nullable Integer getNumFromString(String input) {
+        try {
             return Integer.parseInt(input);
-        }
-        catch(NumberFormatException e)
-        {
+        } catch (NumberFormatException e) {
             return null;
         }
-
     }
 
     /**
@@ -96,9 +90,8 @@ public class InputFormatChecker {
         rowRoomTable = getStringWithColumn(players, LEN_COL_PLAYERS, rowRoomTable);
 
         //bottom header
-        rowRoomTable+="\n";
-        rowRoomTable+="+-"+"-".repeat(lenMaxRoomName)+"-+-"+"-".repeat(lenMaxCreatorName)+"-+-"+"-".repeat(LEN_COL_PLAYERS)+"-+\n";
-
+        rowRoomTable += "\n";
+        rowRoomTable += "+-" + "-".repeat(lenMaxRoomName) + "-+-" + "-".repeat(lenMaxCreatorName) + "-+-" + "-".repeat(LEN_COL_PLAYERS) + "-+\n";
         return rowRoomTable;
     }
 
@@ -131,46 +124,34 @@ public class InputFormatChecker {
      * @return a table representation of the rooms
      * @author Abdullah Nasr
      */
-    public static @NotNull String getTableGameRoom(@NotNull List<GameRoom> rooms)
-    {
+    public static @NotNull String getTableGameRoom(@NotNull List<GameRoom> rooms) {
         StringBuilder tableGameRoom = new StringBuilder();
         int lenMaxRoomName = 0;
         int lenMaxCreatorName = 0;
-        int numRoom=1;
-
+        int numRoom = 1;
         //get the max len of creator/room name to autosize the table
-        for(GameRoom gr : rooms)
-        {
+        for (GameRoom gr : rooms) {
             int currentLen = gr.gameRoomName().length();
-            if(currentLen>lenMaxRoomName)
-            {
+            if (currentLen > lenMaxRoomName) {
                 lenMaxRoomName = currentLen;
             }
-
             currentLen = gr.creatorName().length();
-            if(currentLen>lenMaxCreatorName)
-            {
+            if (currentLen > lenMaxCreatorName) {
                 lenMaxCreatorName = currentLen;
             }
         }
-
         lenMaxRoomName = Math.max(lenMaxRoomName, LEN_COL_ROOM_NAME);
         lenMaxCreatorName = Math.max(lenMaxCreatorName, LEN_COL_CREATOR_NAME);
-
         //to insert also the number of the row in front of the room name
-        lenMaxRoomName+=LEN_PREFIX;
-
+        lenMaxRoomName += LEN_PREFIX;
         //upper header
         tableGameRoom.append("+-").append("-".repeat(lenMaxRoomName)).append("-+-").append("-".repeat(lenMaxCreatorName)).append("-+-").append("-".repeat(LEN_COL_PLAYERS)).append("-+").append("\n");
         tableGameRoom.append(getRowRoomTable("Room name", "Creator name", "Players", lenMaxRoomName, lenMaxCreatorName));
-
-        for (GameRoom gr : rooms)
-        {
-            String players = gr.enteredPlayers().size()+"/"+gr.totalPlayers();
+        for (GameRoom gr : rooms) {
+            String players = gr.enteredPlayers().size() + "/" + gr.totalPlayers();
             tableGameRoom.append(getRowRoomTable("[" + numRoom + "] " + gr.gameRoomName(), gr.creatorName(), players, lenMaxRoomName, lenMaxCreatorName));
             numRoom++;
         }
-
         return tableGameRoom.toString();
     }
 

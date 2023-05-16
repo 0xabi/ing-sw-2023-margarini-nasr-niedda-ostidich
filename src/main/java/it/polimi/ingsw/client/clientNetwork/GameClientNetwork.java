@@ -1,7 +1,5 @@
 package it.polimi.ingsw.client.clientNetwork;
 
-import it.polimi.ingsw.client.clientController.GameClientController;
-import it.polimi.ingsw.resources.Event;
 import it.polimi.ingsw.resources.Message;
 import it.polimi.ingsw.resources.MessageID;
 import it.polimi.ingsw.resources.interfaces.ClientController;
@@ -30,6 +28,7 @@ public class GameClientNetwork implements ClientNetwork {
     private Socket socket;
 
     private ObjectOutputStream MessageToServer;
+
     private ObjectInputStream MessageFromServer;
 
     private final Queue<Message> messageQueue = new LinkedList<>();
@@ -51,17 +50,18 @@ public class GameClientNetwork implements ClientNetwork {
     }
 
     @Override
-    public ServerController connect(String serverIP, String playerName ,ClientController controller) throws IOException {
+    public ServerController connect(String serverIP, String playerName, ClientController controller) throws IOException {
         this.serverIP = serverIP;
         this.playerName = playerName;
         this.controller = controller;
         boolean connected = false;
-        while (Objects.equals(connectionType, "Socket") && !connected) {
-            Socket socket = new Socket(serverIP, 8000);
-            connected = true;
-            this.MessageToServer = new ObjectOutputStream(socket.getOutputStream());
-            this.MessageFromServer = new ObjectInputStream(socket.getInputStream());
 
+        while (Objects.equals(connectionType, "Socket") && !connected) {
+            try (Socket socket = new Socket(serverIP, 8000)) {
+                connected = true;
+                this.MessageToServer = new ObjectOutputStream(socket.getOutputStream());
+                this.MessageFromServer = new ObjectInputStream(socket.getInputStream());
+            }
             new Thread(() -> {
                 try {
                     Sorter();
@@ -70,17 +70,12 @@ public class GameClientNetwork implements ClientNetwork {
                 }
             }).start();
             new Thread(this::ServerSocketListener).start();
-
             try {
                 send(new Hello(playerName, MessageID.HELLO));
             } catch (IOException ignored) {
             }
-
-
         }
-
         return new Server(this);
-
     }
 
     @Override
@@ -88,7 +83,9 @@ public class GameClientNetwork implements ClientNetwork {
         if (Objects.equals(connectionType, "Socket")) {
             try {
                 MessageToServer.writeObject(message);
+                System.out.println("message sent");
             } catch (IOException e) {
+                System.out.println("IO Exception: no message is sent");
                 throw new IOException(e);
             }
         }
@@ -103,22 +100,22 @@ public class GameClientNetwork implements ClientNetwork {
                 //TODO: client is to be advised that connection with server has fallen
                 break;
             }
-            if(serverMessage.getMessageID()==MessageID.PING) {
+            if (serverMessage.getMessageID() == MessageID.PING) {
                 try {
                     send(new Pong(playerName, MessageID.PONG));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-            }
-            else
+            } else
                 messageQueue.add(serverMessage);
         }
     }
 
     public void Sorter() throws Exception {
-
+        //noinspection InfiniteLoopStatement
         while (true) { //FIXME: and put while "client is alive"
-            Thread.sleep(1*1000);
+            //noinspection BusyWait
+            Thread.sleep(1000);
             if (messageQueue.size() > 0) {
                 try {
                     Message msg = messageQueue.remove();
@@ -131,8 +128,8 @@ public class GameClientNetwork implements ClientNetwork {
                         case DISCONNECT_PLAYERS -> {
                             //TODO: manage disconnection
                         }
-                        case PLAYER_ACCEPTED -> ((GameClientController) controller).getView().chooseNewOrJoin();
-                        case PLAYER_NOT_ACCEPTED -> ((GameClientController) controller).getView().start();
+                        case PLAYER_ACCEPTED -> controller.serverConnected();
+                        case PLAYER_NOT_ACCEPTED -> controller.restart();
                         case PING -> send(new Pong(playerName, MessageID.PONG));
                     }
                 } catch (ClassCastException ignored) {

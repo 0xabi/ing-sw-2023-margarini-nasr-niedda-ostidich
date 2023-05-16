@@ -18,12 +18,13 @@ import java.util.List;
  */
 public class GameServerNetwork implements ServerNetwork {
 
-
     /**
      * Specifies if the server is running.
      */
     private boolean running;
+
     private final ServerController roomServices;
+
     private ServerSocket ss;
 
     /**
@@ -31,15 +32,14 @@ public class GameServerNetwork implements ServerNetwork {
      *
      * @author Francesco Ostidich
      */
-    public GameServerNetwork(ServerController roomServices){
+    public GameServerNetwork(ServerController roomServices) {
         this.roomServices = roomServices;
         try {
             ss = new ServerSocket(8000);
             running = true;
-        } catch (IOException e){
+        } catch (IOException e) {
             running = false;
         }
-
         waitForClients();
     }
 
@@ -48,26 +48,22 @@ public class GameServerNetwork implements ServerNetwork {
      * Method has its own thread, and it is up for all server run time.
      */
     private void waitForClients() {
-
-        System.out.println("Server in ascolto");
-
+        System.out.println("Server listening");
         while (running) {
             try {
                 Socket client = ss.accept();
                 new Client(client, roomServices);
-                System.out.println("["+LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)+"]"+"Connection accepted:"+ client.toString());
-
-                } catch (IOException e) {
-                System.out.println("["+LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)+"]"+"Connection not accepted");
+                System.out.println("[" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + "]" + "Connection accepted:" + client);
+            } catch (IOException e) {
+                System.out.println("[" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + "]" + "Connection not accepted");
                 System.out.println();
-                }
             }
+        }
         System.out.println("\nServer Offline");
     }
 
-
     @Override
     public void disconnect(List<String> names) {
-
     }
+
 }

@@ -32,6 +32,8 @@ public interface ClientController {
      */
     void disconnectedFromServer();
 
+    void serverConnected() throws Exception;
+
     /**
      * If game room name is not available, it asks again for it.
      *

@@ -24,13 +24,15 @@ public class FiveTilesX extends CommonGoal {
     @Override
     public boolean check(@NotNull Shelf shelf) {
         Tile[][] matrix = shelf.getPositions();
-        for(int i = 1; i < Shelf.getRowNumber(); i++)
-            for(int j = 1; j < Shelf.getColumnNumber(); j++)
-                if(matrix[i][j].equals(matrix[i-1][j-1]) &&
-                        matrix[i][j].equals(matrix[i-1][j+1]) &&
-                        matrix[i][j].equals(matrix[i+1][j-1]) &&
-                        matrix[i][j].equals(matrix[i+1][j+1]))
+        for (int i = 1; i < Shelf.getRowNumber() - 1; i++)
+            for (int j = 1; j < Shelf.getColumnNumber() - 1; j++) {
+                if (matrix[i][j] != Tile.EMPTY &&
+                        matrix[i][j] == matrix[i - 1][j - 1] &&
+                        matrix[i][j] == matrix[i - 1][j + 1] &&
+                        matrix[i][j] == matrix[i + 1][j - 1] &&
+                        matrix[i][j] == matrix[i + 1][j + 1])
                     return true;
+            }
         return false;
     }
 
@@ -41,4 +43,5 @@ public class FiveTilesX extends CommonGoal {
     public String getCommonGoalName() {
         return commonGoalName;
     }
+
 }

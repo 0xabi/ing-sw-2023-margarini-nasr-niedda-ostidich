@@ -27,26 +27,28 @@ public class Client implements ClientController {
     }
 
     private String connectionType = null;
+
     private final Socket clientSocket;
+
     private final ObjectOutputStream MessageToClient;
+
     private final ObjectInputStream MessageFromClient;
+
     private final Queue<Message> messageQueue = new LinkedList<>();
 
     private final Queue<Message> pingQueue = new LinkedList<>();
+
     private final ServerController roomServices;
 
     private String playerName;
 
     public Client(@NotNull Socket clientSocket, ServerController roomServices) throws IOException {
-
         this.clientSocket = clientSocket;
         MessageFromClient = new ObjectInputStream(clientSocket.getInputStream());
         MessageToClient = new ObjectOutputStream(clientSocket.getOutputStream());
         this.roomServices = roomServices;
         alive = true;
         setConnectionType("Socket");
-
-
         new Thread(() -> {
             try {
                 Sorter();
@@ -72,7 +74,7 @@ public class Client implements ClientController {
         while (alive) {
             try {
                 clientMessage = (Message) MessageFromClient.readObject();
-                System.out.println("ho ricevuto un messaggio");
+                System.out.println("message received");
             } catch (IOException | ClassNotFoundException e) {
                 break;
             }
@@ -85,7 +87,8 @@ public class Client implements ClientController {
 
     public void Sorter() throws InterruptedException {
         while (alive) {
-            Thread.sleep(1*1000);
+            //noinspection BusyWait
+            Thread.sleep(1000);
             if (messageQueue.size() > 0) {
                 Message msg = messageQueue.remove();
                 try {
@@ -98,7 +101,7 @@ public class Client implements ClientController {
                         case HELLO -> {
                             if (PlayerIDisAvailable(msg)) {
                                 send(new PlayerAccepted(msg.getPlayerName(), MessageID.PLAYER_ACCEPTED));
-                                System.out.println("["+ LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)+"] "+msg.getPlayerName()+" Joined the lobby");
+                                System.out.println("[" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + "] " + msg.getPlayerName() + " Joined the lobby");
                                 playerName = msg.getPlayerName();
                                 roomServices.playerConnected(playerName, this);
                                 new Thread(() -> {
@@ -120,10 +123,9 @@ public class Client implements ClientController {
 
     public void CheckDisconnection() throws IOException, InterruptedException {
         Message ping = new Ping(playerName, MessageID.PING);
-
         while (alive) {
+            //noinspection BusyWait
             Thread.sleep(10 * 1000);
-
             pingQueue.add(ping);
             send(ping);
             if (pingQueue.size() > 2) {
@@ -132,7 +134,6 @@ public class Client implements ClientController {
             }
         }
     }
-
 
     @Override
     public void update(Event event) {
@@ -147,6 +148,11 @@ public class Client implements ClientController {
     @Override
     public void disconnectedFromServer() {
         throw new RuntimeException("server cannot call disconnectedFromServer");
+    }
+
+    @Override
+    public void serverConnected() {
+        throw new RuntimeException("server cannot call serverConnected");
     }
 
     @Override

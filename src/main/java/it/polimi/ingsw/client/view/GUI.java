@@ -46,6 +46,10 @@ public class GUI extends GameClientView {
     }
 
     @Override
+    public void showUpdatedGameRoom(String roomName) {
+    }
+
+    @Override
     public void notifyGameHasStared() {
 
     }

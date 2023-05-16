@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * CLI class is to implement GameView UI abstract class.
  * Going in depth, methods called here print something and open a scanner to retrieve returnable information,
@@ -22,7 +24,6 @@ public class CLI extends GameClientView {
     private String dataMessage = "";
 
     private final Thread scannerThread;
-
 
     /**
      * Class constructor.
@@ -56,12 +57,9 @@ public class CLI extends GameClientView {
                          __/ |                             \s
                         |___/                              \s
 
-
-
-
-                Loading...""");
-
-        getClientController().update(new Event(EventID.START,null));
+                Loading...\s"""
+        );
+        getClientController().update(new Event(EventID.START, null));
     }
 
     /**
@@ -76,7 +74,6 @@ public class CLI extends GameClientView {
         getClientController().update(new Event(EventID.CHOOSE_IP_ADDRESS, scannedIP));
     }
 
-
     @Override
     public void choosePlayerName() throws Exception {
         String scannedIP = playerMessage("Choose player name:");
@@ -86,7 +83,6 @@ public class CLI extends GameClientView {
         getClientController().update(new Event(EventID.CHOOSE_PLAYER_NAME, scannedIP));
     }
 
-
     /**
      * @author Abdullah Nasr
      */
@@ -94,15 +90,12 @@ public class CLI extends GameClientView {
     public void chooseNewOrJoin() throws Exception {
         String answer = playerMessage("Type [new] to create new game or [join] to join an existing game:");
         answer = answer.trim().toLowerCase();
-
         while (!answer.equals("new") && !answer.equals("join")) {
             answer = playerMessage("Wrong input!\nType [new] to create new game or [join] to join an existing game:");
             answer = answer.trim().toLowerCase();
         }
-
         getClientController().update(new Event(EventID.CHOOSE_NEW_OR_JOIN, answer));
     }
-
 
     /**
      * @author Abdullah Nasr
@@ -113,7 +106,6 @@ public class CLI extends GameClientView {
         while (gameName.isBlank()) {
             gameName = playerMessage("Wrong input!\nChoose a new game name:");
         }
-
         getClientController().update(new Event(EventID.CHOOSE_NEW_GAME_NAME, gameName));
     }
 
@@ -125,15 +117,32 @@ public class CLI extends GameClientView {
         Integer numPlayer;
         String input = playerMessage("Choose the number of players [max " + InputFormatChecker.getMaxPlayer() + " players" + "]:");
         numPlayer = InputFormatChecker.getNumFromString(input);
-
         while (numPlayer == null || numPlayer < 2 || numPlayer > InputFormatChecker.getMaxPlayer()) {
             input = playerMessage("Please insert a valid number of player!\nChoose the number of the player:");
             numPlayer = InputFormatChecker.getNumFromString(input);
         }
-
         getClientController().update(new Event(EventID.CHOOSE_NEW_GAME_PLAYER_NUMBER, numPlayer));
     }
 
+    /**
+     * @author Francesco Ostidich
+     */
+    @Override
+    public void showUpdatedGameRoom(String roomName) {
+        GameRoom room = null;
+        for (GameRoom gameRoom : getGameRooms()) {
+            if (gameRoom.gameRoomName().equals(roomName)) {
+                room = gameRoom;
+                break;
+            }
+        }
+        if (room == null) throw new RuntimeException("no such room name present while printing personal room!");
+        System.out.println("Room name: " + room.gameRoomName());
+        System.out.println("Creator: " + room.creatorName());
+        System.out.println("Max players: " + room.totalPlayers());
+        System.out.print("Entered players: \t");
+        room.enteredPlayers().forEach(player -> System.out.println("\t\t\t\t\t\t" + player));
+    }
 
     /**
      * @author Abdullah Nasr
@@ -141,22 +150,19 @@ public class CLI extends GameClientView {
     @Override
     public void notifyGameHasStared() {
         playerMessage("Game started!\n");
-      }
+    }
 
     /**
      * @author Abdullah Nasr
      */
     @Override
     public void chooseGameRoom(List<GameRoom> rooms) throws Exception {
-
         String gameRoomTable = InputFormatChecker.getTableGameRoom(rooms);
         String answer;
-
         answer = playerMessage(gameRoomTable + "\nType the room name or insert the number of row: ");
         while (!InputFormatChecker.isGameRoomValid(gameRoomTable, rooms)) {
             answer = playerMessage(gameRoomTable + "\nInvalid game room!\nType the room name or insert the number of row: ");
         }
-
         getClientController().update(new Event(EventID.CHOOSE_GAME_ROOM, answer));
     }
 
@@ -166,62 +172,49 @@ public class CLI extends GameClientView {
         ArrayList<Coordinates> list = new ArrayList<>();
         String[] coords;
         boolean attempt;
-
-        for(int i = 0; i < availablePickNumber; i++){
+        for (int i = 0; i < availablePickNumber; i++) {
             do {
                 attempt = true;
                 try {
                     coords = playerMessage("choose using the following format: x,y\n").split(",");
                     x = Integer.parseInt(coords[0]);
                     y = Integer.parseInt(coords[1]);
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     System.out.println("invalid input, try again ");
                     attempt = false;
                 }
-            }while(!attempt);
-
+            } while (!attempt);
             list.add(new Coordinates(x, y));
-
             if (i < 3 && playerMessage("done?").equals("y")) i = 4;
         }
-
         getClientController().update(new Event(EventID.PICK_TILES, list));
     }
 
     @Override
-    public void chooseOrder(List<Tile> selection) throws Exception {
+    public void chooseOrder(@NotNull List<Tile> selection) throws Exception {
         ArrayList<Tile> temp = new ArrayList<>();
         ArrayList<Integer> chosenIndex = new ArrayList<>();
         boolean inputIsValid;
-
         int index = 0;
         System.out.println("Choose order: ");
-
-        for(int i = 0; i < selection.size(); i++){
-
-            do{
+        for (int i = 0; i < selection.size(); i++) {
+            do {
                 do {
                     inputIsValid = true;
                     try {
                         index = Integer.parseInt(playerMessage("Choose tile in " + i + " position: "));
-                    }
-                    catch (Exception e) {
+                    } catch (Exception e) {
                         System.out.println("invalid input, try again ");
                         inputIsValid = false;
                     }
-                }while(!inputIsValid);
-
-
-                if(!(index <selection.size() && index > -1) || !chosenIndex.contains(index))
+                } while (!inputIsValid);
+                if (!(index < selection.size() && index > -1) || !chosenIndex.contains(index))
                     System.out.println("Invalid value, try again");
                 else temp.add(selection.get(index));
-            }while(!(index < selection.size() && index > -1) && !chosenIndex.contains(index));
-
+            } while (!(index < selection.size() && index > -1) && !chosenIndex.contains(index));
             chosenIndex.add(index);
             temp.add(selection.get(index));
         }
-
         getClientController().update(new Event(EventID.PICK_TILES, temp));
     }
 
@@ -229,7 +222,6 @@ public class CLI extends GameClientView {
     public void chooseColumn() throws Exception {
         int column = 0;
         boolean attempt;
-
         do {
             attempt = true;
             try {
@@ -238,8 +230,7 @@ public class CLI extends GameClientView {
                 System.out.println("invalid input, try again");
                 attempt = false;
             }
-        }while(!attempt);
-
+        } while (!attempt);
         getClientController().update(new Event(EventID.CHOOSE_COLUMN, column));
     }
 
@@ -254,22 +245,21 @@ public class CLI extends GameClientView {
     }
 
     @Override
-    public void assignPersonalGoalPoints(Map<String, Integer> points) {
-        for(Map.Entry<String, Integer> entry : points.entrySet())
+    public void assignPersonalGoalPoints(@NotNull Map<String, Integer> points) {
+        for (Map.Entry<String, Integer> entry : points.entrySet())
             System.out.println(entry.getKey() + " received " + entry.getValue() + "points from Personal goal");
     }
 
     @Override
-    public void assignAdjacentGoalPoints(Map<String, Integer> points) {
-        for(Map.Entry<String, Integer> entry : points.entrySet())
+    public void assignAdjacentGoalPoints(@NotNull Map<String, Integer> points) {
+        for (Map.Entry<String, Integer> entry : points.entrySet())
             System.out.println(entry.getKey() + " received " + entry.getValue() + "points from adjacent tiles");
     }
 
     @Override
-    public void announceWinner(String winnerName, Map<String, Integer> points) {
-        for(Map.Entry<String, Integer> entry : points.entrySet())
+    public void announceWinner(String winnerName, @NotNull Map<String, Integer> points) {
+        for (Map.Entry<String, Integer> entry : points.entrySet())
             System.out.println(entry.getKey() + " has " + entry.getValue() + " points");
-
         System.out.println("The winner is: " + winnerName);
     }
 

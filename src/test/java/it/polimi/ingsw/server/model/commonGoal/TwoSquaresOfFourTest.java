@@ -14,139 +14,105 @@ import static org.junit.Assert.*;
 public class TwoSquaresOfFourTest {
 
     private Shelf shelf;
+
     private ArrayList<Tile> tilesToInsert;
-    private CommonGoal cg;
+
+    CommonGoal cg;
 
     private static final int numOfPlayers = 3;
 
     @Before
-    public void init()
-    {
+    public void init() {
         shelf = new Shelf();
         tilesToInsert = new ArrayList<>();
         cg = new TwoSquaresOfFour(numOfPlayers);
     }
 
     @After
-    public void end()
-    {
+    public void end() {
         shelf = null;
         tilesToInsert = null;
         cg = null;
     }
 
     @Test
-    public void check_OneIsolatedSquare_ReturnFalse()
-    {
+    public void check_OneIsolatedSquare_ReturnFalse() {
         tilesToInsert.add(Tile.CATS);
         tilesToInsert.add(Tile.CATS);
-
-        int col = Shelf.getColumnNumber() -1;
-
-        assertTrue(shelf.insertInColumn(tilesToInsert,col));
-        assertTrue(shelf.insertInColumn(tilesToInsert,col-1));
+        int col = Shelf.getColumnNumber() - 1;
+        assertTrue(shelf.insertInColumn(tilesToInsert, col));
+        assertTrue(shelf.insertInColumn(tilesToInsert, col - 1));
         assertFalse(cg.check(shelf));
     }
 
     @Test
-    public void check_TwoIsolatedSquareDifferentTypes_ReturnTrue()
-    {
+    public void check_TwoIsolatedSquareDifferentTypes_ReturnTrue() {
         tilesToInsert.add(Tile.CATS);
         tilesToInsert.add(Tile.CATS);
-
-        int col = Shelf.getColumnNumber() -1;
-
-        assertTrue(shelf.insertInColumn(tilesToInsert,col));
-        assertTrue(shelf.insertInColumn(tilesToInsert,col-1));
-
+        int col = Shelf.getColumnNumber() - 1;
+        assertTrue(shelf.insertInColumn(tilesToInsert, col));
+        assertTrue(shelf.insertInColumn(tilesToInsert, col - 1));
         tilesToInsert.clear();
-
         tilesToInsert.add(Tile.TROPHIES);
         tilesToInsert.add(Tile.TROPHIES);
-
-        assertTrue(shelf.insertInColumn(tilesToInsert,0));
-        assertTrue(shelf.insertInColumn(tilesToInsert,1));
-
-        assertTrue(cg.check(shelf));
-
-    }
-
-    @Test
-    public void check_TwoIsolatedSquareSameTypes_ReturnTrue()
-    {
-        tilesToInsert.add(Tile.CATS);
-        tilesToInsert.add(Tile.CATS);
-
-        int col = Shelf.getColumnNumber() -1;
-
-        assertTrue(shelf.insertInColumn(tilesToInsert,col));
-        assertTrue(shelf.insertInColumn(tilesToInsert,col-1));
-        assertTrue(shelf.insertInColumn(tilesToInsert,0));
-        assertTrue(shelf.insertInColumn(tilesToInsert,1));
-
+        assertTrue(shelf.insertInColumn(tilesToInsert, 0));
+        assertTrue(shelf.insertInColumn(tilesToInsert, 1));
         assertTrue(cg.check(shelf));
     }
 
     @Test
-    public void check_TwoNoIsolatedSquare_ReturnFalse()
-    {
+    public void check_TwoIsolatedSquareSameTypes_ReturnTrue() {
         tilesToInsert.add(Tile.CATS);
         tilesToInsert.add(Tile.CATS);
+        int col = Shelf.getColumnNumber() - 1;
+        assertTrue(shelf.insertInColumn(tilesToInsert, col));
+        assertTrue(shelf.insertInColumn(tilesToInsert, col - 1));
+        assertTrue(shelf.insertInColumn(tilesToInsert, 0));
+        assertTrue(shelf.insertInColumn(tilesToInsert, 1));
+        assertTrue(cg.check(shelf));
+    }
 
-        int col = Shelf.getColumnNumber() -1;
-
-        assertTrue(shelf.insertInColumn(tilesToInsert,col));
-        assertTrue(shelf.insertInColumn(tilesToInsert,col-1));
-        assertTrue(shelf.insertInColumn(tilesToInsert,col-2));
-        assertTrue(shelf.insertInColumn(tilesToInsert,col-3));
-
+    @Test
+    public void check_TwoNoIsolatedSquare_ReturnFalse() {
+        tilesToInsert.add(Tile.CATS);
+        tilesToInsert.add(Tile.CATS);
+        int col = Shelf.getColumnNumber() - 1;
+        assertTrue(shelf.insertInColumn(tilesToInsert, col));
+        assertTrue(shelf.insertInColumn(tilesToInsert, col - 1));
+        assertTrue(shelf.insertInColumn(tilesToInsert, col - 2));
+        assertTrue(shelf.insertInColumn(tilesToInsert, col - 3));
         assertFalse(cg.check(shelf));
     }
 
     @Test
-    public void check_TwoDifferentAdjacentSquare_ReturnTrue()
-    {
+    public void check_TwoDifferentAdjacentSquare_ReturnTrue() {
         tilesToInsert.add(Tile.CATS);
         tilesToInsert.add(Tile.CATS);
-
-        int col = Shelf.getColumnNumber() -1;
-
-        assertTrue(shelf.insertInColumn(tilesToInsert,col));
-        assertTrue(shelf.insertInColumn(tilesToInsert,col-1));
-
+        int col = Shelf.getColumnNumber() - 1;
+        assertTrue(shelf.insertInColumn(tilesToInsert, col));
+        assertTrue(shelf.insertInColumn(tilesToInsert, col - 1));
         tilesToInsert.clear();
-
         tilesToInsert.add(Tile.TROPHIES);
         tilesToInsert.add(Tile.TROPHIES);
-
-        assertTrue(shelf.insertInColumn(tilesToInsert,col-2));
-        assertTrue(shelf.insertInColumn(tilesToInsert,col-3));
-
+        assertTrue(shelf.insertInColumn(tilesToInsert, col - 2));
+        assertTrue(shelf.insertInColumn(tilesToInsert, col - 3));
         assertTrue(cg.check(shelf));
     }
 
     @Test
-    public void check_NoTwoSquares_ReturnFalse()
-    {
+    public void check_NoTwoSquares_ReturnFalse() {
         tilesToInsert.add(Tile.CATS);
         tilesToInsert.add(Tile.CATS);
-
-        int col = Shelf.getColumnNumber() -1;
-
-        assertTrue(shelf.insertInColumn(tilesToInsert,col));
-        assertTrue(shelf.insertInColumn(tilesToInsert,col-1));
-
+        int col = Shelf.getColumnNumber() - 1;
+        assertTrue(shelf.insertInColumn(tilesToInsert, col));
+        assertTrue(shelf.insertInColumn(tilesToInsert, col - 1));
         tilesToInsert.clear();
-
         tilesToInsert.add(Tile.TROPHIES);
         tilesToInsert.add(Tile.TROPHIES);
-
-        assertTrue(shelf.insertInColumn(tilesToInsert,col-2));
-
+        assertTrue(shelf.insertInColumn(tilesToInsert, col - 2));
         tilesToInsert.add(Tile.TROPHIES);
-        assertTrue(shelf.insertInColumn(tilesToInsert,col-3));
-
+        assertTrue(shelf.insertInColumn(tilesToInsert, col - 3));
         assertFalse(cg.check(shelf));
-
     }
+
 }

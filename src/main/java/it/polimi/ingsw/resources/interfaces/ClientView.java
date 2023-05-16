@@ -159,6 +159,13 @@ public interface ClientView {
       void updateGameRoom(GameRoom gameRoom);
 
       /**
+       * When game room has an update, it has to be shown.
+       *
+       * @author Francesco Ostidich
+       */
+      void showUpdatedGameRoom(String roomName);
+
+      /**
        * After player connection to server, when he wants to join a room, the list of all rooms is passed to client.
        *
        * @author Francesco Ostidich

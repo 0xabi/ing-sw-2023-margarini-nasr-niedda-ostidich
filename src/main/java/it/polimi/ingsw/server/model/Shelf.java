@@ -5,6 +5,7 @@ import it.polimi.ingsw.resources.Tile;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -63,10 +64,8 @@ public class Shelf {
      * @author Abdullah Nasr
      */
     public Tile getPosition(Coordinates coordinates) {
-
         if (coordinates == null || coordinates.x() >= ROW_NUMBER || coordinates.y() >= COLUMN_NUMBER)
             return null;
-
         return positions[coordinates.x()][coordinates.y()];
     }
 
@@ -77,20 +76,15 @@ public class Shelf {
      * @author Abdullah Nasr
      */
     public boolean insertInColumn(List<Tile> tiles, int column) {
-
         List<Tile> tilesList;
         int freeSpace;
-
         //check input
-        if (tiles == null || tiles.contains(Tile.EMPTY) || column >= COLUMN_NUMBER) {
+        if (tiles == null || tiles.contains(Tile.EMPTY) || column >= ROW_NUMBER) {
             return false;
         }
-
         tilesList = new ArrayList<>(tiles);
-
         //calculate free space
         freeSpace = checkSpaceInColumn(tilesList.size(), column);
-
         //if there is enough space to put the tiles
         if (freeSpace != 0) {
             while (!tilesList.isEmpty()) {
@@ -98,11 +92,8 @@ public class Shelf {
                 tilesList.remove(0);
                 freeSpace--;
             }
-
             return true;
-
         }
-
         return false;
     }
 
@@ -113,12 +104,9 @@ public class Shelf {
      * @author Abdullah Nasr
      */
     private int checkSpaceInColumn(int selectionLength, int column) {
-
         int emptySlots = ROW_NUMBER - getTilesInColumn(column);
-
         if (emptySlots >= selectionLength)
             return emptySlots;
-
         return 0;
     }
 
@@ -128,15 +116,12 @@ public class Shelf {
      * @author Abdullah Nasr
      */
     public int getTilesInColumn(int column) {
-
         //check valid column
         if (column < COLUMN_NUMBER) {
             //count empty spaces
             for (int i = 0; i < ROW_NUMBER; i++)
                 if (positions[i][column] != Tile.EMPTY) return ROW_NUMBER - i;
-
         }
-
         return 0;
     }
 
@@ -147,6 +132,26 @@ public class Shelf {
     protected boolean isFull() {
         for (int i = 0; i < COLUMN_NUMBER; i++)
             if (positions[0][i] == Tile.EMPTY) return false;
+        return true;
+    }
+
+    /**
+     * Used only in tests, it works a bit differently from dual "insertInColumn".
+     * <p>It overrides tiles! (different from other method)</p>
+     *
+     * @param tiles is the tiles' list to insert
+     * @param row   is the row in which insert to
+     * @return true if all went right
+     * @author Francesco Ostidich
+     */
+    public boolean insertInRow(List<Tile> tiles, int row) {
+        List<Tile> tilesList = new LinkedList<>(tiles);
+        if (tilesList.contains(Tile.EMPTY) || row >= COLUMN_NUMBER) {
+            return false;
+        }
+        for (int i = 0; !tilesList.isEmpty(); i++) {
+            positions[row][i] = tilesList.remove(tilesList.size() - 1);
+        }
         return true;
     }
 

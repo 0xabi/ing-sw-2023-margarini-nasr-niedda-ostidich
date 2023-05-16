@@ -60,7 +60,9 @@ public class Server implements ServerController {
     public void createNewRoom(CreateNewRoom message) {
         try {
             gameClientNetwork.send(message);
-        } catch (IOException ignored) {}
+        } catch (IOException e) {
+            System.out.println("IO exception");
+        }
     }
 
     @Override

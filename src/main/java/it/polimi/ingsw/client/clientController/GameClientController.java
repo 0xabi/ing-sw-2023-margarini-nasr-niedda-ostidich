@@ -30,6 +30,8 @@ public class GameClientController implements ClientController {
 
     private int newRoomPlayerNumber;
 
+    private String newRoomName;
+
     private List<Tile> orderChosen;
 
     /**
@@ -52,10 +54,7 @@ public class GameClientController implements ClientController {
     @SuppressWarnings("unchecked")
     public void update(@NotNull Event evt) throws Exception {
         switch (evt.eventName()) {
-            case START ->{
-                view.choosePlayerName();
-            }
-
+            case START -> view.choosePlayerName();
             case CHOOSE_PLAYER_NAME -> {
                 playerName = (String) evt.value();
                 view.chooseIPAddress();
@@ -63,22 +62,21 @@ public class GameClientController implements ClientController {
             case CHOOSE_NEW_OR_JOIN -> {
                 if (evt.value().equals("new")) view.chooseNewGamePlayerNumber();
                 else server.askForRooms(new AskForRooms(playerName, MessageID.ASK_FOR_ROOMS));
-
             }
             case CHOOSE_IP_ADDRESS -> {
                 server = clientNetwork.connect((String) evt.value(), playerName, this);
-                if (server == null) return;
-
+                view.chooseNewOrJoin();
             }
-
-
             case CHOOSE_NEW_GAME_PLAYER_NUMBER -> {
                 newRoomPlayerNumber = (int) evt.value();
                 view.chooseNewGameName();
             }
             case CHOOSE_NEW_GAME_NAME -> {
                 if (evt.value().equals("back")) view.chooseNewOrJoin();
-                server.createNewRoom(new CreateNewRoom(playerName, MessageID.CREATE_NEW_ROOM, (String) evt.value(), newRoomPlayerNumber));
+                else {
+                    newRoomName = (String) evt.value();
+                    server.createNewRoom(new CreateNewRoom(playerName, MessageID.CREATE_NEW_ROOM, newRoomName, newRoomPlayerNumber));
+                }
             }
             case CHOOSE_GAME_ROOM -> {
                 if (evt.value().equals("refresh"))
@@ -103,6 +101,11 @@ public class GameClientController implements ClientController {
     @Override
     public void restart() throws Exception {
         view.start();
+    }
+
+    @Override
+    public void serverConnected() throws Exception {
+        view.chooseNewOrJoin();
     }
 
     /**
@@ -141,6 +144,7 @@ public class GameClientController implements ClientController {
         if (!msg.getPlayerName().equals(playerName) ||
                 msg.getMessageID() != MessageID.SHOW_PERSONAL_ROOM) return;
         view.updateGameRoom(msg.getGameRoom());
+        view.showUpdatedGameRoom(newRoomName);
     }
 
     /**
@@ -226,7 +230,4 @@ public class GameClientController implements ClientController {
         view.announceWinner(msg.getWinner(), msg.getPlayerPoints());
     }
 
-    public ClientView getView(){
-        return view;
-    }
 }

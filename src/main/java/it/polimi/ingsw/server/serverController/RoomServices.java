@@ -57,6 +57,7 @@ public class RoomServices implements ServerController {
     @Override
     public void playerConnected(String playerName, ClientController client) {
         clients.put(playerName, client);
+        System.out.println(playerName + " added to online clients");
     }
 
     /**
@@ -153,7 +154,9 @@ public class RoomServices implements ServerController {
      */
     @Override
     public void createNewRoom(@NotNull CreateNewRoom msg) throws Exception {
+        System.out.println("create new room message received!");
         if (msg.getMessageID() != MessageID.CREATE_NEW_ROOM || !clients.containsKey(msg.getPlayerName())) return;
+        System.out.println("create new room message accepted!");
         for (GameRoom room : gameRooms) {
             if (room.gameRoomName().equals(msg.getRoomName())) {
                 clients.get(msg.getPlayerName()).roomNameNotAvailable(new RoomNameNotAvailable(msg.getPlayerName(), MessageID.ROOM_NAME_NOT_AVAILABLE));
@@ -165,6 +168,7 @@ public class RoomServices implements ServerController {
         GameRoom newRoom = new GameRoom(msg.getRoomName(), msg.getPlayerName(), msg.getRoomPlayerNumber(), enteredPlayers);
         gameRooms.add(newRoom);
         clients.get(msg.getPlayerName()).showPersonalRoom(new ShowPersonalRoom(msg.getPlayerName(), MessageID.SHOW_PERSONAL_ROOM, newRoom));
+        System.out.println("create new room message processed!");
     }
 
     /**
