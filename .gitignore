@@ -79,3 +79,4 @@ fabric.properties
 # Ignore class
 target/
 /src/main/java/it/polimi/ingsw/resources/graphics/
+*.patch
