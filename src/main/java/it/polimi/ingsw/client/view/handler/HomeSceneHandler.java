@@ -40,6 +40,9 @@ public class HomeSceneHandler extends SceneHandler{
         Platform.exit();
     }
 
+    /**
+     * @author Abdullah Nasr
+     */
     @Override
     public void resize()
     {
@@ -67,6 +70,9 @@ public class HomeSceneHandler extends SceneHandler{
 
     }
 
+    /**
+     * @author Abdullah Nasr
+     */
     @Override
     public void runScene()
     {

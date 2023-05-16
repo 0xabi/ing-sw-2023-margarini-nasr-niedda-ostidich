@@ -28,7 +28,7 @@
       <effect>
          <BoxBlur height="0.0" width="255.0" />
       </effect>
-      <Image url="@../graphics/misc/wallpaper parquet.jpg" />
+      <Image url="@../graphics/misc/parquet.jpg" />
    </ImageView>
    <Text fx:id="username_lbl" layoutX="445.0" layoutY="158.0" opacity="0.52" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Insert username" textAlignment="CENTER">
       <font>

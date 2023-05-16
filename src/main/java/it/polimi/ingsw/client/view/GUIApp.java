@@ -31,7 +31,7 @@ public class GUIApp extends Application {
         stage.setTitle("My Shelfie");
 
 
-        FXMLLoader loader = new FXMLLoader(GUIApp.class.getResource("/fxml/"+"home"+".fxml"));
+        FXMLLoader loader = new FXMLLoader(GUIApp.class.getResource("/fxml/"+"match"+".fxml"));
         Scene scene;
         Parent root;
 

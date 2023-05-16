@@ -42,7 +42,13 @@ public class PlayerNameSceneHandler extends SceneHandler{
         SceneHandler.switchScene("home");
     }
 
+    public void next(){
 
+    }
+
+    /**
+     * @author Abdullah Nasr
+     */
     @Override
     public void resize()
     {
@@ -83,6 +89,9 @@ public class PlayerNameSceneHandler extends SceneHandler{
 
     }
 
+    /**
+     * @author Abdullah Nasr
+     */
     @Override
     public void runScene() {
 

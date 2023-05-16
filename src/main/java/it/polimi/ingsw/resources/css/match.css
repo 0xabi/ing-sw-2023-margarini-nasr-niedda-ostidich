@@ -1,0 +1,6 @@
+.anchor_pane
+{
+    -fx-background-image: url("../graphics/misc/parquet.jpg");
+    -fx-background-size: stretch;
+
+}

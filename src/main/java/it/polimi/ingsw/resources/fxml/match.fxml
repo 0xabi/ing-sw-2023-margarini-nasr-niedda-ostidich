@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="pane" prefHeight="720.0" prefWidth="1200.0" styleClass="anchor_pane" stylesheets="@../css/match.css"
+            xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="it.polimi.ingsw.client.view.handler.MatchSceneHandler">
+   <ImageView fx:id="mainShelf" fitHeight="320.0" fitWidth="316.0" layoutX="208.0" layoutY="111.0" pickOnBounds="true"
+              preserveRatio="true">
+      <effect>
+         <DropShadow offsetX="-3.0"/>
+      </effect>
+      <Image url="@../graphics/boards/bookshelf.png"/>
+   </ImageView>
+   <ImageView fx:id="board" fitHeight="422.0" fitWidth="422.0" layoutX="550.0" layoutY="10.0" pickOnBounds="true"
+              preserveRatio="true">
+      <effect>
+         <DropShadow/>
+      </effect>
+      <Image url="@../graphics/boards/livingroom.png"/>
+   </ImageView>
+   <ImageView fx:id="personalGoal" fitHeight="239.0" fitWidth="163.0" layoutX="20.0" layoutY="192.0" pickOnBounds="true"
+              preserveRatio="true">
+      <effect>
+         <DropShadow spread="0.41"/>
+      </effect>
+      <Image url="@../graphics/personalGoalCards/front_EMPTY.jpg"/>
+   </ImageView>
+   <ImageView fx:id="commonGoal1" fitHeight="104.0" fitWidth="163.0" layoutX="997.0" layoutY="10.0" pickOnBounds="true"
+              preserveRatio="true">
+      <effect>
+         <DropShadow/>
+      </effect>
+      <Image url="@../graphics/commonGoalCards/1.jpg"/>
+   </ImageView>
+   <ImageView fx:id="commonGoal2" fitHeight="104.0" fitWidth="163.0" layoutX="997.0" layoutY="327.0" pickOnBounds="true"
+              preserveRatio="true">
+      <effect>
+         <DropShadow/>
+      </effect>
+      <Image url="@../graphics/commonGoalCards/1.jpg"/>
+   </ImageView>
+   <Label fx:id="mainPlayerLbl" layoutX="350.0" layoutY="453.0" minHeight="30.0" minWidth="35.0" prefHeight="30.0"
+          prefWidth="35.0" text="Player"/>
+   <ImageView fx:id="shelfPlayer1" fitHeight="184.0" fitWidth="182.0" layoutX="550.0" layoutY="478.0"
+              pickOnBounds="true" preserveRatio="true">
+      <effect>
+         <DropShadow offsetX="-3.0"/>
+      </effect>
+      <Image url="@../graphics/boards/bookshelf.png"/>
+   </ImageView>
+   <ImageView fx:id="shelfPlayer2" fitHeight="184.0" fitWidth="182.0" layoutX="765.0" layoutY="478.0"
+              pickOnBounds="true" preserveRatio="true">
+      <effect>
+         <DropShadow offsetX="-3.0"/>
+      </effect>
+      <Image url="@../graphics/boards/bookshelf.png"/>
+   </ImageView>
+   <ImageView fx:id="shelfPlayer3" fitHeight="184.0" fitWidth="182.0" layoutX="981.0" layoutY="478.0"
+              pickOnBounds="true" preserveRatio="true">
+      <effect>
+         <DropShadow offsetX="-3.0"/>
+      </effect>
+      <Image url="@../graphics/boards/bookshelf.png"/>
+   </ImageView>
+   <Label fx:id="player1Lbl" layoutX="625.0" layoutY="675.0" prefHeight="30.0" prefWidth="35.0" text="Player"/>
+   <Label fx:id="player2Lbl" layoutX="840.0" layoutY="675.0" prefHeight="30.0" prefWidth="35.0" text="Player"/>
+   <Label fx:id="player3Lbl" layoutX="1056.0" layoutY="675.0" prefHeight="30.0" prefWidth="35.0" text="Player"/>
+</AnchorPane>
