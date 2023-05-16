@@ -1,7 +1,6 @@
 package it.polimi.ingsw.server.serverNetwork;
 
 import it.polimi.ingsw.resources.interfaces.ServerController;
-import it.polimi.ingsw.resources.interfaces.ServerNetwork;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -16,7 +15,7 @@ import java.util.List;
  * Every action done on the ClientController interface must be forwarded to the client either as RMI or Socket calling
  * the method directly in the client on the controller.
  */
-public class GameServerNetwork implements ServerNetwork {
+public class GameServerNetwork implements it.polimi.ingsw.resources.interfaces.ServerNetwork {
 
     /**
      * Specifies if the server is running.

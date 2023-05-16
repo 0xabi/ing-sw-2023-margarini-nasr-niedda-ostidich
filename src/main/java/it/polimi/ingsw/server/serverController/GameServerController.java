@@ -8,7 +8,6 @@ import it.polimi.ingsw.resources.interfaces.ClientController;
 import it.polimi.ingsw.resources.interfaces.ServerModel;
 import it.polimi.ingsw.resources.messages.*;
 import it.polimi.ingsw.server.model.GameServerModel;
-
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -46,6 +45,7 @@ public class GameServerController extends RoomServices {
      * @author Francesco Ostidich
      */
     public GameServerController(@NotNull Map<String, ClientController> clients) {
+        System.out.println("generating game model");
         playerPhase = Phase.PICK;
         disconnected = new HashSet<>();
         model = new GameServerModel(clients.keySet());
@@ -59,23 +59,21 @@ public class GameServerController extends RoomServices {
      * @author Francesco Ostidich
      */
     public void playMatch() {
-        getClients().keySet().forEach(player -> {
-            try {
-                getClients().get(player).notifyGameHasStarted(new NotifyGameHasStarted(
-                        player,
-                        MessageID.NOTIFY_GAME_HAS_STARTED,
-                        model.getGameParameters(),
-                        model.getTurnCycleOrder(),
-                        model.getBoard(),
-                        model.getBag(),
-                        model.getCommonGoal1Tokens(),
-                        model.getCommonGoal2Tokens(),
-                        model.getPlayerPersonalGoalID(player),
-                        model.getCommonGoal1(),
-                        model.getCommonGoal2()));
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+        System.out.println("playing match with game names " + names + ", and with server clients " + getClients().keySet());
+        names.forEach(player -> {
+            System.out.println("sending initial message for started match");
+            getClients().get(player).notifyGameHasStarted(new NotifyGameHasStarted(
+                    player,
+                    MessageID.NOTIFY_GAME_HAS_STARTED,
+                    model.getGameParameters(),
+                    model.getTurnCycleOrder(),
+                    model.getBoard(),
+                    model.getBag(),
+                    model.getCommonGoal1Tokens(),
+                    model.getCommonGoal2Tokens(),
+                    model.getPlayerPersonalGoalID(player),
+                    model.getCommonGoal1(),
+                    model.getCommonGoal2()));
         });
     }
 
@@ -83,7 +81,7 @@ public class GameServerController extends RoomServices {
      * @author Francesco Ostidich
      */
     @Override
-    public void disconnectedPlayer(String playerName) throws Exception {
+    public void disconnectedPlayer(String playerName) {
         disconnected.add(playerName);
         if (disconnected.size() == names.size()) closeGame(names);
         if (playerTurn.equals(playerName)) {
@@ -107,7 +105,7 @@ public class GameServerController extends RoomServices {
      * @author Francesco Ostidich
      */
     @Override
-    public void pickTilesRequest(@NotNull PickTilesRequest message) throws Exception {
+    public void pickTilesRequest(@NotNull PickTilesRequest message) {
         if (!message.getPlayerName().equals(playerTurn) ||
                 message.getMessageID() != MessageID.PICK_TILES_REQUEST) return;
         if (model.checkSelection(message.getChosenCoordinates())) {
@@ -117,15 +115,13 @@ public class GameServerController extends RoomServices {
         } else {
             nextTurn(false);
         }
-
-
     }
 
     /**
      * @author Francesco Ostidich
      */
     @Override
-    public void insertTilesRequest(@NotNull InsertTilesRequest message) throws Exception {
+    public void insertTilesRequest(@NotNull InsertTilesRequest message) {
         if (!message.getPlayerName().equals(playerTurn) ||
                 message.getMessageID() != MessageID.INSERT_TILES_REQUEST) return;
         try {

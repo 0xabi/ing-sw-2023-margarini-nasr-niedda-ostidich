@@ -50,17 +50,19 @@ public class GameClientNetwork implements ClientNetwork {
     }
 
     @Override
-    public ServerController connect(String serverIP, String playerName, ClientController controller) throws IOException {
+    public ServerController connect(String serverIP, String playerName, ClientController controller) {
         this.serverIP = serverIP;
         this.playerName = playerName;
         this.controller = controller;
         boolean connected = false;
-
         while (Objects.equals(connectionType, "Socket") && !connected) {
-            try (Socket socket = new Socket(serverIP, 8000)) {
+            try {
+                Socket socket = new Socket(serverIP, 8000);
                 connected = true;
                 this.MessageToServer = new ObjectOutputStream(socket.getOutputStream());
                 this.MessageFromServer = new ObjectInputStream(socket.getInputStream());
+            } catch (Exception e) {
+                System.out.println("connection problems!");
             }
             new Thread(() -> {
                 try {
@@ -83,7 +85,6 @@ public class GameClientNetwork implements ClientNetwork {
         if (Objects.equals(connectionType, "Socket")) {
             try {
                 MessageToServer.writeObject(message);
-                System.out.println("message sent");
             } catch (IOException e) {
                 System.out.println("IO Exception: no message is sent");
                 throw new IOException(e);

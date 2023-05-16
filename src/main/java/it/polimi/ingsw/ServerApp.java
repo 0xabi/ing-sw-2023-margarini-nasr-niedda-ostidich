@@ -6,7 +6,7 @@ import it.polimi.ingsw.server.serverNetwork.GameServerNetwork;
 public class ServerApp {
 
     public static void main(String[] args) {
-        RoomServices.setGameServerNetwork(new GameServerNetwork(new RoomServices()));
+        RoomServices.setServerNetwork(new GameServerNetwork(new RoomServices()));
     }
 
 }

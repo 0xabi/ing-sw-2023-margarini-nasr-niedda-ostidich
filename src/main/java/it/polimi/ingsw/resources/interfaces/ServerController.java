@@ -35,7 +35,7 @@ public interface ServerController {
      * @author Francesco Ostidich
      * @param playerName is the player that has disconnected
      */
-    void disconnectedPlayer(String playerName) throws Exception;
+    void disconnectedPlayer(String playerName);
 
     /**
      * When player is declared reconnected, controller is notified by network manager.
@@ -51,7 +51,7 @@ public interface ServerController {
      * @author Francesco Ostidich
      * @param message is the request message
      */
-    void pickTilesRequest(PickTilesRequest message) throws Exception;
+    void pickTilesRequest(PickTilesRequest message);
 
     /**
      * When player selects order and column, asks the server for insertion.
@@ -59,7 +59,7 @@ public interface ServerController {
      * @author Francesco Ostidich
      * @param message is the request message
      */
-    void insertTilesRequest(InsertTilesRequest message) throws Exception;
+    void insertTilesRequest(InsertTilesRequest message);
 
     /**
      * Player selects a room to join.
@@ -75,13 +75,13 @@ public interface ServerController {
      * @author Francesco Ostidich
      * @param message is the client message
      */
-    void createNewRoom(CreateNewRoom message) throws Exception;
+    void createNewRoom(CreateNewRoom message);
 
     /**
      * Player asks for available rooms to be joined.
      *
      * @author Francesco Ostidich
      */
-    void askForRooms(AskForRooms message) throws Exception;
+    void askForRooms(AskForRooms message);
 
 }

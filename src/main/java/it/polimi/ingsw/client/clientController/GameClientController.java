@@ -52,7 +52,7 @@ public class GameClientController implements ClientController {
      * @author Francesco Ostidich
      */
     @SuppressWarnings("unchecked")
-    public void update(@NotNull Event evt) throws Exception {
+    public void update(@NotNull Event evt) {
         switch (evt.eventName()) {
             case START -> view.choosePlayerName();
             case CHOOSE_PLAYER_NAME -> {
@@ -63,10 +63,7 @@ public class GameClientController implements ClientController {
                 if (evt.value().equals("new")) view.chooseNewGamePlayerNumber();
                 else server.askForRooms(new AskForRooms(playerName, MessageID.ASK_FOR_ROOMS));
             }
-            case CHOOSE_IP_ADDRESS -> {
-                server = clientNetwork.connect((String) evt.value(), playerName, this);
-                view.chooseNewOrJoin();
-            }
+            case CHOOSE_IP_ADDRESS -> server = clientNetwork.connect((String) evt.value(), playerName, this);
             case CHOOSE_NEW_GAME_PLAYER_NUMBER -> {
                 newRoomPlayerNumber = (int) evt.value();
                 view.chooseNewGameName();
@@ -99,12 +96,12 @@ public class GameClientController implements ClientController {
      * @author Francesco Ostidich
      */
     @Override
-    public void restart() throws Exception {
+    public void restart() {
         view.start();
     }
 
     @Override
-    public void serverConnected() throws Exception {
+    public void serverConnected() {
         view.chooseNewOrJoin();
     }
 
@@ -112,7 +109,7 @@ public class GameClientController implements ClientController {
      * @author Francesco Ostidich
      */
     @Override
-    public void roomNameNotAvailable(@NotNull RoomNameNotAvailable msg) throws Exception {
+    public void roomNameNotAvailable(@NotNull RoomNameNotAvailable msg) {
         if (!msg.getPlayerName().equals(playerName) ||
                 msg.getMessageID() != MessageID.ROOM_NAME_NOT_AVAILABLE) return;
         view.chooseNewGameName();
@@ -130,7 +127,7 @@ public class GameClientController implements ClientController {
      * @author Francesco Ostidich
      */
     @Override
-    public void showRooms(@NotNull ShowRooms msg) throws Exception {
+    public void showRooms(@NotNull ShowRooms msg) {
         if (!msg.getPlayerName().equals(playerName) ||
                 msg.getMessageID() != MessageID.SHOW_ROOMS) return;
         view.chooseGameRoom(msg.getGameRooms());
@@ -151,7 +148,8 @@ public class GameClientController implements ClientController {
      * @author Francesco Ostidich
      */
     @Override
-    public void notifyGameHasStarted(@NotNull NotifyGameHasStarted msg) throws Exception {
+    public void notifyGameHasStarted(@NotNull NotifyGameHasStarted msg) {
+        System.out.println("starting message game received");
         if (!msg.getPlayerName().equals(playerName) ||
                 msg.getMessageID() != MessageID.NOTIFY_GAME_HAS_STARTED) return;
         view.setGameParameters(msg.getGameParameters());
@@ -182,7 +180,7 @@ public class GameClientController implements ClientController {
      * @author Francesco Ostidich
      */
     @Override
-    public void newTurn(@NotNull NewTurn msg) throws Exception {
+    public void newTurn(@NotNull NewTurn msg) {
         if (!msg.getPlayerName().equals(playerName) ||
                 msg.getMessageID() != MessageID.NEW_TURN) return;
         view.updateBoard(msg.getBoard());
@@ -211,7 +209,7 @@ public class GameClientController implements ClientController {
      * @author Francesco Ostidich
      */
     @Override
-    public void pickAccepted(@NotNull PickAccepted msg) throws Exception {
+    public void pickAccepted(@NotNull PickAccepted msg) {
         if (!msg.getPlayerName().equals(playerName) ||
                 msg.getMessageID() != MessageID.PICK_ACCEPTED) return;
         view.chooseOrder(msg.getPickedTiles());

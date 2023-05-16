@@ -74,14 +74,15 @@ public class Client implements ClientController {
         while (alive) {
             try {
                 clientMessage = (Message) MessageFromClient.readObject();
-                System.out.println("message received");
             } catch (IOException | ClassNotFoundException e) {
                 break;
             }
             if (clientMessage.getMessageID() == MessageID.PONG)
                 pingQueue.remove();
-            else
+            else {
+                System.out.println("message received");
                 messageQueue.add(clientMessage);
+            }
         }
     }
 
@@ -91,6 +92,7 @@ public class Client implements ClientController {
             Thread.sleep(1000);
             if (messageQueue.size() > 0) {
                 Message msg = messageQueue.remove();
+                System.out.println("message received in sorter");
                 try {
                     switch (msg.getMessageID()) {
                         case JOIN_ROOM -> roomServices.joinRoom((JoinRoom) msg);

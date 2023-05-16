@@ -26,7 +26,6 @@ public class GUI extends GameClientView {
 
     @Override
     public void choosePlayerName() {
-
         SceneHandler.switchScene("player_name");
     }
 

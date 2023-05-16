@@ -22,7 +22,6 @@ public class InputFormatChecker {
         return MAX_PLAYER;
     }
 
-
     /**
      * When IP address string is scanned, it needs to be checked if in right format.
      *
@@ -66,29 +65,24 @@ public class InputFormatChecker {
     /**
      * The function gives a string with the information about the room, the string it's a row with different column
      * and each column contains different information about the room(name, creator's name, number of players ecc.)
-     * @param roomName The room's name.
-     * @param creatorName The room creator's name.
-     * @param players Indicates the number of joined players / total players.
-     * @param lenMaxRoomName Indicates the number of character of the longest room's name to adjust the size of the table.
+     *
+     * @param roomName          The room's name.
+     * @param creatorName       The room creator's name.
+     * @param players           Indicates the number of joined players / total players.
+     * @param lenMaxRoomName    Indicates the number of character of the longest room's name to adjust the size of the table.
      * @param lenMaxCreatorName Indicates the number of character of the longest creator's name to adjust the size of the table.
      * @return A formatted row with different column with information about the room
      * @author Abdullah Nasr
      */
-    public static @NotNull String getRowRoomTable(String roomName, String creatorName, String players, int lenMaxRoomName, int lenMaxCreatorName)
-    {
-        String rowRoomTable="";
-
+    public static @NotNull String getRowRoomTable(String roomName, String creatorName, String players, int lenMaxRoomName, int lenMaxCreatorName) {
+        String rowRoomTable = "";
         //content header
-        rowRoomTable+="| ";
-
+        rowRoomTable += "| ";
         rowRoomTable = getStringWithColumn(roomName, lenMaxRoomName, rowRoomTable);
-
         //creator name
         rowRoomTable = getStringWithColumn(creatorName, lenMaxCreatorName, rowRoomTable);
-
         //players
         rowRoomTable = getStringWithColumn(players, LEN_COL_PLAYERS, rowRoomTable);
-
         //bottom header
         rowRoomTable += "\n";
         rowRoomTable += "+-" + "-".repeat(lenMaxRoomName) + "-+-" + "-".repeat(lenMaxCreatorName) + "-+-" + "-".repeat(LEN_COL_PLAYERS) + "-+\n";
@@ -98,9 +92,10 @@ public class InputFormatChecker {
     /**
      * Given a table row, you specify which column you want to add, specifying the maximum
      * number of characters this column can contain so that the function can do auto-sizing
-     * @param columnName the column name we want to add
+     *
+     * @param columnName       the column name we want to add
      * @param lenMaxColumnName the maximum number of characters that this column will contain
-     * @param rowRoomTable the row string to which we will add the column
+     * @param rowRoomTable     the row string to which we will add the column
      * @return the row room string attached with a new specified column
      * @author Abdullah Nasr
      */
@@ -108,18 +103,14 @@ public class InputFormatChecker {
         int distance;
         int marginDistance;
         distance = lenMaxColumnName - columnName.length();
-        marginDistance=distance/2;
-
-        rowRoomTable+=" ".repeat(marginDistance)+ columnName;
-
-        marginDistance = distance%2!=0 ? marginDistance+1 : marginDistance;
-
-        rowRoomTable+=" ".repeat(marginDistance)+" | ";
+        marginDistance = distance / 2;
+        rowRoomTable += " ".repeat(marginDistance) + columnName;
+        marginDistance = distance % 2 != 0 ? marginDistance + 1 : marginDistance;
+        rowRoomTable += " ".repeat(marginDistance) + " | ";
         return rowRoomTable;
     }
 
     /**
-     *
      * @param rooms available in the server
      * @return a table representation of the rooms
      * @author Abdullah Nasr
@@ -158,26 +149,21 @@ public class InputFormatChecker {
     /**
      * The user can indicate the game room writing the room's name or with the number of the table's row
      * that represent the room.
+     *
      * @param answer The user answer
-     * @param rooms The rooms available in the server
+     * @param rooms  The rooms available in the server
      * @return false if the user's input is valid, true otherwise
      */
-    public static boolean isGameRoomValid(String answer, List<GameRoom> rooms)
-    {
+    public static boolean isGameRoomValid(String answer, List<GameRoom> rooms) {
         Integer intAnswer = getNumFromString(answer);
-
         //check if is a number
-        if(intAnswer!=null&& intAnswer>=1 && intAnswer<rooms.size())
-        {
+        if (intAnswer != null && intAnswer >= 1 && intAnswer <= rooms.size()) {
             return true;
         }
-
-        for(GameRoom currentRoom : rooms)
-        {
-            if ( currentRoom.gameRoomName().equalsIgnoreCase(answer))
+        for (GameRoom currentRoom : rooms) {
+            if (currentRoom.gameRoomName().equalsIgnoreCase(answer))
                 return true;
         }
-
         return false;
     }
 

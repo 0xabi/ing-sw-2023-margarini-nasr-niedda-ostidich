@@ -4,8 +4,8 @@ import it.polimi.ingsw.resources.GameRoom;
 import it.polimi.ingsw.resources.MessageID;
 import it.polimi.ingsw.resources.interfaces.ClientController;
 import it.polimi.ingsw.resources.interfaces.ServerController;
+import it.polimi.ingsw.resources.interfaces.ServerNetwork;
 import it.polimi.ingsw.resources.messages.*;
-import it.polimi.ingsw.server.serverNetwork.GameServerNetwork;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -22,7 +22,7 @@ public class RoomServices implements ServerController {
 
     private final ExecutorService executorService;
 
-    private static GameServerNetwork gameServerNetwork;
+    private static ServerNetwork serverNetwork;
 
     public RoomServices() {
         playerMatch = new HashMap<>();
@@ -34,11 +34,11 @@ public class RoomServices implements ServerController {
     /**
      * Setter for game server network.
      *
-     * @param gameServerNetwork is the game server network
+     * @param serverNetwork is the game server network
      * @author Francesco Ostidich
      */
-    public static void setGameServerNetwork(GameServerNetwork gameServerNetwork) {
-        RoomServices.gameServerNetwork = gameServerNetwork;
+    public static void setServerNetwork(ServerNetwork serverNetwork) {
+        RoomServices.serverNetwork = serverNetwork;
     }
 
     /**
@@ -75,6 +75,7 @@ public class RoomServices implements ServerController {
      * @author Francesco Ostidich
      */
     public void startGame(Map<String, ClientController> names) {
+        System.out.println("started game with players: " + names);
         executorService.submit(() -> {
             GameServerController gsc = new GameServerController(names);
             names.keySet().forEach(player -> playerMatch.put(player, gsc));
@@ -85,7 +86,7 @@ public class RoomServices implements ServerController {
      * @author Francesco Ostidich
      */
     @Override
-    public void disconnectedPlayer(String playerName) throws Exception {
+    public void disconnectedPlayer(String playerName) {
         try {
             playerMatch.get(playerName).disconnectedPlayer(playerName);
         } catch (NullPointerException ignored) {
@@ -107,7 +108,7 @@ public class RoomServices implements ServerController {
      * @author Francesco Ostidich
      */
     @Override
-    public void pickTilesRequest(@NotNull PickTilesRequest message) throws Exception {
+    public void pickTilesRequest(@NotNull PickTilesRequest message) {
         try {
             playerMatch.get(message.getPlayerName()).pickTilesRequest(message);
         } catch (NullPointerException ignored) {
@@ -118,7 +119,7 @@ public class RoomServices implements ServerController {
      * @author Francesco Ostidich
      */
     @Override
-    public void insertTilesRequest(InsertTilesRequest message) throws Exception {
+    public void insertTilesRequest(InsertTilesRequest message) {
         try {
             playerMatch.get(message.getPlayerName()).insertTilesRequest(message);
         } catch (NullPointerException ignored) {
@@ -130,15 +131,24 @@ public class RoomServices implements ServerController {
      */
     @Override
     public void joinRoom(@NotNull JoinRoom msg) {
-        if (msg.getMessageID() != MessageID.JOIN_ROOM || !clients.containsKey(msg.getPlayerName())) return;
+        System.out.println("someone joining room");
+        if (msg.getMessageID() != MessageID.JOIN_ROOM || !clients.containsKey(msg.getPlayerName())) {
+            System.out.println("join room message discarded");
+            return;
+        }
         for (GameRoom gameRoom : gameRooms) {
+            System.out.println(gameRoom.gameRoomName() + " should equal " + msg.getChosenRoom());
+            System.out.println(gameRoom.enteredPlayers() + " should not contain " + msg.getPlayerName());
             if (gameRoom.gameRoomName().equals(msg.getChosenRoom()) &&
                     !gameRoom.enteredPlayers().contains(msg.getPlayerName())) {
                 gameRoom.enteredPlayers().add(msg.getPlayerName());
+                System.out.println("player " + msg.getPlayerName() + " added to room " + gameRoom.gameRoomName());
                 if (gameRoom.enteredPlayers().size() == gameRoom.totalPlayers()) {
+                    System.out.println("filled room: " + gameRoom.gameRoomName());
                     Map<String, ClientController> names = new HashMap<>();
-                    //noinspection ResultOfMethodCallIgnored
-                    gameRoom.enteredPlayers().stream().map(player -> names.put(player, clients.get(player)));
+                    for (String player: gameRoom.enteredPlayers()) {
+                        names.put(player, clients.get(player));
+                    }
                     startGame(names);
                     gameRooms.remove(gameRoom);
                     return;
@@ -147,13 +157,14 @@ public class RoomServices implements ServerController {
                 return;
             }
         }
+        System.out.println("no room found");
     }
 
     /**
      * @author Francesco Ostidich
      */
     @Override
-    public void createNewRoom(@NotNull CreateNewRoom msg) throws Exception {
+    public void createNewRoom(@NotNull CreateNewRoom msg) {
         System.out.println("create new room message received!");
         if (msg.getMessageID() != MessageID.CREATE_NEW_ROOM || !clients.containsKey(msg.getPlayerName())) return;
         System.out.println("create new room message accepted!");
@@ -175,7 +186,7 @@ public class RoomServices implements ServerController {
      * @author Francesco Ostidich
      */
     @Override
-    public void askForRooms(@NotNull AskForRooms msg) throws Exception {
+    public void askForRooms(@NotNull AskForRooms msg) {
         if (msg.getMessageID() != MessageID.ASK_FOR_ROOMS || !clients.containsKey(msg.getPlayerName())) return;
         clients.get(msg.getPlayerName()).showRooms(new ShowRooms(msg.getPlayerName(), MessageID.SHOW_ROOMS, gameRooms));
     }
@@ -187,7 +198,7 @@ public class RoomServices implements ServerController {
      * @param names is the players' game names list
      */
     protected void closeGame(@NotNull List<String> names) {
-        gameServerNetwork.disconnect(names);
+        serverNetwork.disconnect(names);
         names.forEach(player -> {
             clients.remove(player);
             playerMatch.remove(player);

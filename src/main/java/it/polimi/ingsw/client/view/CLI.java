@@ -45,7 +45,7 @@ public class CLI extends GameClientView {
      * @author Francesco Ostidich
      */
     @Override
-    public void start() throws Exception {
+    public void start() {
         System.out.println("""
 
                 ___  ___      _____ _          _  __ _     \s
@@ -66,7 +66,7 @@ public class CLI extends GameClientView {
      * @author Francesco Ostidich
      */
     @Override
-    public void chooseIPAddress() throws Exception {
+    public void chooseIPAddress() {
         String scannedIP = playerMessage("Choose IP address:");
         while (!InputFormatChecker.isIPAddress(scannedIP)) {
             scannedIP = playerMessage("Wrong input!\nChoose IP address:");
@@ -75,7 +75,7 @@ public class CLI extends GameClientView {
     }
 
     @Override
-    public void choosePlayerName() throws Exception {
+    public void choosePlayerName() {
         String scannedIP = playerMessage("Choose player name:");
         while (scannedIP.isBlank()) {
             scannedIP = playerMessage("Wrong input!\nChoose player name:");
@@ -87,12 +87,10 @@ public class CLI extends GameClientView {
      * @author Abdullah Nasr
      */
     @Override
-    public void chooseNewOrJoin() throws Exception {
+    public void chooseNewOrJoin() {
         String answer = playerMessage("Type [new] to create new game or [join] to join an existing game:");
-        answer = answer.trim().toLowerCase();
         while (!answer.equals("new") && !answer.equals("join")) {
             answer = playerMessage("Wrong input!\nType [new] to create new game or [join] to join an existing game:");
-            answer = answer.trim().toLowerCase();
         }
         getClientController().update(new Event(EventID.CHOOSE_NEW_OR_JOIN, answer));
     }
@@ -101,7 +99,7 @@ public class CLI extends GameClientView {
      * @author Abdullah Nasr
      */
     @Override
-    public void chooseNewGameName() throws Exception {
+    public void chooseNewGameName() {
         String gameName = playerMessage("Choose a new game name:");
         while (gameName.isBlank()) {
             gameName = playerMessage("Wrong input!\nChoose a new game name:");
@@ -113,7 +111,7 @@ public class CLI extends GameClientView {
      * @author Abdullah Nasr
      */
     @Override
-    public void chooseNewGamePlayerNumber() throws Exception {
+    public void chooseNewGamePlayerNumber() {
         Integer numPlayer;
         String input = playerMessage("Choose the number of players [max " + InputFormatChecker.getMaxPlayer() + " players" + "]:");
         numPlayer = InputFormatChecker.getNumFromString(input);
@@ -141,7 +139,7 @@ public class CLI extends GameClientView {
         System.out.println("Creator: " + room.creatorName());
         System.out.println("Max players: " + room.totalPlayers());
         System.out.print("Entered players: \t");
-        room.enteredPlayers().forEach(player -> System.out.println("\t\t\t\t\t\t" + player));
+        room.enteredPlayers().forEach(player -> System.out.println(player + "\n\t\t\t\t\t\t"));
     }
 
     /**
@@ -156,18 +154,18 @@ public class CLI extends GameClientView {
      * @author Abdullah Nasr
      */
     @Override
-    public void chooseGameRoom(List<GameRoom> rooms) throws Exception {
+    public void chooseGameRoom(List<GameRoom> rooms) {
         String gameRoomTable = InputFormatChecker.getTableGameRoom(rooms);
         String answer;
         answer = playerMessage(gameRoomTable + "\nType the room name or insert the number of row: ");
-        while (!InputFormatChecker.isGameRoomValid(gameRoomTable, rooms)) {
+        while (!InputFormatChecker.isGameRoomValid(answer, rooms)) {
             answer = playerMessage(gameRoomTable + "\nInvalid game room!\nType the room name or insert the number of row: ");
         }
         getClientController().update(new Event(EventID.CHOOSE_GAME_ROOM, answer));
     }
 
     @Override
-    public void pickTiles(int availablePickNumber) throws Exception {
+    public void pickTiles(int availablePickNumber) {
         int x = 0, y = 0;
         ArrayList<Coordinates> list = new ArrayList<>();
         String[] coords;
@@ -191,7 +189,7 @@ public class CLI extends GameClientView {
     }
 
     @Override
-    public void chooseOrder(@NotNull List<Tile> selection) throws Exception {
+    public void chooseOrder(@NotNull List<Tile> selection) {
         ArrayList<Tile> temp = new ArrayList<>();
         ArrayList<Integer> chosenIndex = new ArrayList<>();
         boolean inputIsValid;
@@ -219,7 +217,7 @@ public class CLI extends GameClientView {
     }
 
     @Override
-    public void chooseColumn() throws Exception {
+    public void chooseColumn() {
         int column = 0;
         boolean attempt;
         do {
@@ -269,7 +267,7 @@ public class CLI extends GameClientView {
     }
 
     @Override
-    public void justScanChat() throws Exception {
+    public void justScanChat() {
         while (chatMessage == null) {
             try {
                 //noinspection BusyWait
