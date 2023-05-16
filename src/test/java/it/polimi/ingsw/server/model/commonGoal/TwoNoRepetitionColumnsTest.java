@@ -17,7 +17,7 @@ public class TwoNoRepetitionColumnsTest {
 
     private ArrayList<Tile> tilesToInsert;
 
-    CommonGoal cg;
+    private CommonGoal cg;
 
     private static final int numOfPlayers = 3;
 

@@ -1,14 +1,11 @@
 package it.polimi.ingsw.client.view;
 
-import it.polimi.ingsw.client.clientController.GameClientController;
 import it.polimi.ingsw.resources.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * CLI class is to implement GameView UI abstract class.
@@ -79,50 +76,6 @@ public class CLI extends GameClientView {
         getClientController().update(new Event(EventID.CHOOSE_IP_ADDRESS, scannedIP));
     }
 
-    /**
-     * When IP address string is scanned, it needs to be checked if in right format.
-     *
-     * @author Francesco Ostidich
-     * @param IP is the IP address string
-     * @return check's outcome
-     */
-    private boolean isIPAddress(@NotNull String IP) {
-        if(IP.equals("localhost")) return true;
-        String[] chunks;
-        chunks = IP.split("\\.");
-        if(chunks.length!=4)
-            return false;
-        try{
-            for(String number : chunks) {
-                int num = Integer.parseInt(number);
-                if (num<0 || num>255)
-                    return false;
-            }
-        }
-        catch(NumberFormatException e) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     *
-     * @param input
-     * @return
-     * @author Abdullah Nasr
-     */
-    private @Nullable Integer getNumFromString(String input)
-    {
-        try
-        {
-            return Integer.parseInt(input);
-        }
-        catch(NumberFormatException e)
-        {
-            return null;
-        }
-
-    }
 
     @Override
     public void choosePlayerName() throws Exception {

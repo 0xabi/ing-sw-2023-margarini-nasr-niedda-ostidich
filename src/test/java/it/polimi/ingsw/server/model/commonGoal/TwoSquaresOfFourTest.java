@@ -15,7 +15,7 @@ public class TwoSquaresOfFourTest {
 
     private Shelf shelf;
     private ArrayList<Tile> tilesToInsert;
-    CommonGoal cg;
+    private CommonGoal cg;
 
     private static final int numOfPlayers = 3;
 
