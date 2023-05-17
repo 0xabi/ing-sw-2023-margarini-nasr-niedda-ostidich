@@ -24,17 +24,16 @@ public class Bag {
      */
     public Bag() {
         tilesLeft = new HashMap<>();
-
-        for(Tile tile: Tile.values())
-            if(!tile.equals(Tile.EMPTY))
+        for (Tile tile : Tile.values())
+            if (!tile.equals(Tile.EMPTY))
                 tilesLeft.put(tile, TOTAL_QUANTITY);
     }
 
     /**
      * Getter for tiles' type total quantity.
      *
-     * @author Francesco Ostidich
      * @return total quantity of tiles' type int
+     * @author Francesco Ostidich
      */
     public static int getTotalQuantity() {
         return TOTAL_QUANTITY;
@@ -47,7 +46,7 @@ public class Bag {
      * @author Edoardo Margarini
      */
     protected void addTile(Tile tile) {
-        tilesLeft.put(tile, tilesLeft.get(tile)+1);
+        tilesLeft.put(tile, tilesLeft.get(tile) + 1);
     }
 
     /**
@@ -56,8 +55,8 @@ public class Bag {
      * @param tile
      * @author Edoardo Margarini
      */
-    private void removeTile(Tile tile){
-        tilesLeft.put(tile,tilesLeft.get(tile)-1);
+    private void removeTile(Tile tile) {
+        tilesLeft.put(tile, tilesLeft.get(tile) - 1);
     }
 
     /**
@@ -66,10 +65,10 @@ public class Bag {
      * @return
      * @author Edoardo Margarini
      */
-    protected Tile draw(){
+    protected Tile draw() {
         Random random = new Random();
         int number = random.nextInt(5);
-        while(tilesLeft.get(Tile.values()[number])<=0) { //if a tile has no quantity retry the draw
+        while (tilesLeft.get(Tile.values()[number]) <= 0) { //if a tile has no quantity retry the draw
             number = random.nextInt(5);
         }
         removeTile(Tile.values()[number]);
@@ -78,10 +77,11 @@ public class Bag {
 
     /**
      * //TODO java doc is to be written
-     * @author Edoardo Margarini
+     *
      * @return
+     * @author Edoardo Margarini
      */
-    protected int size(){
+    protected int size() {
         return tilesLeft.values()
                 .stream()
                 .mapToInt(Integer::valueOf)

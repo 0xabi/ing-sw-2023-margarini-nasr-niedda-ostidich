@@ -2,8 +2,8 @@
   "boardRowLength": 9,
   "boardColumnLength": 9,
   "bagTotalQuantity": 22,
-  "shelfRowNumber": 6,
-  "shelfColumnNumber": 5,
+  "shelfRowLength": 5,
+  "shelfColumnLength": 6,
   "commonGoalNumber": 12,
   "personalGoalNumber": 12,
   "endGameTokenPoints": 1

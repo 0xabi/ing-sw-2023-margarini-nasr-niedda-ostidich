@@ -2,9 +2,8 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.resources.Coordinates;
 import it.polimi.ingsw.resources.Tile;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,9 +16,9 @@ import java.util.List;
  */
 public class Shelf {
 
-    private static final int ROW_NUMBER = 6;
+    private static final int ROW_LENGTH = 5;
 
-    private static final int COLUMN_NUMBER = 5;
+    private static final int COLUMN_LENGTH = 6;
 
     private final Tile[][] positions;
 
@@ -29,25 +28,23 @@ public class Shelf {
      * @author Abdullah Nasr
      */
     public Shelf() {
-        positions = new Tile[ROW_NUMBER][COLUMN_NUMBER];
-        for (int i = 0; i < ROW_NUMBER; i++)
-            Arrays.fill(positions[i], Tile.EMPTY);
+        positions = new Tile[ROW_LENGTH][COLUMN_LENGTH];
     }
 
     /**
      * @return the shelf's row number
      * @author Abdullah Nasr
      */
-    public static int getRowNumber() {
-        return ROW_NUMBER;
+    public static int getRowLength() {
+        return ROW_LENGTH;
     }
 
     /**
      * @return the shelf's column number
      * @author Abdullah Nasr
      */
-    public static int getColumnNumber() {
-        return COLUMN_NUMBER;
+    public static int getColumnLength() {
+        return COLUMN_LENGTH;
     }
 
     /**
@@ -63,51 +60,29 @@ public class Shelf {
      * @return a tile specified by a valid coordinates , null for invalid coordinates.
      * @author Abdullah Nasr
      */
-    public Tile getPosition(Coordinates coordinates) {
-        if (coordinates == null || coordinates.x() >= ROW_NUMBER || coordinates.y() >= COLUMN_NUMBER)
-            return null;
+    public Tile getPosition(@NotNull Coordinates coordinates) {
+        if (coordinates.x() >= ROW_LENGTH || coordinates.y() >= COLUMN_LENGTH)
+            throw new IndexOutOfBoundsException("coordinates out of shelf bounds");
         return positions[coordinates.x()][coordinates.y()];
     }
 
     /**
-     * @param column The column number to insert into the specified tiles
-     * @param tiles  A list of tiles to insert into the specified column
-     * @return true for success insertion of tiles into the specified column, false otherwise
-     * @author Abdullah Nasr
-     */
-    public boolean insertInColumn(List<Tile> tiles, int column) {
-        List<Tile> tilesList;
-        int freeSpace;
-        //check input
-        if (tiles == null || tiles.contains(Tile.EMPTY) || column >= ROW_NUMBER) {
-            return false;
-        }
-        tilesList = new ArrayList<>(tiles);
-        //calculate free space
-        freeSpace = checkSpaceInColumn(tilesList.size(), column);
-        //if there is enough space to put the tiles
-        if (freeSpace != 0) {
-            while (!tilesList.isEmpty()) {
-                positions[freeSpace - 1][column] = tilesList.get(0);
-                tilesList.remove(0);
-                freeSpace--;
-            }
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @param column          the shelf's column selected to insert the tiles
-     * @param selectionLength the number of tiles to insert into the selected column
+     * @param column the shelf's column selected to insert the tiles
      * @return the number of free slots, 0 if there isn't enough free slots to put all the tiles
      * @author Abdullah Nasr
      */
-    private int checkSpaceInColumn(int selectionLength, int column) {
-        int emptySlots = ROW_NUMBER - getTilesInColumn(column);
-        if (emptySlots >= selectionLength)
-            return emptySlots;
-        return 0;
+    private int checkSpaceInColumn(int column) {
+        return COLUMN_LENGTH - getTilesInColumn(column);
+    }
+
+    /**
+     * @return true if the shelf is full, false otherwise
+     * @author Abdullah Nasr
+     */
+    protected boolean isFull() {
+        for (int i = 0; i < ROW_LENGTH; i++)
+            if (positions[i][COLUMN_LENGTH - 1] == Tile.EMPTY) return false;
+        return true;
     }
 
     /**
@@ -116,22 +91,28 @@ public class Shelf {
      * @author Abdullah Nasr
      */
     public int getTilesInColumn(int column) {
-        //check valid column
-        if (column < COLUMN_NUMBER) {
-            //count empty spaces
-            for (int i = 0; i < ROW_NUMBER; i++)
-                if (positions[i][column] != Tile.EMPTY) return ROW_NUMBER - i;
-        }
-        return 0;
+        if (column > ROW_LENGTH - 1) throw new IndexOutOfBoundsException("cant find column since out of bound");
+        int i = 0;
+        while (i < COLUMN_LENGTH && positions[column][i] != null) ++i;
+        return i;
     }
 
     /**
-     * @return true if the shelf is full, false otherwise
+     * @param column    The column number to insert into the specified tiles
+     * @param tilesList A list of tiles to insert into the specified column
+     * @return true for success insertion of tiles into the specified column, false otherwise
      * @author Abdullah Nasr
      */
-    protected boolean isFull() {
-        for (int i = 0; i < COLUMN_NUMBER; i++)
-            if (positions[0][i] == Tile.EMPTY) return false;
+    public boolean insertInColumn(@NotNull List<Tile> tilesList, int column) {
+        List<Tile> tiles = new LinkedList<>(tilesList);
+        int freeSpace = checkSpaceInColumn(column);
+        if (freeSpace < tiles.size() || tiles.contains(Tile.EMPTY) || column >= ROW_LENGTH) {
+            return false;
+        }
+        while (!tiles.isEmpty() && freeSpace > 0) {
+            positions[column][COLUMN_LENGTH - freeSpace] = tiles.remove(0);
+            freeSpace--;
+        }
         return true;
     }
 
@@ -146,11 +127,11 @@ public class Shelf {
      */
     public boolean insertInRow(List<Tile> tiles, int row) {
         List<Tile> tilesList = new LinkedList<>(tiles);
-        if (tilesList.contains(Tile.EMPTY) || row >= COLUMN_NUMBER) {
+        if (tilesList.contains(Tile.EMPTY) || row >= COLUMN_LENGTH) {
             return false;
         }
         for (int i = 0; !tilesList.isEmpty(); i++) {
-            positions[row][i] = tilesList.remove(tilesList.size() - 1);
+            positions[i][row] = tilesList.remove(0);
         }
         return true;
     }

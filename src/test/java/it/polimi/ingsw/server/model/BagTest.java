@@ -1,7 +1,9 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.resources.Coordinates;
+import it.polimi.ingsw.resources.Tile;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -25,6 +27,16 @@ public class BagTest{
     public void bagSizeAfterRefillOfBoard4ShouldBe87(){
         board.refill();
         assertEquals(22*6-45,board.getBag().size());
+    }
+
+    @Test
+    public void getter() {
+        Bag bag = new Bag();
+        bag.addTile(bag.draw());
+        for (Tile tile : bag.getTilesLeft().keySet()) {
+            int tot = bag.getTilesLeft().get(tile);
+            Assert.assertEquals(tot, Bag.getTotalQuantity());
+        }
     }
 
     @Test

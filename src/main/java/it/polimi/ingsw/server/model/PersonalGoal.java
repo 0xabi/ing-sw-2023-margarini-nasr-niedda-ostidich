@@ -51,12 +51,12 @@ public class PersonalGoal {
      */
     private static @NotNull Map<Integer, Integer> pointsConstructor() {
         Map<Integer, Integer> pointsTmp = new HashMap<>();
-
         Gson gson = new Gson();
         File input = new File("src/main/java/it/polimi/ingsw/resources/configFiles/personalGoalPointsMap.json");
         try {
             JsonElement pointsElement = JsonParser.parseReader(new FileReader(input));
-            pointsTmp.putAll(gson.fromJson(pointsElement, new TypeToken<HashMap<Integer, Integer>>() {}.getType()));
+            pointsTmp.putAll(gson.fromJson(pointsElement, new TypeToken<HashMap<Integer, Integer>>() {
+            }.getType()));
             return pointsTmp;
         } catch (FileNotFoundException e) {
             throw new ConfigFileNotFoundException("personalGoalPointsMap not found");
@@ -66,20 +66,18 @@ public class PersonalGoal {
     /**
      * Constructor for attribute matches from json file.
      *
-     * @author Francesco Ostidich
      * @param personalGoalNumber used to get a specific personal goal since different players can't have same personal goal
      * @throws ConfigFileNotFoundException if file is not readable by FileReader
+     * @author Francesco Ostidich
      */
     private void matchesConstructor(int personalGoalNumber) {
         File input = new File("src/main/java/it/polimi/ingsw/resources/configFiles/personalGoalMatchesMap.json");
         try {
             JsonElement matchesElements = JsonParser.parseReader(new FileReader(input));
             JsonObject matchesObject = matchesElements.getAsJsonObject();
-
             JsonArray jsonCoordinates;
-            for(Tile tile: Tile.values()) {
-                if (tile!=Tile.EMPTY)
-                {
+            for (Tile tile : Tile.values()) {
+                if (tile != Tile.EMPTY) {
                     jsonCoordinates = matchesObject.
                             get(String.valueOf(personalGoalNumber)).
                             getAsJsonObject().
@@ -97,8 +95,8 @@ public class PersonalGoal {
      * Checks the matches between player's personal goal and shelf.
      * Adds respective points to player's points.
      *
-     * @author Francesco Ostidich
      * @param player is the player to check the matches and add points to
+     * @author Francesco Ostidich
      */
     protected int assignPoints(@NotNull Player player) {
         int p = points.get(matchesShared(player.getShelf()));
@@ -109,14 +107,14 @@ public class PersonalGoal {
     /**
      * Checks the number of matches between player's personal goal and shelf, and returns it.
      *
-     * @author Francesco Ostidich
      * @param shelf is the player's shelf
      * @return the number of matches
+     * @author Francesco Ostidich
      */
-    private int matchesShared(Shelf shelf) {
+    protected int matchesShared(Shelf shelf) {
         int matchesNumber = 0;
-        for(Tile tile: matches.keySet()) {
-            if(shelf.getPosition(matches.get(tile)).equals(tile)) {
+        for (Tile tile : matches.keySet()) {
+            if (shelf.getPosition(matches.get(tile)) == tile) {
                 matchesNumber++;
             }
         }
@@ -126,8 +124,8 @@ public class PersonalGoal {
     /**
      * Getter for personal goal points.
      *
-     * @author Francesco Ostidich
      * @return points map
+     * @author Francesco Ostidich
      */
     public static Map<Integer, Integer> getPoints() {
         return points;
@@ -136,8 +134,8 @@ public class PersonalGoal {
     /**
      * Getter for personal goal matches.
      *
-     * @author Francesco Ostidich
      * @return matches map
+     * @author Francesco Ostidich
      */
     public Map<Tile, Coordinates> getMatches() {
         return matches;
@@ -146,8 +144,8 @@ public class PersonalGoal {
     /**
      * Getter for personal goal ID number.
      *
-     * @author Francesco Ostidich
      * @return personal goal ID number
+     * @author Francesco Ostidich
      */
     public int getPersonalGoalID() {
         return personalGoalID;
@@ -156,10 +154,11 @@ public class PersonalGoal {
     /**
      * Getter for personal goal number.
      *
-     * @author Francesco Ostidich
      * @return personal goal number
+     * @author Francesco Ostidich
      */
     public static int getPersonalGoalNumber() {
         return PERSONAL_GOAL_NUMBER;
     }
+
 }

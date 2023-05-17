@@ -57,7 +57,9 @@ public abstract class CommonGoal {
      * @author Francesco Ostidich
      */
     protected void assignPoints(@NotNull Player player) {
-        player.addPoints(tokens.pop());
+        int token = tokens.pop();
+        player.addPoints(token);
+        givenPlayers.put(token, player);
     }
 
     /**

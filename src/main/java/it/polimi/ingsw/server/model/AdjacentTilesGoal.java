@@ -28,7 +28,6 @@ public class AdjacentTilesGoal {
 
     private static final Queue<Coordinates> currAdjTiles = new LinkedList<>();
 
-
     /**
      * It assigns points to the player based on the groups it has managed to build up.
      *
@@ -53,13 +52,10 @@ public class AdjacentTilesGoal {
         int count = 0;
         int xTemp;
         int yTemp;
-
         currAdjTiles.addAll(adjacentTile(x, y));
-        copy[x][y] = Tile.EMPTY;
+        copy[x][y] = null;
         count++;
-
         while (currAdjTiles.size() > 0) {
-
             xTemp = currAdjTiles.peek().x();
             yTemp = currAdjTiles.peek().y();
             currAdjTiles.remove();
@@ -67,7 +63,7 @@ public class AdjacentTilesGoal {
                 if (!currAdjTiles.stream().toList().contains(e))
                     currAdjTiles.add(e);
             }
-            copy[xTemp][yTemp] = Tile.EMPTY;
+            copy[xTemp][yTemp] = null;
             count++;
         }
         return count;
@@ -83,21 +79,17 @@ public class AdjacentTilesGoal {
     private static int calculatePoints(@NotNull Shelf shelf) {
         int count;
         int totPoints = 0;
-        int maxTilesGroup = new ArrayList<>(groupPoints.keySet()).get(groupPoints.size() - 1);
-
+        int maxTilesGroup = new LinkedList<>(groupPoints.keySet()).get(groupPoints.size() - 1);
         copy = shelf.getPositions().clone();
-
-        for (int i = 0; i < Shelf.getRowNumber(); i++)
-            for (int j = 0; j < Shelf.getColumnNumber(); j++)
-                if (copy[i][j] != Tile.EMPTY && copy[i][j] != null) {
+        for (int i = 0; i < Shelf.getRowLength(); i++)
+            for (int j = 0; j < Shelf.getColumnLength(); j++)
+                if (copy[i][j] != null && copy[i][j] != null) {
                     count = countTilesBlock(i, j);
-
                     if (count >= maxTilesGroup)
                         totPoints += groupPoints.get(maxTilesGroup);
                     else if (groupPoints.containsKey(count))
                         totPoints += groupPoints.get(count);
                 }
-
         return totPoints;
     }
 
@@ -111,34 +103,27 @@ public class AdjacentTilesGoal {
      */
     @SuppressWarnings("DuplicatedCode")
     private static @NotNull List<Coordinates> adjacentTile(int x, int y) {
-
-        List<Coordinates> adjTile = new ArrayList<>();
-
-        if (x <= 4)
-            if (copy[x + 1][y] == copy[x][y] && copy[x][y] != null && copy[x][y] != Tile.EMPTY) {
+        List<Coordinates> adjTile = new LinkedList<>();
+        if (x < Shelf.getRowLength()-1)
+            if (copy[x + 1][y] == copy[x][y] && copy[x][y] != null && copy[x][y] != null) {
                 Coordinates coords = new Coordinates(x + 1, y);
                 adjTile.add(coords);
             }
-
-
         if (x >= 1)
-            if (copy[x - 1][y] == copy[x][y] && copy[x][y] != null && copy[x][y] != Tile.EMPTY) {
+            if (copy[x - 1][y] == copy[x][y] && copy[x][y] != null && copy[x][y] != null) {
                 Coordinates coords = new Coordinates(x - 1, y);
                 adjTile.add(coords);
             }
-
-        if (y <= 3)
-            if (copy[x][y + 1] == copy[x][y] && copy[x][y] != null && copy[x][y] != Tile.EMPTY) {
+        if (y < Shelf.getColumnLength()-1)
+            if (copy[x][y + 1] == copy[x][y] && copy[x][y] != null && copy[x][y] != null) {
                 Coordinates coords = new Coordinates(x, y + 1);
                 adjTile.add(coords);
             }
-
         if (y >= 1)
-            if (copy[x][y - 1] == copy[x][y] && copy[x][y] != null && copy[x][y] != Tile.EMPTY) {
+            if (copy[x][y - 1] == copy[x][y] && copy[x][y] != null && copy[x][y] != null) {
                 Coordinates coords = new Coordinates(x, y - 1);
                 adjTile.add(coords);
             }
-
         return adjTile;
     }
 
@@ -149,16 +134,13 @@ public class AdjacentTilesGoal {
      * @author Abdullah Nasr
      */
     private static @NotNull Map<Integer, Integer> getGroupPointsFromFile() {
-
         HashMap<Integer, Integer> map = new HashMap<>();
         Gson gson = new Gson();
-
         File input = new File("src/main/java/it/polimi/ingsw/resources/configFiles/adjacentTilesGoalGroupPointsMap.json");
         try {
             JsonElement pointsElement = JsonParser.parseReader(new FileReader(input));
             map.putAll(gson.fromJson(pointsElement, new TypeToken<HashMap<Integer, Integer>>() {
             }.getType()));
-
         } catch (FileNotFoundException e) {
             throw new ConfigFileNotFoundException("personalGoalPointsMap not found");
         }
@@ -174,4 +156,5 @@ public class AdjacentTilesGoal {
     public static Map<Integer, Integer> getGroupPoints() {
         return groupPoints;
     }
+
 }

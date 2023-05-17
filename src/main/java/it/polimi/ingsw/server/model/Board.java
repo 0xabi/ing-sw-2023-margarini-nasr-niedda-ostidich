@@ -42,12 +42,10 @@ public class Board {
     public Board(int num) {
         spaces = new Tile[ROW_LENGTH][COLUMN_LENGTH];
         endGameToken = Optional.of(new EndGameToken());
-
         File input = new File("src/main/java/it/polimi/ingsw/resources/configFiles/boardSpacesMatrix.json");
         try {
             JsonElement spacesElement = JsonParser.parseReader(new FileReader(input));
             JsonObject spacesObject = spacesElement.getAsJsonObject();
-
             JsonArray jsonSpaces = spacesObject.get(String.valueOf(num)).getAsJsonArray();
             for (int i = 0; i < ROW_LENGTH; i++)
                 for (int j = 0; j < COLUMN_LENGTH; j++) {
@@ -65,8 +63,8 @@ public class Board {
     /**
      * Getter for row length.
      *
-     * @author Francesco Ostidich
      * @return row length int
+     * @author Francesco Ostidich
      */
     public static int getRowLength() {
         return ROW_LENGTH;
@@ -75,8 +73,8 @@ public class Board {
     /**
      * Getter for column length.
      *
-     * @author Francesco Ostidich
      * @return column length int
+     * @author Francesco Ostidich
      */
     public static int getColumnLength() {
         return COLUMN_LENGTH;
@@ -138,7 +136,6 @@ public class Board {
     protected void refill() {
         //puts back the ones left on the board
         emptyBoardInBag();
-
         for (int i = 0; i < ROW_LENGTH; i++)
             for (int j = 0; j < COLUMN_LENGTH; j++) {
                 if (spaces[i][j] == Tile.EMPTY) {
@@ -156,15 +153,11 @@ public class Board {
      * @author Edoardo Margarini
      */
     protected List<Tile> selectTiles(List<Coordinates> selection) {
-
         List<Tile> list = new LinkedList<>();
-
         if (checkSelection(selection)) {
             for (Coordinates e : selection)
                 list.add(spaces[e.x()][e.y()]);
-
             emptyTiles(selection);
-
         }
         return list;
     }
@@ -180,23 +173,19 @@ public class Board {
         //checks the player has chosen max 3 tiles
         if (selection.size() > 3)
             return false;
-
         //checks the player has chosen available tiles (!=null !=Tile.EMPTY)
         for (Coordinates e : selection) {
             if (spaces[e.x()][e.y()] == null || spaces[e.x()][e.y()] == Tile.EMPTY)
                 return false;
         }
-
         //checks the player has chosen tiles that has a free adjacent
         for (Coordinates e : selection) {
             if (!adjacentTile(e).contains(null) && !adjacentTile(e).contains(Tile.EMPTY))
                 return false;
         }
-
         //checks the player has chosen 1 single tile, in this case all the tests made are sufficient
         if (selection.size() == 1)
             return true;
-
         //checks the player has chosen tiles in column or in row
         List<Integer> listX = new ArrayList<>();
         List<Integer> listY = new ArrayList<>();
@@ -206,22 +195,16 @@ public class Board {
         }
         if (!listX.stream().allMatch(s -> s.equals(listX.get(0))) && !listY.stream().allMatch(s -> s.equals(listY.get(0))))
             return false;
-
-
         List<Integer> list;
-
         if (Objects.equals(listX.get(0), listX.get(1)))
             list = listY;
         else
             list = listX;
-
         Collections.sort(list);
-
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i) != list.get(0) + i)
                 return false;
         }
-
         return true;
     }
 
@@ -242,16 +225,13 @@ public class Board {
      * @author Edoardo Margarini
      */
     protected boolean checkToRefill() {
-
         for (int i = 0; i < ROW_LENGTH; i++)
             for (int j = 0; j < COLUMN_LENGTH; j++) {
-                if (!isCompletelyFree(new Coordinates(i, j)) && spaces[i][j] != null && spaces[i][j] != Tile.EMPTY)
+                if (spaces[i][j] != null && spaces[i][j] != Tile.EMPTY && !isCompletelyFree(new Coordinates(i, j)))
                     return false;
             }
-
         return true;
     }
-
 
     /**
      * Checks if a tile has no other adjacent tiles
@@ -273,29 +253,23 @@ public class Board {
      * @author Edoardo Margarini
      */
     private @NotNull List<Tile> adjacentTile(@NotNull Coordinates coords) {
-
         List<Tile> adjTile = new LinkedList<>();
-
-        if (coords.x() > ROW_LENGTH)
+        if (coords.x() > ROW_LENGTH - 2)
             adjTile.add(null);
         else
             adjTile.add(spaces[coords.x() + 1][coords.y()]);
-
         if (coords.x() < 1)
             adjTile.add(null);
         else
             adjTile.add(spaces[coords.x() - 1][coords.y()]);
-
-        if (coords.y() > COLUMN_LENGTH)
+        if (coords.y() > COLUMN_LENGTH - 2)
             adjTile.add(null);
         else
             adjTile.add(spaces[coords.x()][coords.y() + 1]);
-
         if (coords.y() < 1)
             adjTile.add(null);
         else
             adjTile.add(spaces[coords.x()][coords.y() - 1]);
-
         return adjTile;
     }
 

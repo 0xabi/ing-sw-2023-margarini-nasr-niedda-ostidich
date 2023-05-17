@@ -43,7 +43,7 @@ public class TwoNoRepetitionColumns extends CommonGoal {
     @SuppressWarnings("DuplicatedCode")
     private boolean checkCol(@NotNull Shelf shelf, int col) {
         ArrayList<Tile> checkedList = new ArrayList<>();
-        int row = Shelf.getRowNumber();
+        int row = Shelf.getRowLength();
         boolean different = true;
         int nDifferent =0;
         int index=0;
@@ -92,7 +92,7 @@ public class TwoNoRepetitionColumns extends CommonGoal {
     private int countColumnsWithDifferentTiles(Shelf shelf)
     {
         int count = 0;
-        int col = Shelf.getColumnNumber();
+        int col = Shelf.getColumnLength();
 
         //for each column
         for(int i = 0; i < col; i++) {

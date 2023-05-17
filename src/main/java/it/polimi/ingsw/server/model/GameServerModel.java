@@ -85,8 +85,8 @@ public class GameServerModel implements ServerModel {
         gameParameters.put("boardRowLength", Board.getRowLength());
         gameParameters.put("boardColumnLength", Board.getColumnLength());
         gameParameters.put("bagTotalQuantity", Bag.getTotalQuantity());
-        gameParameters.put("shelfRowNumber", Shelf.getRowNumber());
-        gameParameters.put("shelfColumnNumber", Shelf.getColumnNumber());
+        gameParameters.put("shelfRowNumber", Shelf.getRowLength());
+        gameParameters.put("shelfColumnNumber", Shelf.getColumnLength());
         gameParameters.put("commonGoalNumber", CommonGoalFactory.getCommonGoalNumber());
         gameParameters.put("personalGoalNumber", PersonalGoal.getPersonalGoalNumber());
         gameParameters.put("endGameTokenPoints", EndGameToken.getEndGamePoints());

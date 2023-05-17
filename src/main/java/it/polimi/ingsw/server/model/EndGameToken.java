@@ -25,7 +25,7 @@ public class EndGameToken {
      * @author Francesco Ostidich
      */
     protected static void assignPoints(@NotNull Player player) {
-        player.addPoints(END_GAME_POINTS);
+        player.addPoints(getEndGamePoints());
     }
 
     /**

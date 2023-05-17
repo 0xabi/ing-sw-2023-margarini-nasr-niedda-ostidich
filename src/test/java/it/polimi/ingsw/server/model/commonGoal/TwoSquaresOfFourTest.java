@@ -39,7 +39,7 @@ public class TwoSquaresOfFourTest {
     public void check_OneIsolatedSquare_ReturnFalse() {
         tilesToInsert.add(Tile.CATS);
         tilesToInsert.add(Tile.CATS);
-        int col = Shelf.getColumnNumber() - 1;
+        int col = Shelf.getColumnLength() - 1;
         assertTrue(shelf.insertInColumn(tilesToInsert, col));
         assertTrue(shelf.insertInColumn(tilesToInsert, col - 1));
         assertFalse(cg.check(shelf));
@@ -49,7 +49,7 @@ public class TwoSquaresOfFourTest {
     public void check_TwoIsolatedSquareDifferentTypes_ReturnTrue() {
         tilesToInsert.add(Tile.CATS);
         tilesToInsert.add(Tile.CATS);
-        int col = Shelf.getColumnNumber() - 1;
+        int col = Shelf.getColumnLength() - 1;
         assertTrue(shelf.insertInColumn(tilesToInsert, col));
         assertTrue(shelf.insertInColumn(tilesToInsert, col - 1));
         tilesToInsert.clear();
@@ -64,7 +64,7 @@ public class TwoSquaresOfFourTest {
     public void check_TwoIsolatedSquareSameTypes_ReturnTrue() {
         tilesToInsert.add(Tile.CATS);
         tilesToInsert.add(Tile.CATS);
-        int col = Shelf.getColumnNumber() - 1;
+        int col = Shelf.getColumnLength() - 1;
         assertTrue(shelf.insertInColumn(tilesToInsert, col));
         assertTrue(shelf.insertInColumn(tilesToInsert, col - 1));
         assertTrue(shelf.insertInColumn(tilesToInsert, 0));
@@ -76,7 +76,7 @@ public class TwoSquaresOfFourTest {
     public void check_TwoNoIsolatedSquare_ReturnFalse() {
         tilesToInsert.add(Tile.CATS);
         tilesToInsert.add(Tile.CATS);
-        int col = Shelf.getColumnNumber() - 1;
+        int col = Shelf.getColumnLength() - 1;
         assertTrue(shelf.insertInColumn(tilesToInsert, col));
         assertTrue(shelf.insertInColumn(tilesToInsert, col - 1));
         assertTrue(shelf.insertInColumn(tilesToInsert, col - 2));
@@ -88,7 +88,7 @@ public class TwoSquaresOfFourTest {
     public void check_TwoDifferentAdjacentSquare_ReturnTrue() {
         tilesToInsert.add(Tile.CATS);
         tilesToInsert.add(Tile.CATS);
-        int col = Shelf.getColumnNumber() - 1;
+        int col = Shelf.getColumnLength() - 1;
         assertTrue(shelf.insertInColumn(tilesToInsert, col));
         assertTrue(shelf.insertInColumn(tilesToInsert, col - 1));
         tilesToInsert.clear();
@@ -103,7 +103,7 @@ public class TwoSquaresOfFourTest {
     public void check_NoTwoSquares_ReturnFalse() {
         tilesToInsert.add(Tile.CATS);
         tilesToInsert.add(Tile.CATS);
-        int col = Shelf.getColumnNumber() - 1;
+        int col = Shelf.getColumnLength() - 1;
         assertTrue(shelf.insertInColumn(tilesToInsert, col));
         assertTrue(shelf.insertInColumn(tilesToInsert, col - 1));
         tilesToInsert.clear();

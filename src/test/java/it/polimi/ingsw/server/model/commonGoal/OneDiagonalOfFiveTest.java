@@ -40,7 +40,7 @@ public class OneDiagonalOfFiveTest {
     @Test
     public void DiagonalType1ShouldBeTrue() {
 
-        for (int col = 0; col < Shelf.getColumnNumber(); col++) {
+        for (int col = 0; col < Shelf.getColumnLength(); col++) {
             tilesToInsert.add(Tile.CATS);
             shelf.insertInColumn(tilesToInsert, col);
         }
@@ -51,9 +51,9 @@ public class OneDiagonalOfFiveTest {
     @Test
     public void DiagonalType2ShouldBeTrue() {
 
-        for (int col = 0; col < Shelf.getColumnNumber(); col++) {
+        for (int col = 0; col < Shelf.getColumnLength(); col++) {
             tilesToInsert.add(Tile.CATS);
-            shelf.insertInColumn(tilesToInsert, Shelf.getColumnNumber()-1-col);
+            shelf.insertInColumn(tilesToInsert, Shelf.getColumnLength()-1-col);
         }
 
         assertTrue(cg.check(shelf));
@@ -62,7 +62,7 @@ public class OneDiagonalOfFiveTest {
     public void DiagonalType3ShouldBeTrue() {
 
         tilesToInsert.add(Tile.CATS);
-        for (int col = 0; col < Shelf.getColumnNumber(); col++) {
+        for (int col = 0; col < Shelf.getColumnLength(); col++) {
             tilesToInsert.add(Tile.CATS);
             shelf.insertInColumn(tilesToInsert, col);
         }
@@ -74,9 +74,9 @@ public class OneDiagonalOfFiveTest {
     public void DiagonalType4ShouldBeTrue() {
 
         tilesToInsert.add(Tile.CATS);
-        for (int col = 0; col < Shelf.getColumnNumber(); col++) {
+        for (int col = 0; col < Shelf.getColumnLength(); col++) {
             tilesToInsert.add(Tile.CATS);
-            shelf.insertInColumn(tilesToInsert, Shelf.getColumnNumber()-1-col);
+            shelf.insertInColumn(tilesToInsert, Shelf.getColumnLength()-1-col);
         }
 
         assertTrue(cg.check(shelf));

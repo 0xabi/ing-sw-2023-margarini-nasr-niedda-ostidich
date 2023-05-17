@@ -37,12 +37,12 @@ public class SixGroupsOfTwo extends CommonGoal {
     @Override
     public boolean check(@NotNull Shelf shelf) {
 
-        copy = Arrays.copyOf(shelf.getPositions(), Shelf.getColumnNumber()* Shelf.getRowNumber());
+        copy = Arrays.copyOf(shelf.getPositions(), Shelf.getColumnLength()* Shelf.getRowLength());
 
         int count=0;
 
-        for (int i = 0; i < Shelf.getRowNumber(); i++)
-            for (int j = 0; j < Shelf.getColumnNumber(); j++)
+        for (int i = 0; i < Shelf.getRowLength(); i++)
+            for (int j = 0; j < Shelf.getColumnLength(); j++)
                 if (copy[i][j] != Tile.EMPTY && copy[i][j] !=null) { //if it's full, checks whether part of a 2-tiles group
                     if(BelongToABlock(i,j)==dimGroup )
                         count++;
