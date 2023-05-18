@@ -36,6 +36,7 @@ public class CommonGoalFactoryTest {
             }
         }
         Assert.assertEquals(count, expectedCommonGoals.size());
+        Assert.assertEquals(count, CommonGoalFactory.getCommonGoalNumber());
     }
 
 }
