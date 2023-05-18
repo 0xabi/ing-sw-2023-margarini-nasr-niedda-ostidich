@@ -25,31 +25,33 @@ public class OneDiagonalOfFive extends CommonGoal {
     public boolean check(@NotNull Shelf shelf) {
         Tile[][] matrix = shelf.getPositions();
         int counter = 0;
-
-        for(int i = 0; i < Shelf.getColumnLength()-1; i++)
-            if(matrix[i][i]!=matrix[i+1][i+1] || matrix[i][i]==Tile.EMPTY) {
-                counter++;
-                break;
+        int rowLength = Shelf.getRowLength();
+        int colLength = Shelf.getColumnLength();
+        for (int i = 0; i < rowLength - 4; i++) {
+            for (int j = 0; j < colLength - 4; j++) {
+                Tile current = matrix[i][j];
+                if (current == null) continue;
+                if (current == matrix[i + 1][j + 1] &&
+                        current == matrix[i + 2][j + 2] &&
+                        current == matrix[i + 3][j + 3] &&
+                        current == matrix[i + 4][j + 4]) {
+                    return true;
+                }
             }
-        for(int i = 0; i < Shelf.getColumnLength()-1; i++)
-            if(matrix[i+1][i]!=matrix[i+2][i+1]|| matrix[i+1][i]==Tile.EMPTY) {
-                counter++;
-                break;
+        }
+        for (int i = 4; i < rowLength; i++) {
+            for (int j = 0; j < colLength - 4; j++) {
+                Tile current = matrix[i][j];
+                if (current == null) continue;
+                if (current == matrix[i - 1][j + 1] &&
+                        current == matrix[i - 2][j + 2] &&
+                        current == matrix[i - 3][j + 3] &&
+                        current == matrix[i - 4][j + 4]) {
+                    return true;
+                }
             }
-        for(int i = 0; i < Shelf.getColumnLength()-1; i++)
-            if(matrix[Shelf.getRowLength()-1-i][i]!=matrix[Shelf.getRowLength()-2-i][i+1] ||
-                    matrix[Shelf.getRowLength()-1-i][i]==Tile.EMPTY) {
-                counter++;
-                break;
-            }
-        for(int i = 0; i < Shelf.getColumnLength()-1; i++)
-            if(matrix[Shelf.getRowLength()-2-i][i]!=matrix[Shelf.getRowLength()-1-i][i+1] ||
-                    matrix[Shelf.getRowLength()-2-i][i]==Tile.EMPTY) {
-                counter++;
-                break;
-            }
-
-        return counter < 4;
+        }
+        return false;
     }
 
     /**
@@ -59,4 +61,5 @@ public class OneDiagonalOfFive extends CommonGoal {
     public String getCommonGoalName() {
         return commonGoalName;
     }
+
 }

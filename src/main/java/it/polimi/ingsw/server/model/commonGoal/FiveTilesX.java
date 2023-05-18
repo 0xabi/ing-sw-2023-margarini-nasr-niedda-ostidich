@@ -26,7 +26,7 @@ public class FiveTilesX extends CommonGoal {
         Tile[][] matrix = shelf.getPositions();
         for (int i = 1; i < Shelf.getRowLength() - 1; i++)
             for (int j = 1; j < Shelf.getColumnLength() - 1; j++) {
-                if (matrix[i][j] != Tile.EMPTY &&
+                if (matrix[i][j] != null &&
                         matrix[i][j] == matrix[i - 1][j - 1] &&
                         matrix[i][j] == matrix[i - 1][j + 1] &&
                         matrix[i][j] == matrix[i + 1][j - 1] &&

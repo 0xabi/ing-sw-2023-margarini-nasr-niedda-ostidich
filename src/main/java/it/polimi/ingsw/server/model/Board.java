@@ -241,8 +241,14 @@ public class Board {
      * @author Edoardo Margarini
      */
     private boolean isCompletelyFree(Coordinates coords) {
-        return adjacentTile(coords).contains(Tile.EMPTY) ||
-                adjacentTile(coords).contains(null);
+        for (Tile tile : Tile.values()) {
+            if (tile != Tile.EMPTY) {
+                if (adjacentTile(coords).contains(tile)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**

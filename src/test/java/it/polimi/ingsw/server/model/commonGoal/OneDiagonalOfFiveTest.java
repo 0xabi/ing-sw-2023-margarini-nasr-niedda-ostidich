@@ -20,79 +20,70 @@ public class OneDiagonalOfFiveTest {
     private CommonGoal cg;
 
     private static final int numOfPlayers = 3;
+
     @Before
-    public void init()
-    {
+    public void init() {
         shelf = new Shelf();
         tilesToInsert = new ArrayList<>();
         cg = new OneDiagonalOfFive(numOfPlayers);
     }
 
     @After
-    public void end()
-    {
+    public void end() {
         shelf = null;
         tilesToInsert = null;
         cg = null;
     }
 
-
     @Test
     public void DiagonalType1ShouldBeTrue() {
-
-        for (int col = 0; col < Shelf.getColumnLength(); col++) {
+        for (int col = 0; col < Shelf.getRowLength(); col++) {
             tilesToInsert.add(Tile.CATS);
             shelf.insertInColumn(tilesToInsert, col);
         }
-
         assertTrue(cg.check(shelf));
     }
 
     @Test
     public void DiagonalType2ShouldBeTrue() {
-
-        for (int col = 0; col < Shelf.getColumnLength(); col++) {
+        for (int col = 0; col < Shelf.getRowLength(); col++) {
             tilesToInsert.add(Tile.CATS);
-            shelf.insertInColumn(tilesToInsert, Shelf.getColumnLength()-1-col);
+            shelf.insertInColumn(tilesToInsert, Shelf.getRowLength() - 1 - col);
         }
-
         assertTrue(cg.check(shelf));
     }
+
     @Test
     public void DiagonalType3ShouldBeTrue() {
-
         tilesToInsert.add(Tile.CATS);
-        for (int col = 0; col < Shelf.getColumnLength(); col++) {
+        for (int col = 0; col < Shelf.getRowLength(); col++) {
             tilesToInsert.add(Tile.CATS);
             shelf.insertInColumn(tilesToInsert, col);
         }
-
         assertTrue(cg.check(shelf));
     }
 
     @Test
     public void DiagonalType4ShouldBeTrue() {
-
         tilesToInsert.add(Tile.CATS);
-        for (int col = 0; col < Shelf.getColumnLength(); col++) {
+        for (int col = 0; col < Shelf.getRowLength(); col++) {
             tilesToInsert.add(Tile.CATS);
-            shelf.insertInColumn(tilesToInsert, Shelf.getColumnLength()-1-col);
+            shelf.insertInColumn(tilesToInsert, Shelf.getRowLength() - 1 - col);
         }
-
         assertTrue(cg.check(shelf));
     }
 
     @Test
-    public void ThisShelfShouldNotBeValid(){
-
+    public void ThisShelfShouldNotBeValid() {
         tilesToInsert.add(Tile.CATS);
         tilesToInsert.add(Tile.PLANTS);
-        shelf.insertInColumn(tilesToInsert,0);
+        shelf.insertInColumn(tilesToInsert, 0);
         tilesToInsert.clear();
         tilesToInsert.add(Tile.PLANTS);
         tilesToInsert.add(Tile.TROPHIES);
         tilesToInsert.add(Tile.FRAMES);
-        shelf.insertInColumn(tilesToInsert,3);
+        shelf.insertInColumn(tilesToInsert, 3);
         assertFalse(cg.check(shelf));
     }
+
 }

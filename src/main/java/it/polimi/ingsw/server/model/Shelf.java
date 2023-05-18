@@ -81,7 +81,7 @@ public class Shelf {
      */
     protected boolean isFull() {
         for (int i = 0; i < ROW_LENGTH; i++)
-            if (positions[i][COLUMN_LENGTH - 1] == Tile.EMPTY) return false;
+            if (positions[i][COLUMN_LENGTH - 1] == null) return false;
         return true;
     }
 
@@ -104,9 +104,10 @@ public class Shelf {
      * @author Abdullah Nasr
      */
     public boolean insertInColumn(@NotNull List<Tile> tilesList, int column) {
+        if (tilesList.contains(Tile.EMPTY)) throw new IllegalArgumentException("shelf cant contain EMPTY");
         List<Tile> tiles = new LinkedList<>(tilesList);
         int freeSpace = checkSpaceInColumn(column);
-        if (freeSpace < tiles.size() || tiles.contains(Tile.EMPTY) || column >= ROW_LENGTH) {
+        if (freeSpace < tiles.size()) {
             return false;
         }
         while (!tiles.isEmpty() && freeSpace > 0) {

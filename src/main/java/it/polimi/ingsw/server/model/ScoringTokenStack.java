@@ -18,7 +18,7 @@ import java.util.Stack;
  * @author Francesco Ostidich
  */
 public class ScoringTokenStack {
-    
+
     private final Stack<Integer> tokenStack;
 
     /**
@@ -26,7 +26,7 @@ public class ScoringTokenStack {
      *
      * @param playerNumber is the number of players in the match
      * @throws NoTokensForPlayerNumberException if no player number configuration is defined
-     * @throws ConfigFileNotFoundException if FileReader cannot read from json config file
+     * @throws ConfigFileNotFoundException      if FileReader cannot read from json config file
      * @author Francesco Ostidich
      */
     public ScoringTokenStack(int playerNumber) {
@@ -35,10 +35,10 @@ public class ScoringTokenStack {
         try {
             JsonElement tokensElement = JsonParser.parseReader(new FileReader(input));
             JsonObject tokensObject = tokensElement.getAsJsonObject();
-
             JsonArray jsonTokens = tokensObject.get(String.valueOf(playerNumber)).getAsJsonArray();
-            if(jsonTokens.contains(null)) throw new NoTokensForPlayerNumberException("no player number config defined");
-            for(int i = 0; i < jsonTokens.size(); i++)
+            if (jsonTokens.contains(null))
+                throw new NoTokensForPlayerNumberException("no player number config defined");
+            for (int i = 0; i < jsonTokens.size(); i++)
                 tokenStack.add(jsonTokens.get(i).getAsInt());
         } catch (FileNotFoundException e) {
             throw new ConfigFileNotFoundException("scoringTokenStack not found");
@@ -64,4 +64,5 @@ public class ScoringTokenStack {
     public Stack<Integer> getTokenStack() {
         return tokenStack;
     }
+
 }

@@ -71,7 +71,6 @@ public class GameServerModel implements ServerModel {
             personalGoalNumberSet.add(random.nextInt(1, PersonalGoal.getPersonalGoalNumber() + 1));
         Stack<Integer> personalGoalNumberStack = new Stack<>();
         personalGoalNumberSet.stream().map(personalGoalNumberStack::add);
-
         Set<Player> playerSet = new HashSet<>();
         for (String playerName : names) {
             playerSet.add(new Player(playerName, personalGoalNumberStack.pop()));

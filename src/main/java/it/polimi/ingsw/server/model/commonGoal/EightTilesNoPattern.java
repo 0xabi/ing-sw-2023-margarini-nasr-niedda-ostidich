@@ -29,22 +29,19 @@ public class EightTilesNoPattern extends CommonGoal {
      */
     @Override
     public boolean check(@NotNull Shelf shelf) {
-
         int count;
         Set<Tile> tiles = new HashSet<>();
-        for(Tile tile: Tile.values())
-            if(tile != null)
+        for (Tile tile : Tile.values())
+            if (tile != null)
                 tiles.add(tile);
-
-        for(Tile tile: tiles) {
+        for (Tile tile : tiles) {
             count = 0;
-            for(int i = 0; i < Shelf.getColumnLength(); i++)
-                for(int j = 0; j < Shelf.getRowLength(); j++)
-                    if(shelf.getPosition(new Coordinates(i, j)) != Tile.EMPTY &&
+            for (int i = 0; i < Shelf.getColumnLength(); i++)
+                for (int j = 0; j < Shelf.getRowLength(); j++)
+                    if (shelf.getPosition(new Coordinates(i, j)) != null &&
                             shelf.getPosition(new Coordinates(i, j)) == tile) count++;
-            if(count >= sameTypeTiles) return true;
+            if (count >= sameTypeTiles) return true;
         }
-
         return false;
     }
 

@@ -1,7 +1,5 @@
 package it.polimi.ingsw.server.model;
 
-import junit.framework.TestCase;
-
-public class ScoringTokenStackTest extends TestCase {
+public class ScoringTokenStackTest {
 
 }

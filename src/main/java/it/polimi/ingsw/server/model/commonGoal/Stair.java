@@ -25,12 +25,11 @@ public class Stair extends CommonGoal {
     @Override
     public boolean check(@NotNull Shelf shelf) {
         boolean ctrl;
-
-        if(shelf.getTilesInColumn(Shelf.getColumnLength()-1) == shelf.getTilesInColumn(Shelf.getColumnLength()-2)+1) {
-            ctrl = ReverseStairs(Shelf.getColumnLength()-1, shelf);
-            if(ctrl) return true;
+        if (shelf.getTilesInColumn(Shelf.getColumnLength() - 1) == shelf.getTilesInColumn(Shelf.getColumnLength() - 2) + 1) {
+            ctrl = ReverseStairs(Shelf.getColumnLength() - 1, shelf);
+            if (ctrl) return true;
         }
-        if(shelf.getTilesInColumn(0) == shelf.getTilesInColumn(1)+1) {
+        if (shelf.getTilesInColumn(0) == shelf.getTilesInColumn(1) + 1) {
             ctrl = Stairs(0, shelf);
             return ctrl;
         }
@@ -41,15 +40,13 @@ public class Stair extends CommonGoal {
      * Recursively checks next column if one shorter.
      *
      * @param column is the one to be checked with the next
-     * @param shelf is the player shelf
+     * @param shelf  is the player shelf
      * @return true if the check succeeds
      * @author Pietro Andrea Niedda
      */
     private boolean Stairs(int column, @NotNull Shelf shelf) {
-
-        if(column == Shelf.getColumnLength()-1) return true;
-        if(shelf.getTilesInColumn(column) == shelf.getTilesInColumn(column+1)+1) return Stairs(column+1, shelf);
-
+        if (column == Shelf.getColumnLength() - 1) return true;
+        if (shelf.getTilesInColumn(column) == shelf.getTilesInColumn(column + 1) + 1) return Stairs(column + 1, shelf);
         return false;
     }
 
@@ -57,15 +54,14 @@ public class Stair extends CommonGoal {
      * Recursively checks previous column if one shorter.
      *
      * @param column is the one to be checked with the previous
-     * @param shelf is the player shelf
+     * @param shelf  is the player shelf
      * @return true if the check succeeds
      * @author Pietro Andrea Niedda
      */
-    private boolean ReverseStairs(int column, @NotNull Shelf shelf){
-
-        if(column == 0) return true;
-        if(shelf.getTilesInColumn(column) == shelf.getTilesInColumn(column-1)+1) return ReverseStairs(column-1, shelf);
-
+    private boolean ReverseStairs(int column, @NotNull Shelf shelf) {
+        if (column == 0) return true;
+        if (shelf.getTilesInColumn(column) == shelf.getTilesInColumn(column - 1) + 1)
+            return ReverseStairs(column - 1, shelf);
         return false;
     }
 
@@ -76,4 +72,5 @@ public class Stair extends CommonGoal {
     public String getCommonGoalName() {
         return commonGoalName;
     }
+
 }

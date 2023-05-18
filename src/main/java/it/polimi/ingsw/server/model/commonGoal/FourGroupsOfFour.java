@@ -33,20 +33,16 @@ public class FourGroupsOfFour extends CommonGoal {
     /**
      * @author Edoardo Margarini
      */
-    @SuppressWarnings("DuplicatedCode")
     @Override
     public boolean check(@NotNull Shelf shelf) {
-
-        copy = Arrays.copyOf(shelf.getPositions(), Shelf.getColumnLength()* Shelf.getRowLength() );
-        int count=0;
-
+        copy = shelf.getPositions().clone();
+        int count = 0;
         for (int i = 0; i < Shelf.getRowLength(); i++)
             for (int j = 0; j < Shelf.getColumnLength(); j++)
-                if (copy[i][j] != Tile.EMPTY && copy[i][j] !=null) { //if it's full, checks whether part of a 4-tiles group
-                    if(BelongToABlock(i,j)== dimGroup)
-                       count++;
+                if (copy[i][j] != null) { //if it's full, checks whether part of a 4-tiles group
+                    if (BelongToABlock(i, j) == dimGroup)
+                        count++;
                 }
-
         return count >= times;
     }
 
@@ -58,36 +54,25 @@ public class FourGroupsOfFour extends CommonGoal {
      * @return
      * @author Edoardo Margarini
      */
-    @SuppressWarnings("DuplicatedCode")
     private @NotNull List<Coordinates> adjacentTile(int x, int y) {
-
-        List<Coordinates> adjTile = new ArrayList<>();
-
-        if (x <= 4)
-            if(copy[x + 1][y]==copy[x][y] && copy[x][y]!=null &&copy[x][y]!=Tile.EMPTY) {
-                Coordinates coords = new Coordinates(x+1,y);
-                adjTile.add(coords);
-            }
-
-        if (x>=1)
-            if(copy[x - 1][y]==copy[x][y] && copy[x][y]!=null &&copy[x][y]!=Tile.EMPTY) {
-                Coordinates coords = new Coordinates(x-1,y);
-                adjTile.add(coords);
-            }
-
-        if (y <= 3)
-            if(copy[x ][y+1]==copy[x][y] && copy[x][y]!=null &&copy[x][y]!=Tile.EMPTY) {
-                Coordinates coords = new Coordinates(x,y+1);
-                adjTile.add(coords);
-            }
-
-        if (y >= 1)
-            if(copy[x ][y-1]==copy[x][y] && copy[x][y]!=null &&copy[x][y]!=Tile.EMPTY) {
-                Coordinates coords = new Coordinates(x,y-1);
-                adjTile.add(coords);
-            }
-
-        return adjTile;
+        List<Coordinates> adjTiles = new LinkedList<>();
+        try {
+            if (copy[x][y] == copy[x-1][y]) adjTiles.add(new Coordinates(x-1, y));
+        } catch (IndexOutOfBoundsException ignored) {
+        }
+        try {
+            if (copy[x][y] == copy[x+1][y]) adjTiles.add(new Coordinates(x+1, y));
+        } catch (IndexOutOfBoundsException ignored) {
+        }
+        try {
+            if (copy[x][y] == copy[x][y-1]) adjTiles.add(new Coordinates(x, y-1));
+        } catch (IndexOutOfBoundsException ignored) {
+        }
+        try {
+            if (copy[x][y] == copy[x][y+1]) adjTiles.add(new Coordinates(x, y+1));
+        } catch (IndexOutOfBoundsException ignored) {
+        }
+        return adjTiles;
     }
 
     /**
@@ -100,28 +85,23 @@ public class FourGroupsOfFour extends CommonGoal {
      */
     @SuppressWarnings("DuplicatedCode")
     private int BelongToABlock(int x, int y) {
-        int count=0;
-
+        int count = 0;
         Queue<Coordinates> queue = new LinkedList<>(adjacentTile(x, y));
-        copy[x][y]=Tile.EMPTY;
+        copy[x][y] = null;
         count++;
-
         int xTemp;
         int yTemp;
-
-        while(queue.size()>0){
-
-            xTemp=queue.peek().x();
-            yTemp=queue.peek().y();
+        while (queue.size() > 0) {
+            xTemp = queue.peek().x();
+            yTemp = queue.peek().y();
             queue.remove();
-            for(Coordinates e : adjacentTile(xTemp, yTemp)){
-               if(!queue.stream().toList().contains(e))
+            for (Coordinates e : adjacentTile(xTemp, yTemp)) {
+                if (!queue.stream().toList().contains(e))
                     queue.add(e);
             }
-            copy[xTemp][yTemp] = Tile.EMPTY;
+            copy[xTemp][yTemp] = null;
             count++;
         }
-
         return count;
     }
 
@@ -132,4 +112,5 @@ public class FourGroupsOfFour extends CommonGoal {
     public String getCommonGoalName() {
         return commonGoalName;
     }
+
 }

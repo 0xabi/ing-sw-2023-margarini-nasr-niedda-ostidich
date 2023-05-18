@@ -27,6 +27,7 @@ public class CommonGoalFactory {
 
     /**
      * Getter for common goal number.
+     *
      * @return common goal number constant
      * @author Francesco Ostidich
      */

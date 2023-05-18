@@ -25,7 +25,7 @@ public class Player {
     /**
      * Class constructor.
      *
-     * @param name is the player's name
+     * @param name               is the player's name
      * @param personalGoalNumber is the sorted out number for player's personal goal
      * @author Pietro Andrea Niedda
      */
@@ -42,7 +42,7 @@ public class Player {
      * @return
      * @author Pietro Andrea Niedda
      */
-    protected String getName(){
+    protected String getName() {
         return name;
     }
 
@@ -52,7 +52,7 @@ public class Player {
      * @return
      * @author Pietro Andrea Niedda
      */
-    protected int getPoints(){
+    protected int getPoints() {
         return points;
     }
 
@@ -62,7 +62,7 @@ public class Player {
      * @return
      * @author Pietro Andrea Niedda
      */
-    protected PersonalGoal getPersonalGoal(){
+    protected PersonalGoal getPersonalGoal() {
         return personalGoal;
     }
 
@@ -72,7 +72,7 @@ public class Player {
      * @return
      * @author Pietro Andrea Niedda
      */
-    protected Shelf getShelf(){
+    protected Shelf getShelf() {
         return shelf;
     }
 
@@ -94,8 +94,8 @@ public class Player {
      */
     protected int checkAvailablePickNumber() {
         int picks = 3;
-        for(int i = 0; i < Shelf.getColumnLength(); i++)
-            if((Shelf.getColumnLength() - shelf.getTilesInColumn(i)) < picks)
+        for (int i = 0; i < Shelf.getColumnLength(); i++)
+            if ((Shelf.getColumnLength() - shelf.getTilesInColumn(i)) < picks)
                 picks = Shelf.getRowLength() - shelf.getTilesInColumn(i);
         return picks;
     }
@@ -107,11 +107,9 @@ public class Player {
      * @author Pietro Andrea Niedda
      */
     protected void insertTiles(List<Tile> tiles, int column) {
-        if(!shelf.insertInColumn(tiles, column)) {
+        if (!shelf.insertInColumn(tiles, column)) {
             throw new UnavailableInsertionException("cannot insert selection in shelf");
         }
     }
-
-
 
 }

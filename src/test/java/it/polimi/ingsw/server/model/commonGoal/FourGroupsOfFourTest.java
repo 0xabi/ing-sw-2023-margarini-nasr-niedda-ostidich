@@ -22,16 +22,14 @@ public class FourGroupsOfFourTest {
     private static final int numOfPlayers = 3;
 
     @Before
-    public void init()
-    {
+    public void init() {
         shelf = new Shelf();
         tilesToInsert = new ArrayList<>();
         cg = new FourGroupsOfFour(numOfPlayers);
     }
 
     @After
-    public void end()
-    {
+    public void end() {
         shelf = null;
         tilesToInsert = null;
         cg = null;
@@ -39,7 +37,6 @@ public class FourGroupsOfFourTest {
 
     @Test
     public void TheCommonGoalWithThisShelfShouldBeAchieved() {
-
         tilesToInsert.add(Tile.CATS);
         tilesToInsert.add(Tile.CATS);
         tilesToInsert.add(Tile.CATS);
@@ -62,14 +59,11 @@ public class FourGroupsOfFourTest {
         tilesToInsert.add(Tile.CATS);
         tilesToInsert.add(Tile.CATS);
         shelf.insertInColumn(tilesToInsert, 4);
-
-
         assertTrue(cg.check(shelf));
     }
 
     @Test
     public void TheCommonGoalWithThisShelfShouldNotBeAchieved() {
-
         tilesToInsert.add(Tile.CATS);
         tilesToInsert.add(Tile.GAMES);
         tilesToInsert.add(Tile.CATS);
@@ -92,8 +86,6 @@ public class FourGroupsOfFourTest {
         tilesToInsert.add(Tile.CATS);
         tilesToInsert.add(Tile.CATS);
         shelf.insertInColumn(tilesToInsert, 4);
-
-
         assertFalse(cg.check(shelf));
     }
 

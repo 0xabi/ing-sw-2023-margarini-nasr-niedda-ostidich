@@ -31,8 +31,8 @@ public class EndGameToken {
     /**
      * Getter for end game points
      *
-     * @author Francesco Ostidich
      * @return end game token points number
+     * @author Francesco Ostidich
      */
     public static int getEndGamePoints() {
         return END_GAME_POINTS;

@@ -7,7 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 import static org.junit.Assert.*;
 
@@ -15,7 +15,7 @@ public class TwoNoRepetitionColumnsTest {
 
     private Shelf shelf;
 
-    private ArrayList<Tile> tilesToInsert;
+    private LinkedList<Tile> tilesToInsert;
 
     private CommonGoal cg;
 
@@ -24,7 +24,7 @@ public class TwoNoRepetitionColumnsTest {
     @Before
     public void init() {
         shelf = new Shelf();
-        tilesToInsert = new ArrayList<>();
+        tilesToInsert = new LinkedList<>();
         cg = new TwoNoRepetitionColumns(numOfPlayers);
     }
 

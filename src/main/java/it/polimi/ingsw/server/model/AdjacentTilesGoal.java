@@ -104,7 +104,7 @@ public class AdjacentTilesGoal {
     @SuppressWarnings("DuplicatedCode")
     private static @NotNull List<Coordinates> adjacentTile(int x, int y) {
         List<Coordinates> adjTile = new LinkedList<>();
-        if (x < Shelf.getRowLength()-1)
+        if (x < Shelf.getRowLength() - 1)
             if (copy[x + 1][y] == copy[x][y] && copy[x][y] != null && copy[x][y] != null) {
                 Coordinates coords = new Coordinates(x + 1, y);
                 adjTile.add(coords);
@@ -114,7 +114,7 @@ public class AdjacentTilesGoal {
                 Coordinates coords = new Coordinates(x - 1, y);
                 adjTile.add(coords);
             }
-        if (y < Shelf.getColumnLength()-1)
+        if (y < Shelf.getColumnLength() - 1)
             if (copy[x][y + 1] == copy[x][y] && copy[x][y] != null && copy[x][y] != null) {
                 Coordinates coords = new Coordinates(x, y + 1);
                 adjTile.add(coords);

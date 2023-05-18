@@ -10,6 +10,7 @@ import java.util.Map;
  * <p>If check method returns true, points are assigned to the player, popping points from the scoring token stack.
  * A map remembers who has already taken the points, in order to not call the check method again on him.
  * Different player number's game have different scoring token stacks.</p>
+ *
  * @author Francesco Ostidich
  */
 public abstract class CommonGoal {
@@ -22,8 +23,8 @@ public abstract class CommonGoal {
      * <p>Class constructor.</p>
      * <p>It generates tokens stack and given players map.</p>
      *
-     * @author Francesco Ostidich
      * @param playerNumber is the number of player of the game match
+     * @author Francesco Ostidich
      */
     public CommonGoal(int playerNumber) {
         tokens = new ScoringTokenStack(playerNumber);
@@ -65,8 +66,8 @@ public abstract class CommonGoal {
     /**
      * Getter for common goal name.
      *
-     * @author Francesco Ostidich
      * @return name string
+     * @author Francesco Ostidich
      */
     public abstract String getCommonGoalName();
 

@@ -76,7 +76,7 @@ public class RoomServices implements ServerController {
      */
     public void startGame(Map<String, ClientController> names) {
         System.out.println("started game with players: " + names);
-        executorService.submit(() -> {
+        executorService.execute(() -> {
             GameServerController gsc = new GameServerController(names);
             names.keySet().forEach(player -> playerMatch.put(player, gsc));
         });

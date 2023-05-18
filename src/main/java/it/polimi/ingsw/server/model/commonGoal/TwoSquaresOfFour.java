@@ -23,19 +23,19 @@ public class TwoSquaresOfFour extends CommonGoal {
     /**
      * <p>Class constructor.</p>
      * <p>It calls the super class constructor to generate tokens stack and given players map.</p>
+     *
      * @param playerNumber is the number of player of the game match
      * @author Abdullah Nasr
      */
-    public TwoSquaresOfFour(int playerNumber)
-    {
+    public TwoSquaresOfFour(int playerNumber) {
         super(playerNumber);
     }
 
     /**
-     *
      * <p>check if the square in the specified coordinates is isolated i.e there are no
      * tiles of the same type adjacent to the contour tiles of the square.
      * </p>
+     *
      * @param shelf the player's shelf
      * @param cords the coordinates in which to check if the square is isolated
      * @return {@code true} if the square is isolated, {@code false} otherwise
@@ -48,44 +48,34 @@ public class TwoSquaresOfFour extends CommonGoal {
         int col;
         Tile type = shelf.getPosition(cords);
         Tile checkType;
-        row = Shelf.getRowLength()-1;
-        col = Shelf.getColumnLength()-1;
-
-        for(int i = 0; i< dimSquare; i++) {
+        row = Shelf.getRowLength() - 1;
+        col = Shelf.getColumnLength() - 1;
+        for (int i = 0; i < dimSquare; i++) {
             //check up
-            if(x!=0) {
-                checkType = shelf.getPosition(new Coordinates(x-1,y+i));
-
-                if(checkType!=Tile.EMPTY && type==checkType)
+            if (x != 0) {
+                checkType = shelf.getPosition(new Coordinates(x - 1, y + i));
+                if (checkType != null && type == checkType)
                     return false;
             }
-
             //check down
-            if(x+dimSquare-1 != row) {
-                checkType = shelf.getPosition(new Coordinates(x+dimSquare,y+i));
-
-                if(checkType!=Tile.EMPTY && type==checkType)
+            if (x + dimSquare - 1 != row) {
+                checkType = shelf.getPosition(new Coordinates(x + dimSquare, y + i));
+                if (checkType != null && type == checkType)
                     return false;
             }
-
             //check left
-            if(y!=0) {
-                checkType = shelf.getPosition(new Coordinates(x+i,y-1));
-
-                if(checkType!=Tile.EMPTY && type==checkType)
+            if (y != 0) {
+                checkType = shelf.getPosition(new Coordinates(x + i, y - 1));
+                if (checkType != null && type == checkType)
                     return false;
             }
-
             //check right
-            if(y+dimSquare-1 != col) {
-                checkType = shelf.getPosition(new Coordinates(x+i,y+dimSquare));
-
-                if(checkType!=Tile.EMPTY && type==checkType)
+            if (y + dimSquare - 1 != col) {
+                checkType = shelf.getPosition(new Coordinates(x + i, y + dimSquare));
+                if (checkType != null && type == checkType)
                     return false;
             }
-
         }
-
         return true;
     }
 
@@ -94,6 +84,7 @@ public class TwoSquaresOfFour extends CommonGoal {
      * check if there is a square of dimension {@code DIM_SQUARE} in the specified coordinates
      * the square begins from the specified coordinates and ends to the bottom right
      * </p>
+     *
      * @param shelf the player's shelf in which to check for the presence of a square in the specified coordinates
      * @param cords the coordinates in which to check for the presence of a square
      * @return {@code true} if there is a square of dimension {@code DIM_SQUARE} in the specified coordinates, {@code false} otherwise
@@ -104,30 +95,26 @@ public class TwoSquaresOfFour extends CommonGoal {
         int y = cords.y();
         int row;
         int col;
-        row = Shelf.getRowLength()-1;
-        col = Shelf.getColumnLength()-1;
-
+        row = Shelf.getRowLength() - 1;
+        col = Shelf.getColumnLength() - 1;
         //not out of the shelf
-        if(y+dimSquare-1 <=  col && x+dimSquare-1 <= row) {
-            for(int i = 0; i < dimSquare; i++) {
+        if (y + dimSquare - 1 <= col && x + dimSquare - 1 <= row) {
+            for (int i = 0; i < dimSquare; i++) {
                 Tile currentTile;
                 Tile nextTile;
-
                 //check if the row have the same type
-                for(int j = 0; j < dimSquare-1; j++) {
-                    currentTile = shelf.getPosition(new Coordinates(x+i,y+j));
-                    nextTile = shelf.getPosition(new Coordinates(x+i,y+j+1));
-
-                    if(nextTile==Tile.EMPTY || currentTile!=nextTile)
-                        return false;}
-
+                for (int j = 0; j < dimSquare - 1; j++) {
+                    currentTile = shelf.getPosition(new Coordinates(x + i, y + j));
+                    nextTile = shelf.getPosition(new Coordinates(x + i, y + j + 1));
+                    if (nextTile == null || currentTile != nextTile)
+                        return false;
+                }
                 //check if the current row is the same to the next row
                 //it's enough to check the first tile of the row because the row check we did
-                if(i != dimSquare-1) {
-                    currentTile = shelf.getPosition(new Coordinates(x+i,y));
-                    nextTile = shelf.getPosition(new Coordinates(x+i+1,y));
-
-                    if(nextTile==Tile.EMPTY || currentTile!=nextTile)
+                if (i != dimSquare - 1) {
+                    currentTile = shelf.getPosition(new Coordinates(x + i, y));
+                    nextTile = shelf.getPosition(new Coordinates(x + i + 1, y));
+                    if (nextTile == null || currentTile != nextTile)
                         return false;
                 }
             }
@@ -141,20 +128,20 @@ public class TwoSquaresOfFour extends CommonGoal {
      * screen all the shelf to count the number of isolated squares i.e the square that do not have
      * tiles of the same type adjacent to the contour tiles of the square itself.
      * </p>
+     *
      * @param shelf player's shelf
      * @return the number of isolated squares found in the shelf
      * @author Abdullah Nasr
      */
     private int countIsolatedSquares(@NotNull Shelf shelf) {
-        int count=0;
-        int row = Shelf.getRowLength() -1;
-        int col = Shelf.getColumnLength() -1;
+        int count = 0;
+        int row = Shelf.getRowLength() - 1;
+        int col = Shelf.getColumnLength() - 1;
         Coordinates currentCoordinate;
-
-        for(int x=0;x<=row;x++) {
-            for(int y=0;y<=col;y++) {
-                currentCoordinate = new Coordinates(x,y);
-                if(checkSquareToBottomRight(shelf,currentCoordinate) && isolatedSquare(shelf, currentCoordinate))
+        for (int x = 0; x <= row; x++) {
+            for (int y = 0; y <= col; y++) {
+                currentCoordinate = new Coordinates(x, y);
+                if (checkSquareToBottomRight(shelf, currentCoordinate) && isolatedSquare(shelf, currentCoordinate))
                     count++;
             }
         }
