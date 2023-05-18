@@ -16,7 +16,7 @@ import java.util.Set;
  */
 public class ThreeColumnsOfSix extends CommonGoal {
 
-    private static final int linesNumber = 4;
+    private static final int linesNumber = 3;
 
     private static final int tilesTypes = 3;
 
@@ -31,16 +31,20 @@ public class ThreeColumnsOfSix extends CommonGoal {
      */
     @Override
     public boolean check(@NotNull Shelf shelf) {
-        Tile[][] matrix = shelf.getPositions();
+        Tile[][] matrix = shelf.getPositions().clone();
         Set<Tile> tiles = new HashSet<>();
         int count = 0;
-        for (int i = 0; i < Shelf.getColumnLength(); i++) {
-            for (int j = 0; j < Shelf.getRowLength(); j++) {
-                if (matrix[i][j] != null)
+        int present = 0;
+        for (int i = 0; i < Shelf.getRowLength(); i++) {
+            for (int j = 0; j < Shelf.getColumnLength(); j++) {
+                if (matrix[i][j] != null) {
+                    present++;
                     tiles.add(matrix[i][j]);
+                }
             }
-            if (tiles.size() >= tilesTypes) count++;
+            if (tiles.size() <= tilesTypes && present == Shelf.getColumnLength()) count++;
             tiles.clear();
+            present = 0;
         }
         return count >= linesNumber;
     }

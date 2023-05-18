@@ -73,4 +73,9 @@ public class InputFormatCheckerTest {
         assertFalse(InputFormatChecker.isGameRoomValid("testName", gameRooms));
     }
 
+    @Test
+    public void getter() {
+        assertTrue(InputFormatChecker.getMaxPlayer() > 1);
+    }
+
 }
