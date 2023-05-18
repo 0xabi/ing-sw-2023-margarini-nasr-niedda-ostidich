@@ -86,4 +86,9 @@ public class OneDiagonalOfFiveTest {
         assertFalse(cg.check(shelf));
     }
 
+    @Test
+    public void getCommonGoalNameShouldBeEqualToOneDiagonalOfFive(){
+        assertEquals(cg.getCommonGoalName(),"OneDiagonalOfFive");
+    }
+
 }

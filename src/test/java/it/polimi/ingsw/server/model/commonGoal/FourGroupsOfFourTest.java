@@ -88,5 +88,9 @@ public class FourGroupsOfFourTest {
         shelf.insertInColumn(tilesToInsert, 4);
         assertFalse(cg.check(shelf));
     }
+    @Test
+    public void getCommonGoalNameShouldBeEqualToFourGroupsOfFour(){
+        assertEquals(cg.getCommonGoalName(),"FourGroupsOfFour");
+    }
 
 }

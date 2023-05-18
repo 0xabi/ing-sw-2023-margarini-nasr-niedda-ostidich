@@ -35,7 +35,7 @@ public class SixGroupsOfTwo extends CommonGoal {
      */
     @Override
     public boolean check(@NotNull Shelf shelf) {
-        copy = Arrays.copyOf(shelf.getPositions(), Shelf.getColumnLength() * Shelf.getRowLength());
+        copy = shelf.getPositions().clone();
         int count = 0;
         for (int i = 0; i < Shelf.getRowLength(); i++)
             for (int j = 0; j < Shelf.getColumnLength(); j++)
@@ -56,28 +56,24 @@ public class SixGroupsOfTwo extends CommonGoal {
      */
     @SuppressWarnings("DuplicatedCode")
     private @NotNull List<Coordinates> adjacentTile(int x, int y) {
-        List<Coordinates> adjTile = new ArrayList<>();
-        if (x <= 4)
-            if (copy[x + 1][y] == copy[x][y] && copy[x][y] != null && copy[x][y] != null) {
-                Coordinates coords = new Coordinates(x + 1, y);
-                adjTile.add(coords);
-            }
-        if (x >= 1)
-            if (copy[x - 1][y] == copy[x][y] && copy[x][y] != null && copy[x][y] != null) {
-                Coordinates coords = new Coordinates(x - 1, y);
-                adjTile.add(coords);
-            }
-        if (y <= 3)
-            if (copy[x][y + 1] == copy[x][y] && copy[x][y] != null && copy[x][y] != null) {
-                Coordinates coords = new Coordinates(x, y + 1);
-                adjTile.add(coords);
-            }
-        if (y >= 1)
-            if (copy[x][y - 1] == copy[x][y] && copy[x][y] != null && copy[x][y] != null) {
-                Coordinates coords = new Coordinates(x, y - 1);
-                adjTile.add(coords);
-            }
-        return adjTile;
+        List<Coordinates> adjTiles = new LinkedList<>();
+        try {
+            if (copy[x][y] == copy[x-1][y]) adjTiles.add(new Coordinates(x-1, y));
+        } catch (IndexOutOfBoundsException ignored) {
+        }
+        try {
+            if (copy[x][y] == copy[x+1][y]) adjTiles.add(new Coordinates(x+1, y));
+        } catch (IndexOutOfBoundsException ignored) {
+        }
+        try {
+            if (copy[x][y] == copy[x][y-1]) adjTiles.add(new Coordinates(x, y-1));
+        } catch (IndexOutOfBoundsException ignored) {
+        }
+        try {
+            if (copy[x][y] == copy[x][y+1]) adjTiles.add(new Coordinates(x, y+1));
+        } catch (IndexOutOfBoundsException ignored) {
+        }
+        return adjTiles;
     }
 
     /**
