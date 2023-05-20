@@ -23,10 +23,12 @@ public class Corners extends CommonGoal {
      */
     @Override
     public boolean check(@NotNull Shelf shelf) {
+
         Coordinates co1 = new Coordinates(0, 0);
-        Coordinates co2 = new Coordinates(0, Shelf.getRowLength() - 1);
-        Coordinates co3 = new Coordinates(Shelf.getColumnLength() - 1, 0);
-        Coordinates co4 = new Coordinates(Shelf.getColumnLength() - 1, Shelf.getRowLength() - 1);
+        Coordinates co2 = new Coordinates(0, Shelf.getColumnLength() - 1);
+        Coordinates co3 = new Coordinates(Shelf.getRowLength() - 1, 0);
+        Coordinates co4 = new Coordinates(Shelf.getRowLength() - 1, Shelf.getColumnLength() - 1);
+
         if (shelf.getPosition(co1) != null)
             return (shelf.getPosition(co1) == shelf.getPosition(co2)) &&
                     ((shelf.getPosition(co1) == shelf.getPosition(co3))) &&
