@@ -80,7 +80,6 @@ public class Client implements ClientController {
             if (clientMessage.getMessageID() == MessageID.PONG)
                 pingQueue.remove();
             else {
-                System.out.println("message received");
                 messageQueue.add(clientMessage);
             }
         }
@@ -92,7 +91,6 @@ public class Client implements ClientController {
             Thread.sleep(1000);
             if (messageQueue.size() > 0) {
                 Message msg = messageQueue.remove();
-                System.out.println("message received in sorter");
                 try {
                     switch (msg.getMessageID()) {
                         case JOIN_ROOM -> roomServices.joinRoom((JoinRoom) msg);
@@ -103,7 +101,7 @@ public class Client implements ClientController {
                         case HELLO -> {
                             if (PlayerIDisAvailable(msg)) {
                                 send(new PlayerAccepted(msg.getPlayerName(), MessageID.PLAYER_ACCEPTED));
-                                System.out.println("[" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + "] " + msg.getPlayerName() + " Joined the lobby");
+                                System.out.println("[" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + "] " + msg.getPlayerName() + " joined the lobby");
                                 playerName = msg.getPlayerName();
                                 roomServices.playerConnected(playerName, this);
                                 new Thread(() -> {
@@ -131,7 +129,7 @@ public class Client implements ClientController {
             pingQueue.add(ping);
             send(ping);
             if (pingQueue.size() > 2) {
-                System.out.println("[" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + "] " + playerName + " Quit the lobby");
+                System.out.println("[" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + "] " + playerName + " quit the lobby");
                 alive = false;
             }
         }

@@ -57,7 +57,7 @@ public class RoomServices implements ServerController {
     @Override
     public void playerConnected(String playerName, ClientController client) {
         clients.put(playerName, client);
-        System.out.println(playerName + " added to online clients");
+        System.out.println(playerName + " added to online clients as " + clients.get(playerName));
     }
 
     /**
@@ -75,7 +75,6 @@ public class RoomServices implements ServerController {
      * @author Francesco Ostidich
      */
     public void startGame(Map<String, ClientController> names) {
-        System.out.println("started game with players: " + names);
         executorService.execute(() -> {
             GameServerController gsc = new GameServerController(names);
             names.keySet().forEach(player -> playerMatch.put(player, gsc));
@@ -131,22 +130,16 @@ public class RoomServices implements ServerController {
      */
     @Override
     public void joinRoom(@NotNull JoinRoom msg) {
-        System.out.println("someone joining room");
         if (msg.getMessageID() != MessageID.JOIN_ROOM || !clients.containsKey(msg.getPlayerName())) {
-            System.out.println("join room message discarded");
             return;
         }
         for (GameRoom gameRoom : gameRooms) {
-            System.out.println(gameRoom.gameRoomName() + " should equal " + msg.getChosenRoom());
-            System.out.println(gameRoom.enteredPlayers() + " should not contain " + msg.getPlayerName());
             if (gameRoom.gameRoomName().equals(msg.getChosenRoom()) &&
                     !gameRoom.enteredPlayers().contains(msg.getPlayerName())) {
                 gameRoom.enteredPlayers().add(msg.getPlayerName());
-                System.out.println("player " + msg.getPlayerName() + " added to room " + gameRoom.gameRoomName());
                 if (gameRoom.enteredPlayers().size() == gameRoom.totalPlayers()) {
-                    System.out.println("filled room: " + gameRoom.gameRoomName());
                     Map<String, ClientController> names = new HashMap<>();
-                    for (String player: gameRoom.enteredPlayers()) {
+                    for (String player : gameRoom.enteredPlayers()) {
                         names.put(player, clients.get(player));
                     }
                     startGame(names);
@@ -157,7 +150,6 @@ public class RoomServices implements ServerController {
                 return;
             }
         }
-        System.out.println("no room found");
     }
 
     /**
@@ -165,9 +157,7 @@ public class RoomServices implements ServerController {
      */
     @Override
     public void createNewRoom(@NotNull CreateNewRoom msg) {
-        System.out.println("create new room message received!");
         if (msg.getMessageID() != MessageID.CREATE_NEW_ROOM || !clients.containsKey(msg.getPlayerName())) return;
-        System.out.println("create new room message accepted!");
         for (GameRoom room : gameRooms) {
             if (room.gameRoomName().equals(msg.getRoomName())) {
                 clients.get(msg.getPlayerName()).roomNameNotAvailable(new RoomNameNotAvailable(msg.getPlayerName(), MessageID.ROOM_NAME_NOT_AVAILABLE));
@@ -179,7 +169,6 @@ public class RoomServices implements ServerController {
         GameRoom newRoom = new GameRoom(msg.getRoomName(), msg.getPlayerName(), msg.getRoomPlayerNumber(), enteredPlayers);
         gameRooms.add(newRoom);
         clients.get(msg.getPlayerName()).showPersonalRoom(new ShowPersonalRoom(msg.getPlayerName(), MessageID.SHOW_PERSONAL_ROOM, newRoom));
-        System.out.println("create new room message processed!");
     }
 
     /**
@@ -194,8 +183,8 @@ public class RoomServices implements ServerController {
     /**
      * When game has to end, close connections and deletes game
      *
-     * @author Francesco Ostidich
      * @param names is the players' game names list
+     * @author Francesco Ostidich
      */
     protected void closeGame(@NotNull List<String> names) {
         serverNetwork.disconnect(names);

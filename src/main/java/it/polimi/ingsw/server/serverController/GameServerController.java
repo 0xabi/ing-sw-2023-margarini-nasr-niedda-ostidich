@@ -37,6 +37,8 @@ public class GameServerController extends RoomServices {
     private final Set<String> disconnected;
 
     private final ServerModel model;
+    
+    private final Map<String, ClientController> matchClients;
 
     /**
      * Class constructor.
@@ -45,7 +47,7 @@ public class GameServerController extends RoomServices {
      * @author Francesco Ostidich
      */
     public GameServerController(@NotNull Map<String, ClientController> clients) {
-        System.out.println("generating game model");
+        matchClients = clients;
         playerPhase = Phase.PICK;
         disconnected = new HashSet<>();
         model = new GameServerModel(clients.keySet());
@@ -59,22 +61,19 @@ public class GameServerController extends RoomServices {
      * @author Francesco Ostidich
      */
     public void playMatch() {
-        System.out.println("playing match with game names " + names + ", and with server clients " + getClients().keySet());
-        names.forEach(player -> {
-            System.out.println("sending initial message for started match");
-            getClients().get(player).notifyGameHasStarted(new NotifyGameHasStarted(
-                    player,
-                    MessageID.NOTIFY_GAME_HAS_STARTED,
-                    model.getGameParameters(),
-                    model.getTurnCycleOrder(),
-                    model.getBoard(),
-                    model.getBag(),
-                    model.getCommonGoal1Tokens(),
-                    model.getCommonGoal2Tokens(),
-                    model.getPlayerPersonalGoalID(player),
-                    model.getCommonGoal1(),
-                    model.getCommonGoal2()));
-        });
+        System.out.println("playing match with names " + matchClients.values() + ", and with clients " + matchClients.keySet());
+        names.forEach(player -> matchClients.get(player).notifyGameHasStarted(new NotifyGameHasStarted(
+                player,
+                MessageID.NOTIFY_GAME_HAS_STARTED,
+                model.getGameParameters(),
+                model.getTurnCycleOrder(),
+                model.getBoard(),
+                model.getBag(),
+                model.getCommonGoal1Tokens(),
+                model.getCommonGoal2Tokens(),
+                model.getPlayerPersonalGoalID(player),
+                model.getCommonGoal1(),
+                model.getCommonGoal2())));
     }
 
     /**
@@ -111,7 +110,7 @@ public class GameServerController extends RoomServices {
         if (model.checkSelection(message.getChosenCoordinates())) {
             lastPicked = model.selectTilesOnBoard(message.getChosenCoordinates());
             playerPhase = Phase.INSERT;
-            getClients().get(message.getPlayerName()).pickAccepted(new PickAccepted(message.getPlayerName(), MessageID.PICK_ACCEPTED, lastPicked));
+            matchClients.get(message.getPlayerName()).pickAccepted(new PickAccepted(message.getPlayerName(), MessageID.PICK_ACCEPTED, lastPicked));
         } else {
             nextTurn(false);
         }
@@ -130,7 +129,7 @@ public class GameServerController extends RoomServices {
             nextTurn(true);
             endOfTurnChecks(message.getPlayerName());
         } catch (UnavailableInsertionException e) {
-            getClients().get(message.getPlayerName()).pickAccepted(new PickAccepted(message.getPlayerName(), MessageID.PICK_ACCEPTED, lastPicked));
+            matchClients.get(message.getPlayerName()).pickAccepted(new PickAccepted(message.getPlayerName(), MessageID.PICK_ACCEPTED, lastPicked));
         }
     }
 
@@ -185,7 +184,7 @@ public class GameServerController extends RoomServices {
             });
             names.forEach(client -> {
                 try {
-                    getClients().get(client).newTurn(new NewTurn.EndGame(
+                    matchClients.get(client).newTurn(new NewTurn.EndGame(
                             client,
                             MessageID.NEW_TURN,
                             model.getBoard(),
@@ -214,7 +213,7 @@ public class GameServerController extends RoomServices {
         }
         names.forEach(client -> {
             try {
-                getClients().get(client).newTurn(new NewTurn.NextPlayer(
+                matchClients.get(client).newTurn(new NewTurn.NextPlayer(
                         client,
                         MessageID.NEW_TURN,
                         model.getBoard(),

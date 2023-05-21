@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.serverNetwork;
 
+import it.polimi.ingsw.resources.interfaces.ClientController;
 import it.polimi.ingsw.resources.interfaces.ServerController;
 
 import java.io.IOException;
@@ -47,18 +48,16 @@ public class GameServerNetwork implements it.polimi.ingsw.resources.interfaces.S
      * Method has its own thread, and it is up for all server run time.
      */
     private void waitForClients() {
-        System.out.println("Server listening");
+        System.out.println("server listening");
         while (running) {
             try {
                 Socket client = ss.accept();
-                new Client(client, roomServices);
-                System.out.println("[" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + "]" + "Connection accepted:" + client);
+                ClientController newClient = new Client(client, roomServices);
+                System.out.println("[" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + "]" + " Connection accepted: " + client);
             } catch (IOException e) {
-                System.out.println("[" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + "]" + "Connection not accepted");
-                System.out.println();
+                System.out.println("[" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + "]" + " Connection not accepted");
             }
         }
-        System.out.println("\nServer Offline");
     }
 
     @Override
