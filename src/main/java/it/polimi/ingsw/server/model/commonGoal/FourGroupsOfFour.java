@@ -55,6 +55,7 @@ public class FourGroupsOfFour extends CommonGoal {
      * @author Edoardo Margarini
      */
     private @NotNull List<Coordinates> adjacentTile(int x, int y) {
+        //noinspection DuplicatedCode
         List<Coordinates> adjTiles = new LinkedList<>();
         try {
             if (copy[x][y] == copy[x-1][y]) adjTiles.add(new Coordinates(x-1, y));

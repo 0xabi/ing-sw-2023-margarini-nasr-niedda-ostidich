@@ -128,9 +128,32 @@ public class GameServerController extends RoomServices {
             model.playerInsertTilesInShelf(message.getPlayerName(), message.getChosenTiles(), message.getChosenColumn());
             playerPhase = Phase.PICK;
             nextTurn(true);
+            endOfTurnChecks(message.getPlayerName());
         } catch (UnavailableInsertionException e) {
             getClients().get(message.getPlayerName()).pickAccepted(new PickAccepted(message.getPlayerName(), MessageID.PICK_ACCEPTED, lastPicked));
         }
+    }
+
+    /**
+     * After player has inserted the tiles he selected, many checks are done in order
+     * to have points assigned.
+     *
+     * @author Francesco Ostidich
+     * @param playerName is the player's name string
+     */
+    private void endOfTurnChecks(String playerName) {
+        if (!model.getCommonGoal1GivenPlayers().containsValue(playerName) &&
+                model.checkCommonGoal1(playerName)) {
+            model.assignCommonGoal1Points(playerName);
+        }
+        if (!model.getCommonGoal2GivenPlayers().containsValue(playerName) &&
+                model.checkCommonGoal2(playerName)) {
+            model.assignCommonGoal2Points(playerName);
+        }
+        if (model.checkToRefill()) model.refill();
+        if (model.checkPlayerShelfIsFull(playerName) &&
+                model.getEndGameToken().isPresent())
+            model.assignEndGameTokenPoints(playerName);
     }
 
     /**

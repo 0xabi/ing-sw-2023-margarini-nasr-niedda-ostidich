@@ -150,8 +150,8 @@ public interface ServerModel {
     /**
      * Assigns end game token points to player.
      *
-     * @author Francesco Ostidich
      * @param playerName is the player's name string
+     * @author Francesco Ostidich
      */
     void assignEndGameTokenPoints(String playerName);
 

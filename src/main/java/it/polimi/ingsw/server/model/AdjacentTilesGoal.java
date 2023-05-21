@@ -101,7 +101,6 @@ public class AdjacentTilesGoal {
      * @return a list of coordinates with the adjacent tiles of tile in coordinate x,y
      * @author Abdullah Nasr
      */
-    @SuppressWarnings("DuplicatedCode")
     private static @NotNull List<Coordinates> adjacentTile(int x, int y) {
         List<Coordinates> adjTile = new LinkedList<>();
         if (x < Shelf.getRowLength() - 1)

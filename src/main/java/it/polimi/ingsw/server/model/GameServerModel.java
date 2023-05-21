@@ -63,19 +63,19 @@ public class GameServerModel implements ServerModel {
      * @param names is the list with the players names got from the controller, used for construct the player objects
      * @author Francesco Ostidich
      */
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     private void playerListConstructor(@NotNull Set<String> names) {
         Random random = new Random();
         Set<Integer> personalGoalNumberSet = new HashSet<>();
         while (personalGoalNumberSet.size() < names.size())
             personalGoalNumberSet.add(random.nextInt(1, PersonalGoal.getPersonalGoalNumber() + 1));
         Stack<Integer> personalGoalNumberStack = new Stack<>();
-        personalGoalNumberSet.stream().map(personalGoalNumberStack::add);
+        personalGoalNumberStack.addAll(personalGoalNumberSet);
         Set<Player> playerSet = new HashSet<>();
         for (String playerName : names) {
             playerSet.add(new Player(playerName, personalGoalNumberStack.pop()));
         }
-        playerSet.stream().map(players::add);
+        players.addAll(playerSet);
+        Collections.shuffle(players);
     }
 
     @Override
@@ -195,8 +195,10 @@ public class GameServerModel implements ServerModel {
     @Override
     public void assignEndGameTokenPoints(String playerName) {
         for (Player player : players) {
-            if (playerName.equals(player.getName()))
+            if (playerName.equals(player.getName())) {
                 EndGameToken.assignPoints(player);
+                return;
+            }
         }
         throw new PlayerNotFoundException("name string not found in any player of the match");
     }
@@ -251,8 +253,10 @@ public class GameServerModel implements ServerModel {
     @Override
     public void assignCommonGoal1Points(String playerName) {
         for (Player player : players) {
-            if (playerName.equals(player.getName()))
+            if (playerName.equals(player.getName())) {
                 commonGoal1.assignPoints(player);
+                return;
+            }
         }
         throw new PlayerNotFoundException("name string not found in any player of the match");
     }
@@ -260,8 +264,10 @@ public class GameServerModel implements ServerModel {
     @Override
     public void assignCommonGoal2Points(String playerName) {
         for (Player player : players) {
-            if (playerName.equals(player.getName()))
+            if (playerName.equals(player.getName())) {
                 commonGoal2.assignPoints(player);
+                return;
+            }
         }
         throw new PlayerNotFoundException("name string not found in any player of the match");
     }
@@ -269,8 +275,10 @@ public class GameServerModel implements ServerModel {
     @Override
     public void playerInsertTilesInShelf(String playerName, List<Tile> tiles, int column) {
         for (Player player : players) {
-            if (playerName.equals(player.getName()))
+            if (playerName.equals(player.getName())) {
                 player.insertTiles(tiles, column);
+                return;
+            }
         }
         throw new PlayerNotFoundException("name string not found in any player of the match");
     }

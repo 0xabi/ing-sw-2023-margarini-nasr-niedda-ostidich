@@ -94,9 +94,9 @@ public class Player {
      */
     protected int checkAvailablePickNumber() {
         int picks = 3;
-        for (int i = 0; i < Shelf.getColumnLength(); i++)
+        for (int i = 0; i < Shelf.getRowLength(); i++)
             if ((Shelf.getColumnLength() - shelf.getTilesInColumn(i)) < picks)
-                picks = Shelf.getRowLength() - shelf.getTilesInColumn(i);
+                picks = Shelf.getColumnLength() - shelf.getTilesInColumn(i);
         return picks;
     }
 

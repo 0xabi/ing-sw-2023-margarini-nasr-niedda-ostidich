@@ -57,6 +57,8 @@ public class GameClientNetwork implements ClientNetwork {
         boolean connected = false;
         while (Objects.equals(connectionType, "Socket") && !connected) {
             try {
+                //FIXME: Socket without try catch with resources
+                //noinspection resource
                 Socket socket = new Socket(serverIP, 8000);
                 connected = true;
                 this.MessageToServer = new ObjectOutputStream(socket.getOutputStream());
