@@ -147,7 +147,7 @@ public class CLI extends GameClientView {
      */
     @Override
     public void notifyGameHasStared() {
-        playerMessage("Game started!\n");
+        System.out.println("Game Started!");;
     }
 
     /**
@@ -157,9 +157,9 @@ public class CLI extends GameClientView {
     public void chooseGameRoom(List<GameRoom> rooms) {
         String gameRoomTable = InputFormatChecker.getTableGameRoom(rooms);
         String answer;
-        answer = playerMessage(gameRoomTable + "\nType the room name or insert the number of row: ");
+        answer = playerMessage(gameRoomTable + "\nType the room name: ");
         while (!InputFormatChecker.isGameRoomValid(answer, rooms)) {
-            answer = playerMessage(gameRoomTable + "\nInvalid game room!\nType the room name or insert the number of row: ");
+            answer = playerMessage(gameRoomTable + "\nInvalid game room!\nType the room name: ");
         }
         getClientController().update(new Event(EventID.CHOOSE_GAME_ROOM, answer));
     }

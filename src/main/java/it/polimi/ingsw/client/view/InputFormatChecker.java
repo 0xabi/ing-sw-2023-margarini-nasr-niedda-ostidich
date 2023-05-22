@@ -134,13 +134,13 @@ public class InputFormatChecker {
         lenMaxRoomName = Math.max(lenMaxRoomName, LEN_COL_ROOM_NAME);
         lenMaxCreatorName = Math.max(lenMaxCreatorName, LEN_COL_CREATOR_NAME);
         //to insert also the number of the row in front of the room name
-        lenMaxRoomName += LEN_PREFIX;
+        //lenMaxRoomName += LEN_PREFIX;
         //upper header
         tableGameRoom.append("+-").append("-".repeat(lenMaxRoomName)).append("-+-").append("-".repeat(lenMaxCreatorName)).append("-+-").append("-".repeat(LEN_COL_PLAYERS)).append("-+").append("\n");
         tableGameRoom.append(getRowRoomTable("Room name", "Creator name", "Players", lenMaxRoomName, lenMaxCreatorName));
         for (GameRoom gr : rooms) {
             String players = gr.enteredPlayers().size() + "/" + gr.totalPlayers();
-            tableGameRoom.append(getRowRoomTable("[" + numRoom + "] " + gr.gameRoomName(), gr.creatorName(), players, lenMaxRoomName, lenMaxCreatorName));
+            tableGameRoom.append(getRowRoomTable(gr.gameRoomName(), gr.creatorName(), players, lenMaxRoomName, lenMaxCreatorName));
             numRoom++;
         }
         return tableGameRoom.toString();
@@ -155,11 +155,7 @@ public class InputFormatChecker {
      * @return false if the user's input is valid, true otherwise
      */
     public static boolean isGameRoomValid(String answer, List<GameRoom> rooms) {
-        Integer intAnswer = getNumFromString(answer);
-        //check if is a number
-        if (intAnswer != null && intAnswer >= 1 && intAnswer <= rooms.size()) {
-            return true;
-        }
+
         for (GameRoom currentRoom : rooms) {
             if (currentRoom.gameRoomName().equalsIgnoreCase(answer))
                 return true;

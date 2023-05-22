@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane fx:id="pane" prefHeight="720.0" prefWidth="1200.0" styleClass="anchor_pane" stylesheets="@../css/match.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.handler.MatchSceneHandler">
-   <ImageView fx:id="mainShelf" fitHeight="320.0" fitWidth="316.0" layoutX="208.0" layoutY="111.0" pickOnBounds="true">
+   <ImageView fx:id="mainShelf" fitWidth="316.0" layoutX="208.0" layoutY="111.0" pickOnBounds="true" preserveRatio="true">
       <effect>
          <DropShadow offsetX="-3.0" />
       </effect>

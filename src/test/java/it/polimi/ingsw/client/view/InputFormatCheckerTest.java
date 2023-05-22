@@ -52,15 +52,15 @@ public class InputFormatCheckerTest {
     @Test
     public void getRowRoomTable_RoomInfo_AFormattedRow() {
         String expected = """
-                +------------------+----------------+---------+
-                |    Room name     |  Creator name  | Players |\s
-                +------------------+----------------+---------+
-                | [1] Room name 1  | Creator name 1 |   2/4   |\s
-                +------------------+----------------+---------+
-                | [2] Room name 2  | Creator name 2 |   2/3   |\s
-                +------------------+----------------+---------+
-                | [3] Room name 3  | Creator name 3 |   2/3   |\s
-                +------------------+----------------+---------+
+                +-------------+----------------+---------+
+                |  Room name  |  Creator name  | Players |\s
+                +-------------+----------------+---------+
+                | Room name 1 | Creator name 1 |   2/4   |\s
+                +-------------+----------------+---------+
+                | Room name 2 | Creator name 2 |   2/3   |\s
+                +-------------+----------------+---------+
+                | Room name 3 | Creator name 3 |   2/3   |\s
+                +-------------+----------------+---------+
                 """;
         assertEquals(expected, InputFormatChecker.getTableGameRoom(gameRooms));
     }

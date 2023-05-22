@@ -4,6 +4,7 @@ import it.polimi.ingsw.server.model.Shelf;
 
 public class GuiObjectsHandler {
 
+    public static double mainShelfPosY = 320;
     private static double mainShelfTilesSizeWidth=37;
     private static double mainShelfTilesSizeHeight=37;
 
@@ -43,14 +44,14 @@ public class GuiObjectsHandler {
     public static void resizeObjects(double ratio_width, double ratio_height)
     {
         mainShelfTilesSizeWidth = mainShelfTilesSizeWidth*ratio_width;
-        mainShelfTilesSizeHeight = mainShelfTilesSizeHeight*ratio_height;
+        //mainShelfTilesSizeHeight = mainShelfTilesSizeHeight*ratio_height;
 
         playerShelfTilesSizeWidth = playerShelfTilesSizeWidth*ratio_width;
         playerShelfTilesSizeHeight = playerShelfTilesSizeHeight*ratio_height;
 
         for(int i=0;i< Shelf.getColumnLength();i++)
         {
-            mainShelfTilesPosY[i] = mainShelfTilesPosY[i]*ratio_height;
+            //mainShelfTilesPosY[i] = mainShelfTilesPosY[i]*ratio_height;
             shelfPlayer1TilesPosY[i] = shelfPlayer1TilesPosY[i]*ratio_height;
             shelfPlayer2TilesPosY[i] = shelfPlayer2TilesPosY[i]*ratio_height;
             shelfPlayer3TilesPosY[i] = shelfPlayer3TilesPosY[i]*ratio_height;

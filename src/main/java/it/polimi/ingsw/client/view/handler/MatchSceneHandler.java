@@ -143,8 +143,15 @@ public class MatchSceneHandler extends SceneHandler {
                 if(typeTile != null)
                 {
                     iv.setImage(getTileImage(typeTile));
+                    iv.setPreserveRatio(true);
+
+                    double a =  mainShelf.getBoundsInParent().getHeight();
+                    double b = GuiObjectsHandler.mainShelfPosY;
+                    double test =a/b;
+
                     iv.setFitWidth(GuiObjectsHandler.getMainShelfTilesSizeWidth());
-                    iv.setFitHeight(GuiObjectsHandler.getMainShelfTilesSizeHeight());
+
+                    //iv.setLayoutX(GuiObjectsHandler.getMainShelfTilesPosX(i));
                     iv.setLayoutX(GuiObjectsHandler.getMainShelfTilesPosX(i));
                     iv.setLayoutY(GuiObjectsHandler.getMainShelfTilesPosY(j));
                     //iv.toFront();
@@ -178,7 +185,7 @@ public class MatchSceneHandler extends SceneHandler {
             if(n instanceof ImageView currentImage)
             {
                 currentImage.setFitWidth(currentImage.getFitWidth()*ratio_x);
-                currentImage.setFitHeight(currentImage.getFitHeight()*ratio_y);
+                //currentImage.setFitHeight(currentImage.getFitHeight()*ratio_y);
             }
             else if(n instanceof Label currentLabel)
             {
@@ -186,7 +193,7 @@ public class MatchSceneHandler extends SceneHandler {
                 //currentLabel.setLayoutX(mainShelf.getLayoutX()+((mainShelf.getFitWidth()-currentLabel.getBoundsInParent().getWidth())/2));
                 currentLabel.setFont(new Font(currentLabel.getFont().getFamily(),currentLabel.getFont().getSize()*ratio_y));
                 currentLabel.setPrefWidth(currentLabel.getPrefWidth()*ratio_x);
-                currentLabel.setPrefHeight(currentLabel.getPrefHeight()*ratio_y);
+                //currentLabel.setPrefHeight(currentLabel.getPrefHeight()*ratio_y);
             }
         }
 

@@ -63,7 +63,11 @@ public class GameClientController implements ClientController {
                 if (evt.value().equals("new")) view.chooseNewGamePlayerNumber();
                 else server.askForRooms(new AskForRooms(playerName, MessageID.ASK_FOR_ROOMS));
             }
-            case CHOOSE_IP_ADDRESS -> server = clientNetwork.connect((String) evt.value(), playerName, this);
+            case CHOOSE_IP_ADDRESS -> {
+                server = clientNetwork.connect((String) evt.value(), playerName, this);
+
+            }
+
             case CHOOSE_NEW_GAME_PLAYER_NUMBER -> {
                 newRoomPlayerNumber = (int) evt.value();
                 view.chooseNewGameName();
