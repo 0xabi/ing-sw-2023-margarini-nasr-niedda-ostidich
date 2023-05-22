@@ -71,4 +71,11 @@ public class Server implements ServerController {
             gameClientNetwork.send(message);
         } catch (IOException ignored) {}
     }
+
+    @Override
+    public boolean PlayerIDisAvailable(Hello msg) {
+        throw new RuntimeException("client cannot call PlayerIDisAvailable");
+    }
+
+
 }

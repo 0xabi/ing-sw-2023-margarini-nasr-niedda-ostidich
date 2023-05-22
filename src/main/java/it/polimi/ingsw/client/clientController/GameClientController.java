@@ -9,6 +9,8 @@ import it.polimi.ingsw.resources.interfaces.ServerController;
 import it.polimi.ingsw.resources.messages.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
 /**
@@ -18,7 +20,7 @@ import java.util.*;
  *
  * @author Francesco Ostidich
  */
-public class GameClientController implements ClientController {
+public class GameClientController extends UnicastRemoteObject implements ClientController {
 
     private ServerController server;
 
@@ -39,7 +41,7 @@ public class GameClientController implements ClientController {
      *
      * @author Francesco Ostidich
      */
-    public GameClientController(@NotNull ClientView view, String network) {
+    public GameClientController(@NotNull ClientView view, String network) throws RemoteException {
         clientNetwork = new GameClientNetwork(network);
         this.view = view;
     }
@@ -51,49 +53,59 @@ public class GameClientController implements ClientController {
      * @param evt is the event information
      * @author Francesco Ostidich
      */
+    @Override
     @SuppressWarnings("unchecked")
-    public void update(@NotNull Event evt) {
-        switch (evt.eventName()) {
-            case START -> view.choosePlayerName();
-            case CHOOSE_PLAYER_NAME -> {
-                playerName = (String) evt.value();
-                view.chooseIPAddress();
-            }
-            case CHOOSE_NEW_OR_JOIN -> {
-                if (evt.value().equals("new")) view.chooseNewGamePlayerNumber();
-                else server.askForRooms(new AskForRooms(playerName, MessageID.ASK_FOR_ROOMS));
-            }
-            case CHOOSE_IP_ADDRESS -> {
-                server = clientNetwork.connect((String) evt.value(), playerName, this);
-
-            }
-
-            case CHOOSE_NEW_GAME_PLAYER_NUMBER -> {
-                newRoomPlayerNumber = (int) evt.value();
-                view.chooseNewGameName();
-            }
-            case CHOOSE_NEW_GAME_NAME -> {
-                if (evt.value().equals("back")) view.chooseNewOrJoin();
-                else {
-                    newRoomName = (String) evt.value();
-                    server.createNewRoom(new CreateNewRoom(playerName, MessageID.CREATE_NEW_ROOM, newRoomName, newRoomPlayerNumber));
+    public void update(@NotNull Event evt){
+        try {
+            switch (evt.eventName()) {
+                case START -> view.choosePlayerName();
+                case CHOOSE_PLAYER_NAME -> {
+                    playerName = (String) evt.value();
+                    view.chooseIPAddress();
                 }
+                case CHOOSE_NEW_OR_JOIN -> {
+                    if (evt.value().equals("new")) view.chooseNewGamePlayerNumber();
+                    else server.askForRooms(new AskForRooms(playerName, MessageID.ASK_FOR_ROOMS));
+                }
+                case CHOOSE_IP_ADDRESS -> {
+                    this.server = clientNetwork.connect((String) evt.value(), playerName, this);
+                    try {
+                        Thread.sleep(100*1000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    if(server==null)
+                        System.out.println("roomservice è null");
+
+                }
+                case CHOOSE_NEW_GAME_PLAYER_NUMBER -> {
+                    newRoomPlayerNumber = (int) evt.value();
+                    view.chooseNewGameName();
+                }
+                case CHOOSE_NEW_GAME_NAME -> {
+                    if (evt.value().equals("back")) view.chooseNewOrJoin();
+                    else {
+                        newRoomName = (String) evt.value();
+                        server.createNewRoom(new CreateNewRoom(playerName, MessageID.CREATE_NEW_ROOM, newRoomName, newRoomPlayerNumber));
+                    }
+                }
+                case CHOOSE_GAME_ROOM -> {
+                    if (evt.value().equals("refresh"))
+                        server.askForRooms(new AskForRooms(playerName, MessageID.ASK_FOR_ROOMS));
+                    else if (evt.value().equals("back")) view.chooseNewOrJoin();
+                    else {
+                        server.joinRoom(new JoinRoom(playerName, MessageID.JOIN_ROOM, (String) evt.value()));
+                        System.out.println("Ho scelto la stanza" + (String) evt.value());
+                    }
+                }
+                case PICK_TILES -> server.pickTilesRequest(new PickTilesRequest(playerName, MessageID.PICK_TILES_REQUEST, (List<Coordinates>) evt.value()));
+                case CHOOSE_ORDER -> {
+                    orderChosen = (List<Tile>) evt.value();
+                    view.chooseColumn();
+                }
+                case CHOOSE_COLUMN -> server.insertTilesRequest(new InsertTilesRequest(playerName, MessageID.INSERT_TILES_REQUEST, orderChosen, (int) evt.value()));
             }
-            case CHOOSE_GAME_ROOM -> {
-                if (evt.value().equals("refresh"))
-                    server.askForRooms(new AskForRooms(playerName, MessageID.ASK_FOR_ROOMS));
-                else if (evt.value().equals("back")) view.chooseNewOrJoin();
-                else server.joinRoom(new JoinRoom(playerName, MessageID.JOIN_ROOM, (String) evt.value()));
-            }
-            case PICK_TILES ->
-                    server.pickTilesRequest(new PickTilesRequest(playerName, MessageID.PICK_TILES_REQUEST, (List<Coordinates>) evt.value()));
-            case CHOOSE_ORDER -> {
-                orderChosen = (List<Tile>) evt.value();
-                view.chooseColumn();
-            }
-            case CHOOSE_COLUMN ->
-                    server.insertTilesRequest(new InsertTilesRequest(playerName, MessageID.INSERT_TILES_REQUEST, orderChosen, (int) evt.value()));
-        }
+        }catch (RemoteException e){};
     }
 
     /**
@@ -200,7 +212,9 @@ public class GameClientController implements ClientController {
             view.assignCommonGoalPoints(msg.getCommonGoal2GivenPlayers().get(token), token);
         view.updatePlayerShelves(msg.getPlayerShelves());
         view.updatePlayerPoints(msg.getPlayerPoints());
-        if (msg instanceof NewTurn.EndGame) endGame((NewTurn.EndGame) msg);
+        if (msg instanceof NewTurn.EndGame) {
+            endGame((NewTurn.EndGame) msg);
+        }
         if (msg instanceof NewTurn.NextPlayer) {
             if (playerName.equals(((NewTurn.NextPlayer) msg).getNextPlayer()))
                 view.pickTiles(((NewTurn.NextPlayer) msg).getAvailablePickNumber());
@@ -225,7 +239,8 @@ public class GameClientController implements ClientController {
      * @param msg is the data from the last server message
      * @author Francesco Ostidich
      */
-    private void endGame(@NotNull NewTurn.EndGame msg) {
+    @Override
+    public void endGame(@NotNull NewTurn.EndGame msg){
         view.givePersonalGoals(msg.getPersonalGoals());
         view.assignPersonalGoalPoints(msg.getPersonalGoalPoints());
         view.assignAdjacentGoalPoints(msg.getAdjacentGoalPoints());

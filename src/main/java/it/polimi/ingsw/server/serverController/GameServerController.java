@@ -10,6 +10,7 @@ import it.polimi.ingsw.resources.messages.*;
 import it.polimi.ingsw.server.model.GameServerModel;
 import org.jetbrains.annotations.NotNull;
 
+import java.rmi.RemoteException;
 import java.util.*;
 
 /**
@@ -37,7 +38,7 @@ public class GameServerController extends RoomServices {
     private final Set<String> disconnected;
 
     private final ServerModel model;
-    
+
     private final Map<String, ClientController> matchClients;
 
     /**
@@ -46,7 +47,7 @@ public class GameServerController extends RoomServices {
      * @param clients is the players' client interfaces map
      * @author Francesco Ostidich
      */
-    public GameServerController(@NotNull Map<String, ClientController> clients) {
+    public GameServerController(@NotNull Map<String, ClientController> clients) throws RemoteException{
         matchClients = clients;
         playerPhase = Phase.PICK;
         disconnected = new HashSet<>();
@@ -61,8 +62,10 @@ public class GameServerController extends RoomServices {
      * @author Francesco Ostidich
      */
     public void playMatch() {
-        System.out.println("playing match with names " + matchClients.values() + ", and with clients " + matchClients.keySet());
-        names.forEach(player -> matchClients.get(player).notifyGameHasStarted(new NotifyGameHasStarted(
+        System.out.println("playing match with names " + matchClients.keySet()  + ", and with clients " + matchClients.values());
+        names.forEach(player -> new Thread(()->{
+            try{
+                matchClients.get(player).notifyGameHasStarted(new NotifyGameHasStarted(
                 player,
                 MessageID.NOTIFY_GAME_HAS_STARTED,
                 model.getGameParameters(),
@@ -73,7 +76,11 @@ public class GameServerController extends RoomServices {
                 model.getCommonGoal2Tokens(),
                 model.getPlayerPersonalGoalID(player),
                 model.getCommonGoal1(),
-                model.getCommonGoal2())));
+                model.getCommonGoal2()));
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }).start());
     }
 
     /**
@@ -104,13 +111,17 @@ public class GameServerController extends RoomServices {
      * @author Francesco Ostidich
      */
     @Override
-    public void pickTilesRequest(@NotNull PickTilesRequest message) {
+    public void pickTilesRequest(@NotNull PickTilesRequest message){
         if (!message.getPlayerName().equals(playerTurn) ||
                 message.getMessageID() != MessageID.PICK_TILES_REQUEST) return;
         if (model.checkSelection(message.getChosenCoordinates())) {
             lastPicked = model.selectTilesOnBoard(message.getChosenCoordinates());
             playerPhase = Phase.INSERT;
-            matchClients.get(message.getPlayerName()).pickAccepted(new PickAccepted(message.getPlayerName(), MessageID.PICK_ACCEPTED, lastPicked));
+            try{
+                matchClients.get(message.getPlayerName()).pickAccepted(new PickAccepted(message.getPlayerName(), MessageID.PICK_ACCEPTED, lastPicked));
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         } else {
             nextTurn(false);
         }
@@ -129,7 +140,11 @@ public class GameServerController extends RoomServices {
             nextTurn(true);
             endOfTurnChecks(message.getPlayerName());
         } catch (UnavailableInsertionException e) {
-            matchClients.get(message.getPlayerName()).pickAccepted(new PickAccepted(message.getPlayerName(), MessageID.PICK_ACCEPTED, lastPicked));
+            try {
+                matchClients.get(message.getPlayerName()).pickAccepted(new PickAccepted(message.getPlayerName(), MessageID.PICK_ACCEPTED, lastPicked));
+            } catch (RemoteException ex) {
+                throw new RuntimeException(ex);
+            }
         }
     }
 

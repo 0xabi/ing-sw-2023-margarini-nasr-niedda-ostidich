@@ -7,6 +7,7 @@ import it.polimi.ingsw.resources.interfaces.ClientController;
 import it.polimi.ingsw.resources.interfaces.ClientView;
 import org.jetbrains.annotations.NotNull;
 
+import java.rmi.RemoteException;
 import java.util.*;
 
 /**
@@ -71,7 +72,11 @@ public abstract class GameClientView implements ClientView {
         playerPoints = new HashMap<>();
         playerPersonalGoals = new LinkedList<>();
         gameRooms = new ArrayList<>();
-        clientController = new GameClientController(this, network);
+        try {
+            clientController = new GameClientController(this, network);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println(network);
     }
 

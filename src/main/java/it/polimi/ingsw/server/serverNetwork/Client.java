@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.LinkedList;
@@ -59,9 +60,6 @@ public class Client implements ClientController {
         new Thread(this::ClientSocketListener).start();
     }
 
-    public boolean PlayerIDisAvailable(@NotNull Message message) {
-        return !roomServices.onlinePlayers().contains(message.getPlayerName());
-    }
 
     public void send(Message message) throws IOException {
         if (Objects.equals(connectionType, "Socket")) {
@@ -99,7 +97,7 @@ public class Client implements ClientController {
                         case CREATE_NEW_ROOM -> roomServices.createNewRoom((CreateNewRoom) msg);
                         case PICK_TILES_REQUEST -> roomServices.pickTilesRequest((PickTilesRequest) msg);
                         case HELLO -> {
-                            if (PlayerIDisAvailable(msg)) {
+                            if (roomServices.PlayerIDisAvailable((Hello) msg)) {
                                 send(new PlayerAccepted(msg.getPlayerName(), MessageID.PLAYER_ACCEPTED));
                                 System.out.println("[" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + "] " + msg.getPlayerName() + " joined the lobby");
                                 playerName = msg.getPlayerName();
@@ -202,6 +200,12 @@ public class Client implements ClientController {
         } catch (IOException ignored) {
         }
     }
+
+    @Override
+    public void endGame(NewTurn.@NotNull EndGame msg)  {
+        throw new RuntimeException("server cannot call endgame");
+    }
+
 
 }
 

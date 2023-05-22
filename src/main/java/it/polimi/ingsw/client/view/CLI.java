@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.resources.*;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Francesco Ostidich
  */
-public class CLI extends GameClientView {
+public class CLI extends GameClientView{
 
     private String chatMessage = "";
 
@@ -59,7 +60,11 @@ public class CLI extends GameClientView {
 
                 Loading...\s"""
         );
-        getClientController().update(new Event(EventID.START, null));
+        try {
+            getClientController().update(new Event(EventID.START, null));
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -71,7 +76,11 @@ public class CLI extends GameClientView {
         while (!InputFormatChecker.isIPAddress(scannedIP)) {
             scannedIP = playerMessage("Wrong input!\nChoose IP address:");
         }
-        getClientController().update(new Event(EventID.CHOOSE_IP_ADDRESS, scannedIP));
+        try {
+            getClientController().update(new Event(EventID.CHOOSE_IP_ADDRESS, scannedIP));
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -80,7 +89,11 @@ public class CLI extends GameClientView {
         while (scannedIP.isBlank()) {
             scannedIP = playerMessage("Wrong input!\nChoose player name:");
         }
-        getClientController().update(new Event(EventID.CHOOSE_PLAYER_NAME, scannedIP));
+        try {
+            getClientController().update(new Event(EventID.CHOOSE_PLAYER_NAME, scannedIP));
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -92,7 +105,11 @@ public class CLI extends GameClientView {
         while (!answer.equals("new") && !answer.equals("join")) {
             answer = playerMessage("Wrong input!\nType [new] to create new game or [join] to join an existing game:");
         }
-        getClientController().update(new Event(EventID.CHOOSE_NEW_OR_JOIN, answer));
+        try {
+            getClientController().update(new Event(EventID.CHOOSE_NEW_OR_JOIN, answer));
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -104,7 +121,11 @@ public class CLI extends GameClientView {
         while (gameName.isBlank()) {
             gameName = playerMessage("Wrong input!\nChoose a new game name:");
         }
-        getClientController().update(new Event(EventID.CHOOSE_NEW_GAME_NAME, gameName));
+        try {
+            getClientController().update(new Event(EventID.CHOOSE_NEW_GAME_NAME, gameName));
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -119,7 +140,11 @@ public class CLI extends GameClientView {
             input = playerMessage("Please insert a valid number of player!\nChoose the number of the player:");
             numPlayer = InputFormatChecker.getNumFromString(input);
         }
-        getClientController().update(new Event(EventID.CHOOSE_NEW_GAME_PLAYER_NUMBER, numPlayer));
+        try {
+            getClientController().update(new Event(EventID.CHOOSE_NEW_GAME_PLAYER_NUMBER, numPlayer));
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -161,7 +186,11 @@ public class CLI extends GameClientView {
         while (!InputFormatChecker.isGameRoomValid(answer, rooms)) {
             answer = playerMessage(gameRoomTable + "\nInvalid game room!\nType the room name: ");
         }
-        getClientController().update(new Event(EventID.CHOOSE_GAME_ROOM, answer));
+        try {
+            getClientController().update(new Event(EventID.CHOOSE_GAME_ROOM, answer));
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -185,7 +214,11 @@ public class CLI extends GameClientView {
             list.add(new Coordinates(x, y));
             if (i < 3 && playerMessage("done?").equals("y")) i = 4;
         }
-        getClientController().update(new Event(EventID.PICK_TILES, list));
+        try {
+            getClientController().update(new Event(EventID.PICK_TILES, list));
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -213,7 +246,11 @@ public class CLI extends GameClientView {
             chosenIndex.add(index);
             temp.add(selection.get(index));
         }
-        getClientController().update(new Event(EventID.PICK_TILES, temp));
+        try {
+            getClientController().update(new Event(EventID.PICK_TILES, temp));
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -229,7 +266,11 @@ public class CLI extends GameClientView {
                 attempt = false;
             }
         } while (!attempt);
-        getClientController().update(new Event(EventID.CHOOSE_COLUMN, column));
+        try {
+            getClientController().update(new Event(EventID.CHOOSE_COLUMN, column));
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -277,7 +318,11 @@ public class CLI extends GameClientView {
         }
         String temp = chatMessage;
         chatMessage = null;
-        getClientController().update(new Event(EventID.JUST_SCAN_CHAT, temp));
+        try {
+            getClientController().update(new Event(EventID.JUST_SCAN_CHAT, temp));
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

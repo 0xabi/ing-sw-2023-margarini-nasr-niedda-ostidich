@@ -6,14 +6,19 @@ import it.polimi.ingsw.resources.interfaces.ClientController;
 import it.polimi.ingsw.resources.interfaces.ClientNetwork;
 import it.polimi.ingsw.resources.interfaces.ServerController;
 import it.polimi.ingsw.resources.messages.*;
+import it.polimi.ingsw.server.serverController.RoomServices;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.Scanner;
 
 /**
  * Asks for connection to the server, and wants the ServerController interface to call methods on it.
@@ -31,13 +36,15 @@ public class GameClientNetwork implements ClientNetwork {
 
     private ObjectInputStream MessageFromServer;
 
-    private final Queue<Message> messageQueue = new LinkedList<>();
+    private Queue<Message> messageQueue;
 
     private ClientController controller;
 
     private String serverIP;
 
     private String playerName;
+
+    private ServerController roomServices;
 
     /**
      * Class constructor.
@@ -55,12 +62,14 @@ public class GameClientNetwork implements ClientNetwork {
         this.playerName = playerName;
         this.controller = controller;
         boolean connected = false;
-        while (Objects.equals(connectionType, "Socket") && !connected) {
+        if(Objects.equals(connectionType, "Socket"))
+        while (!connected) {
             try {
                 //FIXME: Socket without try catch with resources
                 //noinspection resource
-                Socket socket = new Socket(serverIP, 8000);
+                socket = new Socket(serverIP, 8000);
                 connected = true;
+                messageQueue= new LinkedList<>();
                 this.MessageToServer = new ObjectOutputStream(socket.getOutputStream());
                 this.MessageFromServer = new ObjectInputStream(socket.getInputStream());
             } catch (Exception e) {
@@ -79,6 +88,33 @@ public class GameClientNetwork implements ClientNetwork {
             } catch (IOException ignored) {
             }
         }
+
+        if(Objects.equals(connectionType, "RMI"))
+        while(!connected){
+            try {
+                Registry registry = LocateRegistry.getRegistry();
+                ServerController server = (ServerController) registry.lookup("Connection");
+                roomServices = server;
+                connected = true;
+                if(roomServices.PlayerIDisAvailable(new Hello(playerName, MessageID.HELLO))) {
+                    new Thread(()->{
+                        try {
+                            roomServices.playerConnected(playerName, controller);
+                        controller.serverConnected();
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }}).start();
+                }else controller.restart();
+                return roomServices;
+
+
+            }catch (Exception e) {
+                System.out.println("[System] Server failed: " + e);
+                break;
+            }
+
+        }
+
         return new Server(this);
     }
 
@@ -140,5 +176,7 @@ public class GameClientNetwork implements ClientNetwork {
             }
         }
     }
+
+
 
 }

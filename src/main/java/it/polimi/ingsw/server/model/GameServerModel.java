@@ -6,6 +6,7 @@ import it.polimi.ingsw.resources.Coordinates;
 import it.polimi.ingsw.resources.Tile;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -20,7 +21,7 @@ import java.util.*;
  *
  * @author Francesco Ostidich
  */
-public class GameServerModel implements ServerModel {
+public class GameServerModel implements ServerModel, Serializable {
 
     private final Board board;
 
