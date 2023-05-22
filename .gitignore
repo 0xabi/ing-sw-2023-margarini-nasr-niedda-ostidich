@@ -80,3 +80,4 @@ fabric.properties
 target/
 /src/main/java/it/polimi/ingsw/resources/graphics/
 *.patch
+/.idea/shelf/

@@ -1,10 +1,11 @@
 package it.polimi.ingsw.client.view.handler;
 
+import it.polimi.ingsw.client.view.GUI;
 import it.polimi.ingsw.client.view.GUIApp;
 import it.polimi.ingsw.resources.interfaces.ClientController;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -17,14 +18,16 @@ public abstract class SceneHandler {
 
     private static Scene scene;
 
-    private static Parent root;
+    private static Pane root;
 
     private static ClientController cc;
 
     private static SceneHandler currentHandler;
 
+    private static GUI gui;
 
-    public static void setRoot(Parent root)
+
+    public static void setRoot(Pane root)
     {
         SceneHandler.root = root;
     }
@@ -34,9 +37,29 @@ public abstract class SceneHandler {
      * @return
      * @author Abdullah Nasr
      */
-    public Parent getRoot()
+    public Pane getRoot()
     {
         return root;
+    }
+
+    /**
+     * set the GUI that communicates with the handler
+     * @param gui the GUI that communicates with the handler
+     * @author Abdullah Nasr
+     */
+    public static void setGUI(GUI gui)
+    {
+        SceneHandler.gui = gui;
+    }
+
+    /**
+     *
+     * @return GUI  that communicates with the handler
+     * @author Abdullah Nasr
+     */
+    public static GUI getGui()
+    {
+        return SceneHandler.gui;
     }
 
     /**

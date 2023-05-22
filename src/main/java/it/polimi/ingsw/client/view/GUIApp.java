@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -31,7 +32,7 @@ public class GUIApp extends Application {
         stage.setTitle("My Shelfie");
 
 
-        FXMLLoader loader = new FXMLLoader(GUIApp.class.getResource("/fxml/"+"match"+".fxml"));
+        FXMLLoader loader = new FXMLLoader(GUIApp.class.getResource("/fxml/"+"home"+".fxml"));
         Scene scene;
         Parent root;
 
@@ -41,7 +42,7 @@ public class GUIApp extends Application {
 
              scene = new Scene(root);
              SceneHandler.setStage(stage);
-             SceneHandler.setRoot(root);
+             SceneHandler.setRoot((Pane) root);
              SceneHandler.setScene(scene);
              SceneHandler.setCurrentHandler(loader.getController());
              SceneHandler.getCurrentHandler().resize();

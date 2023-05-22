@@ -360,7 +360,10 @@ public abstract class GameClientView implements ClientView {
     @Override
     public void updatePlayerShelves(@NotNull Map<String, Tile[][]> shelves) {
         for (String player : shelves.keySet()) {
-            playerShelves.replace(player, shelves.get(player));
+             if ( playerShelves.replace(player, shelves.get(player)) == null )
+                  playerShelves.put(player, shelves.get(player));
+
+
         }
     }
 
