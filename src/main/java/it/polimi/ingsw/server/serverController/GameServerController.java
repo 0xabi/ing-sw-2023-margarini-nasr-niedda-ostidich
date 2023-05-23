@@ -53,6 +53,7 @@ public class GameServerController extends RoomServices {
         disconnected = new HashSet<>();
         model = new GameServerModel(clients.keySet());
         this.names = model.getTurnCycleOrder();
+        playerTurn = names.get(0);
         playMatch();
     }
 

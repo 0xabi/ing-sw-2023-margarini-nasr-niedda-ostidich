@@ -279,15 +279,15 @@ public class CLI extends GameClientView{
                         inputIsValid = false;
                     }
                 } while (!inputIsValid);
-                if (!(index < selection.size() && index > -1) || !chosenIndex.contains(index))
+                if (!(index < selection.size() && index > -1) || chosenIndex.contains(index))
                     System.out.println("Invalid value, try again");
                 else temp.add(selection.get(index));
-            } while (!(index < selection.size() && index > -1) && !chosenIndex.contains(index));
+            } while (!(index < selection.size() && index > -1) || chosenIndex.contains(index));
             chosenIndex.add(index);
             temp.add(selection.get(index));
         }
         try {
-            getClientController().update(new Event(EventID.PICK_TILES, temp));
+            getClientController().update(new Event(EventID.CHOOSE_ORDER, temp));
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
