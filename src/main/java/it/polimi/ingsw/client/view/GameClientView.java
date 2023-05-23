@@ -335,9 +335,11 @@ public abstract class GameClientView implements ClientView {
      * @author Francesco Ostidich
      */
     @Override
-    public void updateCommonGoal1GivenPlayers(@NotNull Map<Integer, String> givenPlayer) {
-        for (int token : givenPlayer.keySet()) {
-            this.commonGoal1GivenPlayers.replace(token, givenPlayer.get(token));
+    public void updateCommonGoal1GivenPlayers(Map<Integer, String> givenPlayer) {
+        if(givenPlayer != null) {
+            for (int token : givenPlayer.keySet()) {
+                this.commonGoal1GivenPlayers.replace(token, givenPlayer.get(token));
+            }
         }
     }
 
@@ -346,17 +348,22 @@ public abstract class GameClientView implements ClientView {
      */
     @Override
     public void updateCommonGoal2TokenStack(Stack<Integer> tokenStack) {
-        this.commonGoal1TokenStack = tokenStack;
+        this.commonGoal2TokenStack = tokenStack;
     }
 
     /**
      * @author Francesco Ostidich
      */
     @Override
-    public void updateCommonGoal2GivenPlayers(@NotNull Map<Integer, String> givenPlayer) {
-        for (int token : givenPlayer.keySet()) {
-            this.commonGoal2GivenPlayers.replace(token, givenPlayer.get(token));
+    public void updateCommonGoal2GivenPlayers(Map<Integer, String> givenPlayer) {
+
+        if(givenPlayer!=null)
+        {
+            for (int token : givenPlayer.keySet()) {
+                this.commonGoal2GivenPlayers.replace(token, givenPlayer.get(token));
+            }
         }
+
     }
 
     /**

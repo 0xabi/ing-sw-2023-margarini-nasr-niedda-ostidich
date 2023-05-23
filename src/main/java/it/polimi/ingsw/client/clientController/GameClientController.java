@@ -95,7 +95,7 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
                     else if (evt.value().equals("back")) view.chooseNewOrJoin();
                     else {
                         server.joinRoom(new JoinRoom(playerName, MessageID.JOIN_ROOM, (String) evt.value()));
-                        System.out.println("Ho scelto la stanza" + (String) evt.value());
+                        System.out.println("Ho scelto la stanza " + evt.value());
                     }
                 }
                 case PICK_TILES -> server.pickTilesRequest(new PickTilesRequest(playerName, MessageID.PICK_TILES_REQUEST, (List<Coordinates>) evt.value()));
@@ -105,7 +105,7 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
                 }
                 case CHOOSE_COLUMN -> server.insertTilesRequest(new InsertTilesRequest(playerName, MessageID.INSERT_TILES_REQUEST, orderChosen, (int) evt.value()));
             }
-        }catch (RemoteException e){};
+        }catch (RemoteException e){}
     }
 
     /**
@@ -178,7 +178,8 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
         for (String player : msg.getTurnCycle())
             playerPoints.put(player, 0);
         view.updatePlayerPoints(playerPoints);
-        Tile[][] shelf = new Tile[msg.getGameParameters().get("shelfColumnNumber")][msg.getGameParameters().get("shelfRowNumber")];
+        //Tile[][] shelf = new Tile[msg.getGameParameters().get("shelfColumnNumber")][msg.getGameParameters().get("shelfRowNumber") ];
+        Tile[][] shelf = new Tile[msg.getGameParameters().get("shelfRowNumber")][msg.getGameParameters().get("shelfColumnNumber")];
         Map<String, Tile[][]> playerShelves = new HashMap<>();
         for (String player : msg.getTurnCycle())
             playerShelves.put(player, shelf);
