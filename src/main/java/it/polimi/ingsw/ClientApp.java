@@ -3,12 +3,15 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.client.view.CLI;
 import it.polimi.ingsw.client.view.GUI;
 import it.polimi.ingsw.client.view.GUIApp;
+import it.polimi.ingsw.client.view.handler.SceneHandler;
 import javafx.application.Application;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class ClientApp {
+
 
     public static void main(String @NotNull [] args) {
         if (args.length == 0) {
@@ -23,6 +26,7 @@ public class ClientApp {
         }
         if (Objects.equals(args[0], "GUI")) {
             GUI gui = new GUI(args[1]);
+            SceneHandler.setGUI(gui);
             gui.start();
             Application.launch(GUIApp.class);
         } else new CLI(args[1]);

@@ -8,13 +8,16 @@ import it.polimi.ingsw.resources.interfaces.ServerNetwork;
 import it.polimi.ingsw.resources.messages.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class RoomServices implements ServerController {
+public class RoomServices extends UnicastRemoteObject implements ServerController{
 
-    private final Map<String, GameServerController> playerMatch;
+    private final Map<String, GameServerController> playerMatch ;
 
     private final Map<String, ClientController> clients;
 
@@ -24,7 +27,8 @@ public class RoomServices implements ServerController {
 
     private static ServerNetwork serverNetwork;
 
-    public RoomServices() {
+    public RoomServices() throws RemoteException {
+
         playerMatch = new HashMap<>();
         clients = new HashMap<>();
         gameRooms = new LinkedList<>();
@@ -57,7 +61,7 @@ public class RoomServices implements ServerController {
     @Override
     public void playerConnected(String playerName, ClientController client) {
         clients.put(playerName, client);
-        System.out.println(playerName + " added to online clients");
+        System.out.println(playerName + " added to online clients as " + clients.get(playerName));
     }
 
     /**
@@ -75,10 +79,14 @@ public class RoomServices implements ServerController {
      * @author Francesco Ostidich
      */
     public void startGame(Map<String, ClientController> names) {
-        System.out.println("started game with players: " + names);
         executorService.execute(() -> {
-            GameServerController gsc = new GameServerController(names);
-            names.keySet().forEach(player -> playerMatch.put(player, gsc));
+            try {
+                GameServerController gsc = new GameServerController(names);
+                names.keySet().forEach(player -> playerMatch.put(player, gsc));
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+
         });
     }
 
@@ -108,7 +116,7 @@ public class RoomServices implements ServerController {
      * @author Francesco Ostidich
      */
     @Override
-    public void pickTilesRequest(@NotNull PickTilesRequest message) {
+    public void pickTilesRequest(@NotNull PickTilesRequest message){
         try {
             playerMatch.get(message.getPlayerName()).pickTilesRequest(message);
         } catch (NullPointerException ignored) {
@@ -131,33 +139,30 @@ public class RoomServices implements ServerController {
      */
     @Override
     public void joinRoom(@NotNull JoinRoom msg) {
-        System.out.println("someone joining room");
         if (msg.getMessageID() != MessageID.JOIN_ROOM || !clients.containsKey(msg.getPlayerName())) {
-            System.out.println("join room message discarded");
             return;
         }
         for (GameRoom gameRoom : gameRooms) {
-            System.out.println(gameRoom.gameRoomName() + " should equal " + msg.getChosenRoom());
-            System.out.println(gameRoom.enteredPlayers() + " should not contain " + msg.getPlayerName());
             if (gameRoom.gameRoomName().equals(msg.getChosenRoom()) &&
                     !gameRoom.enteredPlayers().contains(msg.getPlayerName())) {
                 gameRoom.enteredPlayers().add(msg.getPlayerName());
-                System.out.println("player " + msg.getPlayerName() + " added to room " + gameRoom.gameRoomName());
                 if (gameRoom.enteredPlayers().size() == gameRoom.totalPlayers()) {
-                    System.out.println("filled room: " + gameRoom.gameRoomName());
                     Map<String, ClientController> names = new HashMap<>();
-                    for (String player: gameRoom.enteredPlayers()) {
+                    for (String player : gameRoom.enteredPlayers()) {
                         names.put(player, clients.get(player));
                     }
                     startGame(names);
                     gameRooms.remove(gameRoom);
                     return;
                 }
-                clients.get(msg.getPlayerName()).showPersonalRoom(new ShowPersonalRoom(msg.getPlayerName(), MessageID.SHOW_PERSONAL_ROOM, gameRoom));
+                try {
+                    clients.get(msg.getPlayerName()).showPersonalRoom(new ShowPersonalRoom(msg.getPlayerName(), MessageID.SHOW_PERSONAL_ROOM, gameRoom));
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
                 return;
             }
         }
-        System.out.println("no room found");
     }
 
     /**
@@ -165,12 +170,14 @@ public class RoomServices implements ServerController {
      */
     @Override
     public void createNewRoom(@NotNull CreateNewRoom msg) {
-        System.out.println("create new room message received!");
         if (msg.getMessageID() != MessageID.CREATE_NEW_ROOM || !clients.containsKey(msg.getPlayerName())) return;
-        System.out.println("create new room message accepted!");
         for (GameRoom room : gameRooms) {
             if (room.gameRoomName().equals(msg.getRoomName())) {
-                clients.get(msg.getPlayerName()).roomNameNotAvailable(new RoomNameNotAvailable(msg.getPlayerName(), MessageID.ROOM_NAME_NOT_AVAILABLE));
+                try {
+                    clients.get(msg.getPlayerName()).roomNameNotAvailable(new RoomNameNotAvailable(msg.getPlayerName(), MessageID.ROOM_NAME_NOT_AVAILABLE));
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
                 return;
             }
         }
@@ -178,7 +185,11 @@ public class RoomServices implements ServerController {
         enteredPlayers.add(msg.getPlayerName());
         GameRoom newRoom = new GameRoom(msg.getRoomName(), msg.getPlayerName(), msg.getRoomPlayerNumber(), enteredPlayers);
         gameRooms.add(newRoom);
+        try {
         clients.get(msg.getPlayerName()).showPersonalRoom(new ShowPersonalRoom(msg.getPlayerName(), MessageID.SHOW_PERSONAL_ROOM, newRoom));
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println("create new room message processed!");
     }
 
@@ -187,8 +198,13 @@ public class RoomServices implements ServerController {
      */
     @Override
     public void askForRooms(@NotNull AskForRooms msg) {
-        if (msg.getMessageID() != MessageID.ASK_FOR_ROOMS || !clients.containsKey(msg.getPlayerName())) return;
-        clients.get(msg.getPlayerName()).showRooms(new ShowRooms(msg.getPlayerName(), MessageID.SHOW_ROOMS, gameRooms));
+        if (msg.getMessageID() != MessageID.ASK_FOR_ROOMS || !clients.containsKey(msg.getPlayerName()))  return;
+        try {
+            clients.get(msg.getPlayerName()).showRooms(new ShowRooms(msg.getPlayerName(), MessageID.SHOW_ROOMS, gameRooms));
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     /**
@@ -196,6 +212,7 @@ public class RoomServices implements ServerController {
      *
      * @author Francesco Ostidich
      * @param names is the players' game names list
+     * @author Francesco Ostidich
      */
     protected void closeGame(@NotNull List<String> names) {
         serverNetwork.disconnect(names);
@@ -204,6 +221,9 @@ public class RoomServices implements ServerController {
             playerMatch.remove(player);
         });
         System.gc();
+    }
+    public boolean PlayerIDisAvailable(@NotNull Hello message) {
+        return !onlinePlayers().contains(message.getPlayerName());
     }
 
 }

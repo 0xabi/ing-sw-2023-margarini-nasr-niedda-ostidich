@@ -1,10 +1,17 @@
 package it.polimi.ingsw.server.serverNetwork;
 
+import it.polimi.ingsw.resources.interfaces.ClientController;
 import it.polimi.ingsw.resources.interfaces.ServerController;
+import it.polimi.ingsw.resources.interfaces.ServerNetwork;
+import it.polimi.ingsw.server.serverController.RoomServices;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -15,7 +22,7 @@ import java.util.List;
  * Every action done on the ClientController interface must be forwarded to the client either as RMI or Socket calling
  * the method directly in the client on the controller.
  */
-public class GameServerNetwork implements it.polimi.ingsw.resources.interfaces.ServerNetwork {
+public class GameServerNetwork implements ServerNetwork, Serializable {
 
     /**
      * Specifies if the server is running.
@@ -47,18 +54,23 @@ public class GameServerNetwork implements it.polimi.ingsw.resources.interfaces.S
      * Method has its own thread, and it is up for all server run time.
      */
     private void waitForClients() {
-        System.out.println("Server listening");
+        System.out.println("server listening");
+        try {
+        Registry registry = LocateRegistry.createRegistry(1099);
+        registry.rebind("Connection", roomServices);
+
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
         while (running) {
             try {
                 Socket client = ss.accept();
-                new Client(client, roomServices);
-                System.out.println("[" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + "]" + "Connection accepted:" + client);
+                ClientController newClient = new Client(client, roomServices);
+                System.out.println("[" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + "]" + " Connection accepted: " + client);
             } catch (IOException e) {
-                System.out.println("[" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + "]" + "Connection not accepted");
-                System.out.println();
+                System.out.println("[" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + "]" + " Connection not accepted");
             }
         }
-        System.out.println("\nServer Offline");
     }
 
     @Override

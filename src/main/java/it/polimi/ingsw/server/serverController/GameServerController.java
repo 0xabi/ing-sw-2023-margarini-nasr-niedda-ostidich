@@ -10,6 +10,7 @@ import it.polimi.ingsw.resources.messages.*;
 import it.polimi.ingsw.server.model.GameServerModel;
 import org.jetbrains.annotations.NotNull;
 
+import java.rmi.RemoteException;
 import java.util.*;
 
 /**
@@ -38,18 +39,21 @@ public class GameServerController extends RoomServices {
 
     private final ServerModel model;
 
+    private final Map<String, ClientController> matchClients;
+
     /**
      * Class constructor.
      *
      * @param clients is the players' client interfaces map
      * @author Francesco Ostidich
      */
-    public GameServerController(@NotNull Map<String, ClientController> clients) {
-        System.out.println("generating game model");
+    public GameServerController(@NotNull Map<String, ClientController> clients) throws RemoteException{
+        matchClients = clients;
         playerPhase = Phase.PICK;
         disconnected = new HashSet<>();
         model = new GameServerModel(clients.keySet());
         this.names = model.getTurnCycleOrder();
+        playerTurn = names.get(0);
         playMatch();
     }
 
@@ -59,22 +63,25 @@ public class GameServerController extends RoomServices {
      * @author Francesco Ostidich
      */
     public void playMatch() {
-        System.out.println("playing match with game names " + names + ", and with server clients " + getClients().keySet());
-        names.forEach(player -> {
-            System.out.println("sending initial message for started match");
-            getClients().get(player).notifyGameHasStarted(new NotifyGameHasStarted(
-                    player,
-                    MessageID.NOTIFY_GAME_HAS_STARTED,
-                    model.getGameParameters(),
-                    model.getTurnCycleOrder(),
-                    model.getBoard(),
-                    model.getBag(),
-                    model.getCommonGoal1Tokens(),
-                    model.getCommonGoal2Tokens(),
-                    model.getPlayerPersonalGoalID(player),
-                    model.getCommonGoal1(),
-                    model.getCommonGoal2()));
-        });
+        System.out.println("playing match with names " + matchClients.keySet()  + ", and with clients " + matchClients.values());
+        names.forEach(player -> new Thread(()->{
+            try{
+                matchClients.get(player).notifyGameHasStarted(new NotifyGameHasStarted(
+                player,
+                MessageID.NOTIFY_GAME_HAS_STARTED,
+                model.getGameParameters(),
+                model.getTurnCycleOrder(),
+                model.getBoard(),
+                model.getBag(),
+                model.getCommonGoal1Tokens(),
+                model.getCommonGoal2Tokens(),
+                model.getPlayerPersonalGoalID(player),
+                model.getCommonGoal1(),
+                model.getCommonGoal2()));
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }).start());
     }
 
     /**
@@ -105,13 +112,17 @@ public class GameServerController extends RoomServices {
      * @author Francesco Ostidich
      */
     @Override
-    public void pickTilesRequest(@NotNull PickTilesRequest message) {
+    public void pickTilesRequest(@NotNull PickTilesRequest message){
         if (!message.getPlayerName().equals(playerTurn) ||
                 message.getMessageID() != MessageID.PICK_TILES_REQUEST) return;
         if (model.checkSelection(message.getChosenCoordinates())) {
             lastPicked = model.selectTilesOnBoard(message.getChosenCoordinates());
             playerPhase = Phase.INSERT;
-            getClients().get(message.getPlayerName()).pickAccepted(new PickAccepted(message.getPlayerName(), MessageID.PICK_ACCEPTED, lastPicked));
+            try{
+                matchClients.get(message.getPlayerName()).pickAccepted(new PickAccepted(message.getPlayerName(), MessageID.PICK_ACCEPTED, lastPicked));
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         } else {
             nextTurn(false);
         }
@@ -128,9 +139,36 @@ public class GameServerController extends RoomServices {
             model.playerInsertTilesInShelf(message.getPlayerName(), message.getChosenTiles(), message.getChosenColumn());
             playerPhase = Phase.PICK;
             nextTurn(true);
+            endOfTurnChecks(message.getPlayerName());
         } catch (UnavailableInsertionException e) {
-            getClients().get(message.getPlayerName()).pickAccepted(new PickAccepted(message.getPlayerName(), MessageID.PICK_ACCEPTED, lastPicked));
+            try {
+                matchClients.get(message.getPlayerName()).pickAccepted(new PickAccepted(message.getPlayerName(), MessageID.PICK_ACCEPTED, lastPicked));
+            } catch (RemoteException ex) {
+                throw new RuntimeException(ex);
+            }
         }
+    }
+
+    /**
+     * After player has inserted the tiles he selected, many checks are done in order
+     * to have points assigned.
+     *
+     * @author Francesco Ostidich
+     * @param playerName is the player's name string
+     */
+    private void endOfTurnChecks(String playerName) {
+        if (!model.getCommonGoal1GivenPlayers().containsValue(playerName) &&
+                model.checkCommonGoal1(playerName)) {
+            model.assignCommonGoal1Points(playerName);
+        }
+        if (!model.getCommonGoal2GivenPlayers().containsValue(playerName) &&
+                model.checkCommonGoal2(playerName)) {
+            model.assignCommonGoal2Points(playerName);
+        }
+        if (model.checkToRefill()) model.refill();
+        if (model.checkPlayerShelfIsFull(playerName) &&
+                model.getEndGameToken().isPresent())
+            model.assignEndGameTokenPoints(playerName);
     }
 
     /**
@@ -162,7 +200,7 @@ public class GameServerController extends RoomServices {
             });
             names.forEach(client -> {
                 try {
-                    getClients().get(client).newTurn(new NewTurn.EndGame(
+                    matchClients.get(client).newTurn(new NewTurn.EndGame(
                             client,
                             MessageID.NEW_TURN,
                             model.getBoard(),
@@ -170,6 +208,8 @@ public class GameServerController extends RoomServices {
                             model.getBag(),
                             model.getCommonGoal1Tokens(),
                             model.getCommonGoal2Tokens(),
+                            model.getCommonGoal1GivenPlayers(),
+                            model.getCommonGoal2GivenPlayers(),
                             shelves,
                             points,
                             personalGoals,
@@ -191,7 +231,7 @@ public class GameServerController extends RoomServices {
         }
         names.forEach(client -> {
             try {
-                getClients().get(client).newTurn(new NewTurn.NextPlayer(
+                matchClients.get(client).newTurn(new NewTurn.NextPlayer(
                         client,
                         MessageID.NEW_TURN,
                         model.getBoard(),
@@ -199,6 +239,8 @@ public class GameServerController extends RoomServices {
                         model.getBag(),
                         model.getCommonGoal1Tokens(),
                         model.getCommonGoal2Tokens(),
+                        model.getCommonGoal1GivenPlayers(),
+                        model.getCommonGoal2GivenPlayers(),
                         shelves,
                         points,
                         model.checkAvailablePickNumber(playerTurn),

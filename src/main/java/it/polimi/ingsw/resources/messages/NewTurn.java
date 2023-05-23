@@ -32,7 +32,7 @@ public abstract class NewTurn extends Message {
 
     private final Stack<Integer> commonGoal2TokenStack;
 
-    private Map<Integer, String> commonGoal1GivenPlayers;
+    private final Map<Integer, String> commonGoal1GivenPlayers;
 
     public Map<Integer, String> getCommonGoal1GivenPlayers() {
         return commonGoal1GivenPlayers;
@@ -42,7 +42,7 @@ public abstract class NewTurn extends Message {
         return commonGoal2GivenPlayers;
     }
 
-    private Map<Integer, String> commonGoal2GivenPlayers;
+    private final Map<Integer, String> commonGoal2GivenPlayers;
 
     public boolean getEndGameToken() {
         return endGameToken;
@@ -64,13 +64,15 @@ public abstract class NewTurn extends Message {
         return playerPoints;
     }
 
-    public NewTurn(String playerName, MessageID messageID, Tile[][] board, boolean endGameToken, Map<Tile, Integer> bag, Stack<Integer> commonGoal1TokenStack, Stack<Integer> commonGoal2TokenStack, Map<String, Tile[][]> playerShelves, Map<String, Integer> playerPoints) {
+    public NewTurn(String playerName, MessageID messageID, Tile[][] board, boolean endGameToken, Map<Tile, Integer> bag, Stack<Integer> commonGoal1TokenStack, Stack<Integer> commonGoal2TokenStack, Map<Integer, String> commonGoal1GivenPlayers, Map<Integer, String> commonGoal2GivenPlayers, Map<String, Tile[][]> playerShelves, Map<String, Integer> playerPoints) {
         super(playerName, messageID);
         this.board = board;
         this.endGameToken = endGameToken;
         this.bag = bag;
         this.commonGoal1TokenStack = commonGoal1TokenStack;
         this.commonGoal2TokenStack = commonGoal2TokenStack;
+        this.commonGoal1GivenPlayers = commonGoal1GivenPlayers;
+        this.commonGoal2GivenPlayers = commonGoal2GivenPlayers;
         this.playerShelves = playerShelves;
         this.playerPoints = playerPoints;
     }
@@ -101,8 +103,8 @@ public abstract class NewTurn extends Message {
 
         private final String winner;
 
-        public EndGame(String playerName, MessageID messageID, Tile[][] board, boolean endGameToken, Map<Tile, Integer> bag, Stack<Integer> commonGoal1TokenStack, Stack<Integer> commonGoal2TokenStack, Map<String, Tile[][]> playerShelves, Map<String, Integer> playerPoints, List<Integer> personalGoals, Map<String, Integer> personalGoalPoints, Map<String, Integer> adjacentGoalPoints, String winner) {
-            super(playerName, messageID, board, endGameToken, bag, commonGoal1TokenStack, commonGoal2TokenStack, playerShelves, playerPoints);
+        public EndGame(String playerName, MessageID messageID, Tile[][] board, boolean endGameToken, Map<Tile, Integer> bag, Stack<Integer> commonGoal1TokenStack, Stack<Integer> commonGoal2TokenStack, Map<Integer, String> commonGoal1GivenPlayers, Map<Integer, String> commonGoal2GivenPlayers, Map<String, Tile[][]> playerShelves, Map<String, Integer> playerPoints, List<Integer> personalGoals, Map<String, Integer> personalGoalPoints, Map<String, Integer> adjacentGoalPoints, String winner) {
+            super(playerName, messageID, board, endGameToken, bag, commonGoal1TokenStack, commonGoal2TokenStack,commonGoal1GivenPlayers,commonGoal2GivenPlayers, playerShelves, playerPoints);
             this.personalGoals = personalGoals;
             this.personalGoalPoints = personalGoalPoints;
             this.adjacentGoalPoints = adjacentGoalPoints;
@@ -125,8 +127,8 @@ public abstract class NewTurn extends Message {
 
         private final String nextPlayer;
 
-        public NextPlayer(String playerName, MessageID messageID, Tile[][] board, boolean endGameToken, Map<Tile, Integer> bag, Stack<Integer> commonGoal1TokenStack, Stack<Integer> commonGoal2TokenStack, Map<String, Tile[][]> playerShelves, Map<String, Integer> playerPoints, int availablePickNumber, String nextPlayer) {
-            super(playerName, messageID, board, endGameToken, bag, commonGoal1TokenStack, commonGoal2TokenStack, playerShelves, playerPoints);
+        public NextPlayer(String playerName, MessageID messageID, Tile[][] board, boolean endGameToken, Map<Tile, Integer> bag, Stack<Integer> commonGoal1TokenStack, Stack<Integer> commonGoal2TokenStack, Map<Integer, String> commonGoal1GivenPlayers, Map<Integer, String> commonGoal2GivenPlayers, Map<String, Tile[][]> playerShelves, Map<String, Integer> playerPoints, int availablePickNumber, String nextPlayer) {
+            super(playerName, messageID, board, endGameToken, bag, commonGoal1TokenStack, commonGoal2TokenStack,commonGoal1GivenPlayers, commonGoal2GivenPlayers, playerShelves, playerPoints);
             this.availablePickNumber = availablePickNumber;
             this.nextPlayer = nextPlayer;
         }
