@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import it.polimi.ingsw.server.model.Board;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -172,7 +173,7 @@ public class CLI extends GameClientView{
      */
     @Override
     public void notifyGameHasStared() {
-        System.out.println("Game Started!");;
+        System.out.println("Game Started!");
     }
 
     /**
@@ -193,6 +194,44 @@ public class CLI extends GameClientView{
         }
     }
 
+    public void printBoard()
+    {
+        Tile[][] boxes = getBoard();
+        System.out.print("     ");
+        for(int i=0;i<Board.getRowLength();i++)
+            System.out.print("-("+i+")-");
+
+        System.out.println("---> X");
+        for(int i=0;i<Board.getColumnLength();i++)
+        {
+            System.out.print(" ("+i+") ");
+
+            for(int j=0;j<Board.getRowLength();j++) {
+
+
+                if(boxes[j][i]==null)
+                {
+                    System.out.print("     ");
+                }
+                else if(boxes[j][i]==Tile.EMPTY)
+                {
+                    System.out.print("[   ]");
+                }
+                else
+                {
+                    System.out.print("[ "+boxes[j][i].toString().charAt(0)+" ]");
+                }
+
+            }
+
+            System.out.println();
+
+
+        }
+
+        System.out.println("  |\n  |\n  V Y");
+
+    }
     @Override
     public void pickTiles(int availablePickNumber) {
         int x = 0, y = 0;
@@ -203,6 +242,7 @@ public class CLI extends GameClientView{
             do {
                 attempt = true;
                 try {
+                    printBoard();
                     coords = playerMessage("choose using the following format: x,y\n").split(",");
                     x = Integer.parseInt(coords[0]);
                     y = Integer.parseInt(coords[1]);
