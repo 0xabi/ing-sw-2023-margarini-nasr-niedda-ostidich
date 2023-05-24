@@ -34,7 +34,6 @@ public class PlayerTest {
     }
     @Test
     public void checkAvailablePickNumberShouldReturn3(){
-        int count = 1;
         ArrayList<Tile> tiles = new ArrayList<>();
         tiles.add(Tile.CATS);
         tiles.add(Tile.CATS);

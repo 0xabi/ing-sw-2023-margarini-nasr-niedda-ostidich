@@ -3,15 +3,23 @@ package it.polimi.ingsw.client.view.handler;
 
 import it.polimi.ingsw.resources.Tile;
 import it.polimi.ingsw.server.model.Shelf;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,9 +52,40 @@ public class MatchSceneHandler extends SceneHandler {
     private Label player3Lbl;
 
     @FXML
+    private Label advertising;
+
+    @FXML
+    private ImageView col1;
+
+    @FXML
+    private ImageView col2;
+    @FXML
+    private ImageView col3;
+    @FXML
+    private ImageView col4;
+    @FXML
+    private ImageView col5;
+
+    @FXML
     private AnchorPane pane;
+    @FXML
+    private TextField txtField;
+    @FXML
+    private TextArea txtArea;
+    @FXML
+    private Button sendBtn;
+
+    private Integer column = null;
+
 
     ImageView[][] mainShelfTiles = new ImageView[6][5];
+
+    private boolean pickPhase = false;
+    private boolean insertPhase = false;
+
+    private ArrayList<ImageView> tiles = new ArrayList<>();
+
+    private ArrayList<ImageView> ordered = new ArrayList<>();
 
 
     public void test()
@@ -92,6 +131,15 @@ public class MatchSceneHandler extends SceneHandler {
 
     }
 
+    public void resetArrows(){
+        col1.setCursor(null);
+        col2.setCursor(null);
+        col3.setCursor(null);
+        col4.setCursor(null);
+        col5.setCursor(null);
+    }
+
+
     public Image getTileImage(Tile tileType)
     {
         //Random rand = new Random();
@@ -124,6 +172,150 @@ public class MatchSceneHandler extends SceneHandler {
         return null;
     }
 
+    public void callPick(){
+        int n = 0;
+
+        if(!pickPhase){
+            advertising.setText("It's not pick phase");
+            return;
+        }
+        if(tiles.size() == 0){
+            advertising.setText("Must choose tiles first");
+            return;
+        }
+
+        for(ImageView tile : tiles) pick(tile, n++);
+
+        col1.setCursor(Cursor.HAND);
+        col2.setCursor(Cursor.HAND);
+        col3.setCursor(Cursor.HAND);
+        col4.setCursor(Cursor.HAND);
+        col5.setCursor(Cursor.HAND);
+        pickPhase = false;
+        insertPhase = true;
+    }
+
+    public void callInsert(){
+        int n = 0;
+
+        for(ImageView tile : ordered) insert(tile, n++);
+
+        tiles.clear();
+        ordered.clear();
+        resetArrows();
+    }
+
+    private void insert(ImageView tile, int n){
+        TranslateTransition translate = new TranslateTransition();
+
+        tile.setFitWidth(32);
+        tile.setFitHeight(32);
+        translate.setNode(tile);
+        translate.setDuration(Duration.millis(1000));
+        translate.setByX((249+47*column)-(tile.getLayoutX()+tile.getTranslateX()));
+        translate.setByY((431-38*n)-(tile.getLayoutY()+tile.getTranslateY()));
+        tile.setEffect(null);
+        tile.setOnMouseClicked(null);
+        translate.play();
+
+        insertPhase = false;
+        pickPhase = true;
+    }
+
+    public void putCol1(){
+        if(!insertPhase) {
+            advertising.setText("It's not insert phase");
+            return;
+        }
+        if(ordered.size() != tiles.size()){
+            advertising.setText("Must choose order first");
+            return;
+        }
+
+        column = 0;
+        resetArrows();
+        callInsert();
+    }
+
+    public void putCol2(){
+        if(!insertPhase) {
+            advertising.setText("It's not insert phase");
+            return;
+        }
+        if(ordered.size() != tiles.size()){
+            advertising.setText("Must choose order first");
+            return;
+        }
+
+        column = 1;
+        resetArrows();
+        callInsert();
+    }
+
+    public void putCol3(){
+        if(!insertPhase) {
+            advertising.setText("It's not insert phase");
+            return;
+        }
+        if(ordered.size() != tiles.size()){
+            advertising.setText("Must choose order first");
+            return;
+        }
+
+        column = 2;
+        resetArrows();
+        callInsert();
+    }
+
+    public void putCol4(){
+        if(!insertPhase) {
+            advertising.setText("It's not insert phase");
+            return;
+        }
+        if(ordered.size() != tiles.size()){
+            advertising.setText("Must choose order first");
+            return;
+        }
+
+        column = 3;
+        resetArrows();
+        callInsert();
+    }
+
+    public void putCol5(){
+        if(!insertPhase) {
+            advertising.setText("It's not insert phase");
+            return;
+        }
+        if(ordered.size() != tiles.size()){
+            advertising.setText("Must choose order first");
+            return;
+        }
+
+        column = 4;
+        resetArrows();
+        callInsert();
+    }
+
+    public void sendMsg(){
+        if(!txtField.getText().equals("")){
+            txtArea.appendText("palceholder" + ": " + txtField.getText() + "\n");
+            txtField.setText("");
+        }
+    }
+
+    private void pick(ImageView tile, int n) {
+        TranslateTransition translate = new TranslateTransition();
+        double x = (228+50*n)-tile.getLayoutX(), y = 53-tile.getLayoutY();
+
+        translate.setNode(tile);
+        translate.setDuration(Duration.millis(1000));
+        translate.setToX(x);
+        translate.setToY(y);
+        tile.setEffect(null);
+        translate.play();
+//        translate.setOnFinished(e -> System.out.println(tile.getTranslateX()));
+    }
     public void initMainShelf()
     {
         //set name player
@@ -162,6 +354,50 @@ public class MatchSceneHandler extends SceneHandler {
 
     }
 
+    private void tileBehavior(ImageView iview){
+        if(pickPhase) {
+            if (tiles.contains(iview)) {
+                iview.setEffect(null);
+                tiles.remove(iview);
+            } else if (tiles.size() < 3) {
+                iview.setEffect(new Glow(1));
+                tiles.add(iview);
+            } else advertising.setText("can't choose more than 3 tiles");
+        }
+        if(insertPhase){
+            if(tiles.contains(iview)) {
+                if (ordered.contains(iview)) {
+                    iview.setEffect(null);
+                    ordered.remove(iview);
+                } else if (ordered.size() < 3) {
+                    iview.setEffect(new Glow(1));
+                    ordered.add(iview);
+                }
+                else advertising.setText("Can't choose this  tile");
+            }
+        }
+    }
+    public void fillBoard(){ // ogni tile si distanzia di 53 lungo x & y ed ha dimwnsioni 46 (all'interno della board)
+        double setx = 565, sety = 72;
+
+        for (int i = 0; i < 9; i++) {
+            for(int j = 0; j <  9 /*&& board.getSpaces[i][j] != null*/; j++) {
+                //Image img = new Image(getTileImage(Tile.CATS));
+                ImageView iview = new ImageView();
+                iview.setImage(getTileImage(Tile.CATS));
+                iview.setCursor(Cursor.HAND);
+                iview.setFitWidth(46);
+                iview.setFitHeight(46);
+                iview.setLayoutY(sety+53*i);
+                iview.setLayoutX(setx+53*j);
+                iview.setPreserveRatio(true );
+                iview.setOnMouseClicked(event ->tileBehavior(iview));
+                getRoot().getChildren().add(iview);
+                //root.getChildren().add(iview);
+                //this.root = root;
+            }
+        }
+    }
 
     /**
      * @author Abdullah Nasr
@@ -218,11 +454,13 @@ public class MatchSceneHandler extends SceneHandler {
     @Override
     public void runScene() {
 
-
-
+        pickPhase=true;
+        advertising.setText("");
         resize();
         test();
         initMainShelf();
+
+        fillBoard();
 
 
         getScene().setRoot(getRoot());

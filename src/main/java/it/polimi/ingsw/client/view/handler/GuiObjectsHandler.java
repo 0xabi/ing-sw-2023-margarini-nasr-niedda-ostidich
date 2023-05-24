@@ -5,13 +5,14 @@ import it.polimi.ingsw.server.model.Shelf;
 public class GuiObjectsHandler {
 
     public static double mainShelfPosY = 320;
-    private static double mainShelfTilesSizeWidth=37;
-    private static double mainShelfTilesSizeHeight=37;
+    private static double mainShelfTilesSizeWidth=35;
+    private static double mainShelfTilesSizeHeight=35;
 
     private static double playerShelfTilesSizeWidth=25;
     private static double playerShelfTilesSizeHeight=25;
 
-    private static final double[]  mainShelfTilesPosY = {347.0, 306.0, 263.0, 221.0, 178.0, 134.0};
+    //private static final double[]  mainShelfTilesPosY = {347.0, 306.0, 263.0, 221.0, 178.0, 134.0};
+    private static final double[]  mainShelfTilesPosY = {380.0, 337.0, 293.0, 251.0, 208.0, 165.0};
 
     private static final double[] mainShelfTilesPosX = {248.0, 298.0, 348.0, 397.0, 445.0};
     //private static double[] mainShelfTilesPosX = {52.0/390.0, 112.0/390.0, 170.0/390.0, 230.0/390.0, 290.0/390.0};
