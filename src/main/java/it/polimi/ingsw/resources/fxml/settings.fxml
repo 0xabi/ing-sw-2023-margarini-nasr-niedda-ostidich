@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.effect.BoxBlur?>
+<?import javafx.scene.effect.Reflection?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="pane" prefHeight="500.0" prefWidth="1100.0" styleClass="anchor_pane" stylesheets="@../css/menu.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.handler.SettingsSceneHandler">
+   <Button fx:id="joinBtn" layoutX="174.0" layoutY="385.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="194.0" styleClass="btn" stylesheets="@../css/menu.css" text="Join game">
+      <effect>
+         <Reflection fraction="0.26" topOpacity="0.26" />
+      </effect>
+   </Button>
+   <ImageView fx:id="logo" fitHeight="158.0" fitWidth="331.0" layoutX="384.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@../graphics/publisherMaterial/small_title.png" />
+   </ImageView>
+   <Button fx:id="newBtn" layoutX="745.0" layoutY="385.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="202.0" styleClass="btn" stylesheets="@../css/menu.css" text="New game">
+      <effect>
+         <Reflection fraction="0.26" topOpacity="0.26" />
+      </effect>
+   </Button>
+   <ImageView fx:id="username_lbl_background" fitHeight="49.0" fitWidth="434.0" layoutX="333.0" layoutY="124.0" pickOnBounds="true">
+      <effect>
+         <BoxBlur height="0.0" width="255.0" />
+      </effect>
+      <Image url="@../graphics/misc/parquet.jpg" />
+   </ImageView>
+   <Text fx:id="welcomeText" layoutX="445.0" layoutY="158.0" opacity="0.52" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Insert username" textAlignment="CENTER">
+      <font>
+         <Font size="30.0" />
+      </font>
+   </Text>
+   <ImageView fx:id="playerNumberBackground" fitHeight="49.0" fitWidth="221.0" layoutX="170.0" layoutY="201.0" pickOnBounds="true">
+      <effect>
+         <BoxBlur height="0.0" width="255.0" />
+      </effect>
+      <image>
+         <Image url="@../graphics/misc/parquet.jpg" />
+      </image>
+   </ImageView>
+   <Text fx:id="playerNumberLbl" layoutX="181.0" layoutY="235.0" opacity="0.52" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Player number" textAlignment="CENTER">
+      <font>
+         <Font size="30.0" />
+      </font>
+   </Text>
+   <ImageView fx:id="connectionTypeBackground" fitHeight="49.0" fitWidth="221.0" layoutX="715.0" layoutY="201.0" pickOnBounds="true">
+      <effect>
+         <BoxBlur height="0.0" width="255.0" />
+      </effect>
+      <image>
+         <Image url="@../graphics/misc/parquet.jpg" />
+      </image>
+   </ImageView>
+   <Text fx:id="connectionTypeLbl" layoutX="717.0" layoutY="236.0" opacity="0.52" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Connection type" textAlignment="CENTER">
+      <font>
+         <Font size="30.0" />
+      </font>
+   </Text>
+   <CheckBox fx:id="twoPlayersCB" layoutX="219.0" layoutY="257.0" mnemonicParsing="false" onAction="#setTwoPlayers" selected="true" text="2 players" textFill="#0a810c">
+      <font>
+         <Font size="18.0" />
+      </font>
+   </CheckBox>
+   <CheckBox fx:id="threePlayersCB" layoutX="219.0" layoutY="284.0" mnemonicParsing="false" onAction="#setThreePlayers" text="3 players" textFill="#0a810c">
+      <font>
+         <Font size="18.0" />
+      </font>
+   </CheckBox>
+   <CheckBox fx:id="socketCB" layoutX="782.0" layoutY="257.0" mnemonicParsing="false" onAction="#setSocket" selected="true" text="Socket" textFill="#0a810c">
+      <font>
+         <Font size="18.0" />
+      </font>
+   </CheckBox>
+   <CheckBox fx:id="RMICB" layoutX="782.0" layoutY="284.0" mnemonicParsing="false" onAction="#setRMI" text="RMI" textFill="#0a810c">
+      <font>
+         <Font size="18.0" />
+      </font>
+   </CheckBox>
+   <CheckBox fx:id="fourPlayersCB" layoutX="219.0" layoutY="311.0" mnemonicParsing="false" onAction="#setFourPlayers" text="4 players" textFill="#0a810c">
+      <font>
+         <Font size="18.0" />
+      </font>
+   </CheckBox>
+</AnchorPane>
