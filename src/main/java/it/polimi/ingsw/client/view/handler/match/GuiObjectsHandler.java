@@ -1,30 +1,30 @@
-package it.polimi.ingsw.client.view.handler;
+package it.polimi.ingsw.client.view.handler.match;
 
 import it.polimi.ingsw.server.model.Shelf;
 
+/**
+ * @author Abdullah Nasr
+ */
 public class GuiObjectsHandler {
 
     public static double mainShelfPosY = 320;
     private static double mainShelfTilesSizeWidth=35;
     private static double mainShelfTilesSizeHeight=35;
 
+    private static double boardTilesSizeWidth = 38;
+    private static double boardTilesSizeHeight = 39;
+
     private static double playerShelfTilesSizeWidth=25;
     private static double playerShelfTilesSizeHeight=25;
 
-    //private static final double[]  mainShelfTilesPosY = {347.0, 306.0, 263.0, 221.0, 178.0, 134.0};
-    private static final double[]  mainShelfTilesPosY = {380.0, 337.0, 293.0, 251.0, 208.0, 165.0};
+    private static final double[]  mainShelfTilesPosY = {0.75, 0.75-0.135, 0.75-0.135*2.0, 0.75-0.135*3.0, 0.75-0.135*4.0, 0.75-0.135*5.0};
 
-    private static final double[] mainShelfTilesPosX = {248.0, 298.0, 348.0, 397.0, 445.0};
-    //private static double[] mainShelfTilesPosX = {52.0/390.0, 112.0/390.0, 170.0/390.0, 230.0/390.0, 290.0/390.0};
-/*
-390px
+    private static double[] mainShelfTilesPosX = {0.13, 0.13+0.155, 0.13+0.155*2.0, 0.13+0.155*3.0, 0.13+0.155*4.0};
 
-52px
-112px
-170px
-230px
-290px
- */
+    private static double[] boardTilesPosX = {0.045, 0.045+0.1018, 0.045+0.1018*2, 0.045+0.1018*3,0.045+0.1018*4,0.045+0.1018*5, 0.045+0.1018*6,0.045+0.1018*7,0.045+0.1018*8};
+
+    private static double[] boardTilesPosY = {0.0477, 0.0477+0.1018, 0.0477+0.1018*2, 0.0477+0.1018*3,0.0477+0.1018*4,0.0477+0.1018*5, 0.0477+0.1018*6,0.0477+0.1018*7,0.0477+0.1018*8};
+
     private static final double[]
             shelfPlayer1TilesPosY = {610, 586, 562, 537, 513, 488},
             shelfPlayer2TilesPosY= {610, 586, 562, 537, 513, 488},
@@ -45,14 +45,14 @@ public class GuiObjectsHandler {
     public static void resizeObjects(double ratio_width, double ratio_height)
     {
         mainShelfTilesSizeWidth = mainShelfTilesSizeWidth*ratio_width;
-        //mainShelfTilesSizeHeight = mainShelfTilesSizeHeight*ratio_height;
+        mainShelfTilesSizeHeight = mainShelfTilesSizeHeight*ratio_height;
 
         playerShelfTilesSizeWidth = playerShelfTilesSizeWidth*ratio_width;
         playerShelfTilesSizeHeight = playerShelfTilesSizeHeight*ratio_height;
 
         for(int i=0;i< Shelf.getColumnLength();i++)
         {
-            //mainShelfTilesPosY[i] = mainShelfTilesPosY[i]*ratio_height;
+            mainShelfTilesPosY[i] = mainShelfTilesPosY[i]*ratio_height;
             shelfPlayer1TilesPosY[i] = shelfPlayer1TilesPosY[i]*ratio_height;
             shelfPlayer2TilesPosY[i] = shelfPlayer2TilesPosY[i]*ratio_height;
             shelfPlayer3TilesPosY[i] = shelfPlayer3TilesPosY[i]*ratio_height;
@@ -163,6 +163,32 @@ public class GuiObjectsHandler {
         return shelfPlayer3TilesPosY[col];
     }
 
+    /**
+     * The column with index 0 starts from the left of the board
+     * @param col
+     * @return
+     */
+    public static double getBoardTilesPosX(int col)
+    {
+        return boardTilesPosX[col];
+    }
+
+    /**
+     * The row with index 0 starts from the upper of the board
+     * @param row
+     * @return
+     */
+    public static double getBoardTilesPosY(int row)
+    {
+        return boardTilesPosY[row];
+    }
 
 
+    public static double getBoardTilesSizeWidth() {
+        return boardTilesSizeWidth;
+    }
+
+    public static double getBoardTilesSizeHeight() {
+        return boardTilesSizeHeight;
+    }
 }
