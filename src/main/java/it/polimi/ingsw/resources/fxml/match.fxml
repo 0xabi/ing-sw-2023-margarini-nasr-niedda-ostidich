@@ -72,13 +72,4 @@
    <ImageView fx:id="col3" fitHeight="257.0" fitWidth="44.0" layoutX="344.0" layoutY="154.0" onMouseClicked="#putCol3" pickOnBounds="true" preserveRatio="true" />
    <ImageView fx:id="col4" fitHeight="257.0" fitWidth="44.0" layoutX="395.0" layoutY="154.0" onMouseClicked="#putCol4" pickOnBounds="true" preserveRatio="true" />
    <ImageView fx:id="col5" fitHeight="257.0" fitWidth="44.0" layoutX="445.0" layoutY="154.0" onMouseClicked="#putCol5" pickOnBounds="true" preserveRatio="true" />
-   <ImageView fitHeight="38.0" fitWidth="38.0" layoutX="558.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true">
-      <Image url="@../graphics/itemTiles/Cornici1.1.png"/>
-   </ImageView>
-   <ImageView fitHeight="38.0" fitWidth="38.0" layoutX="601.0" layoutY="225.0" pickOnBounds="true" preserveRatio="true">
-      <Image url="@../graphics/itemTiles/Cornici1.1.png"/>
-   </ImageView>
-   <ImageView fitHeight="38.0" fitWidth="38.0" layoutX="601.0" layoutY="182.0" pickOnBounds="true" preserveRatio="true">
-      <Image url="@../graphics/itemTiles/Cornici1.1.png"/>
-   </ImageView>
 </AnchorPane>
