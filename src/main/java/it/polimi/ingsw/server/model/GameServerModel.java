@@ -85,8 +85,8 @@ public class GameServerModel implements ServerModel, Serializable {
         gameParameters.put("boardRowLength", Board.getRowLength());
         gameParameters.put("boardColumnLength", Board.getColumnLength());
         gameParameters.put("bagTotalQuantity", Bag.getTotalQuantity());
-        gameParameters.put("shelfRowNumber", Shelf.getRowLength());
-        gameParameters.put("shelfColumnNumber", Shelf.getColumnLength());
+        gameParameters.put("shelfRowLength", Shelf.getRowLength());
+        gameParameters.put("shelfColumnLength", Shelf.getColumnLength());
         gameParameters.put("commonGoalNumber", CommonGoalFactory.getCommonGoalNumber());
         gameParameters.put("personalGoalNumber", PersonalGoal.getPersonalGoalNumber());
         gameParameters.put("endGameTokenPoints", EndGameToken.getEndGamePoints());

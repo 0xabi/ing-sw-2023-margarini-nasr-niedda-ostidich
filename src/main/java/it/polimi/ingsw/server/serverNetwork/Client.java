@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.LinkedList;
@@ -59,7 +58,6 @@ public class Client implements ClientController {
         }).start();
         new Thread(this::ClientSocketListener).start();
     }
-
 
     public void send(Message message) throws IOException {
         if (Objects.equals(connectionType, "Socket")) {
@@ -202,10 +200,9 @@ public class Client implements ClientController {
     }
 
     @Override
-    public void endGame(NewTurn.@NotNull EndGame msg)  {
+    public void endGame(@NotNull EndGame msg) {
         throw new RuntimeException("server cannot call endgame");
     }
-
 
 }
 

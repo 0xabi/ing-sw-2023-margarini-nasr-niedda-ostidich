@@ -24,15 +24,6 @@ public class Stair extends CommonGoal {
      */
     @Override
     public boolean check(@NotNull Shelf shelf) {
-       /* boolean ctrl;
-        if (shelf.getTilesInColumn(Shelf.getColumnLength() - 1) == shelf.getTilesInColumn(Shelf.getColumnLength() - 2) + 1) {
-            ctrl = ReverseStairs(Shelf.getColumnLength() - 1, shelf);
-            if (ctrl) return true;
-        }
-        if (shelf.getTilesInColumn(0) == shelf.getTilesInColumn(1) + 1) {
-            ctrl = Stairs(0, shelf);
-            return ctrl;
-        }*/
         if(shelf.getTilesInColumn(0) == 0 || shelf.getTilesInColumn(0) == 5)
             return(Stairs(0, shelf) || ReverseStairs(Shelf.getRowLength() - 1, shelf));
         return false;

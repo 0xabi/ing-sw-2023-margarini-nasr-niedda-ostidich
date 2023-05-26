@@ -1,9 +1,7 @@
 package it.polimi.ingsw.resources.interfaces;
 
-import it.polimi.ingsw.resources.Message;
 import it.polimi.ingsw.resources.messages.*;
 
-import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.Set;

@@ -16,7 +16,6 @@ import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.util.Duration;
@@ -83,15 +82,15 @@ public class MatchSceneHandler extends SceneHandler {
     private boolean pickPhase = false;
     private boolean insertPhase = false;
 
-    private ArrayList<ImageView> tiles = new ArrayList<>();
+    private final ArrayList<ImageView> tiles = new ArrayList<>();
 
-    private ArrayList<ImageView> ordered = new ArrayList<>();
+    private final ArrayList<ImageView> ordered = new ArrayList<>();
 
 
     public void test()
     {
         //set up usernames
-        getGui().turnCycleOrder(new ArrayList<String>(){{
+        getGui().turnCycleOrder(new ArrayList<>() {{
             add("PlayerAkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
             add("PlayerB");
             add("PlayerC");
@@ -110,17 +109,17 @@ public class MatchSceneHandler extends SceneHandler {
         plShelves.put("PlayerC", shelfPlayerC.getPositions());
 
         //insert tiles into the shelves
-        shelfPlayerA.insertInColumn(new ArrayList<Tile>(){{
-                                 add(Tile.CATS);
-                                 add(Tile.CATS);
-                                 add(Tile.GAMES);
+        shelfPlayerA.insertInColumn(new ArrayList<>() {{
+            add(Tile.CATS);
+            add(Tile.CATS);
+            add(Tile.GAMES);
         }},1);
 
-        shelfPlayerA.insertInColumn(new ArrayList<Tile>(){{
+        shelfPlayerA.insertInColumn(new ArrayList<>() {{
             add(Tile.GAMES);
         }},3);
 
-        shelfPlayerB.insertInColumn(new ArrayList<Tile>(){{
+        shelfPlayerB.insertInColumn(new ArrayList<>() {{
             add(Tile.TROPHIES);
             add(Tile.CATS);
             add(Tile.FRAMES);
@@ -377,7 +376,7 @@ public class MatchSceneHandler extends SceneHandler {
             }
         }
     }
-    public void fillBoard(){ // ogni tile si distanzia di 53 lungo x & y ed ha dimwnsioni 46 (all'interno della board)
+    public void fillBoard(){ // ogni tile si distanzia di 53 lungo x & y ed ha dimensioni 46 (all'interno della board)
         double setx = 565, sety = 72;
 
         for (int i = 0; i < 9; i++) {

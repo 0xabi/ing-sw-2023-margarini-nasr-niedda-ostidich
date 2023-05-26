@@ -26,15 +26,15 @@ public class CornersTest {
         shelf = null;
     }
     @Test
-    public void checkShouldReturnFalaseWithoutTiles(){assertFalse(goal.check(shelf));}
+    public void checkShouldReturnFalseWithoutTiles(){assertFalse(goal.check(shelf));}
     @Test
-    public void checkShouldReturnFalaseWithTiles(){
+    public void checkShouldReturnFalseWithTiles(){
         ArrayList<Tile> tiles = new ArrayList<>();
         tiles.add(Tile.BOOKS);
         tiles.add(Tile.CATS);
         tiles.add(Tile.FRAMES);
 
-        for(int i = 0; i < shelf.getRowLength(); i++)
+        for(int i = 0; i < Shelf.getRowLength(); i++)
             shelf.insertInColumn(tiles, i);
 
         assertFalse(goal.check(shelf));
@@ -42,7 +42,7 @@ public class CornersTest {
         shelf = new Shelf();
     }
     @Test
-    public void checkSholdReturnTrue(){
+    public void checkShouldReturnTrue(){
         ArrayList<Tile> tiles1 = new ArrayList<>();
         ArrayList<Tile> tiles2 = new ArrayList<>();
         tiles2.add(Tile.TROPHIES);
@@ -54,8 +54,8 @@ public class CornersTest {
         Coordinates co4 = new Coordinates(Shelf.getRowLength() - 1, Shelf.getColumnLength() - 1);
         Coordinates coord;
 
-        for(int i  = 0; i < shelf.getColumnLength(); i++)
-            for(int j = 0; j < shelf.getRowLength(); j++) {
+        for(int i = 0; i < Shelf.getColumnLength(); i++)
+            for(int j = 0; j < Shelf.getRowLength(); j++) {
                 coord = new Coordinates(i, j);
                 if(coord == co1 || coord == co2 || coord == co3 || coord == co4)
                     shelf.insertInColumn(tiles1, j);

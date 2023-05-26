@@ -4,9 +4,9 @@ import it.polimi.ingsw.server.model.Shelf;
 
 public class GuiObjectsHandler {
 
-    public static double mainShelfPosY = 320;
+    public static final double mainShelfPosY = 320;
     private static double mainShelfTilesSizeWidth=35;
-    private static double mainShelfTilesSizeHeight=35;
+    private static final double mainShelfTilesSizeHeight=35;
 
     private static double playerShelfTilesSizeWidth=25;
     private static double playerShelfTilesSizeHeight=25;

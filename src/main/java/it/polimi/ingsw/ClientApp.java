@@ -7,11 +7,9 @@ import it.polimi.ingsw.client.view.handler.SceneHandler;
 import javafx.application.Application;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class ClientApp {
-
 
     public static void main(String @NotNull [] args) {
         if (args.length == 0) {

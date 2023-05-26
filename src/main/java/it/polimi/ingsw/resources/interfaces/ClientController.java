@@ -92,5 +92,5 @@ public interface ClientController extends Remote {
      */
     void pickAccepted(PickAccepted message) throws RemoteException;
 
-    void endGame(@NotNull NewTurn.EndGame msg) throws RemoteException;
+    void endGame(@NotNull EndGame msg) throws RemoteException;
 }

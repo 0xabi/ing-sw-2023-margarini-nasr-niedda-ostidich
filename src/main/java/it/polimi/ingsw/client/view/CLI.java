@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import it.polimi.ingsw.server.model.Board;
 import it.polimi.ingsw.server.model.Shelf;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Francesco Ostidich
  */
-public class CLI extends GameClientView{
+public class CLI extends GameClientView {
 
     private String chatMessage = "";
 
@@ -195,74 +194,48 @@ public class CLI extends GameClientView{
         }
     }
 
-    public void printBoard()
-    {
+    public void printBoard() {
         Tile[][] boxes = getBoard();
         System.out.print("     ");
-        for(int i=0;i<Board.getRowLength();i++)
-            System.out.print("-("+i+")-");
-
+        for (int i = 0; i < getGameParameters().get("boardRowLength"); i++)
+            System.out.print("-(" + i + ")-");
         System.out.println("---> X");
-        for(int i=0;i<Board.getColumnLength();i++)
-        {
-            System.out.print(" ("+i+") ");
-
-            for(int j=0;j<Board.getRowLength();j++) {
-
-
-                if(boxes[j][i]==null)
-                {
+        for (int i = 0; i < getGameParameters().get("boardColumnLength"); i++) {
+            System.out.print(" (" + i + ") ");
+            for (int j = 0; j < getGameParameters().get("boardRowLength"); j++) {
+                if (boxes[j][i] == null) {
                     System.out.print("     ");
-                }
-                else if(boxes[j][i]==Tile.EMPTY)
-                {
+                } else if (boxes[j][i] == Tile.EMPTY) {
                     System.out.print("[   ]");
+                } else {
+                    System.out.print("[ " + boxes[j][i].toString().charAt(0) + " ]");
                 }
-                else
-                {
-                    System.out.print("[ "+boxes[j][i].toString().charAt(0)+" ]");
-                }
-
             }
-
             System.out.println();
-
-
         }
-
         System.out.println("  |\n  |\n  V Y");
     }
 
-    public void printBookshelves()
-    {
-        for(String name : getNames())
-        {
+    public void printBookshelves() {
+        for (String name : getNames()) {
             Tile[][] currentShelf = getPlayerShelves().get(name);
             System.out.println(name);
-
-            for(int i=Shelf.getColumnLength()-1;i>=0;i--)
-            {
-                for(int j=0;j<Shelf.getRowLength();j++)
-                {
-                    if(currentShelf[j][i]==null)
+            for (int i = Shelf.getColumnLength() - 1; i >= 0; i--) {
+                for (int j = 0; j < Shelf.getRowLength(); j++) {
+                    if (currentShelf[j][i] == null)
                         System.out.print("[ ]");
                     else
-                        System.out.print("["+currentShelf[j][i].toString().charAt(0)+"]");
+                        System.out.print("[" + currentShelf[j][i].toString().charAt(0) + "]");
                 }
-
                 System.out.println();
             }
-
             System.out.println();
-
-
         }
     }
 
-    public void printCommonGoals()
-    {
-        System.out.println("Common goal 1:"+ getCommonGoal1());
-        System.out.println("Common goal 2:"+ getCommonGoal2());
+    public void printCommonGoals() {
+        System.out.println("Common goal 1: " + getCommonGoal1());
+        System.out.println("Common goal 2: " + getCommonGoal2());
     }
 
     @Override
@@ -282,12 +255,12 @@ public class CLI extends GameClientView{
                     x = Integer.parseInt(coords[0]);
                     y = Integer.parseInt(coords[1]);
                 } catch (Exception e) {
-                    System.out.println("invalid input, try again " + e.toString());
+                    System.out.println("invalid input, try again " + e);
                     attempt = false;
                 }
             } while (!attempt);
             list.add(new Coordinates(x, y));
-            if (i < 3 && playerMessage("done?").equals("y")) i = 4;
+            if (i < 3 && playerMessage("done? ").equals("y")) i = 4;
         }
         try {
             getClientController().update(new Event(EventID.PICK_TILES, list));
@@ -350,7 +323,7 @@ public class CLI extends GameClientView{
 
     @Override
     public void playerIsPlaying(String playerName) {
-        System.out.println(playerName + "is currently playing his turn");
+        System.out.println(playerName + " is currently playing his turn");
     }
 
     @Override

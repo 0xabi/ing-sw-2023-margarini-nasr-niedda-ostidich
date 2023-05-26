@@ -29,7 +29,7 @@ public class PlayerTest {
         assertEquals(3, player.getPoints());
     }
     @Test
-    public void getPersonalGoalSholdReturnPersonalGoalZero(){
+    public void getPersonalGoalShouldReturnPersonalGoalZero(){
         assertEquals(1, player.getPersonalGoal().getPersonalGoalID());
     }
     @Test
