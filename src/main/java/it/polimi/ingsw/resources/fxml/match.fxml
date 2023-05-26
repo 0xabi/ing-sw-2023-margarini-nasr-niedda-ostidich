@@ -9,18 +9,18 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="pane" prefHeight="720.0" prefWidth="1200.0" styleClass="anchor_pane" stylesheets="@../css/match.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.handler.MatchSceneHandler">
-   <ImageView fx:id="mainShelf" fitHeight="320.0" fitWidth="316.0" layoutX="208.0" layoutY="134.0" pickOnBounds="true">
-      <effect>
-         <DropShadow offsetX="-3.0" />
-      </effect>
-      <Image url="@../graphics/boards/bookshelf.png" />
-   </ImageView>
-   <ImageView fx:id="board" fitHeight="422.0" fitWidth="422.0" layoutX="539.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
+<AnchorPane fx:id="pane" prefHeight="720.0" prefWidth="1200.0" styleClass="anchor_pane" stylesheets="@../css/match.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.handler.match.MatchSceneHandler">
+   <ImageView fx:id="board" fitHeight="422.0" fitWidth="422.0" layoutX="539.0" layoutY="33.0" pickOnBounds="true">
       <effect>
          <DropShadow />
       </effect>
       <Image url="@../graphics/boards/livingroom.png" />
+   </ImageView>
+   <ImageView fx:id="mainShelf" fitHeight="320.0" fitWidth="316.0" layoutX="208.0" layoutY="134.0" pickOnBounds="true" preserveRatio="true">
+      <effect>
+         <DropShadow offsetX="-3.0" />
+      </effect>
+      <Image url="@../graphics/boards/bookshelf.png" />
    </ImageView>
    <ImageView fx:id="personalGoal" fitHeight="239.0" fitWidth="163.0" layoutX="14.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true">
       <effect>
@@ -41,27 +41,27 @@
       <Image url="@../graphics/commonGoalCards/1.jpg" />
    </ImageView>
    <Label fx:id="mainPlayerLbl" alignment="CENTER" layoutX="207.0" layoutY="459.0" prefHeight="25.0" prefWidth="316.0" text="Player" translateX="1.0" />
-   <ImageView fx:id="shelfPlayer1" fitHeight="184.0" fitWidth="182.0" layoutX="550.0" layoutY="487.0" pickOnBounds="true" preserveRatio="true">
+   <ImageView fx:id="shelfPlayer1" fitHeight="184.0" fitWidth="182.0" layoutX="550.0" layoutY="487.0" pickOnBounds="true">
       <effect>
          <DropShadow offsetX="-3.0" />
       </effect>
       <Image url="@../graphics/boards/bookshelf.png" />
    </ImageView>
-   <ImageView fx:id="shelfPlayer2" fitHeight="184.0" fitWidth="182.0" layoutX="765.0" layoutY="487.0" pickOnBounds="true" preserveRatio="true">
+   <ImageView fx:id="shelfPlayer2" fitHeight="184.0" fitWidth="182.0" layoutX="765.0" layoutY="487.0" pickOnBounds="true">
       <effect>
          <DropShadow offsetX="-3.0" />
       </effect>
       <Image url="@../graphics/boards/bookshelf.png" />
    </ImageView>
-   <ImageView fx:id="shelfPlayer3" fitHeight="184.0" fitWidth="182.0" layoutX="981.0" layoutY="487.0" pickOnBounds="true" preserveRatio="true">
+   <ImageView fx:id="shelfPlayer3" fitHeight="184.0" fitWidth="182.0" layoutX="981.0" layoutY="487.0" pickOnBounds="true">
       <effect>
          <DropShadow offsetX="-3.0" />
       </effect>
       <Image url="@../graphics/boards/bookshelf.png" />
    </ImageView>
-   <Label fx:id="player1Lbl" layoutX="625.0" layoutY="684.0" prefHeight="30.0" prefWidth="35.0" text="Player" />
-   <Label fx:id="player2Lbl" layoutX="840.0" layoutY="684.0" prefHeight="30.0" prefWidth="35.0" text="Player" />
-   <Label fx:id="player3Lbl" layoutX="1056.0" layoutY="684.0" prefHeight="30.0" prefWidth="35.0" text="Player" />
+   <Label fx:id="player1Lbl" alignment="CENTER" layoutX="550.0" layoutY="673.0" prefHeight="25.0" prefWidth="182.0" text="Player" />
+   <Label fx:id="player2Lbl" alignment="CENTER" layoutX="765.0" layoutY="673.0" prefHeight="25.0" prefWidth="182.0" text="Player" />
+   <Label fx:id="player3Lbl" alignment="CENTER" layoutX="981.0" layoutY="673.0" prefHeight="25.0" prefWidth="182.0" text="Player" />
    <Label fx:id="advertising" alignment="TOP_LEFT" layoutX="539.0" layoutY="7.0" text="oooooh picca tutto ahaaaa" />
    <Button layoutX="571.0" layoutY="402.0" mnemonicParsing="false" onAction="#callPick" prefHeight="38.0" prefWidth="58.0" text="PICK" />
    <TextArea fx:id="txtArea" layoutX="976.0" layoutY="31.0" prefHeight="394.0" prefWidth="215.0" />

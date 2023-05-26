@@ -1,13 +1,14 @@
-package it.polimi.ingsw.client.view.handler;
+package it.polimi.ingsw.client.view.handler.match;
 
 
+import it.polimi.ingsw.client.view.handler.SceneHandler;
 import it.polimi.ingsw.resources.Tile;
+import it.polimi.ingsw.server.model.Board;
 import it.polimi.ingsw.server.model.Shelf;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -16,7 +17,6 @@ import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.util.Duration;
 
@@ -76,10 +76,8 @@ public class MatchSceneHandler extends SceneHandler {
 
     private Integer column = null;
 
-
-    ImageView[][] mainShelfTiles = new ImageView[6][5];
-
-    private boolean pickPhase = false;
+    Tile[][] prevMainShelf;
+    private boolean pickPhase = true;
     private boolean insertPhase = false;
 
     private final ArrayList<ImageView> tiles = new ArrayList<>();
@@ -126,11 +124,29 @@ public class MatchSceneHandler extends SceneHandler {
         }},1);
 
 
+        Tile[][] board = {{null,null,null,null,null,null,null,null,null},
+                {null,null,null,Tile.CATS,Tile.FRAMES,null,null,null,null,null},
+                {null,null,null,Tile.FRAMES,Tile.BOOKS,Tile.PLANTS,null,null,null},
+                {null,null,Tile.BOOKS,Tile.GAMES,Tile.TROPHIES,Tile.TROPHIES,Tile.BOOKS,Tile.CATS,null},
+                {null,Tile.PLANTS,Tile.GAMES,Tile.TROPHIES,Tile.FRAMES,Tile.GAMES,Tile.TROPHIES,Tile.GAMES,null},
+                {null,Tile.PLANTS,Tile.GAMES,Tile.TROPHIES,Tile.FRAMES,Tile.GAMES,Tile.TROPHIES,null,null},
+                {null,null,null,Tile.FRAMES,Tile.CATS,Tile.TROPHIES,null,null,null},
+                {null,null,null,null,Tile.BOOKS,Tile.TROPHIES,null,null,null},
+                {null,null,null,null,null,null,null,null,null,}};
+
+
         getGui().updatePlayerShelves(plShelves);
+        getGui().updateBoard(board);
+
+
+
 
     }
 
-    public void resetArrows(){
+    /**
+     * @author Pietro Andrea Niedda
+     */
+    public void resetColumnsCursor(){
         col1.setCursor(null);
         col2.setCursor(null);
         col3.setCursor(null);
@@ -139,6 +155,12 @@ public class MatchSceneHandler extends SceneHandler {
     }
 
 
+    /**
+     *
+     * @param tileType
+     * @return
+     * @author Abdullah Nasr
+     */
     public Image getTileImage(Tile tileType)
     {
         //Random rand = new Random();
@@ -171,56 +193,115 @@ public class MatchSceneHandler extends SceneHandler {
         return null;
     }
 
+    /**
+     * @author Pietro Andrea Niedda
+     */
     public void callPick(){
         int n = 0;
+        double tilesSize = tiles.size()*GuiObjectsHandler.getBoardTilesSizeWidth() + (tiles.size()-1) * 0.1018;
+        double begin = mainShelf.getLayoutX() + (mainShelf.getFitWidth()- tilesSize)/2;
+        TranslateTransition translate;
 
         if(!pickPhase){
             advertising.setText("It's not pick phase");
-            return;
         }
-        if(tiles.size() == 0){
+        else if(tiles.size() == 0){
             advertising.setText("Must choose tiles first");
-            return;
+        }
+        else
+        {
+            for(ImageView tile : tiles)
+            {
+                translate = new TranslateTransition();
+                translate.setNode(tile);
+                translate.setDuration(Duration.millis(1000));
+                translate.setToX((begin+n*(GuiObjectsHandler.getBoardTilesSizeWidth()+0.1018))-tile.getLayoutX());
+                translate.setToY(mainShelf.getLayoutY()-tile.getLayoutY()-GuiObjectsHandler.getBoardTilesSizeHeight()*2);
+                tile.setEffect(null);
+                translate.play();
+                n++;
+            }
+
+            col1.setCursor(Cursor.HAND);
+            col2.setCursor(Cursor.HAND);
+            col3.setCursor(Cursor.HAND);
+            col4.setCursor(Cursor.HAND);
+            col5.setCursor(Cursor.HAND);
+
+            prevMainShelf = getGui().getPlayerShelves().get(getGui().getNames().get(0));
+            pickPhase = false;
+            insertPhase = true;
         }
 
-        for(ImageView tile : tiles) pick(tile, n++);
 
-        col1.setCursor(Cursor.HAND);
-        col2.setCursor(Cursor.HAND);
-        col3.setCursor(Cursor.HAND);
-        col4.setCursor(Cursor.HAND);
-        col5.setCursor(Cursor.HAND);
-        pickPhase = false;
-        insertPhase = true;
     }
 
-    public void callInsert(){
-        int n = 0;
+    /**
+     *
+     * @param col
+     * @author Pietro Andrea Niedda
+     */
+    public void callInsert(int col){
+        TranslateTransition translate;
+        int freeRowPosition = getFreeCellMainShelfPosition(col);
+        double currFreeRowPositionY;
+        double currFreeRowPositionX = mainShelf.getLayoutX()+mainShelf.getFitWidth()*GuiObjectsHandler.getMainShelfTilesPosX(col);
 
-        for(ImageView tile : ordered) insert(tile, n++);
 
-        tiles.clear();
-        ordered.clear();
-        resetArrows();
-    }
 
-    private void insert(ImageView tile, int n){
-        TranslateTransition translate = new TranslateTransition();
+        for(ImageView tile : ordered) {
+            translate = new TranslateTransition();
+            tile.setFitWidth(GuiObjectsHandler.getBoardTilesSizeWidth());
+            tile.setFitHeight(GuiObjectsHandler.getBoardTilesSizeHeight());
+            translate.setNode(tile);
+            translate.setDuration(Duration.millis(1000));
+            currFreeRowPositionY =mainShelf.getLayoutY()+mainShelf.getFitHeight()*GuiObjectsHandler.getMainShelfTilesPosY(freeRowPosition);
+            translate.setToY(currFreeRowPositionY -tile.getLayoutY());
+            translate.setToX(currFreeRowPositionX-tile.getLayoutX());
 
-        tile.setFitWidth(32);
-        tile.setFitHeight(32);
-        translate.setNode(tile);
-        translate.setDuration(Duration.millis(1000));
-        translate.setByX((249+47*column)-(tile.getLayoutX()+tile.getTranslateX()));
-        translate.setByY((431-38*n)-(tile.getLayoutY()+tile.getTranslateY()));
-        tile.setEffect(null);
-        tile.setOnMouseClicked(null);
-        translate.play();
+            tile.setEffect(null);
+            tile.setOnMouseClicked(null);
+            translate.play();
+
+            freeRowPosition++;
+
+            //insert(tile, n++);
+
+        }
 
         insertPhase = false;
         pickPhase = true;
+        prevMainShelf = getGui().getPlayerShelves().get(getGui().getNames().get(0));
+        tiles.clear();
+        ordered.clear();
+        resetColumnsCursor();
     }
 
+    /**
+     *
+     * @param col
+     * @return
+     * @author Abdullah Nasr
+     */
+    private int getFreeCellMainShelfPosition(int col)
+    {
+        Tile[][] board = prevMainShelf;
+
+        for(int i=0;i<Shelf.getColumnLength();i++)
+        {
+            if(board[col][i]==null || board[col][i]==Tile.EMPTY)
+            {
+                return i;
+            }
+        }
+
+        return 0;
+    }
+
+
+    /**
+     * @author Pietro Andrea Niedda
+     */
     public void putCol1(){
         if(!insertPhase) {
             advertising.setText("It's not insert phase");
@@ -232,9 +313,13 @@ public class MatchSceneHandler extends SceneHandler {
         }
 
         column = 0;
-        resetArrows();
-        callInsert();
+        resetColumnsCursor();
+        callInsert(0);
     }
+
+    /**
+     * @author Pietro Andrea Niedda
+     */
 
     public void putCol2(){
         if(!insertPhase) {
@@ -247,10 +332,13 @@ public class MatchSceneHandler extends SceneHandler {
         }
 
         column = 1;
-        resetArrows();
-        callInsert();
+        resetColumnsCursor();
+        callInsert(1);
     }
 
+    /**
+     * @author Pietro Andrea Niedda
+     */
     public void putCol3(){
         if(!insertPhase) {
             advertising.setText("It's not insert phase");
@@ -262,10 +350,13 @@ public class MatchSceneHandler extends SceneHandler {
         }
 
         column = 2;
-        resetArrows();
-        callInsert();
+        resetColumnsCursor();
+        callInsert(2);
     }
 
+    /**
+     * @author Pietro Andrea Niedda
+     */
     public void putCol4(){
         if(!insertPhase) {
             advertising.setText("It's not insert phase");
@@ -277,10 +368,13 @@ public class MatchSceneHandler extends SceneHandler {
         }
 
         column = 3;
-        resetArrows();
-        callInsert();
+        resetColumnsCursor();
+        callInsert(3);
     }
 
+    /**
+     * @author Pietro Andrea Niedda
+     */
     public void putCol5(){
         if(!insertPhase) {
             advertising.setText("It's not insert phase");
@@ -292,29 +386,23 @@ public class MatchSceneHandler extends SceneHandler {
         }
 
         column = 4;
-        resetArrows();
-        callInsert();
+        resetColumnsCursor();
+        callInsert(4);
     }
 
+    /**
+     * @author Pietro Andrea Niedda
+     */
     public void sendMsg(){
         if(!txtField.getText().equals("")){
-            txtArea.appendText("palceholder" + ": " + txtField.getText() + "\n");
+            txtArea.appendText("placeholder" + ": " + txtField.getText() + "\n");
             txtField.setText("");
         }
     }
 
-    private void pick(ImageView tile, int n) {
-        TranslateTransition translate = new TranslateTransition();
-        double x = (228+50*n)-tile.getLayoutX(), y = 53-tile.getLayoutY();
-
-        translate.setNode(tile);
-        translate.setDuration(Duration.millis(1000));
-        translate.setToX(x);
-        translate.setToY(y);
-        tile.setEffect(null);
-        translate.play();
-//        translate.setOnFinished(e -> System.out.println(tile.getTranslateX()));
-    }
+    /**
+     * @author Abdullah Nasr
+     */
     public void initMainShelf()
     {
         //set name player
@@ -334,68 +422,81 @@ public class MatchSceneHandler extends SceneHandler {
                 if(typeTile != null)
                 {
                     iv.setImage(getTileImage(typeTile));
-                    iv.setPreserveRatio(true);
+                    iv.setPreserveRatio(false);
 
-                    double a =  mainShelf.getBoundsInParent().getHeight();
-                    double b = GuiObjectsHandler.mainShelfPosY;
-                    double test =a/b;
 
                     iv.setFitWidth(GuiObjectsHandler.getMainShelfTilesSizeWidth());
+                    iv.setFitHeight(GuiObjectsHandler.getMainShelfTilesSizeHeight());
 
                     //iv.setLayoutX(GuiObjectsHandler.getMainShelfTilesPosX(i));
-                    iv.setLayoutX(GuiObjectsHandler.getMainShelfTilesPosX(i));
-                    iv.setLayoutY(GuiObjectsHandler.getMainShelfTilesPosY(j));
+                    iv.setLayoutX(mainShelf.getLayoutX()+mainShelf.getFitWidth()*GuiObjectsHandler.getMainShelfTilesPosX(i));
+                    iv.setLayoutY(mainShelf.getLayoutY()+mainShelf.getFitHeight()*GuiObjectsHandler.getMainShelfTilesPosY(j));
+
+                    //iv.setLayoutY(GuiObjectsHandler.getMainShelfTilesPosY(j));
                     //iv.toFront();
                     getRoot().getChildren().add(indexPosShelf, iv);
                 }
             }
         }
-
     }
 
-    private void tileBehavior(ImageView iview){
+    /**
+     *
+     * @param tile
+     * @author Pietro Andrea Niedda
+     */
+    private void tileBehavior(ImageView tile){
         if(pickPhase) {
-            if (tiles.contains(iview)) {
-                iview.setEffect(null);
-                tiles.remove(iview);
+            if (tiles.contains(tile)) {
+                tile.setEffect(null);
+                tiles.remove(tile);
             } else if (tiles.size() < 3) {
-                iview.setEffect(new Glow(1));
-                tiles.add(iview);
+                tile.setEffect(new Glow(1));
+                tiles.add(tile);
             } else advertising.setText("can't choose more than 3 tiles");
         }
-        if(insertPhase){
-            if(tiles.contains(iview)) {
-                if (ordered.contains(iview)) {
-                    iview.setEffect(null);
-                    ordered.remove(iview);
+        else if(insertPhase){
+            if(tiles.contains(tile)) {
+                if (ordered.contains(tile)) {
+                    tile.setEffect(null);
+                    ordered.remove(tile);
                 } else if (ordered.size() < 3) {
-                    iview.setEffect(new Glow(1));
-                    ordered.add(iview);
+                    tile.setEffect(new Glow(1));
+                    ordered.add(tile);
                 }
                 else advertising.setText("Can't choose this  tile");
             }
         }
     }
-    public void fillBoard(){ // ogni tile si distanzia di 53 lungo x & y ed ha dimensioni 46 (all'interno della board)
-        double setx = 565, sety = 72;
 
-        for (int i = 0; i < 9; i++) {
-            for(int j = 0; j <  9 /*&& board.getSpaces[i][j] != null*/; j++) {
-                //Image img = new Image(getTileImage(Tile.CATS));
-                ImageView iview = new ImageView();
-                iview.setImage(getTileImage(Tile.CATS));
-                iview.setCursor(Cursor.HAND);
-                iview.setFitWidth(46);
-                iview.setFitHeight(46);
-                iview.setLayoutY(sety+53*i);
-                iview.setLayoutX(setx+53*j);
-                iview.setPreserveRatio(true );
-                iview.setOnMouseClicked(event ->tileBehavior(iview));
-                getRoot().getChildren().add(iview);
-                //root.getChildren().add(iview);
-                //this.root = root;
+    /**
+     * @author Pietro Andrea Niedda
+     */
+    public void fillBoard(){ 
+        
+        Tile[][] currboard = getGui().getBoard();
+        int indexPosShelf = getRoot().getChildren().indexOf(mainShelf);
+        
+        for(int i=0;i< Board.getRowLength();i++)
+        {
+            for(int j=0;j<Board.getColumnLength();j++)
+            {
+                if(currboard[i][j]!=null && currboard[i][j]!=Tile.EMPTY)
+                {
+                    ImageView tile = new ImageView();
+                    tile.setImage(getTileImage(currboard[i][j]));
+                    tile.setCursor(Cursor.HAND);
+                    tile.setFitWidth(GuiObjectsHandler.getBoardTilesSizeWidth());
+                    tile.setFitHeight(GuiObjectsHandler.getBoardTilesSizeHeight());
+                    tile.setLayoutX(board.getLayoutX()+board.getFitWidth()*GuiObjectsHandler.getBoardTilesPosX(j));
+                    tile.setLayoutY(board.getLayoutY()+board.getFitHeight()*GuiObjectsHandler.getBoardTilesPosY(i));
+                    tile.setOnMouseClicked(event ->tileBehavior(tile));
+                    getRoot().getChildren().add(indexPosShelf,tile);
+
+                }
             }
         }
+
     }
 
     /**
@@ -406,43 +507,16 @@ public class MatchSceneHandler extends SceneHandler {
 
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
-        double ratio_x = bounds.getWidth()/pane.getPrefWidth();
-        double ratio_y =  bounds.getHeight()/pane.getPrefHeight();
+        double panePrefWidth = pane.getPrefWidth();
+        double panePrefHeight = pane.getPrefHeight();
+        double ratio_x = bounds.getWidth()/panePrefWidth;
+        double ratio_y =  bounds.getHeight()/panePrefHeight;
 
 
-        for(Node n: pane.getChildren())
-        {
-            //re-positioning position according to the resolution
-            n.setLayoutX(n.getLayoutX()*ratio_x);
-            n.setLayoutY(n.getLayoutY()*ratio_y);
-
-            //re-sizing according to the resolution
-            if(n instanceof ImageView currentImage)
-            {
-                currentImage.setFitWidth(currentImage.getFitWidth()*ratio_x);
-                //currentImage.setFitHeight(currentImage.getFitHeight()*ratio_y);
-            }
-            else if(n instanceof Label currentLabel)
-            {
-
-                //currentLabel.setLayoutX(mainShelf.getLayoutX()+((mainShelf.getFitWidth()-currentLabel.getBoundsInParent().getWidth())/2));
-                currentLabel.setFont(new Font(currentLabel.getFont().getFamily(),currentLabel.getFont().getSize()*ratio_y));
-                currentLabel.setPrefWidth(currentLabel.getPrefWidth()*ratio_x);
-                //currentLabel.setPrefHeight(currentLabel.getPrefHeight()*ratio_y);
-            }
-        }
-
-        //mainPlayerLbl.setLayoutX(mainPlayerLbl.getLayoutX() - (mainPlayerLbl.getPrefWidth()/2));
-        player1Lbl.setLayoutX(player1Lbl.getLayoutX() - (player1Lbl.getPrefWidth()/2));
-        player2Lbl.setLayoutX(player2Lbl.getLayoutX() - (player2Lbl.getPrefWidth()/2));
-        player3Lbl.setLayoutX(player3Lbl.getLayoutX() - (player3Lbl.getPrefWidth()/2));
-
-        mainPlayerLbl.setLayoutY(mainPlayerLbl.getLayoutY() - (mainPlayerLbl.getPrefHeight()/2));
-        player1Lbl.setLayoutY(player1Lbl.getLayoutY() - (player1Lbl.getPrefHeight()/2));
-        player2Lbl.setLayoutY(player2Lbl.getLayoutY() - (player2Lbl.getPrefHeight()/2));
-        player3Lbl.setLayoutY(player3Lbl.getLayoutY() - (player3Lbl.getPrefHeight()/2));
-
-        GuiObjectsHandler.resizeObjects(ratio_x,ratio_y);
+        getRoot().setScaleX(ratio_x);
+        getRoot().setScaleY(ratio_y);
+        getRoot().setTranslateX( (bounds.getWidth()-panePrefWidth)/2);
+        getRoot().setTranslateY((bounds.getHeight()-panePrefHeight)/2);
 
     }
 
@@ -465,4 +539,5 @@ public class MatchSceneHandler extends SceneHandler {
         getScene().setRoot(getRoot());
 
     }
+
 }

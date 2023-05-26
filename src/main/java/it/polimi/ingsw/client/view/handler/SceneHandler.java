@@ -37,7 +37,7 @@ public abstract class SceneHandler {
      * @return
      * @author Abdullah Nasr
      */
-    public Pane getRoot()
+    public static Pane getRoot()
     {
         return root;
     }
@@ -132,12 +132,37 @@ public abstract class SceneHandler {
         FXMLLoader loader = new FXMLLoader(GUIApp.class.getResource("/fxml/"+nameRes+".fxml"));
 
         try {
+            //resizetest();
             setRoot(loader.load());
             currentHandler = loader.getController();
             currentHandler.runScene();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+    public static void resizetest()
+    {
+        Stage stage = getStage();
+        double height = stage.getScene().getHeight();
+        double width = stage.getScene().getWidth();
+
+        //stage min sizes
+        stage.setMinHeight(450);
+        stage.setMinWidth(800);
+
+        //horizontal listener
+        stage.getScene().widthProperty().addListener((obs, oldVal, newVal) -> {
+            double scaleX = (newVal.doubleValue()/width);
+            getRoot().setScaleX(scaleX);
+            getRoot().setTranslateX(getRoot().getTranslateX() + (newVal.doubleValue()-oldVal.doubleValue())/2);
+        });
+
+        //vertical listener
+        stage.getScene().heightProperty().addListener((obs, oldVal, newVal) -> {
+            double scaleY = (newVal.doubleValue()/height);
+            getRoot().setScaleY(scaleY);
+            getRoot().setTranslateY(getRoot().getTranslateY() + (newVal.doubleValue()-oldVal.doubleValue())/2);
+        });
     }
 
     /**
