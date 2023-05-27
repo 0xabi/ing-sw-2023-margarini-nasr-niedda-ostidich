@@ -55,7 +55,7 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
      */
     @Override
     @SuppressWarnings("unchecked")
-    public void update(@NotNull Event evt){
+    public void update(@NotNull Event evt) {
         try {
             switch (evt.eventName()) {
                 case START -> view.choosePlayerName();
@@ -70,13 +70,12 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
                 case CHOOSE_IP_ADDRESS -> {
                     this.server = clientNetwork.connect((String) evt.value(), playerName, this);
                     try {
-                        Thread.sleep(100*1000);
+                        Thread.sleep(100 * 1000);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
-                    if(server==null)
-                        System.out.println("roomservice è null");
-
+                    if (server == null)
+                        System.out.println("room service è null");
                 }
                 case CHOOSE_NEW_GAME_PLAYER_NUMBER -> {
                     newRoomPlayerNumber = (int) evt.value();
@@ -95,17 +94,20 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
                     else if (evt.value().equals("back")) view.chooseNewOrJoin();
                     else {
                         server.joinRoom(new JoinRoom(playerName, MessageID.JOIN_ROOM, (String) evt.value()));
-                        System.out.println("Ho scelto la stanza " + evt.value());
+                        System.out.println("Chosen room " + evt.value());
                     }
                 }
-                case PICK_TILES -> server.pickTilesRequest(new PickTilesRequest(playerName, MessageID.PICK_TILES_REQUEST, (List<Coordinates>) evt.value()));
+                case PICK_TILES ->
+                        server.pickTilesRequest(new PickTilesRequest(playerName, MessageID.PICK_TILES_REQUEST, (List<Coordinates>) evt.value()));
                 case CHOOSE_ORDER -> {
                     orderChosen = (List<Tile>) evt.value();
                     view.chooseColumn();
                 }
-                case CHOOSE_COLUMN -> server.insertTilesRequest(new InsertTilesRequest(playerName, MessageID.INSERT_TILES_REQUEST, orderChosen, (int) evt.value()));
+                case CHOOSE_COLUMN ->
+                        server.insertTilesRequest(new InsertTilesRequest(playerName, MessageID.INSERT_TILES_REQUEST, orderChosen, (int) evt.value()));
             }
-        }catch (RemoteException e){}
+        } catch (RemoteException ignored) {
+        }
     }
 
     /**
@@ -165,7 +167,6 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
      */
     @Override
     public void notifyGameHasStarted(@NotNull NotifyGameHasStarted msg) {
-        System.out.println("starting message game received");
         if (!msg.getPlayerName().equals(playerName) ||
                 msg.getMessageID() != MessageID.NOTIFY_GAME_HAS_STARTED) return;
         view.setGameParameters(msg.getGameParameters());
@@ -179,7 +180,7 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
             playerPoints.put(player, 0);
         view.updatePlayerPoints(playerPoints);
         //Tile[][] shelf = new Tile[msg.getGameParameters().get("shelfColumnNumber")][msg.getGameParameters().get("shelfRowNumber") ];
-        Tile[][] shelf = new Tile[msg.getGameParameters().get("shelfRowNumber")][msg.getGameParameters().get("shelfColumnNumber")];
+        Tile[][] shelf = new Tile[msg.getGameParameters().get("shelfRowLength")][msg.getGameParameters().get("shelfColumnLength")];
         Map<String, Tile[][]> playerShelves = new HashMap<>();
         for (String player : msg.getTurnCycle())
             playerShelves.put(player, shelf);
@@ -213,14 +214,14 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
             view.assignCommonGoalPoints(msg.getCommonGoal2GivenPlayers().get(token), token);
         view.updatePlayerShelves(msg.getPlayerShelves());
         view.updatePlayerPoints(msg.getPlayerPoints());
-        if (msg instanceof NewTurn.EndGame) {
-            endGame((NewTurn.EndGame) msg);
+        if (msg instanceof EndGame) {
+            endGame((EndGame) msg);
         }
-        if (msg instanceof NewTurn.NextPlayer) {
-            if (playerName.equals(((NewTurn.NextPlayer) msg).getNextPlayer()))
-                view.pickTiles(((NewTurn.NextPlayer) msg).getAvailablePickNumber());
+        if (msg instanceof NextPlayer) {
+            if (playerName.equals(((NextPlayer) msg).getNextPlayer()))
+                view.pickTiles(((NextPlayer) msg).getAvailablePickNumber());
             else
-                view.playerIsPlaying(((NewTurn.NextPlayer) msg).getNextPlayer());
+                view.playerIsPlaying(((NextPlayer) msg).getNextPlayer());
         }
     }
 
@@ -241,7 +242,7 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
      * @author Francesco Ostidich
      */
     @Override
-    public void endGame(@NotNull NewTurn.EndGame msg){
+    public void endGame(@NotNull EndGame msg) {
         view.givePersonalGoals(msg.getPersonalGoals());
         view.assignPersonalGoalPoints(msg.getPersonalGoalPoints());
         view.assignAdjacentGoalPoints(msg.getAdjacentGoalPoints());

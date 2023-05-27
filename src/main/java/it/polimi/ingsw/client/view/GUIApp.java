@@ -19,6 +19,7 @@ public class GUIApp extends Application {
         launch(args);
     }
 
+
     @Override
     public void start(Stage stage) {
 

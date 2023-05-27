@@ -22,13 +22,13 @@ public class EightTilesNoPatternTest {
         shelf = null;
     }
     @Test
-    public void checkShouldReturnFalase(){
+    public void checkShouldReturnFalse(){
         ArrayList<Tile> tiles = new ArrayList<>();
         tiles.add(Tile.BOOKS);
         tiles.add(Tile.CATS);
         tiles.add(Tile.FRAMES);
 
-        for(int i = 0; i < shelf.getRowLength(); i++)
+        for(int i = 0; i < Shelf.getRowLength(); i++)
             shelf.insertInColumn(tiles, i);
 
         assertFalse(goal.check(shelf));
@@ -36,14 +36,14 @@ public class EightTilesNoPatternTest {
         shelf = new Shelf();
     }
     @Test
-    public void checkSholdReturnTrue(){
+    public void checkShouldReturnTrue(){
         ArrayList<Tile> tiles = new ArrayList<>();
         tiles.add(Tile.BOOKS);
         tiles.add(Tile.CATS);
         tiles.add(Tile.FRAMES);
 
         for(int i = 0; i < 2; i++)
-            for(int j = 0; j < shelf.getRowLength(); j++)
+            for(int j = 0; j < Shelf.getRowLength(); j++)
                 shelf.insertInColumn(tiles, j);
 
         assertTrue(goal.check(shelf));

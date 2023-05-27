@@ -6,9 +6,7 @@ import it.polimi.ingsw.server.model.Shelf;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.Assert.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
@@ -31,13 +29,13 @@ public class StairTest {
         assertFalse(goal.check(shelf));
     }
     @Test
-    public void checkShouldReturnfalseWithTiles(){
+    public void checkShouldReturnFalseWithTiles(){
         int c = 1;
         ArrayList<Tile> tiles = new ArrayList<>();
         tiles.add(Tile.CATS);
         tiles.add(Tile.CATS);
 
-        for(int i = 0; i < shelf.getRowLength(); i++)
+        for(int i = 0; i < Shelf.getRowLength(); i++)
             shelf.insertInColumn(tiles, i);
 
         assertFalse(goal.check(shelf));
@@ -50,7 +48,7 @@ public class StairTest {
         ArrayList<Tile> tiles = new ArrayList<>();
         tiles.add(Tile.CATS);
 
-        for(int i = 0; i < shelf.getRowLength(); i++){
+        for(int i = 0; i < Shelf.getRowLength(); i++){
             for(int j = 0; j < c; j++)
                 shelf.insertInColumn(tiles, i);
 
@@ -62,9 +60,9 @@ public class StairTest {
         shelf = new Shelf();
     }
     @Test
-    public void checkShoulReturnTrueRevesStairs(){
+    public void checkShouldReturnTrueReverseStairs(){
 
-        int c = shelf.getRowLength();
+        int c = Shelf.getRowLength();
         ArrayList<Tile> tiles1 = new ArrayList<>();
         tiles1.add(Tile.CATS);
         ArrayList<Tile> tiles2 = new ArrayList<>();
@@ -83,12 +81,6 @@ public class StairTest {
         shelf.insertInColumn(tiles2, 3);
         shelf.insertInColumn(tiles1, 4);
 
-        /*for(int i = 0; i < shelf.getRowLength(); i++){
-            for(int j = 0; j < c; j++)
-                shelf.insertInColumn(tiles, i);
-
-            c--;
-        }*/
 
         assertTrue(goal.check(shelf));
 

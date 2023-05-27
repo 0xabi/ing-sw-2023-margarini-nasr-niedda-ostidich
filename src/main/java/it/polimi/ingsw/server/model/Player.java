@@ -93,13 +93,13 @@ public class Player {
      * @author Pietro Andrea Niedda
      */
     protected int checkAvailablePickNumber() {
-        int picks = 3, x;
+        int picks = 0, x;
         for (int i = 0; i < Shelf.getRowLength(); i++) {
-            x=(Shelf.getColumnLength() - shelf.getTilesInColumn(i));
-            if (x < picks)
+            x = (Shelf.getColumnLength() - shelf.getTilesInColumn(i));
+            if (x > picks)
                 picks = x;
         }
-        return picks;
+        return Math.min(picks, 3);
     }
 
     /**

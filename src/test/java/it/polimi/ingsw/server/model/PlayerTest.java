@@ -29,12 +29,11 @@ public class PlayerTest {
         assertEquals(3, player.getPoints());
     }
     @Test
-    public void getPersonalGoalSholdReturnPersonalGoalZero(){
+    public void getPersonalGoalShouldReturnPersonalGoalZero(){
         assertEquals(1, player.getPersonalGoal().getPersonalGoalID());
     }
     @Test
     public void checkAvailablePickNumberShouldReturn3(){
-        int count = 1;
         ArrayList<Tile> tiles = new ArrayList<>();
         tiles.add(Tile.CATS);
         tiles.add(Tile.CATS);
