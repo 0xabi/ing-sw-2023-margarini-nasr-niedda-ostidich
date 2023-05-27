@@ -10,6 +10,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -59,7 +61,7 @@ public class RoomServices extends UnicastRemoteObject implements ServerControlle
     @Override
     public void playerConnected(String playerName, ClientController client) {
         clients.put(playerName, client);
-        System.out.println(playerName + " added to online clients as " + clients.get(playerName));
+        System.out.println("[" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + "] "+ playerName + " added to online clients");
     }
 
     /**

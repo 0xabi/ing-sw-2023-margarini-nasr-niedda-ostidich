@@ -160,7 +160,7 @@ public class InputFormatChecker {
             if (currentRoom.gameRoomName().equalsIgnoreCase(answer))
                 return true;
         }
-        return false;
+        return answer.equals("back") || answer.equals("refresh");
     }
 
 }
