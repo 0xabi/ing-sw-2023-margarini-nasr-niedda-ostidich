@@ -12,6 +12,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.rmi.RemoteException;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * The game model controller is to decide actions to make based on game state and messages received.
@@ -41,6 +43,8 @@ public class GameServerController extends RoomServices {
 
     private final Map<String, ClientController> matchClients;
 
+    private final ExecutorService executorService;
+
     /**
      * Class constructor.
      *
@@ -48,6 +52,7 @@ public class GameServerController extends RoomServices {
      * @author Francesco Ostidich
      */
     public GameServerController(@NotNull Map<String, ClientController> clients) throws RemoteException {
+        executorService = Executors.newCachedThreadPool();
         matchClients = clients;
         playerPhase = Phase.PICK;
         disconnected = new HashSet<>();
@@ -64,7 +69,8 @@ public class GameServerController extends RoomServices {
      */
     public void playMatch() {
         System.out.println("playing match with names " + matchClients.keySet() + ", and with clients " + matchClients.values());
-        names.forEach(player -> new Thread(() -> {
+        names.forEach(player -> executorService.execute(() ->
+        {
             try {
                 matchClients.get(player).notifyGameHasStarted(new NotifyGameHasStarted(
                         player,
@@ -78,11 +84,11 @@ public class GameServerController extends RoomServices {
                         model.getPlayerPersonalGoalID(player),
                         model.getCommonGoal1(),
                         model.getCommonGoal2()));
-                System.out.println(Arrays.deepToString(model.getBoard()));
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
-        }).start());
+        }));
+
     }
 
     /**
@@ -119,11 +125,14 @@ public class GameServerController extends RoomServices {
         if (model.checkSelection(message.getChosenCoordinates())) {
             lastPicked = model.selectTilesOnBoard(message.getChosenCoordinates());
             playerPhase = Phase.INSERT;
-            try {
-                matchClients.get(message.getPlayerName()).pickAccepted(new PickAccepted(message.getPlayerName(), MessageID.PICK_ACCEPTED, lastPicked));
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
+            executorService.execute(() ->
+            {
+                try {
+                    matchClients.get(message.getPlayerName()).pickAccepted(new PickAccepted(message.getPlayerName(), MessageID.PICK_ACCEPTED, lastPicked));
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            });
         } else {
             nextTurn(false);
         }
@@ -142,11 +151,15 @@ public class GameServerController extends RoomServices {
             nextTurn(true);
             endOfTurnChecks(message.getPlayerName());
         } catch (UnavailableInsertionException e) {
-            try {
-                matchClients.get(message.getPlayerName()).pickAccepted(new PickAccepted(message.getPlayerName(), MessageID.PICK_ACCEPTED, lastPicked));
-            } catch (RemoteException ex) {
-                throw new RuntimeException(ex);
+            executorService.execute(() ->
+            {
+                try {
+                    matchClients.get(message.getPlayerName()).pickAccepted(new PickAccepted(message.getPlayerName(), MessageID.PICK_ACCEPTED, lastPicked));
+                } catch (RemoteException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
+           );
         }
     }
 
@@ -199,7 +212,8 @@ public class GameServerController extends RoomServices {
                     winner[0] = player;
                 }
             });
-            names.forEach(client -> {
+            names.forEach(client -> executorService.execute(() ->
+            {
                 try {
                     matchClients.get(client).newTurn(new EndGame(
                             client,
@@ -217,10 +231,10 @@ public class GameServerController extends RoomServices {
                             personalGoalPoints,
                             adjacentGoalPoints,
                             winner[0]));
-                } catch (Exception e) {
+                } catch (RemoteException e) {
                     throw new RuntimeException(e);
                 }
-            });
+            }));
             return;
         }
         if (goOn) {
@@ -230,7 +244,8 @@ public class GameServerController extends RoomServices {
                 closeGame(names);
             }
         }
-        names.forEach(client -> {
+        names.forEach(client -> executorService.execute(() ->
+        {
             try {
                 matchClients.get(client).newTurn(new NextPlayer(
                         client,
@@ -246,11 +261,10 @@ public class GameServerController extends RoomServices {
                         points,
                         model.checkAvailablePickNumber(playerTurn),
                         playerTurn));
-                System.out.println(Arrays.deepToString(model.getBoard()));
-            } catch (Exception e) {
+            } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
-        });
+        }));
     }
 
     /**

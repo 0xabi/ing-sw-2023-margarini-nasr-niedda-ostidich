@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.clientController;
 
+import it.polimi.ingsw.Debugging;
 import it.polimi.ingsw.client.clientNetwork.GameClientNetwork;
 import it.polimi.ingsw.resources.*;
 import it.polimi.ingsw.resources.interfaces.ClientController;
@@ -12,6 +13,8 @@ import org.jetbrains.annotations.NotNull;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * The game view controller is to receive messages from the network handler, and consequentially call methods on the view.
@@ -36,13 +39,18 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
 
     private List<Tile> orderChosen;
 
+    private final ExecutorService executorService;
+
+
     /**
      * Class constructor.
      *
      * @author Francesco Ostidich
      */
     public GameClientController(@NotNull ClientView view, String network) throws RemoteException {
+        executorService = Executors.newCachedThreadPool();
         clientNetwork = new GameClientNetwork(network);
+        Debugging.setRoomGeneration(network);
         this.view = view;
     }
 
@@ -56,7 +64,6 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
     @Override
     @SuppressWarnings("unchecked")
     public void update(@NotNull Event evt) {
-        try {
             switch (evt.eventName()) {
                 case START -> view.choosePlayerName();
                 case CHOOSE_PLAYER_NAME -> {
@@ -65,7 +72,14 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
                 }
                 case CHOOSE_NEW_OR_JOIN -> {
                     if (evt.value().equals("new")) view.chooseNewGamePlayerNumber();
-                    else server.askForRooms(new AskForRooms(playerName, MessageID.ASK_FOR_ROOMS));
+                    else executorService.execute(() ->
+                    {
+                        try {
+                            server.askForRooms(new AskForRooms(playerName, MessageID.ASK_FOR_ROOMS));
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
                 }
                 case CHOOSE_IP_ADDRESS -> {
                     this.server = clientNetwork.connect((String) evt.value(), playerName, this);
@@ -85,29 +99,75 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
                     if (evt.value().equals("back")) view.chooseNewOrJoin();
                     else {
                         newRoomName = (String) evt.value();
-                        server.createNewRoom(new CreateNewRoom(playerName, MessageID.CREATE_NEW_ROOM, newRoomName, newRoomPlayerNumber));
+                        executorService.execute(() ->
+                        {
+                            try {
+                                server.createNewRoom(new CreateNewRoom(playerName, MessageID.CREATE_NEW_ROOM, newRoomName, newRoomPlayerNumber));
+                            } catch (RemoteException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                    }
+                }
+                case CREATE_ROOM_NAME_NUMBER -> {
+                    if (evt.value().equals("back")) view.chooseNewOrJoin();
+                    else {
+                        Object[] data = (Object[]) evt.value();
+                        newRoomName = (String) data[0];
+                        newRoomPlayerNumber = (int) data[1];
+                        executorService.execute(() ->
+                        {
+                            try {
+                                server.createNewRoom(new CreateNewRoom(playerName, MessageID.CREATE_NEW_ROOM, newRoomName, newRoomPlayerNumber));
+                            } catch (RemoteException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
                     }
                 }
                 case CHOOSE_GAME_ROOM -> {
                     if (evt.value().equals("refresh"))
-                        server.askForRooms(new AskForRooms(playerName, MessageID.ASK_FOR_ROOMS));
+                        executorService.execute(() ->
+                        {
+                            try {
+                                server.askForRooms(new AskForRooms(playerName, MessageID.ASK_FOR_ROOMS));
+                            } catch (RemoteException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
                     else if (evt.value().equals("back")) view.chooseNewOrJoin();
                     else {
-                        server.joinRoom(new JoinRoom(playerName, MessageID.JOIN_ROOM, (String) evt.value()));
-                        System.out.println("Chosen room " + evt.value());
+                        executorService.execute(() ->
+                        {
+                            try {
+                                server.joinRoom(new JoinRoom(playerName, MessageID.JOIN_ROOM, (String) evt.value()));
+                            } catch (RemoteException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
                     }
                 }
-                case PICK_TILES ->
+                case PICK_TILES -> executorService.execute(() ->
+                {
+                    try {
                         server.pickTilesRequest(new PickTilesRequest(playerName, MessageID.PICK_TILES_REQUEST, (List<Coordinates>) evt.value()));
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
                 case CHOOSE_ORDER -> {
                     orderChosen = (List<Tile>) evt.value();
                     view.chooseColumn();
                 }
-                case CHOOSE_COLUMN ->
+                case CHOOSE_COLUMN -> executorService.execute(() ->
+                {
+                    try {
                         server.insertTilesRequest(new InsertTilesRequest(playerName, MessageID.INSERT_TILES_REQUEST, orderChosen, (int) evt.value()));
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
             }
-        } catch (RemoteException ignored) {
-        }
     }
 
     /**

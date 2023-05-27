@@ -6,6 +6,7 @@ import it.polimi.ingsw.resources.Tile;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 public class GUI extends GameClientView {
 
@@ -109,7 +110,7 @@ public class GUI extends GameClientView {
     }
 
     @Override
-    public void justPrintChat(String message) {
+    public void justPrintChat(Queue<String> messages) {
 
     }
 }

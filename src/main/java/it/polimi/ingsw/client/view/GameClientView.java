@@ -26,6 +26,12 @@ public abstract class GameClientView implements ClientView {
 
     private final Map<String, Integer> gameParameters;
 
+    private String playerName;
+
+    protected void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
     private final List<String> names;
 
     private Tile[][] board;

@@ -5,6 +5,7 @@ import it.polimi.ingsw.resources.Tile;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Stack;
 
 /**
@@ -297,8 +298,8 @@ public interface ClientView {
        * Method is always opened on other thread, only chat messages are showed.
        *
        * @author Francesco Ostidich
-       * @param message message string
+       * @param messages message string
        */
-      void justPrintChat(String message);
+      void justPrintChat(Queue<String> messages);
 
 }

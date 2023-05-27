@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.Debugging;
 import it.polimi.ingsw.resources.Coordinates;
 import it.polimi.ingsw.resources.Tile;
 import org.jetbrains.annotations.NotNull;
@@ -29,6 +30,10 @@ public class Shelf {
      */
     public Shelf() {
         positions = new Tile[ROW_LENGTH][COLUMN_LENGTH];
+        if (Debugging.isDebugging()) {
+            Debugging.fillShelf(this);
+            System.out.println("debugging: filling shelves");
+        }
     }
 
     /**

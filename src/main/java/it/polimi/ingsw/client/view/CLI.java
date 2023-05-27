@@ -1,12 +1,10 @@
 package it.polimi.ingsw.client.view;
 
+import it.polimi.ingsw.Debugging;
 import it.polimi.ingsw.resources.*;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 import it.polimi.ingsw.server.model.Shelf;
 import org.jetbrains.annotations.NotNull;
@@ -73,27 +71,47 @@ public class CLI extends GameClientView {
      */
     @Override
     public void chooseIPAddress() {
-        String scannedIP = playerMessage("Choose IP address:");
-        while (!InputFormatChecker.isIPAddress(scannedIP)) {
-            scannedIP = playerMessage("Wrong input!\nChoose IP address:");
-        }
-        try {
-            getClientController().update(new Event(EventID.CHOOSE_IP_ADDRESS, scannedIP));
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
+        if (Debugging.isDebugging()) {
+            try {
+                System.out.println("debugging: setting \"localhost\" as IP address");
+                getClientController().update(new Event(EventID.CHOOSE_IP_ADDRESS, "localhost"));
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            String scannedIP = playerMessage("Choose IP address:");
+            while (!InputFormatChecker.isIPAddress(scannedIP)) {
+                scannedIP = playerMessage("Wrong input!\nChoose IP address:");
+            }
+            try {
+                getClientController().update(new Event(EventID.CHOOSE_IP_ADDRESS, scannedIP));
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
     @Override
     public void choosePlayerName() {
-        String scannedIP = playerMessage("Choose player name:");
-        while (scannedIP.isBlank()) {
-            scannedIP = playerMessage("Wrong input!\nChoose player name:");
-        }
-        try {
-            getClientController().update(new Event(EventID.CHOOSE_PLAYER_NAME, scannedIP));
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
+        if (Debugging.isDebugging()) {
+            try {
+                String randomString = Debugging.randomString();
+                System.out.println("debugging: setting \"" + randomString + "\" as player name");
+                getClientController().update(new Event(EventID.CHOOSE_PLAYER_NAME, randomString));
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            String scannedIP = playerMessage("Choose player name:");
+            while (scannedIP.isBlank()) {
+                scannedIP = playerMessage("Wrong input!\nChoose player name:");
+            }
+            try {
+                setPlayerName(scannedIP);
+                getClientController().update(new Event(EventID.CHOOSE_PLAYER_NAME, scannedIP));
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -102,14 +120,24 @@ public class CLI extends GameClientView {
      */
     @Override
     public void chooseNewOrJoin() {
-        String answer = playerMessage("Type [new] to create new game or [join] to join an existing game:");
-        while (!answer.equals("new") && !answer.equals("join")) {
-            answer = playerMessage("Wrong input!\nType [new] to create new game or [join] to join an existing game:");
-        }
-        try {
-            getClientController().update(new Event(EventID.CHOOSE_NEW_OR_JOIN, answer));
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
+        if (Debugging.isDebugging()) {
+            try {
+                String phase = Debugging.getRoomGeneration();
+                System.out.println("debugging: setting \"" + phase + "\" as room generation phase");
+                getClientController().update(new Event(EventID.CHOOSE_NEW_OR_JOIN, phase));
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            String answer = playerMessage("Type [new] to create new game or [join] to join an existing game:");
+            while (!answer.equals("new") && !answer.equals("join")) {
+                answer = playerMessage("Wrong input!\nType [new] to create new game or [join] to join an existing game:");
+            }
+            try {
+                getClientController().update(new Event(EventID.CHOOSE_NEW_OR_JOIN, answer));
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -118,14 +146,23 @@ public class CLI extends GameClientView {
      */
     @Override
     public void chooseNewGameName() {
-        String gameName = playerMessage("Choose a new game name:");
-        while (gameName.isBlank()) {
-            gameName = playerMessage("Wrong input!\nChoose a new game name:");
-        }
-        try {
-            getClientController().update(new Event(EventID.CHOOSE_NEW_GAME_NAME, gameName));
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
+        if (Debugging.isDebugging()) {
+            try {
+                System.out.println("debugging: setting \"game\" as game name");
+                getClientController().update(new Event(EventID.CHOOSE_NEW_GAME_NAME, "game"));
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            String gameName = playerMessage("Choose a new game name:");
+            while (gameName.isBlank()) {
+                gameName = playerMessage("Wrong input!\nChoose a new game name:");
+            }
+            try {
+                getClientController().update(new Event(EventID.CHOOSE_NEW_GAME_NAME, gameName));
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -134,17 +171,26 @@ public class CLI extends GameClientView {
      */
     @Override
     public void chooseNewGamePlayerNumber() {
-        Integer numPlayer;
-        String input = playerMessage("Choose the number of players [max " + InputFormatChecker.getMaxPlayer() + " players" + "]:");
-        numPlayer = InputFormatChecker.getNumFromString(input);
-        while (numPlayer == null || numPlayer < 2 || numPlayer > InputFormatChecker.getMaxPlayer()) {
-            input = playerMessage("Please insert a valid number of player!\nChoose the number of the player:");
+        if (Debugging.isDebugging()) {
+            try {
+                System.out.println("debugging: setting \"2\" as game player number");
+                getClientController().update(new Event(EventID.CHOOSE_NEW_GAME_PLAYER_NUMBER, 2));
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            Integer numPlayer;
+            String input = playerMessage("Choose the number of players [max " + InputFormatChecker.getMaxPlayer() + " players" + "]:");
             numPlayer = InputFormatChecker.getNumFromString(input);
-        }
-        try {
-            getClientController().update(new Event(EventID.CHOOSE_NEW_GAME_PLAYER_NUMBER, numPlayer));
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            while (numPlayer == null || numPlayer < 2 || numPlayer > InputFormatChecker.getMaxPlayer()) {
+                input = playerMessage("Please insert a valid number of player!\nChoose the number of the player:");
+                numPlayer = InputFormatChecker.getNumFromString(input);
+            }
+            try {
+                getClientController().update(new Event(EventID.CHOOSE_NEW_GAME_PLAYER_NUMBER, numPlayer));
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -181,16 +227,25 @@ public class CLI extends GameClientView {
      */
     @Override
     public void chooseGameRoom(List<GameRoom> rooms) {
-        String gameRoomTable = InputFormatChecker.getTableGameRoom(rooms);
-        String answer;
-        answer = playerMessage(gameRoomTable + "\nType the room name: ");
-        while (!InputFormatChecker.isGameRoomValid(answer, rooms)) {
-            answer = playerMessage(gameRoomTable + "\nInvalid game room!\nType the room name: ");
-        }
-        try {
-            getClientController().update(new Event(EventID.CHOOSE_GAME_ROOM, answer));
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
+        if (Debugging.isDebugging()) {
+            try {
+                System.out.println("debugging: join \"game\" room");
+                getClientController().update(new Event(EventID.CHOOSE_GAME_ROOM, "game"));
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            String gameRoomTable = InputFormatChecker.getTableGameRoom(rooms);
+            String answer;
+            answer = playerMessage(gameRoomTable + "\nType the room name: ");
+            while (!InputFormatChecker.isGameRoomValid(answer, rooms)) {
+                answer = playerMessage(gameRoomTable + "\nInvalid game room!\nType the room name: ");
+            }
+            try {
+                getClientController().update(new Event(EventID.CHOOSE_GAME_ROOM, answer));
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -377,8 +432,8 @@ public class CLI extends GameClientView {
      * @author Francesco Ostidich
      */
     @Override
-    public void justPrintChat(String message) {
-        System.out.println(message);
+    public void justPrintChat(@NotNull Queue<String> messages) {
+        messages.forEach(System.out::println);
     }
 
     /**
@@ -414,7 +469,7 @@ public class CLI extends GameClientView {
         while (dataMessage == null && i > 0) {
             try {
                 //noinspection BusyWait
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (InterruptedException ignored) {
             } finally {
                 i--;
@@ -440,7 +495,7 @@ public class CLI extends GameClientView {
         while (dataMessage == null) {
             try {
                 //noinspection BusyWait
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (InterruptedException ignored) {
             }
         }
