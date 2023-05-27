@@ -2,6 +2,7 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.resources.Tile;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -11,7 +12,7 @@ import java.util.*;
  *
  * @author Edoardo Margarini
  */
-public class Bag {
+public class Bag implements Serializable {
 
     private static final int TOTAL_QUANTITY = 22;
 
@@ -67,11 +68,13 @@ public class Bag {
      */
     protected Tile draw() {
         Random random = new Random();
-        int number = random.nextInt(5);
+        int number = random.nextInt(6);
         while (tilesLeft.get(Tile.values()[number]) <= 0) { //if a tile has no quantity retry the draw
-            number = random.nextInt(5);
+            number = random.nextInt(6);
         }
         removeTile(Tile.values()[number]);
+        if(Tile.values()[number]==Tile.PLANTS)
+            System.out.println("YESSS");
         return Tile.values()[number];
     }
 
