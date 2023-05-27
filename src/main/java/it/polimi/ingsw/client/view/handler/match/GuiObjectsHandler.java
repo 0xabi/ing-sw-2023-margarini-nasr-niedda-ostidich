@@ -9,7 +9,7 @@ public class GuiObjectsHandler {
 
     public static final double mainShelfPosY = 320;
     private static double mainShelfTilesSizeWidth=35;
-    private static final double mainShelfTilesSizeHeight=35;
+    private static double mainShelfTilesSizeHeight=35;
 
     private static double boardTilesSizeWidth = 38;
     private static double boardTilesSizeHeight = 39;

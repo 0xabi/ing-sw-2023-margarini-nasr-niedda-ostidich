@@ -30,6 +30,8 @@ public class CLI extends GameClientView{
 
     private String dataMessage = "";
 
+    private String playerName;
+
     /**
      * Class constructor.
      *
@@ -89,12 +91,12 @@ public class CLI extends GameClientView{
 
     @Override
     public void choosePlayerName() {
-        String scannedIP = playerMessage("Choose player name:");
-        while (scannedIP.isBlank()) {
-            scannedIP = playerMessage("Wrong input!\nChoose player name:");
+        playerName = playerMessage("Choose player name:");
+        while (playerName.isBlank()) {
+            playerName = playerMessage("Wrong input!\nChoose player name:");
         }
         try {
-            getClientController().update(new Event(EventID.CHOOSE_PLAYER_NAME, scannedIP));
+            getClientController().update(new Event(EventID.CHOOSE_PLAYER_NAME, playerName));
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
@@ -324,7 +326,7 @@ public class CLI extends GameClientView{
                     printBoard(list);
                     if(retry)
                         System.out.println("\t\t\t\tThe Tile was alredy chosen or invalid input");
-                    System.out.println("\t\t\t\tYou can pick more "+ print + "tiles");
+                    System.out.println("\t\t\t\tYou can pick more "+ print + " tiles");
                     coords = playerMessage("\t\t\t\tchoose one tile using coordinates writing them in the following format: x,y\n").split(",");
                     x = Integer.parseInt(coords[0]);
                     y = Integer.parseInt(coords[1]);
@@ -397,11 +399,12 @@ public class CLI extends GameClientView{
         do {
             try {
                 printPossibleChoices(resultSet);
+                printSingleShelf();
                 choice = Integer.parseInt(playerMessage("Choose the order of your picked tiles:\t"));
             } catch (Exception e) {
                 System.out.println("FORMAT ERROR" + e);
             }
-        }while(choice > resultSet.size()  || choice < 0);
+        }while(choice >= resultSet.size()  || choice < 0);
         try {
             getClientController().update(new Event(EventID.CHOOSE_ORDER, resultSet.get(choice)));
         } catch (RemoteException e) {
@@ -594,7 +597,7 @@ public class CLI extends GameClientView{
         return result;
     }
 
-    public static void printPossibleChoices(ArrayList<ArrayList<Tile>> choices) {
+    public void printPossibleChoices(ArrayList<ArrayList<Tile>> choices) {
         System.out.println("-------------------------------------------------------------------------\n");
         for (int i = 0; i < choices.size(); i++){
             for (int j = 0; j < 7 - choices.size(); j++)
@@ -615,6 +618,26 @@ public class CLI extends GameClientView{
 
         }
         System.out.println("\n-------------------------------------------------------------------------\n");
+    }
+
+    public void printSingleShelf(){
+
+        for(int i = 0; i < Shelf.getRowLength(); i++)
+            System.out.print(" ("+i+") ");
+        System.out.println();
+        for (int i = Shelf.getColumnLength() - 1; i >= 0; i--) {
+
+            for (int j = 0; j < Shelf.getRowLength(); j++) {
+                if(getPlayerShelves().get(playerName)[j][i]==null)
+                    System.out.print((char) 27 + "[49m"+(char)27+"[39m"+"[   ]");
+                else {
+                    System.out.print((char) 27 + "[49m"+(char)27+"[39m"+"[");
+                    getPlayerShelves().get(playerName)[j][i].printColorForBoard();
+                    System.out.print((char) 27 + "[49m"+(char)27+"[39m"+"]");
+                }
+            }
+            System.out.println();
+        }
     }
 
 }
