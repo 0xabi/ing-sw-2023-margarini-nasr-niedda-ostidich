@@ -261,29 +261,58 @@ public class CLI extends GameClientView{
                         done = false;
                 }
             }
+            printCommonGoalsInRow(i);
+            if(i==3)
+                System.out.print("\t\t\t\t\t\tYour Personal Goal is:");
+            if(i>3)
+            printPersonalGoal(i-4);
             System.out.println();
         }
-        System.out.println("\t\t\t\t  |\n\t\t\t\t  V Y\n--------------------------------------------------------------------------------------");
+        System.out.print("\t\t\t\t  |  ");
+        for(int i=0;i<Board.getColumnLength();i++)
+        System.out.print("     ");
+        printPersonalGoal(Board.getColumnLength()-4);
+        System.out.println("\n\t\t\t\t  V Y\n--------------------------------------------------------------------------------------");
     }
 
     public void printBookshelves() {
         String Space;
-        if(getNames().size()==2)
-            Space = "\t\t\t\t\t\t";
-        else if (getNames().size()==3)
-            Space = "\t\t\t\t";
-        else Space = "\t\t";
-        System.out.print(Space);
+        if (getNames().size() == 2)
+            Space = "\t\t\t\t\t";
+        else if (getNames().size() == 3)
+            Space = "\t\t\t";
+        else Space = "\t";
+        System.out.print(Space+ "\t");
         for (String name : getNames())
-                System.out.print("\t" + name + "\t\t\t");
+            System.out.print("\t" + name + "\t\t\t");
         System.out.println();
         for (int i = Shelf.getColumnLength() - 1; i >= 0; i--) {
-            printShelfRow(i, Space);
+            printShelfRow(i, Space+"\t");
             System.out.println();
         }
+        System.out.println();
 
+        if (getCommonGoal1GivenPlayers().size() > 0) {
+            System.out.print("Cg1"+Space);
+            for (String name : getNames())
+                if (getCommonGoal1GivenPlayers().get(name) != null) {
+                    System.out.print("\t");
+                    System.out.print((char) 27 + "[49m" + (char) 27 + "[39m" + "[" + (char) 27 + "[41m" + (char) 27 + "[30m" + " " + getCommonGoal1GivenPlayers().get(name) + " " + (char) 27 + "[49m" + (char) 27 + "[39m" + "]");
+                    System.out.print("\t\t\t");
+                } else System.out.print("\t\t\t\t\t");
+            System.out.println();
+        }
+        if (getCommonGoal2GivenPlayers().size() > 0) {
+            System.out.print("Cg2"+Space);
+            for (String name : getNames())
+                if (getCommonGoal2GivenPlayers().get(name) != null) {
+                    System.out.print("\t");
+                    System.out.print((char) 27 + "[49m" + (char) 27 + "[39m" + "[" + (char) 27 + "[41m" + (char) 27 + "[30m" + " " + getCommonGoal2GivenPlayers().get(name) + " " + (char) 27 + "[49m" + (char) 27 + "[39m" + "]");
+                    System.out.print("\t\t\t");
+                } else System.out.print("\t\t\t\t\t");
+            System.out.println();
+        }
     }
-
     public void printShelfRow(int coloumn, String space){
 
         System.out.print(space);
@@ -300,13 +329,18 @@ public class CLI extends GameClientView{
             System.out.print("\t\t");
         }
     }
-    public void printCommonGoals()
+    public void printCommonGoalsInRow(int i)
     {
-        System.out.println("\n--------------------------------------------------------------------------------------");
-        System.out.println("\t\t\t\t\t\tCommon goal 1 : "+ getCommonGoal1());
-        System.out.println("\t\t\t\t\t\tCommon goal 2 : "+ getCommonGoal2());
-        System.out.println("--------------------------------------------------------------------------------------\n");
+        if(i==1) {
+            System.out.print("\t\t\t\t\t\tCommon goal 1 : " + getCommonGoal1());
+            System.out.print("\t\t" + (char) 27 + "[49m" + (char) 27 + "[39m" + "[" + (char) 27 + "[41m" + (char) 27 + "[30m" + " " + getCommonGoal1TokenStack().peek() + " " + (char) 27 + "[49m" + (char) 27 + "[39m" + "]");
+        }
+        if(i==2){
+            System.out.print("\t\t\t\t\t\tCommon goal 2 : "+ getCommonGoal2());
+            System.out.print("\t\t" +  (char)27+"[49m"+(char)27+"[39m"+"["+  (char)27+"[41m"+(char)27+"[30m"+" "+ getCommonGoal2TokenStack().peek() +" " +(char)27+"[49m"+(char)27+"[39m"+"]");
+        }
     }
+
 
     @Override
     public void pickTiles(int availablePickNumber) {
@@ -321,9 +355,7 @@ public class CLI extends GameClientView{
                 int print = availablePickNumber - i;
                 attempt = true;
                 try {
-                    printCommonGoals();
-                    printBookshelves();
-                    printBoard(list);
+                    printScenario1(list);
                     if(retry)
                         System.out.println("\t\t\t\tThe Tile was alredy chosen or invalid input");
                     System.out.println("\t\t\t\tYou can pick more "+ print + " tiles");
@@ -340,9 +372,7 @@ public class CLI extends GameClientView{
                         retry = true;
                     }
                 } catch (Exception e) {
-                    printCommonGoals();
-                    printBookshelves();
-                    printBoard(list);
+                    printScenario1(list);
                     attempt = false;
                     retry = true;
                     System.out.println("FORMAT ERROR"+ e);
@@ -351,9 +381,7 @@ public class CLI extends GameClientView{
 
 
 
-            printCommonGoals();
-            printBookshelves();
-            printBoard(list);
+            printScenario1(list);
 
             String msg = "\t\t\t\tIf you picked the tiles you wanted press [y],";
             msg = msg + "\n\t\t\t\tIf you're not satisfied of your choice and you would repick press [r],";
@@ -368,9 +396,8 @@ public class CLI extends GameClientView{
             }
 
             if(i == availablePickNumber - 1 && !response.equals("r")) {
-                printCommonGoals();
-                printBookshelves();
-                printBoard(list);
+
+                printScenario1(list);
                 System.out.println("\t\t\t\tyou have already chosen the maximum number of available tiles");
                 do {
                     msg = "\t\t\t\tIf you picked the tiles you wanted press [y],";
@@ -398,9 +425,11 @@ public class CLI extends GameClientView{
         int choice = -1;
         do {
             try {
-                printPossibleChoices(resultSet);
-                printSingleShelf();
-                choice = Integer.parseInt(playerMessage("Choose the order of your picked tiles:\t"));
+                printScenario2(resultSet);
+                if(resultSet.size()==1)
+                    choice = 0;
+                else
+                    choice = Integer.parseInt(playerMessage("Choose the order of your picked tiles:\t"));
             } catch (Exception e) {
                 System.out.println("FORMAT ERROR" + e);
             }
@@ -419,9 +448,9 @@ public class CLI extends GameClientView{
         do {
             attempt = true;
             try {
-                column = Integer.parseInt(playerMessage("Choose column: "));
+                column = Integer.parseInt(playerMessage("\t\t\t\tChoose column: "));
             } catch (Exception e) {
-                System.out.println("invalid input, try again");
+                System.out.println("\t\t\t\tinvalid input, try again");
                 attempt = false;
             }
         } while (!attempt);
@@ -434,9 +463,7 @@ public class CLI extends GameClientView{
 
     @Override
     public void playerIsPlaying(String playerName) {
-        printCommonGoals();
-        printBookshelves();
-        printBoard(null);
+        printScenario1(null);
         System.out.println("\t\t\t\t" + playerName + " is currently playing his turn");
     }
 
@@ -598,14 +625,14 @@ public class CLI extends GameClientView{
     }
 
     public void printPossibleChoices(ArrayList<ArrayList<Tile>> choices) {
-        System.out.println("-------------------------------------------------------------------------\n");
+        System.out.println("--------------------------------------------------------------------------------------\n");
         for (int i = 0; i < choices.size(); i++){
             for (int j = 0; j < 7 - choices.size(); j++)
                 System.out.print("\t");
             System.out.print(" (" + i + ")");
         }
         System.out.println("\n");
-        for (int i = 0; i < choices.get(0).size(); i++){
+        for (int i = choices.get(0).size()-1; i >= 0; i--){
 
             for (int num = 0; num < choices.size(); num++) {
                 for (int j = 0; j < 7 - choices.size(); j++)
@@ -617,16 +644,16 @@ public class CLI extends GameClientView{
             System.out.println();
 
         }
-        System.out.println("\n-------------------------------------------------------------------------\n");
+        System.out.println("\n--------------------------------------------------------------------------------------\n");
     }
 
     public void printSingleShelf(){
-
+        System.out.print("\t\t\t\t\t");
         for(int i = 0; i < Shelf.getRowLength(); i++)
             System.out.print(" ("+i+") ");
         System.out.println();
         for (int i = Shelf.getColumnLength() - 1; i >= 0; i--) {
-
+            System.out.print("\t\t\t\t\t");
             for (int j = 0; j < Shelf.getRowLength(); j++) {
                 if(getPlayerShelves().get(playerName)[j][i]==null)
                     System.out.print((char) 27 + "[49m"+(char)27+"[39m"+"[   ]");
@@ -638,6 +665,39 @@ public class CLI extends GameClientView{
             }
             System.out.println();
         }
+        System.out.println("\n--------------------------------------------------------------------------------------\n");
+    }
+
+    public void printScenario1(ArrayList<Coordinates> board){
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        printBookshelves();
+        printBoard(board);
+    }
+
+    public void printScenario2(ArrayList<ArrayList<Tile>> choices){
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        printPossibleChoices(choices);
+        printSingleShelf();
+    }
+
+    public void printPersonalGoal(int coloumn){
+        Coordinates temp;
+        System.out.print("\t\t\t\t\t\t\t\t");
+        for (int j = 0; j < Shelf.getRowLength(); j++) {
+                temp = new Coordinates(j,coloumn);
+                if(getMapPersonalGoal().get(temp)==null)
+                    System.out.print((char) 27 + "[49m"+(char)27+"[39m"+"[   ]");
+                else if(getPlayerShelves().get(playerName)[j][Shelf.getColumnLength()-coloumn-1]==getMapPersonalGoal().get(temp)){
+                    System.out.print((char)27+"[4m"+(char)27 + "[49m"+(char)27+"[39m"+"[");
+                    getMapPersonalGoal().get(temp).printColorForBoard();
+                    System.out.print((char) 27 + "[49m"+(char)27+"[39m"+"]"+(char)27+"[0m");
+                }else{
+                    System.out.print((char) 27 + "[49m"+(char)27+"[39m"+"[");
+                    getMapPersonalGoal().get(temp).printColorForBoard();
+                    System.out.print((char) 27 + "[49m"+(char)27+"[39m"+"]");
+                }
+            }
+            System.out.print("\t\t");
     }
 
 }
