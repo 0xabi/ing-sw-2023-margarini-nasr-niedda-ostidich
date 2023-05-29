@@ -1,12 +1,31 @@
 package it.polimi.ingsw.client.view;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import it.polimi.ingsw.client.clientController.GameClientController;
+import it.polimi.ingsw.resources.Coordinates;
 import it.polimi.ingsw.resources.GameRoom;
 import it.polimi.ingsw.resources.Tile;
+import it.polimi.ingsw.resources.exceptions.ConfigFileNotFoundException;
+import it.polimi.ingsw.resources.exceptions.ConfigFileNotReadableException;
 import it.polimi.ingsw.resources.interfaces.ClientController;
 import it.polimi.ingsw.resources.interfaces.ClientView;
+import it.polimi.ingsw.server.model.EndGameToken;
 import org.jetbrains.annotations.NotNull;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.FileReader;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.rmi.RemoteException;
 import java.util.*;
 
@@ -63,6 +82,8 @@ public abstract class GameClientView implements ClientView {
     private List<Integer> playerPersonalGoals;
 
     private String IPAddress;
+    private Map<Coordinates, Tile> mapPersonalGoal;
+
 
     private List<GameRoom> gameRooms;
 
@@ -402,6 +423,51 @@ public abstract class GameClientView implements ClientView {
     @Override
     public void givePersonalGoals(List<Integer> personalGoals) {
         playerPersonalGoals = personalGoals;
+        String filePath = "src/main/java/it/polimi/ingsw/resources/configFiles/personalGoalMatchesMap.json";
+        int referenceNumber = personalGoals.get(0);
+
+        try {
+            String json = readFile(filePath);
+            Type type = new TypeToken<Map<String, Map<String, int[]>>>() {
+            }.getType();
+            Map<String, Map<String, int[]>> jsonData = new Gson().fromJson(json, type);
+
+            mapPersonalGoal = new HashMap<>();
+
+            String referenceKey = Integer.toString(referenceNumber);
+            if (jsonData.containsKey(referenceKey)) {
+                Map<String, int[]> referenceData = jsonData.get(referenceKey);
+                for (Map.Entry<String, int[]> entry : referenceData.entrySet()) {
+                    String tileName = entry.getKey();
+                    int[] coordinatesArray = entry.getValue();
+                    Coordinates coordinates = new Coordinates(coordinatesArray[0], coordinatesArray[1]);
+                    switch (tileName) {
+                        case "PLANTS" -> mapPersonalGoal.put(coordinates,Tile.PLANTS);
+                        case "GAMES" -> mapPersonalGoal.put(coordinates,Tile.GAMES);
+                        case "FRAMES" -> mapPersonalGoal.put(coordinates, Tile.FRAMES);
+                        case "TROPHIES" -> mapPersonalGoal.put(coordinates, Tile.TROPHIES);
+                        case "BOOKS" -> mapPersonalGoal.put(coordinates, Tile.BOOKS);
+                        case "CATS" -> mapPersonalGoal.put(coordinates, Tile.CATS);
+                    }
+                }
+            } else {
+                System.out.println("Il numero di riferimento specificato non esiste nel file JSON.");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static String readFile(String filePath) throws IOException {
+        StringBuilder contentBuilder = new StringBuilder();
+        try (FileReader reader = new FileReader(filePath)) {
+            int character;
+            while ((character = reader.read()) != -1) {
+                contentBuilder.append((char) character);
+            }
+        }
+        return contentBuilder.toString();
     }
 
     /**
@@ -413,4 +479,7 @@ public abstract class GameClientView implements ClientView {
         this.commonGoal2 = commonGoal2;
     }
 
+    public Map<Coordinates, Tile> getMapPersonalGoal() {
+        return mapPersonalGoal;
+    }
 }
