@@ -298,7 +298,6 @@ public class CLI extends GameClientView {
                         System.out.print((char) 27 + "[49m" + (char) 27 + "[39m" + "[");
                         boxes[j][i].printColorForBoard();
                         System.out.print((char) 27 + "[49m" + (char) 27 + "[39m" + "]");
-                        done = true;
                     }
                     done = false;
                 }
@@ -324,7 +323,7 @@ public class CLI extends GameClientView {
         else if (getNames().size() == 3)
             Space = "\t\t\t\t";
         else Space = "\t\t";
-        System.out.print(Space);
+        //System.out.print(Space);
         if (getNames().size() == 2)
             Space = "\t\t\t\t\t";
         else if (getNames().size() == 3)
@@ -342,9 +341,12 @@ public class CLI extends GameClientView {
         if (getCommonGoal1GivenPlayers().size() > 0) {
             System.out.print("Cg1" + Space);
             for (String name : getNames())
-                if (getCommonGoal1GivenPlayers().get(name) != null) {
+                if (getCommonGoal1GivenPlayers().containsValue(name)) {
                     System.out.print("\t");
-                    System.out.print((char) 27 + "[49m" + (char) 27 + "[39m" + "[" + (char) 27 + "[41m" + (char) 27 + "[30m" + " " + getCommonGoal1GivenPlayers().get(name) + " " + (char) 27 + "[49m" + (char) 27 + "[39m" + "]");
+                    getCommonGoal1GivenPlayers().keySet().forEach((k) -> {
+                        if (getCommonGoal1GivenPlayers().get(k).equals(name))
+                            System.out.print((char) 27 + "[49m" + (char) 27 + "[39m" + "[" + (char) 27 + "[41m" + (char) 27 + "[30m" + " " + getCommonGoal1GivenPlayers().get(k) + " " + (char) 27 + "[49m" + (char) 27 + "[39m" + "]");
+                    });
                     System.out.print("\t\t\t");
                 } else System.out.print("\t\t\t\t\t");
             System.out.println();
@@ -352,9 +354,12 @@ public class CLI extends GameClientView {
         if (getCommonGoal2GivenPlayers().size() > 0) {
             System.out.print("Cg2" + Space);
             for (String name : getNames())
-                if (getCommonGoal2GivenPlayers().get(name) != null) {
+                if (getCommonGoal2GivenPlayers().containsValue(name)) {
                     System.out.print("\t");
-                    System.out.print((char) 27 + "[49m" + (char) 27 + "[39m" + "[" + (char) 27 + "[41m" + (char) 27 + "[30m" + " " + getCommonGoal2GivenPlayers().get(name) + " " + (char) 27 + "[49m" + (char) 27 + "[39m" + "]");
+                    getCommonGoal2GivenPlayers().keySet().forEach((k) -> {
+                        if (getCommonGoal2GivenPlayers().get(k).equals(name))
+                            System.out.print((char) 27 + "[49m" + (char) 27 + "[39m" + "[" + (char) 27 + "[41m" + (char) 27 + "[30m" + " " + getCommonGoal2GivenPlayers().get(k) + " " + (char) 27 + "[49m" + (char) 27 + "[39m" + "]");
+                    });
                     System.out.print("\t\t\t");
                 } else System.out.print("\t\t\t\t\t");
             System.out.println();
@@ -400,7 +405,7 @@ public class CLI extends GameClientView {
                 try {
                     printScenario1(list);
                     if (retry)
-                        System.out.println("\t\t\t\tThe Tile was alredy chosen or invalid input");
+                        System.out.println("\t\t\t\tThe Tile was already chosen or invalid input");
                     System.out.println("\t\t\t\tYou can pick more " + print + " tiles");
                     coords = playerMessage("\t\t\t\tchoose one tile using coordinates writing them in the following format: x,y\n").split(",");
                     x = Integer.parseInt(coords[0]);
@@ -711,14 +716,14 @@ public class CLI extends GameClientView {
         printSingleShelf();
     }
 
-    public void printPersonalGoal(int coloumn) {
+    public void printPersonalGoal(int column) {
         Coordinates temp;
         System.out.print("\t\t\t\t\t\t\t\t");
         for (int j = 0; j < getGameParameters().get("shelfRowLength"); j++) {
-            temp = new Coordinates(j, coloumn);
+            temp = new Coordinates(j, column);
             if (getMapPersonalGoal().get(temp) == null)
                 System.out.print((char) 27 + "[49m" + (char) 27 + "[39m" + "[   ]");
-            else if (getPlayerShelves().get(getPlayerName())[j][getGameParameters().get("shelfColumnLength") - coloumn - 1] == getMapPersonalGoal().get(temp)) {
+            else if (getPlayerShelves().get(getPlayerName())[j][getGameParameters().get("shelfColumnLength") - column - 1] == getMapPersonalGoal().get(temp)) {
                 System.out.print((char) 27 + "[4m" + (char) 27 + "[49m" + (char) 27 + "[39m" + "[");
                 getMapPersonalGoal().get(temp).printColorForBoard();
                 System.out.print((char) 27 + "[49m" + (char) 27 + "[39m" + "]" + (char) 27 + "[0m");
