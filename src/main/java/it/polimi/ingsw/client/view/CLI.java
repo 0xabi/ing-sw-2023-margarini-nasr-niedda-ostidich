@@ -23,6 +23,10 @@ public class CLI extends GameClientView {
 
     private String dataMessage = "";
 
+    private String currentPlayer;
+
+    private String playerName;
+
     private final Thread scannerThread;
 
     /**
@@ -95,21 +99,21 @@ public class CLI extends GameClientView {
     public void choosePlayerName() {
         if (Debugging.isDebugging()) {
             try {
-                String randomString = Debugging.randomString();
-                System.out.println("debugging: setting \"" + randomString + "\" as player name");
-                setPlayerName(randomString);
-                getClientController().update(new Event(EventID.CHOOSE_PLAYER_NAME, randomString));
+                playerName= Debugging.randomString();
+                System.out.println("debugging: setting \"" + playerName + "\" as player name");
+                setPlayerName(playerName);
+                getClientController().update(new Event(EventID.CHOOSE_PLAYER_NAME, playerName));
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
         } else {
-            String scannedIP = playerMessage("Choose player name:");
-            while (scannedIP.isBlank()) {
-                scannedIP = playerMessage("Wrong input!\nChoose player name:");
+            playerName = playerMessage("Choose player name:");
+            while (playerName.isBlank()) {
+                playerName = playerMessage("Wrong input!\nChoose player name:");
             }
             try {
-                setPlayerName(scannedIP);
-                getClientController().update(new Event(EventID.CHOOSE_PLAYER_NAME, scannedIP));
+                setPlayerName(playerName);
+                getClientController().update(new Event(EventID.CHOOSE_PLAYER_NAME, playerName));
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
@@ -252,7 +256,7 @@ public class CLI extends GameClientView {
 
     public void printBoard(ArrayList<Coordinates> list) {
         Tile[][] boxes = getBoard();
-        System.out.println("\n--------------------------------------------------------------------------------------\n");
+        System.out.println("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
         System.out.print("\t\t\t\t");
         System.out.print("     ");
         boolean done = false;
@@ -313,17 +317,11 @@ public class CLI extends GameClientView {
         for (int i = 0; i < Board.getColumnLength(); i++)
             System.out.print("     ");
         printPersonalGoal(Board.getColumnLength() - 4);
-        System.out.println("\n\t\t\t\t  V Y\n--------------------------------------------------------------------------------------");
+        System.out.println("\n\t\t\t\t  V Y\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
     }
 
     public void printBookshelves() {
         String Space;
-        if (getNames().size() == 2)
-            Space = "\t\t\t\t\t\t";
-        else if (getNames().size() == 3)
-            Space = "\t\t\t\t";
-        else Space = "\t\t";
-        //System.out.print(Space);
         if (getNames().size() == 2)
             Space = "\t\t\t\t\t";
         else if (getNames().size() == 3)
@@ -331,7 +329,10 @@ public class CLI extends GameClientView {
         else Space = "\t";
         System.out.print(Space + "\t");
         for (String name : getNames())
-            System.out.print("\t" + name + "\t\t\t");
+            if(name.equals(currentPlayer))
+                System.out.print("\t" + (char)27+"[4m"+(char)27 + "[49m"+(char)27+"[39m"+ name + (char)27+"[0m" +"\t\t\t");
+            else
+                System.out.print("\t" +(char)27 + "[49m"+(char)27+"[39m"+ name +"\t\t\t");
         System.out.println();
         for (int i = getGameParameters().get("shelfColumnLength") - 1; i >= 0; i--) {
             printShelfRow(i, Space + "\t");
@@ -395,6 +396,7 @@ public class CLI extends GameClientView {
     public void pickTiles(int availablePickNumber) {
         int x, y;
         ArrayList<Coordinates> list = new ArrayList<>();
+        currentPlayer = playerName;
         String[] coords;
         boolean attempt;
         boolean retry = false;
@@ -503,6 +505,7 @@ public class CLI extends GameClientView {
 
     @Override
     public void playerIsPlaying(String playerName) {
+        currentPlayer = playerName;
         printScenario1(null);
         System.out.println("\t\t\t\t" + playerName + " is currently playing his turn");
     }
@@ -663,15 +666,17 @@ public class CLI extends GameClientView {
     }
 
     public void printPossibleChoices(@NotNull ArrayList<ArrayList<Tile>> choices) {
-        System.out.println("-------------------------------------------------------------------------\n");
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
         for (int i = 0; i < choices.size(); i++) {
+            System.out.print("\t\t\t");
             for (int j = 0; j < 7 - choices.size(); j++)
                 System.out.print("\t");
             System.out.print(" (" + i + ")");
         }
-        System.out.println("\n");
+        System.out.println();
         for (int i = choices.get(0).size() - 1; i >= 0; i--) {
             for (int num = 0; num < choices.size(); num++) {
+                System.out.print("\t\t\t");
                 for (int j = 0; j < 7 - choices.size(); j++)
                     System.out.print("\t");
                 System.out.print((char) 27 + "[49m" + (char) 27 + "[39m" + "[");
@@ -680,14 +685,14 @@ public class CLI extends GameClientView {
             }
             System.out.println();
         }
-        System.out.println("\n--------------------------------------------------------------------------------------\n");
+        System.out.println("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
     }
 
     public void printSingleShelf() {
         System.out.print("\t\t\t\t\t");
         for (int i = 0; i < getGameParameters().get("shelfRowLength"); i++)
             System.out.print(" (" + i + ") ");
-        System.out.println();
+        System.out.println("\t\t\t\t\t\t\t\tYour Personal Goal is:");
         for (int i = getGameParameters().get("shelfColumnLength") - 1; i >= 0; i--) {
             System.out.print("\t\t\t\t\t");
             for (int j = 0; j < getGameParameters().get("shelfRowLength"); j++) {
@@ -699,9 +704,10 @@ public class CLI extends GameClientView {
                     System.out.print((char) 27 + "[49m" + (char) 27 + "[39m" + "]");
                 }
             }
+            printPersonalGoal(getGameParameters().get("shelfColumnLength")-1-i);
             System.out.println();
         }
-        System.out.println("\n--------------------------------------------------------------------------------------\n");
+        System.out.println("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
     }
 
     public void printScenario1(ArrayList<Coordinates> board) {
