@@ -37,6 +37,9 @@ public class Debugging {
                 shelf.getPositions()[i][j] = tiles.get(random.nextInt(tiles.size()));
             }
         }
+        shelf.getPositions()[0][Shelf.getColumnLength()-2] = null;
+        shelf.getPositions()[0][Shelf.getColumnLength()-3] = null;
+        shelf.getPositions()[1][Shelf.getColumnLength()-2] = null;
     }
 
     public static @NotNull String randomString() {

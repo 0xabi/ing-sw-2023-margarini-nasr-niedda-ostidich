@@ -1,18 +1,13 @@
 package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.Debugging;
-import com.google.gson.internal.bind.util.ISO8601Utils;
-import com.sun.javafx.collections.NonIterableChange;
 import it.polimi.ingsw.resources.*;
 
 import java.rmi.RemoteException;
 import java.util.*;
 
 import it.polimi.ingsw.server.model.Board;
-import it.polimi.ingsw.server.model.Shelf;
 import org.jetbrains.annotations.NotNull;
-
-import static com.sun.javafx.collections.NonIterableChange.*;
 
 /**
  * CLI class is to implement GameView UI abstract class.
@@ -29,8 +24,6 @@ public class CLI extends GameClientView {
     private String dataMessage = "";
 
     private final Thread scannerThread;
-
-    private String playerName;
 
     /**
      * Class constructor.
@@ -104,6 +97,7 @@ public class CLI extends GameClientView {
             try {
                 String randomString = Debugging.randomString();
                 System.out.println("debugging: setting \"" + randomString + "\" as player name");
+                setPlayerName(randomString);
                 getClientController().update(new Event(EventID.CHOOSE_PLAYER_NAME, randomString));
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
@@ -325,21 +319,21 @@ public class CLI extends GameClientView {
         for (String name : getNames())
             System.out.print("\t" + name + "\t\t\t");
         System.out.println();
-        for (int i = Shelf.getColumnLength() - 1; i >= 0; i--) {
+        for (int i = getGameParameters().get("shelfColumnLength") - 1; i >= 0; i--) {
             printShelfRow(i, Space);
             System.out.println();
         }
     }
 
-    public void printShelfRow(int coloumn, String space) {
+    public void printShelfRow(int column, String space) {
         System.out.print(space);
         for (String name : getNames()) {
             Tile[][] currentShelf = getPlayerShelves().get(name);
-            for (int j = 0; j < Shelf.getRowLength(); j++) {
-                if (currentShelf[j][coloumn] == null)
+            for (int j = 0; j < getGameParameters().get("shelfRowLength"); j++) {
+                if (currentShelf[j][column] == null)
                     System.out.print("[ ]");
                 else
-                    System.out.print("[" + currentShelf[j][coloumn].toString().charAt(0) + "]");
+                    System.out.print("[" + currentShelf[j][column].toString().charAt(0) + "]");
             }
             System.out.print("\t\t");
         }
@@ -368,7 +362,7 @@ public class CLI extends GameClientView {
                     printBookshelves();
                     printBoard(list);
                     if (retry)
-                        System.out.println("\t\t\t\tThe Tile was alredy chosen or invalid input");
+                        System.out.println("\t\t\t\tThe Tile was already chosen or invalid input");
                     System.out.println("\t\t\t\tYou can pick more " + print + " tiles");
                     coords = playerMessage("\t\t\t\tchoose one tile using coordinates writing them in the following format: x,y\n").split(",");
                     x = Integer.parseInt(coords[0]);
@@ -395,7 +389,7 @@ public class CLI extends GameClientView {
             printBookshelves();
             printBoard(list);
             String msg = "\t\t\t\tIf you picked the tiles you wanted press [y],";
-            msg = msg + "\n\t\t\t\tIf you're not satisfied of your choice and you would repick press [r],";
+            msg = msg + "\n\t\t\t\tIf you're not satisfied of your choice and you would pick again press [r],";
             msg = msg + "\n\t\t\t\tIf you want to pick other Tiles press[c]";
             String response = playerMessage(msg);
             if (response.equals("y"))
@@ -411,7 +405,7 @@ public class CLI extends GameClientView {
                 System.out.println("\t\t\t\tyou have already chosen the maximum number of available tiles");
                 do {
                     msg = "\t\t\t\tIf you picked the tiles you wanted press [y],";
-                    msg = msg + "\n\t\t\t\tIf you're not satisfied of your choice and you would repick press [r],";
+                    msg = msg + "\n\t\t\t\tIf you're not satisfied of your choice and you would pick again press [r],";
                     response = playerMessage(msg);
                 } while (!response.equals("r") && !response.equals("y"));
                 if (response.equals("r")) {
@@ -429,16 +423,22 @@ public class CLI extends GameClientView {
     }
 
     @Override
-    public void chooseOrder(@NotNull List<Tile> selection) { //13 rows + 2 di "-------"
+    public void chooseOrder(@NotNull List<Tile> selection) { //13 rows + 2 of "-------"
         ArrayList<ArrayList<Tile>> resultSet = OrderChoice(selection);
         int choice = -1;
         do {
             try {
+                System.out.println(1);
                 printPossibleChoices(resultSet);
+                System.out.println(2);
                 printSingleShelf();
+                System.out.println(3);
                 choice = Integer.parseInt(playerMessage("Choose the order of your picked tiles:\t"));
+                System.out.println(4);
+                System.out.println("choice: " + choice);
+                System.out.println(resultSet.size());
             } catch (Exception e) {
-                System.out.println("FORMAT ERROR" + e);
+                System.out.println("FORMAT ERROR " + e);
             }
         } while (choice >= resultSet.size() || choice < 0);
         try {
@@ -601,7 +601,7 @@ public class CLI extends GameClientView {
     }
 
     private @NotNull ArrayList<ArrayList<Tile>> OrderChoice(List<Tile> list) {
-        ArrayList<ArrayList<Tile>> result = new ArrayList<ArrayList<Tile>>();
+        ArrayList<ArrayList<Tile>> result = new ArrayList<>();
         ArrayList<Tile> temp = new ArrayList<>(list);
         if (list.size() == 1) {
             result.add(temp);
@@ -653,16 +653,16 @@ public class CLI extends GameClientView {
     }
 
     public void printSingleShelf() {
-        for (int i = 0; i < Shelf.getRowLength(); i++)
+        for (int i = 0; i < getGameParameters().get("shelfRowLength"); i++)
             System.out.print(" (" + i + ") ");
         System.out.println();
-        for (int i = Shelf.getColumnLength() - 1; i >= 0; i--) {
-            for (int j = 0; j < Shelf.getRowLength(); j++) {
-                if (getPlayerShelves().get(playerName)[j][i] == null)
+        for (int i = getGameParameters().get("shelfColumnLength") - 1; i >= 0; i--) {
+            for (int j = 0; j < getGameParameters().get("shelfRowLength"); j++) {
+                if (getPlayerShelves().get(getPlayerName())[j][i] == null)
                     System.out.print((char) 27 + "[49m" + (char) 27 + "[39m" + "[   ]");
                 else {
                     System.out.print((char) 27 + "[49m" + (char) 27 + "[39m" + "[");
-                    getPlayerShelves().get(playerName)[j][i].printColorForBoard();
+                    getPlayerShelves().get(getPlayerName())[j][i].printColorForBoard();
                     System.out.print((char) 27 + "[49m" + (char) 27 + "[39m" + "]");
                 }
             }

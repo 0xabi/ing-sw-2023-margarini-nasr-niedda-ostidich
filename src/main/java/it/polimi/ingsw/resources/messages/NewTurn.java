@@ -7,7 +7,7 @@ import it.polimi.ingsw.resources.Tile;
 import java.util.Map;
 import java.util.Stack;
 
-public abstract class NewTurn extends Message {
+public class NewTurn extends Message {
 
     private final Tile[][] board;
 

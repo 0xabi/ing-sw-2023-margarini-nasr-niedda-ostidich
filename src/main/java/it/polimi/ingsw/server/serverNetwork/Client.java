@@ -61,7 +61,11 @@ public class Client implements ClientController {
 
     public void send(Message message) throws IOException {
         if (Objects.equals(connectionType, "Socket")) {
+            if (message.getMessageID() == MessageID.NEW_TURN_NEXT_PLAYER)
+                System.out.println("sending on socket: " + ((NextPlayer) message).getBoard()[3][1]);
             MessageToClient.writeObject(message);
+            MessageToClient.reset();
+            MessageToClient.flush();
         }
     }
 
@@ -184,7 +188,15 @@ public class Client implements ClientController {
     }
 
     @Override
-    public void newTurn(NewTurn message) {
+    public void newTurn(NextPlayer message) {
+        try {
+            send(message);
+        } catch (IOException ignored) {
+        }
+    }
+
+    @Override
+    public void newTurn(EndGame message) {
         try {
             send(message);
         } catch (IOException ignored) {

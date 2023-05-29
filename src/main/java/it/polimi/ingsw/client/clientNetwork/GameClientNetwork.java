@@ -116,6 +116,8 @@ public class GameClientNetwork implements ClientNetwork {
         if (Objects.equals(connectionType, "Socket")) {
             try {
                 MessageToServer.writeObject(message);
+                MessageToServer.reset();
+                MessageToServer.flush();
             } catch (IOException e) {
                 System.out.println("IO Exception: no message is sent");
                 throw new IOException(e);
@@ -145,14 +147,18 @@ public class GameClientNetwork implements ClientNetwork {
 
     public void Sorter() throws Exception {
         //noinspection InfiniteLoopStatement
-        while (true) { //FIXME: and put while "client is alive"
+        while (true) { //FIXME: put while "client is alive"
             //noinspection BusyWait
             Thread.sleep(1000);
             if (messageQueue.size() > 0) {
                 try {
                     Message msg = messageQueue.remove();
                     switch (msg.getMessageID()) {
-                        case NEW_TURN -> controller.newTurn((NewTurn) msg);
+                        case NEW_TURN_END_GAME -> controller.newTurn((EndGame) msg);
+                        case NEW_TURN_NEXT_PLAYER -> {
+                            System.out.println("receiving from socket: " + ((NextPlayer) msg).getBoard()[3][1]);
+                            controller.newTurn((NextPlayer) msg);
+                        }
                         case NOTIFY_GAME_HAS_STARTED -> controller.notifyGameHasStarted((NotifyGameHasStarted) msg);
                         case PICK_ACCEPTED -> controller.pickAccepted((PickAccepted) msg);
                         case SHOW_ROOMS -> controller.showRooms((ShowRooms) msg);

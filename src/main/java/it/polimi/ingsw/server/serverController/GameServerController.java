@@ -69,6 +69,8 @@ public class GameServerController extends RoomServices {
      */
     public void playMatch() {
         System.out.println("playing match with names " + matchClients.keySet() + ", and with clients " + matchClients.values());
+        Map<String, Tile[][]> shelves = new HashMap<>();
+        names.forEach(player -> shelves.put(player ,model.getPlayerShelf(player)));
         names.forEach(player -> executorService.execute(() ->
         {
             try {
@@ -83,7 +85,8 @@ public class GameServerController extends RoomServices {
                         model.getCommonGoal2Tokens(),
                         model.getPlayerPersonalGoalID(player),
                         model.getCommonGoal1(),
-                        model.getCommonGoal2()));
+                        model.getCommonGoal2(),
+                        shelves));
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
@@ -217,7 +220,7 @@ public class GameServerController extends RoomServices {
                 try {
                     matchClients.get(client).newTurn(new EndGame(
                             client,
-                            MessageID.NEW_TURN,
+                            MessageID.NEW_TURN_END_GAME,
                             model.getBoard(),
                             model.getEndGameToken().isPresent(),
                             model.getBag(),
@@ -249,7 +252,7 @@ public class GameServerController extends RoomServices {
             try {
                 matchClients.get(client).newTurn(new NextPlayer(
                         client,
-                        MessageID.NEW_TURN,
+                        MessageID.NEW_TURN_NEXT_PLAYER,
                         model.getBoard(),
                         model.getEndGameToken().isPresent(),
                         model.getBag(),

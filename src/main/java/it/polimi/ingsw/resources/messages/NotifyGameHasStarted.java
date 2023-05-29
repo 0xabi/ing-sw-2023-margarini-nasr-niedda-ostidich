@@ -28,7 +28,13 @@ public class NotifyGameHasStarted extends Message {
 
     private final String commonGoal2;
 
-    public NotifyGameHasStarted(String playerName, MessageID messageID, Map<String, Integer> gameParameters, List<String> turnCycle, Tile[][] board, Map<Tile, Integer> bag, Stack<Integer> commonGoal1TokenStack, Stack<Integer> commonGoal2TokenStack, int personalGoal, String commonGoal1, String commonGoal2) {
+    public Map<String, Tile[][]> getShelves() {
+        return shelves;
+    }
+
+    private final Map<String, Tile[][]> shelves;
+
+    public NotifyGameHasStarted(String playerName, MessageID messageID, Map<String, Integer> gameParameters, List<String> turnCycle, Tile[][] board, Map<Tile, Integer> bag, Stack<Integer> commonGoal1TokenStack, Stack<Integer> commonGoal2TokenStack, int personalGoal, String commonGoal1, String commonGoal2, Map<String, Tile[][]> shelves) {
         super(playerName, messageID);
         this.gameParameters = gameParameters;
         this.turnCycle = turnCycle;
@@ -39,6 +45,7 @@ public class NotifyGameHasStarted extends Message {
         this.personalGoal = personalGoal;
         this.commonGoal1 = commonGoal1;
         this.commonGoal2 = commonGoal2;
+        this.shelves = shelves;
     }
 
     public List<String> getTurnCycle() {

@@ -81,7 +81,16 @@ public interface ClientController extends Remote {
      * @param message contains all information to update
      * @author Francesco Ostidich
      */
-    void newTurn(NewTurn message) throws RemoteException;
+    void newTurn(NextPlayer message) throws RemoteException;
+
+    /**
+     * When current player ends it turn, all client are updated.
+     * If game is ending, method to close the game are called.
+     *
+     * @param message contains all information to update
+     * @author Francesco Ostidich
+     */
+    void newTurn(EndGame message) throws RemoteException;
 
     /**
      * After choosing coordinates on the board, if they are legitimate,

@@ -32,6 +32,10 @@ public abstract class GameClientView implements ClientView {
         this.playerName = playerName;
     }
 
+    public String getPlayerName() {
+        return playerName;
+    }
+
     private final List<String> names;
 
     private Tile[][] board;
@@ -342,7 +346,7 @@ public abstract class GameClientView implements ClientView {
      */
     @Override
     public void updateCommonGoal1GivenPlayers(Map<Integer, String> givenPlayer) {
-        if(givenPlayer != null) {
+        if (givenPlayer != null) {
             for (int token : givenPlayer.keySet()) {
                 this.commonGoal1GivenPlayers.replace(token, givenPlayer.get(token));
             }
@@ -362,14 +366,11 @@ public abstract class GameClientView implements ClientView {
      */
     @Override
     public void updateCommonGoal2GivenPlayers(Map<Integer, String> givenPlayer) {
-
-        if(givenPlayer!=null)
-        {
+        if (givenPlayer != null) {
             for (int token : givenPlayer.keySet()) {
                 this.commonGoal2GivenPlayers.replace(token, givenPlayer.get(token));
             }
         }
-
     }
 
     /**
@@ -378,10 +379,10 @@ public abstract class GameClientView implements ClientView {
     @Override
     public void updatePlayerShelves(@NotNull Map<String, Tile[][]> shelves) {
         for (String player : shelves.keySet()) {
-             if ( playerShelves.replace(player, shelves.get(player)) == null )
-                  playerShelves.put(player, shelves.get(player));
-
-
+            if (playerShelves.containsKey(player))
+                playerShelves.replace(player, shelves.get(player));
+            else
+                playerShelves.put(player, shelves.get(player));
         }
     }
 
