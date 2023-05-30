@@ -10,8 +10,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
 
-import java.util.ArrayList;
-
 public class WaitPlayersSceneHandler extends SceneHandler{
 
     @FXML

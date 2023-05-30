@@ -12,13 +12,14 @@ import java.util.Random;
 
 public class Debugging {
 
-    private static final boolean debugging = false;
+    private static final boolean debugging = true;
 
     /**
      * No arguments: network types randomly assigned.<br>
      * Two arguments: arguments used as respective network types.
      */
-    private static final String[] connections = {"RMI", "Socket"};
+    @SuppressWarnings("MismatchedReadAndWriteOfArray")
+    private static final String[] connections = {};
 
     private static String roomGeneration;
 

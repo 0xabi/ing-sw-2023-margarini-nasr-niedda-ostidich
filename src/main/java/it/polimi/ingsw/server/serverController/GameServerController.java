@@ -151,8 +151,8 @@ public class GameServerController extends RoomServices {
         try {
             model.playerInsertTilesInShelf(message.getPlayerName(), message.getChosenTiles(), message.getChosenColumn());
             playerPhase = Phase.PICK;
-            nextTurn(true);
             endOfTurnChecks(message.getPlayerName());
+            nextTurn(true);
         } catch (UnavailableInsertionException e) {
             executorService.execute(() ->
             {
