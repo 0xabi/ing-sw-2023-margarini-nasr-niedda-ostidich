@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client.view.handler;
 
+import it.polimi.ingsw.resources.Event;
+import it.polimi.ingsw.resources.EventID;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
@@ -10,6 +12,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
+
+import java.rmi.RemoteException;
 
 
 /**
@@ -44,6 +48,12 @@ public class PlayerNameSceneHandler extends SceneHandler{
 
     public void next(){
 
+        try {
+            getClientController().update(new Event(EventID.CHOOSE_PLAYER_NAME, username_txt.getText()));
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     /**
@@ -73,10 +83,10 @@ public class PlayerNameSceneHandler extends SceneHandler{
         username_lbl_background.setFitWidth(username_lbl_background.getFitWidth()*ratio_x);
         username_lbl_background.setFitHeight(username_lbl_background.getFitHeight()*ratio_y);
 
-        username_lbl.setFont(Font.font(username_lbl.getFont().getFamily(),username_lbl.getFont().getSize()*ratio_y));
-        username_lbl.setLayoutX(username_lbl_background.getLayoutX()+ ((username_lbl_background.getFitWidth()-username_lbl.getBoundsInLocal().getWidth())/2));
+        username_lbl.setFont(Font.font(username_lbl.getFont().getFamily(), username_lbl.getFont().getSize()*ratio_y));
+        username_lbl.setLayoutX(username_lbl_background.getLayoutX()+ ((username_lbl_background.getFitWidth()- username_lbl.getBoundsInLocal().getWidth())/2));
 
-        username_txt.setFont(Font.font(username_txt.getFont().getFamily(),username_txt.getFont().getSize()*ratio_y));
+        username_txt.setFont(Font.font(username_txt.getFont().getFamily(), username_txt.getFont().getSize()*ratio_y));
         username_txt_background.setFitWidth(username_txt_background.getFitWidth()*ratio_x);
         username_txt_background.setFitHeight(username_txt_background.getFitHeight()*ratio_y);
         username_txt.setPrefWidth(username_txt.getPrefWidth()*ratio_x);

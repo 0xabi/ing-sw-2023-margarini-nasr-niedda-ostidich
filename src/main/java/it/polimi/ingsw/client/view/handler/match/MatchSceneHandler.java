@@ -527,10 +527,9 @@ public class MatchSceneHandler extends SceneHandler {
     @Override
     public void runScene() {
 
-        pickPhase=true;
         advertising.setText("");
         resize();
-        test();
+        //test();
         initMainShelf();
 
         fillBoard();

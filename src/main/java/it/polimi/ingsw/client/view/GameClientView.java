@@ -1,18 +1,11 @@
 package it.polimi.ingsw.client.view;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import it.polimi.ingsw.client.clientController.GameClientController;
 import it.polimi.ingsw.resources.Coordinates;
 import it.polimi.ingsw.resources.GameRoom;
 import it.polimi.ingsw.resources.Tile;
-import it.polimi.ingsw.resources.exceptions.ConfigFileNotFoundException;
-import it.polimi.ingsw.resources.exceptions.ConfigFileNotReadableException;
 import it.polimi.ingsw.resources.interfaces.ClientController;
 import it.polimi.ingsw.resources.interfaces.ClientView;
-import it.polimi.ingsw.server.model.EndGameToken;
 import org.jetbrains.annotations.NotNull;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -23,9 +16,6 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.rmi.RemoteException;
 import java.util.*;
 
@@ -109,6 +99,7 @@ public abstract class GameClientView implements ClientView {
             throw new RuntimeException(e);
         }
     }
+
 
     /**
      * Getter for game client controller.
