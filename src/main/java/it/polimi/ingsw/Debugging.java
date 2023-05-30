@@ -15,6 +15,16 @@ public class Debugging {
 
     private static String roomGeneration;
 
+    private static String networkType;
+
+    public static String getNetworkType() {
+        return networkType;
+    }
+
+    public static void setNetworkType(String networkType) {
+        Debugging.networkType = networkType;
+    }
+
     public static boolean isDebugging() {
         return debugging;
     }

@@ -41,15 +41,15 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
 
     private final ExecutorService executorService;
 
+    private String network;
+
     /**
      * Class constructor.
      *
      * @author Francesco Ostidich
      */
-    public GameClientController(@NotNull ClientView view, String network) throws RemoteException {
+    public GameClientController(@NotNull ClientView view) throws RemoteException {
         executorService = Executors.newCachedThreadPool();
-        clientNetwork = new GameClientNetwork(network);
-        Debugging.setRoomGeneration(network);
         this.view = view;
     }
 
@@ -67,6 +67,12 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
             case START -> view.choosePlayerName();
             case CHOOSE_PLAYER_NAME -> {
                 playerName = (String) evt.value();
+                view.chooseRMIorSocket();
+            }
+            case CHOOSE_RMI_OR_SOCKET -> {
+                network = (String) evt.value();
+                clientNetwork = new GameClientNetwork(network);
+                Debugging.setRoomGeneration(network);
                 view.chooseIPAddress();
             }
             case CHOOSE_NEW_OR_JOIN -> {

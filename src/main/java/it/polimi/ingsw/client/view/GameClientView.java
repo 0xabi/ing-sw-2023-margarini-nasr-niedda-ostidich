@@ -92,7 +92,7 @@ public abstract class GameClientView implements ClientView {
      *
      * @author Francesco Ostidich
      */
-    public GameClientView(String network) {
+    public GameClientView() {
         gameParameters = new HashMap<>();
         names = new LinkedList<>();
         endGameToken = true;
@@ -104,11 +104,10 @@ public abstract class GameClientView implements ClientView {
         playerPersonalGoals = new LinkedList<>();
         gameRooms = new ArrayList<>();
         try {
-            clientController = new GameClientController(this, network);
+            clientController = new GameClientController(this);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(network);
     }
 
     /**

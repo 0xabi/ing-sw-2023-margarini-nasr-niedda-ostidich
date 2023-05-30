@@ -154,13 +154,16 @@ public class InputFormatChecker {
      * @param rooms  The rooms available in the server
      * @return false if the user's input is valid, true otherwise
      */
-    public static boolean isGameRoomValid(String answer, List<GameRoom> rooms) {
-
+    public static boolean isGameRoomValid(String answer, @NotNull List<GameRoom> rooms) {
         for (GameRoom currentRoom : rooms) {
             if (currentRoom.gameRoomName().equalsIgnoreCase(answer))
                 return true;
         }
         return answer.equals("back") || answer.equals("refresh");
+    }
+
+    public static boolean isNetworkType(@NotNull String scanned) {
+        return (scanned.equals("RMI") || scanned.equals("Socket"));
     }
 
 }

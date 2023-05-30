@@ -34,8 +34,8 @@ public class CLI extends GameClientView {
      *
      * @author Francesco Ostidich
      */
-    public CLI(String network) {
-        super(network);
+    public CLI() {
+        super();
         scannerThread = new Thread(this::scan);
         scannerThread.start();
         try {
@@ -99,7 +99,7 @@ public class CLI extends GameClientView {
     public void choosePlayerName() {
         if (Debugging.isDebugging()) {
             try {
-                playerName= Debugging.randomString();
+                playerName = Debugging.randomString();
                 System.out.println("debugging: setting \"" + playerName + "\" as player name");
                 setPlayerName(playerName);
                 getClientController().update(new Event(EventID.CHOOSE_PLAYER_NAME, playerName));
@@ -329,10 +329,10 @@ public class CLI extends GameClientView {
         else Space = "\t";
         System.out.print(Space + "\t");
         for (String name : getNames())
-            if(name.equals(currentPlayer))
-                System.out.print("\t" + (char)27+"[4m"+(char)27 + "[49m"+(char)27+"[39m"+ name + (char)27+"[0m" +"\t\t\t");
+            if (name.equals(currentPlayer))
+                System.out.print("\t" + (char) 27 + "[4m" + (char) 27 + "[49m" + (char) 27 + "[39m" + name + (char) 27 + "[0m" + "\t\t\t");
             else
-                System.out.print("\t" +(char)27 + "[49m"+(char)27+"[39m"+ name +"\t\t\t");
+                System.out.print("\t" + (char) 27 + "[49m" + (char) 27 + "[39m" + name + "\t\t\t");
         System.out.println();
         for (int i = getGameParameters().get("shelfColumnLength") - 1; i >= 0; i--) {
             printShelfRow(i, Space + "\t");
@@ -535,6 +535,28 @@ public class CLI extends GameClientView {
     }
 
     @Override
+    public void chooseRMIorSocket() {
+        if (Debugging.isDebugging()) {
+            try {
+                System.out.println("debugging: setting \"" + Debugging.getNetworkType() + "\" as network type");
+                getClientController().update(new Event(EventID.CHOOSE_RMI_OR_SOCKET, Debugging.getNetworkType()));
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            String scanned = playerMessage("Choose network type:");
+            while (!InputFormatChecker.isNetworkType(scanned)) {
+                scanned = playerMessage("Wrong input!\nChoose network type:");
+            }
+            try {
+                getClientController().update(new Event(EventID.CHOOSE_RMI_OR_SOCKET, scanned));
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    @Override
     public void disconnected() {
         System.out.println("Disconnected from server. Trying to reconnect...");
     }
@@ -704,7 +726,7 @@ public class CLI extends GameClientView {
                     System.out.print((char) 27 + "[49m" + (char) 27 + "[39m" + "]");
                 }
             }
-            printPersonalGoal(getGameParameters().get("shelfColumnLength")-1-i);
+            printPersonalGoal(getGameParameters().get("shelfColumnLength") - 1 - i);
             System.out.println();
         }
         System.out.println("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");

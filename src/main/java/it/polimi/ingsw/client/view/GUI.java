@@ -10,9 +10,8 @@ import java.util.Queue;
 
 public class GUI extends GameClientView {
 
-    public GUI(String network) {
-        super(network);
-
+    public GUI() {
+        super();
     }
 
     @Override
@@ -22,7 +21,6 @@ public class GUI extends GameClientView {
 
     @Override
     public void chooseIPAddress() {
-
     }
 
     @Override
@@ -32,17 +30,14 @@ public class GUI extends GameClientView {
 
     @Override
     public void chooseNewOrJoin() {
-
     }
 
     @Override
     public void chooseNewGameName() {
-
     }
 
     @Override
     public void chooseNewGamePlayerNumber() {
-
     }
 
     @Override
@@ -51,66 +46,58 @@ public class GUI extends GameClientView {
 
     @Override
     public void notifyGameHasStared() {
-
     }
 
     @Override
     public void chooseGameRoom(List<GameRoom> rooms) {
-
     }
 
     @Override
     public void pickTiles(int availablePickNumber) {
-
     }
 
     @Override
     public void chooseOrder(List<Tile> selection) {
-
     }
 
     @Override
     public void chooseColumn() {
-
     }
 
     @Override
     public void playerIsPlaying(String playerName) {
-
     }
 
     @Override
     public void assignCommonGoalPoints(String playerName, int token) {
-
     }
 
     @Override
     public void assignPersonalGoalPoints(Map<String, Integer> points) {
-
     }
 
     @Override
     public void assignAdjacentGoalPoints(Map<String, Integer> points) {
-
     }
 
     @Override
     public void announceWinner(String winnerName, Map<String, Integer> points) {
+    }
 
+    @Override
+    public void chooseRMIorSocket() {
     }
 
     @Override
     public void disconnected() {
-
     }
 
     @Override
     public void justScanChat() {
-
     }
 
     @Override
     public void justPrintChat(Queue<String> messages) {
-
     }
+
 }

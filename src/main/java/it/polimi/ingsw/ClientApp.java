@@ -22,12 +22,13 @@ public class ClientApp {
             args[0] = old;
             args[1] = null;
         }
+        Debugging.setNetworkType(args[1]);
         if (Objects.equals(args[0], "GUI")) {
-            GUI gui = new GUI(args[1]);
+            GUI gui = new GUI();
             SceneHandler.setGUI(gui);
             gui.start();
             Application.launch(GUIApp.class);
-        } else new CLI(args[1]);
+        } else new CLI();
     }
 
 }
