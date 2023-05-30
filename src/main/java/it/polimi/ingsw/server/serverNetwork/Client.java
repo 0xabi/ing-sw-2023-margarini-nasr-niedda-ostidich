@@ -60,12 +60,12 @@ public class Client implements ClientController {
     }
 
     public void send(Message message) throws IOException {
-        if (Objects.equals(connectionType, "Socket")) {
-            if (message.getMessageID() == MessageID.NEW_TURN_NEXT_PLAYER)
-                System.out.println("sending on socket: " + ((NextPlayer) message).getBoard()[3][1]);
-            MessageToClient.writeObject(message);
-            MessageToClient.reset();
-            MessageToClient.flush();
+        synchronized (MessageToClient) {
+            if (Objects.equals(connectionType, "Socket")) {
+                MessageToClient.writeObject(message);
+                MessageToClient.reset();
+                MessageToClient.flush();
+            }
         }
     }
 

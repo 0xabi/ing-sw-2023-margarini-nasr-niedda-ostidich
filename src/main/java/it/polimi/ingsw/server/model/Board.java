@@ -95,7 +95,7 @@ public class Board {
      * @return
      * @author Edoardo Margarini
      */
-    protected Tile[][] getSpaces() {
+    public Tile[][] getSpaces() {
         return spaces;
     }
 

@@ -22,7 +22,8 @@ public class ClientApp {
             args[0] = old;
             args[1] = null;
         }
-        Debugging.setNetworkType(args[1]);
+        if (Debugging.isDebugging())
+            Debugging.setConfiguration(args[1]);
         if (Objects.equals(args[0], "GUI")) {
             GUI gui = new GUI();
             SceneHandler.setGUI(gui);

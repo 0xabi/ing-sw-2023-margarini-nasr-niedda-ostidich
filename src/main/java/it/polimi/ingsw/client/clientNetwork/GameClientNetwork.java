@@ -112,7 +112,7 @@ public class GameClientNetwork implements ClientNetwork {
     }
 
     @Override
-    public void send(Message message) throws IOException {
+    public synchronized void send(Message message) throws IOException {
         if (Objects.equals(connectionType, "Socket")) {
             try {
                 MessageToServer.writeObject(message);
@@ -155,10 +155,7 @@ public class GameClientNetwork implements ClientNetwork {
                     Message msg = messageQueue.remove();
                     switch (msg.getMessageID()) {
                         case NEW_TURN_END_GAME -> controller.newTurn((EndGame) msg);
-                        case NEW_TURN_NEXT_PLAYER -> {
-                            System.out.println("receiving from socket: " + ((NextPlayer) msg).getBoard()[3][1]);
-                            controller.newTurn((NextPlayer) msg);
-                        }
+                        case NEW_TURN_NEXT_PLAYER -> controller.newTurn((NextPlayer) msg);
                         case NOTIFY_GAME_HAS_STARTED -> controller.notifyGameHasStarted((NotifyGameHasStarted) msg);
                         case PICK_ACCEPTED -> controller.pickAccepted((PickAccepted) msg);
                         case SHOW_ROOMS -> controller.showRooms((ShowRooms) msg);

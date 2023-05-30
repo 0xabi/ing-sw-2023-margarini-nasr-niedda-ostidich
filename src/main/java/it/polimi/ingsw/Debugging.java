@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.resources.Tile;
+import it.polimi.ingsw.server.model.Board;
 import it.polimi.ingsw.server.model.Shelf;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,29 +14,53 @@ public class Debugging {
 
     private static final boolean debugging = true;
 
+    /**
+     * No arguments: network types randomly assigned.<br>
+     * Two arguments: arguments used as respective network types.
+     */
+    private static final String[] connections = {"RMI", "Socket"};
+
     private static String roomGeneration;
 
-    private static String networkType;
+    private static String configuration;
 
+    @SuppressWarnings("ConstantConditions")
     public static String getNetworkType() {
-        return networkType;
+        if (connections.length == 0) {
+            Random r = new Random();
+            if (r.nextBoolean()) {
+                System.out.println("DEBUG: returning \"" + "Socket" + "\" as network type");
+                return "Socket";
+            } else {
+                System.out.println("DEBUG: returning \"" + "RMI" + "\" as network type");
+                return "RMI";
+            }
+        } else if (configuration.equals("1")) {
+            System.out.println("DEBUG: returning \"" + connections[0] + "\" as network type");
+            return connections[0];
+        } else {
+            System.out.println("DEBUG: returning \"" + connections[1] + "\" as network type");
+            return connections[1];
+        }
     }
 
-    public static void setNetworkType(String networkType) {
-        Debugging.networkType = networkType;
+    public static void setConfiguration(String configuration) {
+        Debugging.configuration = configuration;
+        System.out.println("DEBUG: setting \"" + configuration + "\" as configuration number");
     }
 
     public static boolean isDebugging() {
         return debugging;
     }
 
-    public static void setRoomGeneration(@NotNull String roomGeneration) {
-        if (roomGeneration.equals("Socket")) Debugging.roomGeneration = "new";
-        else Debugging.roomGeneration = "join";
-    }
-
-    public static String getRoomGeneration() {
-        return roomGeneration;
+    public static @NotNull String getRoomGeneration() {
+        if (configuration.equals("1")) {
+            System.out.println("DEBUG: setting \"" + "new" + "\" as room generation phase");
+            return "new";
+        } else {
+            System.out.println("DEBUG: setting \"" + "join" + "\" as room generation phase");
+            return "join";
+        }
     }
 
     public static void fillShelf(Shelf shelf) {
@@ -47,9 +72,12 @@ public class Debugging {
                 shelf.getPositions()[i][j] = tiles.get(random.nextInt(tiles.size()));
             }
         }
-        shelf.getPositions()[0][Shelf.getColumnLength()-2] = null;
-        shelf.getPositions()[0][Shelf.getColumnLength()-3] = null;
-        shelf.getPositions()[1][Shelf.getColumnLength()-2] = null;
+        shelf.getPositions()[3][Shelf.getColumnLength() - 1] = shelf.getPositions()[0][Shelf.getColumnLength() - 2];
+        shelf.getPositions()[4][Shelf.getColumnLength() - 1] = shelf.getPositions()[0][Shelf.getColumnLength() - 3];
+        shelf.getPositions()[0][Shelf.getColumnLength() - 2] = null;
+        shelf.getPositions()[0][Shelf.getColumnLength() - 3] = null;
+        shelf.getPositions()[1][Shelf.getColumnLength() - 2] = null;
+        System.out.println("DEBUG: filling shelves");
     }
 
     public static @NotNull String randomString() {
@@ -58,6 +86,18 @@ public class Debugging {
                 .limit(7)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
+    }
+
+    public static void clearBoard(@NotNull Board board) {
+        for (int i = 0; i < Board.getRowLength(); i++)
+            for (int j = 0; j < Board.getColumnLength(); j++)
+                if (board.getSpaces()[i][j] != Tile.EMPTY && board.getSpaces()[i][j] != null)
+                    board.getSpaces()[i][j] = Tile.EMPTY;
+        board.getSpaces()[3][1] = Tile.FRAMES;
+        board.getSpaces()[4][1] = Tile.GAMES;
+        board.getSpaces()[4][5] = Tile.TROPHIES;
+        board.getSpaces()[4][4] = Tile.CATS;
+        System.out.println("DEBUG: clearing board");
     }
 
 }

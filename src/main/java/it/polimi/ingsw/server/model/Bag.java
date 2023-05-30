@@ -47,7 +47,7 @@ public class Bag implements Serializable {
      * @author Edoardo Margarini
      */
     protected void addTile(Tile tile) {
-        tilesLeft.put(tile, tilesLeft.get(tile) + 1);
+        tilesLeft.replace(tile, tilesLeft.get(tile) + 1);
     }
 
     /**
@@ -69,12 +69,10 @@ public class Bag implements Serializable {
     protected Tile draw() {
         Random random = new Random();
         int number = random.nextInt(6);
-        while (tilesLeft.get(Tile.values()[number]) <= 0) { //if a tile has no quantity retry the draw
+        while (tilesLeft.get(Tile.values()[number]) <= 0) { //if a tile has no quantity retries the draw
             number = random.nextInt(6);
         }
         removeTile(Tile.values()[number]);
-        if(Tile.values()[number]==Tile.PLANTS)
-            System.out.println("YESSS");
         return Tile.values()[number];
     }
 

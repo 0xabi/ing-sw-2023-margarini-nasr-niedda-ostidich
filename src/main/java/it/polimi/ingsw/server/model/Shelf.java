@@ -32,7 +32,6 @@ public class Shelf {
         positions = new Tile[ROW_LENGTH][COLUMN_LENGTH];
         if (Debugging.isDebugging()) {
             Debugging.fillShelf(this);
-            System.out.println("debugging: filling shelves");
         }
     }
 

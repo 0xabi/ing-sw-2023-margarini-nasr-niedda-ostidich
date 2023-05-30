@@ -1,7 +1,5 @@
 package it.polimi.ingsw.resources;
 
-import it.polimi.ingsw.resources.messages.*;
-
 /**
  * <p>Enumeration class that defines tiles' types.</p>
  * <p>Types of tiles:<br>

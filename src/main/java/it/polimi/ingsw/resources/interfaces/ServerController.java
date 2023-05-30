@@ -87,4 +87,7 @@ public interface ServerController extends Remote {
     void askForRooms(AskForRooms message) throws RemoteException;
 
     boolean PlayerIDisAvailable(Hello msg) throws RemoteException;
+
+    Object getGSC(String playerName) throws RemoteException;
+
 }

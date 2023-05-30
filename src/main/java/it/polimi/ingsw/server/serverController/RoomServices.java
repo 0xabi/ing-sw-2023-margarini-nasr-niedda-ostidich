@@ -237,4 +237,9 @@ public class RoomServices extends UnicastRemoteObject implements ServerControlle
         return !onlinePlayers().contains(message.getPlayerName());
     }
 
+    @Override
+    public Object getGSC(String playerName) {
+        return playerMatch.get(playerName);
+    }
+
 }

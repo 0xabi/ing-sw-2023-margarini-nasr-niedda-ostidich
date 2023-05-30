@@ -72,7 +72,6 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
             case CHOOSE_RMI_OR_SOCKET -> {
                 network = (String) evt.value();
                 clientNetwork = new GameClientNetwork(network);
-                Debugging.setRoomGeneration(network);
                 view.chooseIPAddress();
             }
             case CHOOSE_NEW_OR_JOIN -> {
@@ -261,8 +260,6 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
      * @author Francesco Ostidich
      */
     public void newTurnInitializing(@NotNull NewTurn msg) {
-        System.out.println("new turn initializing 2");
-        System.out.println("board in controller: " + msg.getBoard()[3][1]);
         view.updateBoard(msg.getBoard());
         if (!msg.getEndGameToken()) view.updateEndGameToken(false);
         view.updateBag(msg.getBag());
@@ -294,7 +291,6 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
     @Override
     public void newTurn(@NotNull NextPlayer msg) {
         if (msg.getMessageID() != MessageID.NEW_TURN_NEXT_PLAYER) return;
-        System.out.println("new turn initializing 1");
         newTurnInitializing(msg);
         if (playerName.equals(msg.getNextPlayer()))
             view.pickTiles(msg.getAvailablePickNumber());

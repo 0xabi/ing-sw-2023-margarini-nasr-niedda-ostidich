@@ -39,21 +39,24 @@ public class Server implements ServerController {
     public void pickTilesRequest(PickTilesRequest message) {
         try {
             gameClientNetwork.send(message);
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+        }
     }
 
     @Override
     public void insertTilesRequest(InsertTilesRequest message) {
         try {
             gameClientNetwork.send(message);
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+        }
     }
 
     @Override
     public void joinRoom(JoinRoom message) {
         try {
             gameClientNetwork.send(message);
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+        }
     }
 
     @Override
@@ -69,7 +72,8 @@ public class Server implements ServerController {
     public void askForRooms(AskForRooms message) {
         try {
             gameClientNetwork.send(message);
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+        }
     }
 
     @Override
@@ -77,5 +81,9 @@ public class Server implements ServerController {
         throw new RuntimeException("client cannot call PlayerIDisAvailable");
     }
 
+    @Override
+    public ServerController getGSC(String playerName) {
+        throw new RuntimeException("client cannot call getGSC");
+    }
 
 }

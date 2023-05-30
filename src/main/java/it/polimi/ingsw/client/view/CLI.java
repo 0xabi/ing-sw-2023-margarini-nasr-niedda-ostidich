@@ -61,7 +61,8 @@ public class CLI extends GameClientView {
                          __/ |                             \s
                         |___/                              \s
 
-                Loading...\s"""
+                Loading...\s
+                """
         );
         try {
             getClientController().update(new Event(EventID.START, null));
@@ -77,7 +78,7 @@ public class CLI extends GameClientView {
     public void chooseIPAddress() {
         if (Debugging.isDebugging()) {
             try {
-                System.out.println("debugging: setting \"localhost\" as IP address");
+                System.out.println("DEBUG: setting \"localhost\" as IP address");
                 getClientController().update(new Event(EventID.CHOOSE_IP_ADDRESS, "localhost"));
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
@@ -100,7 +101,7 @@ public class CLI extends GameClientView {
         if (Debugging.isDebugging()) {
             try {
                 playerName = Debugging.randomString();
-                System.out.println("debugging: setting \"" + playerName + "\" as player name");
+                System.out.println("DEBUG: setting \"" + playerName + "\" as player name");
                 setPlayerName(playerName);
                 getClientController().update(new Event(EventID.CHOOSE_PLAYER_NAME, playerName));
             } catch (RemoteException e) {
@@ -127,9 +128,7 @@ public class CLI extends GameClientView {
     public void chooseNewOrJoin() {
         if (Debugging.isDebugging()) {
             try {
-                String phase = Debugging.getRoomGeneration();
-                System.out.println("debugging: setting \"" + phase + "\" as room generation phase");
-                getClientController().update(new Event(EventID.CHOOSE_NEW_OR_JOIN, phase));
+                getClientController().update(new Event(EventID.CHOOSE_NEW_OR_JOIN, Debugging.getRoomGeneration()));
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
@@ -153,7 +152,7 @@ public class CLI extends GameClientView {
     public void chooseNewGameName() {
         if (Debugging.isDebugging()) {
             try {
-                System.out.println("debugging: setting \"game\" as game name");
+                System.out.println("DEBUG: setting \"game\" as room name");
                 getClientController().update(new Event(EventID.CHOOSE_NEW_GAME_NAME, "game"));
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
@@ -178,7 +177,7 @@ public class CLI extends GameClientView {
     public void chooseNewGamePlayerNumber() {
         if (Debugging.isDebugging()) {
             try {
-                System.out.println("debugging: setting \"2\" as game player number");
+                System.out.println("DEBUG: setting \"2\" as room size");
                 getClientController().update(new Event(EventID.CHOOSE_NEW_GAME_PLAYER_NUMBER, 2));
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
@@ -234,7 +233,7 @@ public class CLI extends GameClientView {
     public void chooseGameRoom(List<GameRoom> rooms) {
         if (Debugging.isDebugging()) {
             try {
-                System.out.println("debugging: join \"game\" room");
+                System.out.println("DEBUG: choosing \"game\" room to join");
                 getClientController().update(new Event(EventID.CHOOSE_GAME_ROOM, "game"));
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
@@ -538,7 +537,6 @@ public class CLI extends GameClientView {
     public void chooseRMIorSocket() {
         if (Debugging.isDebugging()) {
             try {
-                System.out.println("debugging: setting \"" + Debugging.getNetworkType() + "\" as network type");
                 getClientController().update(new Event(EventID.CHOOSE_RMI_OR_SOCKET, Debugging.getNetworkType()));
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
