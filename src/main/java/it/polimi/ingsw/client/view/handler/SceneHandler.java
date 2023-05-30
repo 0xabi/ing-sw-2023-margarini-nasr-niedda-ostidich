@@ -185,14 +185,17 @@ public abstract class SceneHandler {
         return currentHandler;
     }
 
-    /**
-     *  @author Abdullah Nasr
-     */
-    public abstract void runScene();
 
     /**
      *  @author Abdullah Nasr
      */
     public abstract void resize();
+
+
+    /**
+     *  @author Abdullah Nasr
+     */
+    public abstract void runScene();
+
 
 }

@@ -75,6 +75,16 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
                 Debugging.setRoomGeneration(network);
                 view.chooseIPAddress();
             }
+            case CHOOSE_CONNECTION_AND_IP ->
+            {
+                String network = ((String)evt.value()).split(",")[0];
+                String ip = ((String)evt.value()).split(",")[1];
+                clientNetwork = new GameClientNetwork(network);
+                Debugging.setRoomGeneration(network);
+                this.server = clientNetwork.connect(ip,playerName,this);
+
+
+            }
             case CHOOSE_NEW_OR_JOIN -> {
                 if (evt.value().equals("new")) view.chooseNewGamePlayerNumber();
                 else executorService.execute(() ->
@@ -88,13 +98,7 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
             }
             case CHOOSE_IP_ADDRESS -> {
                 this.server = clientNetwork.connect((String) evt.value(), playerName, this);
-                try {
-                    Thread.sleep(100 * 1000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                if (server == null)
-                    System.out.println("room service è null");
+
             }
             case CHOOSE_NEW_GAME_PLAYER_NUMBER -> {
                 newRoomPlayerNumber = (int) evt.value();

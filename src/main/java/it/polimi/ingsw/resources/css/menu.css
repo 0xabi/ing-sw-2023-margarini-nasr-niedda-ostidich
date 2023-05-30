@@ -47,3 +47,35 @@
     -fx-border-width: 4;
 }
 
+.check-box .box {
+
+    -fx-background-color: #651010;
+    -fx-border-color:white;
+    -fx-border-radius:3px;
+
+}
+
+.check-box:selected .mark {
+
+    -fx-background-color: white;
+
+}
+
+.check-box:selected .box {
+
+    -fx-background-color: #0d9a00;
+}
+
+.invalidMsg
+{
+    -fx-border-color: white;
+    -fx-text-fill: white;
+    -fx-background-color: green;
+}
+
+.roomInfoTxt
+{
+    -fx-font-weight: bold;
+
+}
+

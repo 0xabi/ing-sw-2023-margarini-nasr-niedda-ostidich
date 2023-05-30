@@ -14,6 +14,7 @@ import java.rmi.RemoteException;
  */
 public interface ClientController extends Remote {
 
+
     /**
      * Takes an event to be processed.
      *

@@ -135,6 +135,7 @@ public class Client implements ClientController {
         }
     }
 
+
     @Override
     public void update(Event event) {
         throw new RuntimeException("server cannot call update");

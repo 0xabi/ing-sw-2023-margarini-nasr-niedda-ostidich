@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client.view.handler;
 
+import it.polimi.ingsw.resources.Event;
+import it.polimi.ingsw.resources.EventID;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
@@ -8,6 +10,8 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
+
+import java.rmi.RemoteException;
 
 /**
  * @author Abdullah Nasr
@@ -27,8 +31,12 @@ public class HomeSceneHandler extends SceneHandler{
      * @author Abdullah Nasr
      */
     public void start() {
-        SceneHandler.switchScene("match");
-        //getClientController().update(new Event(EventID.START,null));
+        //SceneHandler.switchScene("match");
+        try {
+            getClientController().update(new Event(EventID.START,null));
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -45,6 +53,7 @@ public class HomeSceneHandler extends SceneHandler{
     @Override
     public void resize()
     {
+
         //noinspection DuplicatedCode
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();

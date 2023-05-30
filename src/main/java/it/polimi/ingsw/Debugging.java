@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class Debugging {
 
-    private static final boolean debugging = true;
+    private static final boolean debugging = false;
 
     private static String roomGeneration;
 

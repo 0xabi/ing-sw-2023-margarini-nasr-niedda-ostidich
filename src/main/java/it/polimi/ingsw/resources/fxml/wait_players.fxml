@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.BoxBlur?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="pane" prefHeight="380.0" prefWidth="1100.0" styleClass="anchor_pane" stylesheets="@../css/menu.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.handler.WaitPlayersSceneHandler">
+   <ImageView fx:id="logo" fitHeight="158.0" fitWidth="331.0" layoutX="384.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@../graphics/publisherMaterial/small_title.png" />
+   </ImageView>
+   <ImageView fx:id="info_background" fitHeight="218.0" fitWidth="654.0" layoutX="223.0" layoutY="123.0" pickOnBounds="true">
+      <image>
+         <Image url="@../graphics/misc/parquet.jpg" />
+      </image>
+      <effect>
+         <BoxBlur height="14.0" width="255.0" />
+      </effect>
+   </ImageView>
+   <Label fx:id="wait_players_lbl" alignment="TOP_LEFT" layoutX="321.0" layoutY="315.0" prefHeight="40.0" prefWidth="428.0" text="Waiting for players.." />
+   <HBox alignment="CENTER_LEFT" layoutX="321.0" layoutY="146.0" prefHeight="29.0" prefWidth="420.0">
+      <children>
+         <Label fx:id="room_name_lbl" alignment="TOP_LEFT" styleClass="roomInfoTxt" text="Room name: ">
+            <font>
+               <Font size="16.0" />
+            </font>
+         </Label>
+         <Label fx:id="room_name" alignment="TOP_LEFT" text="room name">
+            <font>
+               <Font size="14.0" />
+            </font>
+         </Label>
+      </children>
+   </HBox>
+   <HBox alignment="CENTER_LEFT" layoutX="321.0" layoutY="190.0" prefHeight="29.0" prefWidth="420.0">
+      <children>
+         <Label fx:id="creator_lbl" alignment="TOP_LEFT" styleClass="roomInfoTxt" text="Creator: ">
+            <font>
+               <Font size="16.0" />
+            </font>
+         </Label>
+         <Label fx:id="creator" alignment="TOP_LEFT" text="creator name">
+            <font>
+               <Font size="14.0" />
+            </font>
+         </Label>
+      </children>
+   </HBox>
+   <HBox alignment="CENTER_LEFT" layoutX="321.0" layoutY="232.0">
+      <children>
+         <Label fx:id="max_players_lbl" alignment="TOP_LEFT" styleClass="roomInfoTxt" text="Max players: ">
+            <font>
+               <Font size="16.0" />
+            </font>
+         </Label>
+         <Label fx:id="max_players" alignment="TOP_LEFT" text="max players">
+            <font>
+               <Font size="14.0" />
+            </font>
+         </Label>
+      </children>
+   </HBox>
+   <HBox alignment="CENTER_LEFT" layoutX="321.0" layoutY="276.0">
+      <children>
+         <Label fx:id="entered_players_lbl" alignment="TOP_LEFT" styleClass="roomInfoTxt" text="Entered players: ">
+            <font>
+               <Font size="16.0" />
+            </font>
+         </Label>
+         <Label fx:id="entered_players" alignment="TOP_LEFT" text="entered players">
+            <font>
+               <Font size="14.0" />
+            </font>
+         </Label>
+      </children>
+   </HBox>
+</AnchorPane>
