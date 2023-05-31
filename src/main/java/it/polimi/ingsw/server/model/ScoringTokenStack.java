@@ -4,12 +4,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import it.polimi.ingsw.resources.exceptions.ConfigFileNotFoundException;
-import it.polimi.ingsw.resources.exceptions.NoTokensForPlayerNumberException;
+import it.polimi.ingsw.general.exceptions.ConfigFileNotFoundException;
+import it.polimi.ingsw.general.exceptions.NoTokensForPlayerNumberException;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.util.Objects;
 import java.util.Stack;
 
 /**
@@ -31,18 +30,13 @@ public class ScoringTokenStack {
      */
     public ScoringTokenStack(int playerNumber) {
         tokenStack = new Stack<>();
-        File input = new File("src/main/java/it/polimi/ingsw/resources/configFiles/scoringTokenStack.json");
-        try {
-            JsonElement tokensElement = JsonParser.parseReader(new FileReader(input));
-            JsonObject tokensObject = tokensElement.getAsJsonObject();
-            JsonArray jsonTokens = tokensObject.get(String.valueOf(playerNumber)).getAsJsonArray();
-            if (jsonTokens.contains(null))
-                throw new NoTokensForPlayerNumberException("no player number config defined");
-            for (int i = 0; i < jsonTokens.size(); i++)
-                tokenStack.add(jsonTokens.get(i).getAsInt());
-        } catch (FileNotFoundException e) {
-            throw new ConfigFileNotFoundException("scoringTokenStack not found");
-        }
+        JsonElement tokensElement = JsonParser.parseReader(new InputStreamReader(Objects.requireNonNull(ClassLoader.getSystemResourceAsStream("configFiles/scoringTokenStack.json"))));
+        JsonObject tokensObject = tokensElement.getAsJsonObject();
+        JsonArray jsonTokens = tokensObject.get(String.valueOf(playerNumber)).getAsJsonArray();
+        if (jsonTokens.contains(null))
+            throw new NoTokensForPlayerNumberException("no player number config defined");
+        for (int i = 0; i < jsonTokens.size(); i++)
+            tokenStack.add(jsonTokens.get(i).getAsInt());
     }
 
     /**

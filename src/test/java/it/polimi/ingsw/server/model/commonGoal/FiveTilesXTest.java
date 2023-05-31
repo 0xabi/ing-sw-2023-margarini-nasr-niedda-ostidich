@@ -10,7 +10,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import it.polimi.ingsw.server.model.Shelf;
-import it.polimi.ingsw.resources.Tile;
+import it.polimi.ingsw.general.Tile;
 
 public class FiveTilesXTest {
 

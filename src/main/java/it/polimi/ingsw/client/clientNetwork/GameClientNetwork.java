@@ -1,11 +1,11 @@
 package it.polimi.ingsw.client.clientNetwork;
 
-import it.polimi.ingsw.resources.Message;
-import it.polimi.ingsw.resources.MessageID;
-import it.polimi.ingsw.resources.interfaces.ClientController;
-import it.polimi.ingsw.resources.interfaces.ClientNetwork;
-import it.polimi.ingsw.resources.interfaces.ServerController;
-import it.polimi.ingsw.resources.messages.*;
+import it.polimi.ingsw.general.Message;
+import it.polimi.ingsw.general.MessageID;
+import it.polimi.ingsw.general.interfaces.ClientController;
+import it.polimi.ingsw.general.interfaces.ClientNetwork;
+import it.polimi.ingsw.general.interfaces.ServerController;
+import it.polimi.ingsw.general.messages.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

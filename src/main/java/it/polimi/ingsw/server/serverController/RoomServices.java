@@ -1,11 +1,11 @@
 package it.polimi.ingsw.server.serverController;
 
-import it.polimi.ingsw.resources.GameRoom;
-import it.polimi.ingsw.resources.MessageID;
-import it.polimi.ingsw.resources.interfaces.ClientController;
-import it.polimi.ingsw.resources.interfaces.ServerController;
-import it.polimi.ingsw.resources.interfaces.ServerNetwork;
-import it.polimi.ingsw.resources.messages.*;
+import it.polimi.ingsw.general.GameRoom;
+import it.polimi.ingsw.general.MessageID;
+import it.polimi.ingsw.general.interfaces.ClientController;
+import it.polimi.ingsw.general.interfaces.ServerController;
+import it.polimi.ingsw.general.interfaces.ServerNetwork;
+import it.polimi.ingsw.general.messages.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.rmi.RemoteException;

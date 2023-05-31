@@ -1,12 +1,12 @@
 package it.polimi.ingsw.server.serverController;
 
-import it.polimi.ingsw.resources.MessageID;
-import it.polimi.ingsw.resources.Tile;
-import it.polimi.ingsw.resources.exceptions.AllPlayerDisconnectedException;
-import it.polimi.ingsw.resources.exceptions.UnavailableInsertionException;
-import it.polimi.ingsw.resources.interfaces.ClientController;
-import it.polimi.ingsw.resources.interfaces.ServerModel;
-import it.polimi.ingsw.resources.messages.*;
+import it.polimi.ingsw.general.MessageID;
+import it.polimi.ingsw.general.Tile;
+import it.polimi.ingsw.general.exceptions.AllPlayerDisconnectedException;
+import it.polimi.ingsw.general.exceptions.UnavailableInsertionException;
+import it.polimi.ingsw.general.interfaces.ClientController;
+import it.polimi.ingsw.general.interfaces.ServerModel;
+import it.polimi.ingsw.general.messages.*;
 import it.polimi.ingsw.server.model.GameServerModel;
 import org.jetbrains.annotations.NotNull;
 

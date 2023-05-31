@@ -1,8 +1,8 @@
 package it.polimi.ingsw.client.view.handler;
 
 import it.polimi.ingsw.client.view.InputFormatChecker;
-import it.polimi.ingsw.resources.Event;
-import it.polimi.ingsw.resources.EventID;
+import it.polimi.ingsw.general.Event;
+import it.polimi.ingsw.general.EventID;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.view.handler;
 
-import it.polimi.ingsw.resources.GameRoom;
+import it.polimi.ingsw.general.GameRoom;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;

@@ -1,12 +1,12 @@
 package it.polimi.ingsw.client.clientController;
 
 import it.polimi.ingsw.client.clientNetwork.GameClientNetwork;
-import it.polimi.ingsw.resources.*;
-import it.polimi.ingsw.resources.interfaces.ClientController;
-import it.polimi.ingsw.resources.interfaces.ClientNetwork;
-import it.polimi.ingsw.resources.interfaces.ClientView;
-import it.polimi.ingsw.resources.interfaces.ServerController;
-import it.polimi.ingsw.resources.messages.*;
+import it.polimi.ingsw.general.*;
+import it.polimi.ingsw.general.interfaces.ClientController;
+import it.polimi.ingsw.general.interfaces.ClientNetwork;
+import it.polimi.ingsw.general.interfaces.ClientView;
+import it.polimi.ingsw.general.interfaces.ServerController;
+import it.polimi.ingsw.general.messages.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.rmi.RemoteException;

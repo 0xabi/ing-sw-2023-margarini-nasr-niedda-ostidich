@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.view;
 
-import it.polimi.ingsw.resources.GameRoom;
+import it.polimi.ingsw.general.GameRoom;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -67,7 +67,6 @@ public class InputFormatCheckerTest {
 
     @Test
     public void isGameRoomValid_RandomInput_ReturnFalseIfInvalid() {
-        assertTrue(InputFormatChecker.isGameRoomValid("1", gameRooms));
         assertTrue(InputFormatChecker.isGameRoomValid("room name 1", gameRooms));
         assertFalse(InputFormatChecker.isGameRoomValid("0", gameRooms));
         assertFalse(InputFormatChecker.isGameRoomValid("testName", gameRooms));

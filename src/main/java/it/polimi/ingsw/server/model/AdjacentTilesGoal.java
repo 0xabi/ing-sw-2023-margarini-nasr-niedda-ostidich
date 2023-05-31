@@ -4,9 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import it.polimi.ingsw.resources.exceptions.ConfigFileNotFoundException;
-import it.polimi.ingsw.resources.Coordinates;
-import it.polimi.ingsw.resources.Tile;
+import it.polimi.ingsw.general.exceptions.ConfigFileNotFoundException;
+import it.polimi.ingsw.general.Coordinates;
+import it.polimi.ingsw.general.Tile;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -135,7 +135,7 @@ public class AdjacentTilesGoal {
     private static @NotNull Map<Integer, Integer> getGroupPointsFromFile() {
         HashMap<Integer, Integer> map = new HashMap<>();
         Gson gson = new Gson();
-        File input = new File("src/main/java/it/polimi/ingsw/resources/configFiles/adjacentTilesGoalGroupPointsMap.json");
+        File input = new File("configFiles/adjacentTilesGoalGroupPointsMap.json");
         try {
             JsonElement pointsElement = JsonParser.parseReader(new FileReader(input));
             map.putAll(gson.fromJson(pointsElement, new TypeToken<HashMap<Integer, Integer>>() {

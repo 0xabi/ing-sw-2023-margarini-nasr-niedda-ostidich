@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.view;
 
-import it.polimi.ingsw.resources.GameRoom;
+import it.polimi.ingsw.general.GameRoom;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

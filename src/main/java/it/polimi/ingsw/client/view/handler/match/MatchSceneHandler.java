@@ -2,7 +2,7 @@ package it.polimi.ingsw.client.view.handler.match;
 
 
 import it.polimi.ingsw.client.view.handler.SceneHandler;
-import it.polimi.ingsw.resources.Tile;
+import it.polimi.ingsw.general.Tile;
 import it.polimi.ingsw.server.model.Board;
 import it.polimi.ingsw.server.model.Shelf;
 import javafx.animation.TranslateTransition;

@@ -4,15 +4,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import it.polimi.ingsw.resources.exceptions.ConfigFileNotFoundException;
-import it.polimi.ingsw.resources.exceptions.ConfigFileNotReadableException;
-import it.polimi.ingsw.resources.Coordinates;
-import it.polimi.ingsw.resources.Tile;
+import it.polimi.ingsw.general.exceptions.ConfigFileNotReadableException;
+import it.polimi.ingsw.general.Coordinates;
+import it.polimi.ingsw.general.Tile;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -42,22 +39,17 @@ public class Board {
     public Board(int num) {
         spaces = new Tile[ROW_LENGTH][COLUMN_LENGTH];
         endGameToken = Optional.of(new EndGameToken());
-        File input = new File("src/main/java/it/polimi/ingsw/resources/configFiles/boardSpacesMatrix.json");
-        try {
-            JsonElement spacesElement = JsonParser.parseReader(new FileReader(input));
-            JsonObject spacesObject = spacesElement.getAsJsonObject();
-            JsonArray jsonSpaces = spacesObject.get(String.valueOf(num)).getAsJsonArray();
-            for (int i = 0; i < ROW_LENGTH; i++)
-                for (int j = 0; j < COLUMN_LENGTH; j++) {
-                    if (jsonSpaces.get(ROW_LENGTH * j + i).getAsInt() == 0) //22 = 9*2 + 4
-                        spaces[i][j] = null;
-                    else if (jsonSpaces.get(ROW_LENGTH * j + i).getAsInt() == 1)
-                        spaces[i][j] = Tile.EMPTY;
-                    else throw new ConfigFileNotReadableException("cannot read values else than 1 or 0");
-                }
-        } catch (FileNotFoundException e) {
-            throw new ConfigFileNotFoundException("personalGoalPointsMap not found");
-        }
+        JsonElement spacesElement = JsonParser.parseReader(new InputStreamReader(Objects.requireNonNull(ClassLoader.getSystemResourceAsStream("configFiles/boardSpacesMatrix.json"))));
+        JsonObject spacesObject = spacesElement.getAsJsonObject();
+        JsonArray jsonSpaces = spacesObject.get(String.valueOf(num)).getAsJsonArray();
+        for (int i = 0; i < ROW_LENGTH; i++)
+            for (int j = 0; j < COLUMN_LENGTH; j++) {
+                if (jsonSpaces.get(ROW_LENGTH * j + i).getAsInt() == 0) //22 = 9*2 + 4
+                    spaces[i][j] = null;
+                else if (jsonSpaces.get(ROW_LENGTH * j + i).getAsInt() == 1)
+                    spaces[i][j] = Tile.EMPTY;
+                else throw new ConfigFileNotReadableException("cannot read values else than 1 or 0");
+            }
     }
 
     /**

@@ -1,6 +1,6 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.resources.Tile;
+import it.polimi.ingsw.general.Tile;
 import it.polimi.ingsw.server.model.Board;
 import it.polimi.ingsw.server.model.Shelf;
 import org.jetbrains.annotations.NotNull;
@@ -12,6 +12,13 @@ import java.util.Random;
 
 public class Debugging {
 
+    public static void main(String[] args) {
+        if (args.length != 0) {
+            ClientApp.main(new String[]{args[0], args[1]});
+        }
+        else ServerApp.main(new String[]{});
+    }
+
     private static final boolean debugging = true;
 
     /**
@@ -21,7 +28,23 @@ public class Debugging {
     @SuppressWarnings("MismatchedReadAndWriteOfArray")
     private static final String[] connections = {};
 
+    public static String getConfiguration() {
+        return configuration;
+    }
+
     private static String roomGeneration;
+
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    public static boolean isAlreadyPicket() {
+        return alreadyPicket;
+    }
+
+    public static void flipAlreadyPicket() {
+        alreadyPicket = !alreadyPicket;
+        System.out.println("DEBUG: setting \"" + alreadyPicket + "\" as \"already picket\" boolean");
+    }
+
+    private static boolean alreadyPicket = false;
 
     private static String configuration;
 

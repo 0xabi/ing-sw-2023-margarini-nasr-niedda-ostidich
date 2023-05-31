@@ -2,8 +2,8 @@ package it.polimi.ingsw.server.model;
 
 import static org.junit.Assert.*;
 
-import it.polimi.ingsw.resources.Coordinates;
-import it.polimi.ingsw.resources.Tile;
+import it.polimi.ingsw.general.Coordinates;
+import it.polimi.ingsw.general.Tile;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

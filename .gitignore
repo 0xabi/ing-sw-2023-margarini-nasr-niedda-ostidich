@@ -78,6 +78,6 @@ fabric.properties
 
 # Ignore class
 target/
-/src/main/java/it/polimi/ingsw/resources/graphics/
+/src/main/resources/graphics/
 *.patch
 /.idea/shelf/

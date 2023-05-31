@@ -1,8 +1,8 @@
 package it.polimi.ingsw.client.clientNetwork;
 
-import it.polimi.ingsw.resources.interfaces.ClientController;
-import it.polimi.ingsw.resources.interfaces.ServerController;
-import it.polimi.ingsw.resources.messages.*;
+import it.polimi.ingsw.general.interfaces.ClientController;
+import it.polimi.ingsw.general.interfaces.ServerController;
+import it.polimi.ingsw.general.messages.*;
 
 import java.io.IOException;
 import java.util.Set;

@@ -8,8 +8,10 @@
         <outputRelativeToContentRoot value="true" />
         <module name="PSP000" />
         <module name="PSP50" />
-        <module name="ing-sw-2023-margarini-nasr-niedda-ostidich" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="ing-sw-2023-margarini-nasr-niedda-ostidich" target="19" />
+    </bytecodeTargetLevel>
   </component>
 </project>

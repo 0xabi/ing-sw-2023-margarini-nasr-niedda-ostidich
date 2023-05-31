@@ -1,11 +1,11 @@
 package it.polimi.ingsw.server.serverNetwork;
 
-import it.polimi.ingsw.resources.Event;
-import it.polimi.ingsw.resources.Message;
-import it.polimi.ingsw.resources.MessageID;
-import it.polimi.ingsw.resources.interfaces.ClientController;
-import it.polimi.ingsw.resources.interfaces.ServerController;
-import it.polimi.ingsw.resources.messages.*;
+import it.polimi.ingsw.general.Event;
+import it.polimi.ingsw.general.Message;
+import it.polimi.ingsw.general.MessageID;
+import it.polimi.ingsw.general.interfaces.ClientController;
+import it.polimi.ingsw.general.interfaces.ServerController;
+import it.polimi.ingsw.general.messages.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -64,7 +64,6 @@ public class Client implements ClientController {
             if (Objects.equals(connectionType, "Socket")) {
                 MessageToClient.writeObject(message);
                 MessageToClient.reset();
-                MessageToClient.flush();
             }
         }
     }

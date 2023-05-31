@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.model.commonGoal;
 
-import it.polimi.ingsw.resources.Tile;
+import it.polimi.ingsw.general.Tile;
 import it.polimi.ingsw.server.model.CommonGoal;
 import it.polimi.ingsw.server.model.Shelf;
 import org.junit.After;

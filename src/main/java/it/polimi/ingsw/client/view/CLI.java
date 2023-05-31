@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.Debugging;
-import it.polimi.ingsw.resources.*;
+import it.polimi.ingsw.general.*;
 
 import java.rmi.RemoteException;
 import java.util.*;
@@ -408,7 +408,18 @@ public class CLI extends GameClientView {
                     if (retry)
                         System.out.println("\t\t\t\tThe Tile was already chosen or invalid input");
                     System.out.println("\t\t\t\tYou can pick more " + print + " tiles");
-                    coords = playerMessage("\t\t\t\tchoose one tile using coordinates writing them in the following format: x,y\n").split(",");
+                    if (Debugging.isDebugging() && !Debugging.isAlreadyPicket()) {
+                        if (Debugging.getConfiguration().equals("1")) {
+                            System.out.println("DEBUG: picking tile \"3,1\"");
+                            coords = "3,1".split(",");
+                        }
+                        else {
+                            System.out.println("DEBUG: picking tile \"4,4\"");
+                            coords = "4,4".split(",");
+                        }
+                    } else {
+                        coords = playerMessage("\t\t\t\tchoose one tile using coordinates writing them in the following format: x,y\n").split(",");
+                    }
                     x = Integer.parseInt(coords[0]);
                     y = Integer.parseInt(coords[1]);
                     Coordinates temp = new Coordinates(x, y);
@@ -431,7 +442,13 @@ public class CLI extends GameClientView {
             String msg = "\t\t\t\tIf you picked the tiles you wanted press [y],";
             msg = msg + "\n\t\t\t\tIf you're not satisfied of your choice and you would pick again press [r],";
             msg = msg + "\n\t\t\t\tIf you want to pick other Tiles press[c]";
-            String response = playerMessage(msg);
+            String response;
+            if (Debugging.isDebugging() && !Debugging.isAlreadyPicket()) {
+                response = "y";
+                System.out.println("DEBUG: confirming selection with \"y\"");
+            } else {
+                response = playerMessage(msg);
+            }
             if (response.equals("y"))
                 break;
             if (response.equals("r")) {
@@ -470,7 +487,12 @@ public class CLI extends GameClientView {
                 if (resultSet.size() == 1)
                     choice = 0;
                 else
-                    choice = Integer.parseInt(playerMessage("Choose the order of your picked tiles:\t"));
+                    if (Debugging.isDebugging() && !Debugging.isAlreadyPicket()) {
+                        choice = 0;
+                        System.out.println("DEBUG: choosing order 0");
+                    } else {
+                        choice = Integer.parseInt(playerMessage("Choose the order of your picked tiles:\t"));
+                    }
             } catch (Exception e) {
                 System.out.println("FORMAT ERROR " + e);
             }
@@ -489,7 +511,13 @@ public class CLI extends GameClientView {
         do {
             attempt = true;
             try {
-                column = Integer.parseInt(playerMessage("\t\t\t\tChoose column: "));
+                if (Debugging.isDebugging() && !Debugging.isAlreadyPicket()) {
+                    column = 2;
+                    System.out.println("DEBUG: choosing column 2");
+                    Debugging.flipAlreadyPicket();
+                } else {
+                    column = Integer.parseInt(playerMessage("\t\t\t\tChoose column: "));
+                }
             } catch (Exception e) {
                 System.out.println("\t\t\t\tinvalid input, try again");
                 attempt = false;

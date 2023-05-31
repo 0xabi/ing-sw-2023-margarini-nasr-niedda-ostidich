@@ -2,8 +2,8 @@ package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.client.view.handler.SceneHandler;
 import it.polimi.ingsw.client.view.handler.WaitPlayersSceneHandler;
-import it.polimi.ingsw.resources.GameRoom;
-import it.polimi.ingsw.resources.Tile;
+import it.polimi.ingsw.general.GameRoom;
+import it.polimi.ingsw.general.Tile;
 
 import java.util.List;
 import java.util.Map;

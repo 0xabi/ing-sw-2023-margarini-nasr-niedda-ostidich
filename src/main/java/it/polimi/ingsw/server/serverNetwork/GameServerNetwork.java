@@ -1,8 +1,8 @@
 package it.polimi.ingsw.server.serverNetwork;
 
-import it.polimi.ingsw.resources.interfaces.ClientController;
-import it.polimi.ingsw.resources.interfaces.ServerController;
-import it.polimi.ingsw.resources.interfaces.ServerNetwork;
+import it.polimi.ingsw.general.interfaces.ClientController;
+import it.polimi.ingsw.general.interfaces.ServerController;
+import it.polimi.ingsw.general.interfaces.ServerNetwork;
 
 import java.io.IOException;
 import java.io.Serializable;

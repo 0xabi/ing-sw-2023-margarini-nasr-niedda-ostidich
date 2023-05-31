@@ -1,7 +1,7 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.resources.Tile;
-import it.polimi.ingsw.resources.exceptions.UnavailableInsertionException;
+import it.polimi.ingsw.general.Tile;
+import it.polimi.ingsw.general.exceptions.UnavailableInsertionException;
 
 import java.util.List;
 

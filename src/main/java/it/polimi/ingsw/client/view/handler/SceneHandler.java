@@ -2,7 +2,7 @@ package it.polimi.ingsw.client.view.handler;
 
 import it.polimi.ingsw.client.view.GUI;
 import it.polimi.ingsw.client.view.GUIApp;
-import it.polimi.ingsw.resources.interfaces.ClientController;
+import it.polimi.ingsw.general.interfaces.ClientController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
