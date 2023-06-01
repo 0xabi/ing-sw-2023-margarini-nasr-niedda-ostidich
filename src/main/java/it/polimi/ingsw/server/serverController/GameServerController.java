@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.serverController;
 
+import it.polimi.ingsw.Debugging;
 import it.polimi.ingsw.general.MessageID;
 import it.polimi.ingsw.general.Tile;
 import it.polimi.ingsw.general.exceptions.AllPlayerDisconnectedException;
@@ -74,6 +75,7 @@ public class GameServerController extends RoomServices {
         names.forEach(player -> executorService.execute(() ->
         {
             try {
+                if (Debugging.isDebugging()) Debugging.calculateTime();
                 matchClients.get(player).notifyGameHasStarted(new NotifyGameHasStarted(
                         player,
                         MessageID.NOTIFY_GAME_HAS_STARTED,
@@ -122,7 +124,7 @@ public class GameServerController extends RoomServices {
      * @author Francesco Ostidich
      */
     @Override
-    public void pickTilesRequest(@NotNull PickTilesRequest message) {
+    synchronized public void pickTilesRequest(@NotNull PickTilesRequest message) {
         if (!message.getPlayerName().equals(playerTurn) ||
                 message.getMessageID() != MessageID.PICK_TILES_REQUEST) return;
         if (model.checkSelection(message.getChosenCoordinates())) {
@@ -145,7 +147,7 @@ public class GameServerController extends RoomServices {
      * @author Francesco Ostidich
      */
     @Override
-    public void insertTilesRequest(@NotNull InsertTilesRequest message) {
+    synchronized public void insertTilesRequest(@NotNull InsertTilesRequest message) {
         if (!message.getPlayerName().equals(playerTurn) ||
                 message.getMessageID() != MessageID.INSERT_TILES_REQUEST) return;
         try {

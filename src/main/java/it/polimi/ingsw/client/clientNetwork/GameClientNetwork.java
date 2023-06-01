@@ -64,7 +64,7 @@ public class GameClientNetwork implements ClientNetwork {
             while (!connected) {
                 try {
                     //FIXME: Socket without try catch with resources
-                    socket = new Socket(serverIP, 8000);
+                    socket = new Socket(serverIP, 34634);
                     connected = true;
                     messageQueue = new LinkedList<>();
                     this.MessageToServer = new ObjectOutputStream(socket.getOutputStream());
@@ -88,7 +88,7 @@ public class GameClientNetwork implements ClientNetwork {
         if (Objects.equals(connectionType, "RMI"))
             while (!connected) {
                 try {
-                    Registry registry = LocateRegistry.getRegistry();
+                    Registry registry = LocateRegistry.getRegistry(serverIP, 1099);
                     ServerController server = (ServerController) registry.lookup("Connection");
                     roomServices = server;
                     connected = true;

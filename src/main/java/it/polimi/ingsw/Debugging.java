@@ -5,6 +5,11 @@ import it.polimi.ingsw.server.model.Board;
 import it.polimi.ingsw.server.model.Shelf;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.management.GarbageCollectorMXBean;
+import java.lang.management.ManagementFactory;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,14 +17,92 @@ import java.util.Random;
 
 public class Debugging {
 
-    public static void main(String[] args) {
-        if (args.length != 0) {
-            ClientApp.main(new String[]{args[0], args[1]});
-        }
-        else ServerApp.main(new String[]{});
+    private static final boolean debugging = true;
+
+    private static String generatedConnection;
+
+    private static long time = 0;
+
+    private static int startingPlayer;
+
+    public static void checkStartingPlayer(boolean startingPlayer) {
+        System.out.println("DEBUG: shelf trial log checking starting player");
+        if (startingPlayer) Debugging.startingPlayer = Integer.parseInt(configuration);
+        else if (configuration.equals("1")) Debugging.startingPlayer = 2;
+        else Debugging.startingPlayer = 1;
     }
 
-    private static final boolean debugging = true;
+    private static boolean testTile;
+
+    public static void checkTestTile(Tile testTile) {
+        System.out.println("DEBUG: shelf trial log checking test tile");
+        Debugging.testTile = testTile != null;
+    }
+
+    public static void calculateTime() {
+        if (time == 0)
+            time = System.nanoTime();
+        else {
+            long newTime = System.nanoTime();
+            long difference = newTime - time;
+            time = newTime;
+            StringBuilder collectionTime = new StringBuilder();
+            List<GarbageCollectorMXBean> gcBeans = ManagementFactory.getGarbageCollectorMXBeans();
+            for (GarbageCollectorMXBean gcBean : gcBeans) {
+                collectionTime.append(gcBean.getCollectionTime()).append("\t");
+                collectionTime.append(gcBean.getCollectionCount()).append("\t");
+            }
+            System.out.println("DEBUG: shelf trial log calculating time");
+            String contentToAppend = "elapsed:\t" + difference + "  \t" + newTime + "\t|\tgc:\t" + collectionTime + "|\toutcome:\t";
+            //noinspection DuplicatedCode
+            String fullPath = "%userprofile%\\Documents\\GitHub\\MyShelfie\\src\\main\\resources\\shelfTrial.txt";
+            try {
+                BufferedWriter writer = new BufferedWriter(new FileWriter(fullPath, true));
+                writer.append(contentToAppend);
+                writer.flush();
+                writer.close();
+            } catch (IOException e) {
+                System.out.println("An error occurred while appending the string: " + e.getMessage());
+            }
+        }
+    }
+
+    public static void connectionStatistics() {
+        System.out.println("DEBUG: shelf trial log writing");
+        String contentToAppend = generatedConnection + testTile + "\t\t";
+        //noinspection DuplicatedCode
+        String fullPath = "%userprofile%\\Documents\\GitHub\\MyShelfie\\src\\main\\resources\\shelfTrial.txt";
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(fullPath, true));
+            writer.append(contentToAppend);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred while appending the string: " + e.getMessage());
+        }
+    }
+
+    public static void connectionStatisticsNewLine() {
+        System.out.println("DEBUG: shelf trial log writing (new line)");
+        String fullPath = "%userprofile%\\Documents\\GitHub\\MyShelfie\\src\\main\\resources\\shelfTrial.txt";
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(fullPath, true));
+            writer.append("\n");
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred while appending the string: " + e.getMessage());
+        }
+    }
+
+    public static void main(String @NotNull [] args) {
+        if (args.length != 0) {
+            ClientApp.main(new String[]{args[0], args[1]});
+        } else {
+            if (isDebugging()) connectionStatisticsNewLine();
+            ServerApp.main(new String[]{});
+        }
+    }
 
     /**
      * No arguments: network types randomly assigned.<br>
@@ -54,16 +137,22 @@ public class Debugging {
             Random r = new Random();
             if (r.nextBoolean()) {
                 System.out.println("DEBUG: returning \"" + "Socket" + "\" as network type");
+                generatedConnection = "Socket\t";
                 return "Socket";
             } else {
                 System.out.println("DEBUG: returning \"" + "RMI" + "\" as network type");
+                generatedConnection = "RMI\t\t";
                 return "RMI";
             }
         } else if (configuration.equals("1")) {
             System.out.println("DEBUG: returning \"" + connections[0] + "\" as network type");
+            if (connections[0].equals("Socket")) generatedConnection = "Socket\t";
+            else generatedConnection = "RMI\t\t";
             return connections[0];
         } else {
             System.out.println("DEBUG: returning \"" + connections[1] + "\" as network type");
+            if (connections[1].equals("Socket")) generatedConnection = "Socket\t";
+            else generatedConnection = "RMI\t\t";
             return connections[1];
         }
     }

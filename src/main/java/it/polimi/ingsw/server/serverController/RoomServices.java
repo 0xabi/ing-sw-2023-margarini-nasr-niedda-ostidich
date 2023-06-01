@@ -29,6 +29,7 @@ public class RoomServices extends UnicastRemoteObject implements ServerControlle
     private static ServerNetwork serverNetwork;
 
     public RoomServices() throws RemoteException {
+        super();
         playerMatch = new HashMap<>();
         clients = new HashMap<>();
         gameRooms = new LinkedList<>();
@@ -115,7 +116,7 @@ public class RoomServices extends UnicastRemoteObject implements ServerControlle
      * @author Francesco Ostidich
      */
     @Override
-    public void pickTilesRequest(@NotNull PickTilesRequest message) {
+    synchronized public void pickTilesRequest(@NotNull PickTilesRequest message) {
         try {
             playerMatch.get(message.getPlayerName()).pickTilesRequest(message);
         } catch (NullPointerException ignored) {
@@ -126,7 +127,7 @@ public class RoomServices extends UnicastRemoteObject implements ServerControlle
      * @author Francesco Ostidich
      */
     @Override
-    public void insertTilesRequest(InsertTilesRequest message) {
+    synchronized public void insertTilesRequest(InsertTilesRequest message) {
         try {
             playerMatch.get(message.getPlayerName()).insertTilesRequest(message);
         } catch (NullPointerException ignored) {

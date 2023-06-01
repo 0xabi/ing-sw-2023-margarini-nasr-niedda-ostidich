@@ -412,8 +412,7 @@ public class CLI extends GameClientView {
                         if (Debugging.getConfiguration().equals("1")) {
                             System.out.println("DEBUG: picking tile \"3,1\"");
                             coords = "3,1".split(",");
-                        }
-                        else {
+                        } else {
                             System.out.println("DEBUG: picking tile \"4,4\"");
                             coords = "4,4".split(",");
                         }
@@ -486,13 +485,12 @@ public class CLI extends GameClientView {
                 printScenario2(resultSet);
                 if (resultSet.size() == 1)
                     choice = 0;
-                else
-                    if (Debugging.isDebugging() && !Debugging.isAlreadyPicket()) {
-                        choice = 0;
-                        System.out.println("DEBUG: choosing order 0");
-                    } else {
-                        choice = Integer.parseInt(playerMessage("Choose the order of your picked tiles:\t"));
-                    }
+                else if (Debugging.isDebugging() && !Debugging.isAlreadyPicket()) {
+                    choice = 0;
+                    System.out.println("DEBUG: choosing order 0");
+                } else {
+                    choice = Integer.parseInt(playerMessage("Choose the order of your picked tiles:\t"));
+                }
             } catch (Exception e) {
                 System.out.println("FORMAT ERROR " + e);
             }
@@ -532,6 +530,10 @@ public class CLI extends GameClientView {
 
     @Override
     public void playerIsPlaying(String playerName) {
+        if (Debugging.isDebugging() && Debugging.isAlreadyPicket()) {
+            Debugging.checkTestTile(getPlayerShelves().get(getPlayerName())[0][0]);
+            Debugging.connectionStatistics();
+        }
         currentPlayer = playerName;
         printScenario1(null);
         System.out.println("\t\t\t\t" + playerName + " is currently playing his turn");

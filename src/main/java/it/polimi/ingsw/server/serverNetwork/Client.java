@@ -63,6 +63,7 @@ public class Client implements ClientController {
         synchronized (MessageToClient) {
             if (Objects.equals(connectionType, "Socket")) {
                 MessageToClient.writeObject(message);
+                MessageToClient.flush();
                 MessageToClient.reset();
             }
         }

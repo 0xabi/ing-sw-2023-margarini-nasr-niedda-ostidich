@@ -40,7 +40,7 @@ public class GameServerNetwork implements ServerNetwork, Serializable {
     public GameServerNetwork(ServerController roomServices) {
         this.roomServices = roomServices;
         try {
-            ss = new ServerSocket(8000);
+            ss = new ServerSocket(34634);
             running = true;
         } catch (IOException e) {
             running = false;

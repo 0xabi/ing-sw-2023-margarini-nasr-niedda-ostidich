@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.clientController;
 
+import it.polimi.ingsw.Debugging;
 import it.polimi.ingsw.client.clientNetwork.GameClientNetwork;
 import it.polimi.ingsw.general.*;
 import it.polimi.ingsw.general.interfaces.ClientController;
@@ -48,6 +49,7 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
      * @author Francesco Ostidich
      */
     public GameClientController(@NotNull ClientView view) throws RemoteException {
+        super();
         executorService = Executors.newCachedThreadPool();
         this.view = view;
     }
@@ -226,9 +228,12 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
      * @author Francesco Ostidich
      */
     @Override
-    public void notifyGameHasStarted(@NotNull NotifyGameHasStarted msg) {
+    synchronized public void notifyGameHasStarted(@NotNull NotifyGameHasStarted msg) {
         if (!msg.getPlayerName().equals(playerName) ||
                 msg.getMessageID() != MessageID.NOTIFY_GAME_HAS_STARTED) return;
+        if (Debugging.isDebugging()) {
+            Debugging.checkStartingPlayer(msg.getTurnCycle().get(0).equals(playerName));
+        }
         view.setGameParameters(msg.getGameParameters());
         view.turnCycleOrder(msg.getTurnCycle());
         view.updateBoard(msg.getBoard());
@@ -256,6 +261,7 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
      * @author Francesco Ostidich
      */
     public void newTurnInitializing(@NotNull NewTurn msg) {
+        if (Debugging.isDebugging()) Debugging.checkTestTile(msg.getPlayerShelves().get(playerName)[0][0]);
         view.updateBoard(msg.getBoard());
         if (!msg.getEndGameToken()) view.updateEndGameToken(false);
         view.updateBag(msg.getBag());
@@ -275,7 +281,7 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
      * @author Francesco Ostidich
      */
     @Override
-    public void newTurn(@NotNull EndGame msg) {
+    synchronized public void newTurn(@NotNull EndGame msg) {
         if (msg.getMessageID() != MessageID.NEW_TURN_END_GAME) return;
         newTurnInitializing(msg);
         endGame(msg);
@@ -285,7 +291,7 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
      * @author Francesco Ostidich
      */
     @Override
-    public void newTurn(@NotNull NextPlayer msg) {
+    synchronized public void newTurn(@NotNull NextPlayer msg) {
         if (msg.getMessageID() != MessageID.NEW_TURN_NEXT_PLAYER) return;
         newTurnInitializing(msg);
         if (playerName.equals(msg.getNextPlayer()))
@@ -298,7 +304,7 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
      * @author Francesco Ostidich
      */
     @Override
-    public void pickAccepted(@NotNull PickAccepted msg) {
+    synchronized public void pickAccepted(@NotNull PickAccepted msg) {
         if (!msg.getPlayerName().equals(playerName) ||
                 msg.getMessageID() != MessageID.PICK_ACCEPTED) return;
         view.chooseOrder(msg.getPickedTiles());
@@ -311,7 +317,7 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
      * @author Francesco Ostidich
      */
     @Override
-    public void endGame(@NotNull EndGame msg) {
+    synchronized public void endGame(@NotNull EndGame msg) {
         view.givePersonalGoals(msg.getPersonalGoals());
         view.assignPersonalGoalPoints(msg.getPersonalGoalPoints());
         view.assignAdjacentGoalPoints(msg.getAdjacentGoalPoints());
