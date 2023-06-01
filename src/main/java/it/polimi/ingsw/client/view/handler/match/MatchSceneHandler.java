@@ -20,8 +20,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
 import javafx.util.Duration;
 
+import javax.imageio.ImageIO;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class MatchSceneHandler extends SceneHandler {
 
@@ -167,7 +171,9 @@ public class MatchSceneHandler extends SceneHandler {
 
         if(tileType == Tile.FRAMES)
         {
-            return new Image("/graphics/itemTiles/Cornici1.1.png");
+
+            return new Image(getClass().getResource("/graphics/itemTiles/Cornici1.1.png").toString());
+
         }
         else if(tileType == Tile.CATS)
         {

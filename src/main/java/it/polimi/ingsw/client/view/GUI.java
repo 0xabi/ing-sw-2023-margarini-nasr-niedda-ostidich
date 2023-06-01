@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.view;
 
+import it.polimi.ingsw.client.view.handler.ChooseGameRoomSceneHandler;
 import it.polimi.ingsw.client.view.handler.SceneHandler;
 import it.polimi.ingsw.client.view.handler.WaitPlayersSceneHandler;
 import it.polimi.ingsw.general.GameRoom;
@@ -79,7 +80,8 @@ public class GUI extends GameClientView {
 
     @Override
     public void chooseGameRoom(List<GameRoom> rooms) {
-        System.out.println("Trigger2");
+        ChooseGameRoomSceneHandler.setGameRooms(rooms);
+        SceneHandler.switchScene("choose_game_room");
     }
 
     @Override

@@ -85,6 +85,21 @@ socketCB
         socketCB.setSelected(false);
         RMICB.setSelected(true);
     }
+    public void sendSettingsToServer(){
+        if(twoPlayersCB.isSelected()){}
+        if(threePlayersCB.isSelected()){}
+        if(fourPlayersCB.isSelected()){}
+        if(socketCB.isSelected()){}
+        if(RMICB.isSelected()){}
+    }
+    public void joinGame(){
+        sendSettingsToServer();
+        SceneHandler.switchScene("/fxml/choose_game_room.fxml");
+    }
+    public void newGame(){
+        sendSettingsToServer();
+        SceneHandler.switchScene("/fxml/||.fxml");
+    }
 
 
     @Override

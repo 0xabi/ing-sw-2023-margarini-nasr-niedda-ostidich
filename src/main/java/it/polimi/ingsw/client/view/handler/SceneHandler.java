@@ -131,6 +131,7 @@ public abstract class SceneHandler {
     {
         FXMLLoader loader = new FXMLLoader(GUIApp.class.getResource("/fxml/"+nameRes+".fxml"));
 
+
         try {
             //resizetest();
             setRoot(loader.load());
