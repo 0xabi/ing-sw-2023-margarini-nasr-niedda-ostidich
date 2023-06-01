@@ -5,7 +5,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -27,8 +26,8 @@ public class GUIApp extends Application {
         double screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
 
         //basic properties of the stage
-        Image icon = new Image("/graphics/publisherMaterial/icon.png");
-        stage.getIcons().add(icon);
+        //Image icon = new Image("/graphics/publisherMaterial/icon.png");
+        //stage.getIcons().add(icon);
         stage.setMaximized(true);
         stage.setTitle("My Shelfie");
 
