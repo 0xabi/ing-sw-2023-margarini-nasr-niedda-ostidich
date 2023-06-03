@@ -20,12 +20,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
 import javafx.util.Duration;
 
-import javax.imageio.ImageIO;
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 public class MatchSceneHandler extends SceneHandler {
 
@@ -177,23 +173,24 @@ public class MatchSceneHandler extends SceneHandler {
         }
         else if(tileType == Tile.CATS)
         {
-            return new Image("/graphics/itemTiles/Gatti1.1.png");
+            return new Image(getClass().getResource("/graphics/itemTiles/Gatti1.1.png").toString());
         }
         else if(tileType == Tile.BOOKS)
         {
-            return new Image("/graphics/itemTiles/Libri1.1.png");
+            return new Image(getClass().getResource("/graphics/itemTiles/Libri1.1.png").toString());
+
         }
         else if(tileType == Tile.PLANTS)
         {
-            return new Image("/graphics/itemTiles/Piante1.1.png");
+            return new Image(getClass().getResource("/graphics/itemTiles/Piante1.1.png").toString());
         }
         else if(tileType == Tile.TROPHIES)
         {
-            return new Image("/graphics/itemTiles/Trofei1.1.png");
+            return new Image(getClass().getResource("/graphics/itemTiles/Trofei1.1.png").toString());
         }
         else if(tileType == Tile.GAMES)
         {
-            return new Image("/graphics/itemTiles/Giochi1.1.png");
+            return new Image(getClass().getResource("/graphics/itemTiles/Giochi1.1.png").toString());
         }
 
         return null;

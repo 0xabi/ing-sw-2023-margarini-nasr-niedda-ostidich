@@ -56,7 +56,7 @@ public class GameServerModel implements ServerModel, Serializable {
     private void commonGoalConstructor(int playerNumber) {
         commonGoal1 = CommonGoalFactory.getCommonGoal(playerNumber);
         CommonGoal commonGoalTemp = CommonGoalFactory.getCommonGoal(playerNumber);
-        while (commonGoalTemp.equals(commonGoal1)) {
+        while (commonGoalTemp.isEqual(commonGoal1)) {
             commonGoalTemp = CommonGoalFactory.getCommonGoal(playerNumber);
         }
         commonGoal2 = commonGoalTemp;

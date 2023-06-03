@@ -10,10 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Debugging {
 
@@ -55,7 +52,7 @@ public class Debugging {
             System.out.println("DEBUG: shelf trial log calculating time");
             String contentToAppend = "elapsed:\t" + difference + "  \t" + newTime + "\t|\tgc:\t" + collectionTime + "|\toutcome:\t";
             //noinspection DuplicatedCode
-            String fullPath = "%userprofile%\\Documents\\GitHub\\MyShelfie\\src\\main\\resources\\shelfTrial.txt";
+            String fullPath =  System.getenv("USERPROFILE")+"\\Documents\\GitHub\\MyShelfie\\src\\main\\resources\\shelfTrial.txt";
             try {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(fullPath, true));
                 writer.append(contentToAppend);
@@ -67,11 +64,12 @@ public class Debugging {
         }
     }
 
+
     public static void connectionStatistics() {
         System.out.println("DEBUG: shelf trial log writing");
         String contentToAppend = generatedConnection + testTile + "\t\t";
         //noinspection DuplicatedCode
-        String fullPath = "%userprofile%\\Documents\\GitHub\\MyShelfie\\src\\main\\resources\\shelfTrial.txt";
+        String fullPath = System.getenv("USERPROFILE")+"\\Documents\\GitHub\\MyShelfie\\src\\main\\resources\\shelfTrial.txt";
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(fullPath, true));
             writer.append(contentToAppend);
@@ -84,7 +82,7 @@ public class Debugging {
 
     public static void connectionStatisticsNewLine() {
         System.out.println("DEBUG: shelf trial log writing (new line)");
-        String fullPath = "%userprofile%\\Documents\\GitHub\\MyShelfie\\src\\main\\resources\\shelfTrial.txt";
+        String fullPath = System.getenv("USERPROFILE")+"\\Documents\\GitHub\\MyShelfie\\src\\main\\resources\\shelfTrial.txt";
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(fullPath, true));
             writer.append("\n");

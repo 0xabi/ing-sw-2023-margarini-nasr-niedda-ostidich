@@ -9,9 +9,7 @@ import it.polimi.ingsw.general.Coordinates;
 import it.polimi.ingsw.general.Tile;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.*;
 
 /**
@@ -135,13 +133,15 @@ public class AdjacentTilesGoal {
     private static @NotNull Map<Integer, Integer> getGroupPointsFromFile() {
         HashMap<Integer, Integer> map = new HashMap<>();
         Gson gson = new Gson();
-        File input = new File("configFiles/adjacentTilesGoalGroupPointsMap.json");
+        //JsonParser.parseReader(new InputStreamReader(Objects.requireNonNull(ClassLoader.getSystemResourceAsStream("configFiles/adjacentTilesGoalGroupPointsMap.json"))));
+        //Objects.requireNonNull(ClassLoader.getSystemResourceAsStream("configFiles/personalGoalMatchesMap.json")))
+        //File input = new File("configFiles/adjacentTilesGoalGroupPointsMap.json");
         try {
-            JsonElement pointsElement = JsonParser.parseReader(new FileReader(input));
+            JsonElement pointsElement = JsonParser.parseReader(new InputStreamReader(Objects.requireNonNull(ClassLoader.getSystemResourceAsStream("configFiles/adjacentTilesGoalGroupPointsMap.json"))));
             map.putAll(gson.fromJson(pointsElement, new TypeToken<HashMap<Integer, Integer>>() {
             }.getType()));
-        } catch (FileNotFoundException e) {
-            throw new ConfigFileNotFoundException("personalGoalPointsMap not found");
+        } catch (RuntimeException e) {
+            throw new ConfigFileNotFoundException("personalGoalPointsMap not readed");
         }
         return map;
     }

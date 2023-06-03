@@ -81,4 +81,12 @@ public abstract class CommonGoal {
         return tokens;
     }
 
+    /**
+     * check if another common goal object is the same to this common goal
+     * @param cg the common goal in which to check if is equal
+     * @return
+     */
+    public boolean isEqual(CommonGoal cg) {
+       return cg.getCommonGoalName().equals(getCommonGoalName());
+    }
 }
