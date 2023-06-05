@@ -86,8 +86,25 @@ public interface ServerController extends Remote {
      */
     void askForRooms(AskForRooms message) throws RemoteException;
 
+    /**
+     * Checks if player's name is available.
+     * @param msg is the message containing the player's name
+     * @return check's outcome
+     */
     boolean PlayerIDisAvailable(Hello msg) throws RemoteException;
 
+    /**
+     * Returns the game controller of the match the player is in.
+     * @param playerName name of the player
+     * @return game controller of the match the player is in
+     */
     Object getGSC(String playerName) throws RemoteException;
+
+    /**
+     * Receives a chat message from a player.
+     * @param message is the chat message
+     * @author Francesco Ostidich
+     */
+    void chatMessage(Chat message) throws RemoteException;
 
 }

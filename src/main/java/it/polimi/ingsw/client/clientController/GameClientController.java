@@ -169,6 +169,14 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
                     throw new RuntimeException(e);
                 }
             });
+            case JUST_SCAN_CHAT -> executorService.execute(() ->
+            {
+                try {
+                    server.chatMessage(new Chat(playerName, MessageID.CHAT_MESSAGE, (String) evt.value()));
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            });
         }
     }
 
@@ -322,6 +330,14 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
         view.assignPersonalGoalPoints(msg.getPersonalGoalPoints());
         view.assignAdjacentGoalPoints(msg.getAdjacentGoalPoints());
         view.announceWinner(msg.getWinner(), msg.getPlayerPoints());
+    }
+
+    @Override
+    public void chatMessage(@NotNull Chat message) {
+        if (!playerName.equals(message.getPlayerName())
+                || message.getMessageID() != MessageID.CHAT_MESSAGE) return;
+        view.updateChat(message.getMessage());
+        view.justPrintChat();
     }
 
 }

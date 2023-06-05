@@ -72,6 +72,8 @@ public abstract class GameClientView implements ClientView {
 
     private List<GameRoom> gameRooms;
 
+    private List<String> chatMessages;
+
     /**
      * Class constructor.
      *
@@ -93,6 +95,27 @@ public abstract class GameClientView implements ClientView {
             clientController = new GameClientController(this);
         } catch (RemoteException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Getter for chat messages.
+     *
+     * @author Francesco Ostidich
+     * @return chat messages list
+     */
+    public List<String> getChatMessages() {
+        return chatMessages;
+    }
+
+    /**
+     * @author Francesco Ostidich
+     */
+    @Override
+    public void updateChat(String message) {
+        chatMessages.add(message);
+        if (chatMessages.size() > 7) {
+            chatMessages.remove(0);
         }
     }
 

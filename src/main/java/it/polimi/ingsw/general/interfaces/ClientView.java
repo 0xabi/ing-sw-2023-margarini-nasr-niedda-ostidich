@@ -160,6 +160,14 @@ public interface ClientView {
     void updateGameRoom(GameRoom gameRoom);
 
     /**
+     * When a new message is received, it has to be stored and shown.
+     *
+     * @author Francesco Ostidich
+     * @param message is the message to store
+     */
+    void updateChat(String message);
+
+    /**
      * When game room has an update, it has to be shown.
      *
      * @author Francesco Ostidich
@@ -304,9 +312,8 @@ public interface ClientView {
     /**
      * Method is always opened on other thread, only chat messages are showed.
      *
-     * @param messages message string
      * @author Francesco Ostidich
      */
-    void justPrintChat(Queue<String> messages);
+    void justPrintChat();
 
 }

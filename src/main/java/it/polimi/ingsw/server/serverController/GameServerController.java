@@ -292,4 +292,17 @@ public class GameServerController extends RoomServices {
         }
     }
 
+    @Override
+    public void chatMessage(@NotNull Chat message) {
+        if (message.getMessageID() != MessageID.CHAT_MESSAGE) return;
+        names.forEach(client -> executorService.execute(() ->
+        {
+            try {
+                matchClients.get(client).chatMessage(new Chat(client, MessageID.CHAT_MESSAGE, message.getMessage()));
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        }));
+    }
+
 }

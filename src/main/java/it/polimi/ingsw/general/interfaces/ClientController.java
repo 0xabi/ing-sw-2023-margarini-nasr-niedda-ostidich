@@ -14,7 +14,6 @@ import java.rmi.RemoteException;
  */
 public interface ClientController extends Remote {
 
-
     /**
      * Takes an event to be processed.
      *
@@ -102,5 +101,20 @@ public interface ClientController extends Remote {
      */
     void pickAccepted(PickAccepted message) throws RemoteException;
 
+    /**
+     * If game is ending, method to close the game are called.
+     *
+     * @author Francesco Ostidich
+     * @param msg shows the end game infos
+     */
     void endGame(@NotNull EndGame msg) throws RemoteException;
+
+    /**
+     * Message strings are sent to the client to be shown.
+     *
+     * @author Francesco Ostidich
+     * @param message is the chat message
+     */
+    void chatMessage(Chat message) throws RemoteException;
+
 }

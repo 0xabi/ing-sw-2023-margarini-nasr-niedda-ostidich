@@ -611,8 +611,8 @@ public class CLI extends GameClientView {
      * @author Francesco Ostidich
      */
     @Override
-    public void justPrintChat(@NotNull Queue<String> messages) {
-        messages.forEach(System.out::println);
+    public void justPrintChat() {
+        getChatMessages().forEach(System.out::println);
     }
 
     /**

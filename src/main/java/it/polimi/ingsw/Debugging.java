@@ -14,7 +14,7 @@ import java.util.*;
 
 public class Debugging {
 
-    private static final boolean debugging = true;
+    private static final boolean debugging = false;
 
     private static String generatedConnection;
 

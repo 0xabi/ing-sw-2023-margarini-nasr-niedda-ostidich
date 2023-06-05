@@ -5,6 +5,7 @@ import it.polimi.ingsw.general.interfaces.ServerController;
 import it.polimi.ingsw.general.messages.*;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.Set;
 
 public class Server implements ServerController {
@@ -84,6 +85,14 @@ public class Server implements ServerController {
     @Override
     public ServerController getGSC(String playerName) {
         throw new RuntimeException("client cannot call getGSC");
+    }
+
+    @Override
+    public void chatMessage(Chat message) throws RemoteException {
+        try {
+            gameClientNetwork.send(message);
+        } catch (IOException ignored) {
+        }
     }
 
 }

@@ -141,7 +141,7 @@ public class GUI extends GameClientView {
     }
 
     @Override
-    public void justPrintChat(Queue<String> messages) {
+    public void justPrintChat() {
 
     }
 }

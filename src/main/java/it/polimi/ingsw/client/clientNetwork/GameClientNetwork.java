@@ -163,6 +163,7 @@ public class GameClientNetwork implements ClientNetwork {
                         case DISCONNECT_PLAYERS -> {
                             //TODO: manage disconnection
                         }
+                        case CHAT_MESSAGE -> controller.chatMessage((Chat) msg);
                         case PLAYER_ACCEPTED -> controller.serverConnected();
                         case PLAYER_NOT_ACCEPTED -> controller.restart();
                         case PING -> send(new Pong(playerName, MessageID.PONG));

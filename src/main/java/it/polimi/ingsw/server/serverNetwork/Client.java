@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.LinkedList;
@@ -98,6 +99,7 @@ public class Client implements ClientController {
                         case ASK_FOR_ROOMS -> roomServices.askForRooms((AskForRooms) msg);
                         case CREATE_NEW_ROOM -> roomServices.createNewRoom((CreateNewRoom) msg);
                         case PICK_TILES_REQUEST -> roomServices.pickTilesRequest((PickTilesRequest) msg);
+                        case CHAT_MESSAGE -> roomServices.chatMessage((Chat) msg);
                         case HELLO -> {
                             if (roomServices.PlayerIDisAvailable((Hello) msg)) {
                                 send(new PlayerAccepted(msg.getPlayerName(), MessageID.PLAYER_ACCEPTED));
@@ -215,6 +217,14 @@ public class Client implements ClientController {
     @Override
     public void endGame(@NotNull EndGame msg) {
         throw new RuntimeException("server cannot call endgame");
+    }
+
+    @Override
+    public void chatMessage(Chat message) throws RemoteException {
+        try {
+            send(message);
+        } catch (IOException ignored) {
+        }
     }
 
 }

@@ -62,7 +62,7 @@ public class RoomServices extends UnicastRemoteObject implements ServerControlle
     @Override
     public void playerConnected(String playerName, ClientController client) {
         clients.put(playerName, client);
-        System.out.println("[" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + "] "+ playerName + " added to online clients");
+        System.out.println("[" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + "] " + playerName + " added to online clients");
     }
 
     /**
@@ -241,6 +241,14 @@ public class RoomServices extends UnicastRemoteObject implements ServerControlle
     @Override
     public Object getGSC(String playerName) {
         return playerMatch.get(playerName);
+    }
+
+    @Override
+    public void chatMessage(@NotNull Chat message) throws RemoteException {
+        try {
+            playerMatch.get(message.getPlayerName()).chatMessage(message);
+        } catch (NullPointerException ignored) {
+        }
     }
 
 }
