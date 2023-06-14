@@ -19,15 +19,17 @@ import org.jetbrains.annotations.NotNull;
  */
 public class CLI extends GameClientView {
 
-    private String chatMessage = "";
+    private String chatMessage;
 
-    private String dataMessage = "";
+    private String dataMessage;
 
     private String currentPlayer;
 
     private String playerName;
 
     private final Thread scannerThread;
+
+    private final Thread chatThread;
 
     /**
      * Class constructor.
@@ -38,6 +40,8 @@ public class CLI extends GameClientView {
         super();
         scannerThread = new Thread(this::scan);
         scannerThread.start();
+        chatThread = new Thread(this::justScanChat);
+        chatThread.start();
         try {
             start();
         } catch (Exception e) {
@@ -536,7 +540,7 @@ public class CLI extends GameClientView {
         }
         currentPlayer = playerName;
         printScenario1(null);
-        System.out.println("\t\t\t\t" + playerName + " is currently playing his turn");
+        System.out.println("\t\t\t\t" + playerName + " is currently playing his turn\n");
     }
 
     @Override
@@ -591,19 +595,22 @@ public class CLI extends GameClientView {
 
     @Override
     public void justScanChat() {
-        while (chatMessage == null) {
-            try {
-                //noinspection BusyWait
-                Thread.sleep(1000);
-            } catch (InterruptedException ignored) {
+        //noinspection InfiniteLoopStatement
+        while (true) {
+            while (chatMessage == null) {
+                try {
+                    //noinspection BusyWait
+                    Thread.sleep(1000);
+                } catch (InterruptedException ignored) {
+                }
             }
-        }
-        String temp = chatMessage;
-        chatMessage = null;
-        try {
-            getClientController().update(new Event(EventID.JUST_SCAN_CHAT, temp));
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
+            String temp = chatMessage;
+            chatMessage = null;
+            try {
+                getClientController().update(new Event(EventID.JUST_SCAN_CHAT, temp));
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 

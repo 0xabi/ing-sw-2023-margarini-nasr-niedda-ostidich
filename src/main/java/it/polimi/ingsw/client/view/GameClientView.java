@@ -72,7 +72,7 @@ public abstract class GameClientView implements ClientView {
 
     private List<GameRoom> gameRooms;
 
-    private List<String> chatMessages;
+    private final List<String> chatMessages;
 
     /**
      * Class constructor.
@@ -80,6 +80,7 @@ public abstract class GameClientView implements ClientView {
      * @author Francesco Ostidich
      */
     public GameClientView() {
+        chatMessages = new LinkedList<>();
         gameParameters = new HashMap<>();
         names = new LinkedList<>();
         endGameToken = true;

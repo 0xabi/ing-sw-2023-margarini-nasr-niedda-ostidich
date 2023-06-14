@@ -268,21 +268,48 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
      * @param msg is the message with needed info
      * @author Francesco Ostidich
      */
-    public void newTurnInitializing(@NotNull NewTurn msg) {
-        if (Debugging.isDebugging()) Debugging.checkTestTile(msg.getPlayerShelves().get(playerName)[0][0]);
-        view.updateBoard(msg.getBoard());
-        if (!msg.getEndGameToken()) view.updateEndGameToken(false);
-        view.updateBag(msg.getBag());
-        view.updateCommonGoal1TokenStack(msg.getCommonGoal1TokenStack());
-        view.updateCommonGoal1GivenPlayers(msg.getCommonGoal1GivenPlayers());
-        for (int token : msg.getCommonGoal1GivenPlayers().keySet())
-            view.assignCommonGoalPoints(msg.getCommonGoal1GivenPlayers().get(token), token);
-        view.updateCommonGoal2TokenStack(msg.getCommonGoal2TokenStack());
-        view.updateCommonGoal2GivenPlayers(msg.getCommonGoal2GivenPlayers());
-        for (int token : msg.getCommonGoal2GivenPlayers().keySet())
-            view.assignCommonGoalPoints(msg.getCommonGoal2GivenPlayers().get(token), token);
-        view.updatePlayerShelves(msg.getPlayerShelves());
-        view.updatePlayerPoints(msg.getPlayerPoints());
+    public void newTurnInitializing(@NotNull NextPlayer msg) {
+        newTurnInitializingBias(msg.getPlayerShelves(), msg.getBoard(), msg.getEndGameToken(), msg.getBag(), msg.getCommonGoal1TokenStack(), msg.getCommonGoal1GivenPlayers(), msg.getCommonGoal2TokenStack(), msg.getCommonGoal2GivenPlayers(), msg.getPlayerPoints());
+    }
+
+    /**
+     * When new turn message is received, regardless of the subtype, initial updates are made.
+     *
+     * @param playerShelves           is the map of player shelves
+     * @param board                   is the board
+     * @param endGameToken            is the end game token
+     * @param bag                     is the bag
+     * @param commonGoal1TokenStack   is the stack of common goal 1's tokens
+     * @param commonGoal1GivenPlayers is the map of common goal 1 given players
+     * @param commonGoal2TokenStack   is the stack of common goal 2's tokens
+     * @param commonGoal2GivenPlayers is the map of common goal 2 given players
+     * @param playerPoints            is the map of player points
+     */
+    private void newTurnInitializingBias(Map<String, Tile[][]> playerShelves, Tile[][] board, boolean endGameToken, Map<Tile, Integer> bag, Stack<Integer> commonGoal1TokenStack, Map<Integer, String> commonGoal1GivenPlayers, Stack<Integer> commonGoal2TokenStack, Map<Integer, String> commonGoal2GivenPlayers, Map<String, Integer> playerPoints) {
+        if (Debugging.isDebugging()) Debugging.checkTestTile(playerShelves.get(playerName)[0][0]);
+        view.updateBoard(board);
+        if (!endGameToken) view.updateEndGameToken(false);
+        view.updateBag(bag);
+        view.updateCommonGoal1TokenStack(commonGoal1TokenStack);
+        view.updateCommonGoal1GivenPlayers(commonGoal1GivenPlayers);
+        for (int token : commonGoal1GivenPlayers.keySet())
+            view.assignCommonGoalPoints(commonGoal1GivenPlayers.get(token), token);
+        view.updateCommonGoal2TokenStack(commonGoal2TokenStack);
+        view.updateCommonGoal2GivenPlayers(commonGoal2GivenPlayers);
+        for (int token : commonGoal2GivenPlayers.keySet())
+            view.assignCommonGoalPoints(commonGoal2GivenPlayers.get(token), token);
+        view.updatePlayerShelves(playerShelves);
+        view.updatePlayerPoints(playerPoints);
+    }
+
+    /**
+     * When new turn message is received, regardless of the subtype, initial updates are made.
+     *
+     * @param msg is the message with needed info
+     * @author Francesco Ostidich
+     */
+    public void newTurnInitializing(@NotNull EndGame msg) {
+        newTurnInitializingBias(msg.getPlayerShelves(), msg.getBoard(), msg.getEndGameToken(), msg.getBag(), msg.getCommonGoal1TokenStack(), msg.getCommonGoal1GivenPlayers(), msg.getCommonGoal2TokenStack(), msg.getCommonGoal2GivenPlayers(), msg.getPlayerPoints());
     }
 
     /**
