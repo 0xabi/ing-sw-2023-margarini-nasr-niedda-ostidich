@@ -202,6 +202,7 @@ public class GameServerModel implements ServerModel, Serializable {
         for (Player player : players) {
             if (playerName.equals(player.getName())) {
                 EndGameToken.assignPoints(player);
+                board.setEndGameToken(Optional.empty());
                 return;
             }
         }

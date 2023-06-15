@@ -50,7 +50,12 @@ public class Debugging {
                 collectionTime.append(gcBean.getCollectionCount()).append("\t");
             }
             System.out.println("DEBUG: shelf trial log calculating time");
-            String contentToAppend = "elapsed:\t" + difference + "  \t" + newTime + "\t|\tgc:\t" + collectionTime + "|\toutcome:\t";
+            String contentToAppend;
+            if (newTime >= 10000) {
+                contentToAppend = "elapsed:\t" + difference + "\t" + newTime + "\t|\tgc:\t" + collectionTime + "|\toutcome:\t";
+            } else {
+                contentToAppend = "elapsed:\t" + difference + "\t\t" + newTime + "\t|\tgc:\t" + collectionTime + "|\toutcome:\t";
+            }
             //noinspection DuplicatedCode
             String fullPath =  System.getenv("USERPROFILE")+"\\Documents\\GitHub\\MyShelfie\\src\\main\\resources\\shelfTrial.txt";
             try {
@@ -67,7 +72,7 @@ public class Debugging {
 
     public static void connectionStatistics() {
         System.out.println("DEBUG: shelf trial log writing");
-        String contentToAppend = generatedConnection + testTile + "\t\t";
+        String contentToAppend = generatedConnection + testTile + " \t";
         //noinspection DuplicatedCode
         String fullPath = System.getenv("USERPROFILE")+"\\Documents\\GitHub\\MyShelfie\\src\\main\\resources\\shelfTrial.txt";
         try {
@@ -139,18 +144,18 @@ public class Debugging {
                 return "Socket";
             } else {
                 System.out.println("DEBUG: returning \"" + "RMI" + "\" as network type");
-                generatedConnection = "RMI\t\t";
+                generatedConnection = "RMI   \t";
                 return "RMI";
             }
         } else if (configuration.equals("1")) {
             System.out.println("DEBUG: returning \"" + connections[0] + "\" as network type");
             if (connections[0].equals("Socket")) generatedConnection = "Socket\t";
-            else generatedConnection = "RMI\t\t";
+            else generatedConnection = "RMI   \t";
             return connections[0];
         } else {
             System.out.println("DEBUG: returning \"" + connections[1] + "\" as network type");
             if (connections[1].equals("Socket")) generatedConnection = "Socket\t";
-            else generatedConnection = "RMI\t\t";
+            else generatedConnection = "RMI   \t";
             return connections[1];
         }
     }
@@ -178,16 +183,16 @@ public class Debugging {
         Random random = new Random();
         List<Tile> tiles = new LinkedList<>(Arrays.stream(Tile.values()).toList());
         tiles.remove(Tile.EMPTY);
+        tiles.remove(Tile.FRAMES);
+        tiles.remove(Tile.BOOKS);
+        tiles.remove(Tile.CATS);
         for (int i = 0; i < Shelf.getRowLength(); ++i) {
-            for (int j = 0; j < Shelf.getColumnLength() - 1; j++) {
+            for (int j = 0; j < Shelf.getColumnLength(); j++) {
                 shelf.getPositions()[i][j] = tiles.get(random.nextInt(tiles.size()));
             }
         }
-        shelf.getPositions()[3][Shelf.getColumnLength() - 1] = shelf.getPositions()[0][Shelf.getColumnLength() - 2];
-        shelf.getPositions()[4][Shelf.getColumnLength() - 1] = shelf.getPositions()[0][Shelf.getColumnLength() - 3];
-        shelf.getPositions()[0][Shelf.getColumnLength() - 2] = null;
-        shelf.getPositions()[0][Shelf.getColumnLength() - 3] = null;
-        shelf.getPositions()[1][Shelf.getColumnLength() - 2] = null;
+        shelf.getPositions()[2][Shelf.getColumnLength()-1] = null;
+        shelf.getPositions()[2][Shelf.getColumnLength()-2] = null;
         System.out.println("DEBUG: filling shelves");
     }
 

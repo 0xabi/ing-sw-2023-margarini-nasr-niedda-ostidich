@@ -200,7 +200,7 @@ public class GameServerController extends RoomServices {
         Map<String, Tile[][]> shelves = new HashMap<>();
         Map<String, Integer> points = new HashMap<>();
         names.forEach(player -> {
-            shelves.put(player, model.getPlayerShelf(player));
+            shelves.put(player, Tile.clone(model.getPlayerShelf(player)));
             points.put(player, model.getPlayerPoints(player));
         });
         if (model.getEndGameToken().isEmpty() && playerTurn.equals(names.get(names.size() - 1))) {
@@ -262,7 +262,7 @@ public class GameServerController extends RoomServices {
                         model.getCommonGoal2Tokens(),
                         model.getCommonGoal1GivenPlayers(),
                         model.getCommonGoal2GivenPlayers(),
-                        shelves,
+                        new HashMap<>(shelves),
                         points,
                         model.checkAvailablePickNumber(playerTurn),
                         playerTurn));

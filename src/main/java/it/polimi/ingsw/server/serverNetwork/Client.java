@@ -60,8 +60,7 @@ public class Client implements ClientController {
         new Thread(this::ClientSocketListener).start();
     }
 
-    public void send(Message message) throws IOException {
-        synchronized (MessageToClient) {
+    public synchronized void send(Message message) throws IOException {{
             if (Objects.equals(connectionType, "Socket")) {
                 MessageToClient.writeObject(message);
                 MessageToClient.flush();
@@ -199,7 +198,7 @@ public class Client implements ClientController {
     }
 
     @Override
-    public void newTurn(EndGame message) {
+    public synchronized void newTurn(EndGame message) {
         try {
             send(message);
         } catch (IOException ignored) {

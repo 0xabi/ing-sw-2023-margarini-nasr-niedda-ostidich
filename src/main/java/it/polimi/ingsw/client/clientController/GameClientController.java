@@ -268,7 +268,7 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
      * @param msg is the message with needed info
      * @author Francesco Ostidich
      */
-    public void newTurnInitializing(@NotNull NextPlayer msg) {
+    public void newTurnInitializing(@NotNull NextPlayer msg) { System.out.println("TBR debug: received CG2 gp -> " + msg.getCommonGoal2GivenPlayers());
         newTurnInitializingBias(msg.getPlayerShelves(), msg.getBoard(), msg.getEndGameToken(), msg.getBag(), msg.getCommonGoal1TokenStack(), msg.getCommonGoal1GivenPlayers(), msg.getCommonGoal2TokenStack(), msg.getCommonGoal2GivenPlayers(), msg.getPlayerPoints());
     }
 

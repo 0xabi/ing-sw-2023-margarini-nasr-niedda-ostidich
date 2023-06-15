@@ -100,7 +100,8 @@ public class PersonalGoal {
     protected int matchesShared(Shelf shelf) {
         int matchesNumber = 0;
         for (Tile tile : matches.keySet()) {
-            if (shelf.getPosition(matches.get(tile)) == tile) {
+            Coordinates coordinates = new Coordinates(matches.get(tile).x(), Shelf.getColumnLength() - 1 - matches.get(tile).y());
+            if (shelf.getPosition(coordinates) == tile) {
                 matchesNumber++;
             }
         }

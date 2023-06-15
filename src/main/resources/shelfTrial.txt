@@ -1,13 +1,26 @@
 
-elapsed:	60800  	518219752337300	|	gc:	0	0	0	0	|	outcome:	Socket	false		Socket	false		
-elapsed:	148300  	518236140551300	|	gc:	0	0	0	0	|	outcome:	RMI		true		RMI		true		
-elapsed:	366900  	518260140866100	|	gc:	0	0	0	0	|	outcome:	Socket	true		Socket	true		
-elapsed:	109000  	518280358285300	|	gc:	0	0	0	0	|	outcome:	RMI		false		Socket	false		
-elapsed:	36300  	518296817805900	|	gc:	0	0	0	0	|	outcome:	RMI		true		Socket	true		
-elapsed:	25100  	519230010407800	|	gc:	0	0	0	0	|	outcome:	RMI		true		Socket	true		
-Socket	true		Socket	true		
-elapsed:	161000  	519293990631500	|	gc:	0	0	0	0	|	outcome:	Socket	false		Socket	false		
-elapsed:	132800  	519313236422400	|	gc:	0	0	0	0	|	outcome:	RMI		false		Socket	false		
-elapsed:	183800  	519328195663700	|	gc:	0	0	0	0	|	outcome:	RMI		false		RMI		false		
-RMI		false		Socket	false		
-elapsed:	175700  	519383995280000	|	gc:	0	0	0	0	|	outcome:	Socket	true		Socket	true		Socket	true		Socket	true		Socket	true		Socket	true		Socket	true		Socket	true		Socket	true		
+elapsed:	8500	2392390201400	|	gc:	0	0	0	0	|	outcome:	RMI   	true 	Socket	true 	
+elapsed:	178700	2417729074200	|	gc:	0	0	0	0	|	outcome:	Socket	true 	Socket	true 	
+elapsed:	111500	2443004504500	|	gc:	0	0	0	0	|	outcome:	Socket	true 	Socket	true 	
+elapsed:	500500	2464680479100	|	gc:	0	0	0	0	|	outcome:	RMI   	true 	Socket	true 	
+elapsed:	144400	2489763023000	|	gc:	0	0	0	0	|	outcome:	RMI   	false 	RMI   	false 	
+elapsed:	805400	3121320522600	|	gc:	0	0	0	0	|	outcome:	RMI   	true 	Socket	true 		
+elapsed:	141500	3955780710200	|	gc:	0	0	0	0	|	outcome:	RMI   	false 	Socket	false 	
+elapsed:	193600	4027286117100	|	gc:	0	0	0	0	|	outcome:	Socket	false 	Socket	false 	
+elapsed:	110600	4090265458400	|	gc:	0	0	0	0	|	outcome:	Socket	true 	Socket	true 		
+elapsed:	97900	6251352729400	|	gc:	0	0	0	0	|	outcome:	Socket	false 	Socket	false 	
+elapsed:	99100	6302345163000	|	gc:	0	0	0	0	|	outcome:	Socket	false 	Socket	false 	
+elapsed:	26100	6329430522000	|	gc:	0	0	0	0	|	outcome:	Socket	true 	Socket	true 	
+elapsed:	77200	6457387287500	|	gc:	0	0	0	0	|	outcome:	RMI   	true 	Socket	true 
+elapsed:	54800	6704657986500	|	gc:	0	0	0	0	|	outcome:	RMI   	true 	RMI   	true 	RMI   	true 	
+elapsed:	128400	9139485102200	|	gc:	0	0	0	0	|	outcome:	Socket	false 	Socket	false 	
+elapsed:	251800	9197834846100	|	gc:	0	0	0	0	|	outcome:	RMI   	true 	Socket	true 	Socket	true 	
+elapsed:	90600	9580751435800	|	gc:	0	0	0	0	|	outcome:	RMI   	false 	RMI   	false 	
+elapsed:	74500	9605396465900	|	gc:	0	0	0	0	|	outcome:	RMI   	true 	Socket	true 	Socket	true 	
+elapsed:	178900	10152379418800	|	gc:	0	0	0	0	|	outcome:	Socket	true 	Socket	true 	
+elapsed:	113600	10242858471200	|	gc:	0	0	0	0	|	outcome:	RMI   	true 	Socket	true 	Socket	true 	
+elapsed:	21500	11142733338700	|	gc:	0	0	0	0	|	outcome:	Socket	true 	RMI   	true 	Socket	true 	
+elapsed:	10700	13015779225500	|	gc:	0	0	0	0	|	outcome:	Socket	false 	RMI   	false 	
+Socket	true 	Socket	true 	Socket	true 	
+elapsed:	263200	13171742017400	|	gc:	0	0	0	0	|	outcome:	Socket	false 	Socket	false 	
+elapsed:	114200	13194808732800	|	gc:	0	0	0	0	|	outcome:	RMI   	true 	Socket	true 	RMI   	true 	
