@@ -112,7 +112,7 @@ public class Debugging {
      * Two arguments: arguments used as respective network types.
      */
     @SuppressWarnings("MismatchedReadAndWriteOfArray")
-    private static final String[] connections = {};
+    private static final String[] connections = {"RMI", "RMI"};
 
     public static String getConfiguration() {
         return configuration;

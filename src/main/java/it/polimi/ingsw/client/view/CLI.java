@@ -551,13 +551,13 @@ public class CLI extends GameClientView {
     @Override
     public void assignPersonalGoalPoints(@NotNull Map<String, Integer> points) {
         for (Map.Entry<String, Integer> entry : points.entrySet())
-            System.out.println(entry.getKey() + " received " + entry.getValue() + "points from Personal goal");
+            System.out.println(entry.getKey() + " received " + entry.getValue() + " points from personal goal");
     }
 
     @Override
     public void assignAdjacentGoalPoints(@NotNull Map<String, Integer> points) {
         for (Map.Entry<String, Integer> entry : points.entrySet())
-            System.out.println(entry.getKey() + " received " + entry.getValue() + "points from adjacent tiles");
+            System.out.println(entry.getKey() + " received " + entry.getValue() + " points from adjacent tiles");
     }
 
     @Override

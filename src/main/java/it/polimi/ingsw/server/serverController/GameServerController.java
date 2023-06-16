@@ -69,9 +69,9 @@ public class GameServerController extends RoomServices {
      * @author Francesco Ostidich
      */
     public void playMatch() {
-        System.out.println("playing match with names " + matchClients.keySet() + ", and with clients " + matchClients.values());
+        System.out.println("playing match with names " + matchClients.keySet());
         Map<String, Tile[][]> shelves = new HashMap<>();
-        names.forEach(player -> shelves.put(player ,model.getPlayerShelf(player)));
+        names.forEach(player -> shelves.put(player, model.getPlayerShelf(player)));
         names.forEach(player -> executorService.execute(() ->
         {
             try {
@@ -93,7 +93,6 @@ public class GameServerController extends RoomServices {
                 throw new RuntimeException(e);
             }
         }));
-
     }
 
     /**
@@ -124,7 +123,7 @@ public class GameServerController extends RoomServices {
      * @author Francesco Ostidich
      */
     @Override
-    synchronized public void pickTilesRequest(@NotNull PickTilesRequest message) {
+    public void pickTilesRequest(@NotNull PickTilesRequest message) {
         if (!message.getPlayerName().equals(playerTurn) ||
                 message.getMessageID() != MessageID.PICK_TILES_REQUEST) return;
         if (model.checkSelection(message.getChosenCoordinates())) {
@@ -147,7 +146,7 @@ public class GameServerController extends RoomServices {
      * @author Francesco Ostidich
      */
     @Override
-    synchronized public void insertTilesRequest(@NotNull InsertTilesRequest message) {
+    public void insertTilesRequest(@NotNull InsertTilesRequest message) {
         if (!message.getPlayerName().equals(playerTurn) ||
                 message.getMessageID() != MessageID.INSERT_TILES_REQUEST) return;
         try {
@@ -157,14 +156,14 @@ public class GameServerController extends RoomServices {
             nextTurn(true);
         } catch (UnavailableInsertionException e) {
             executorService.execute(() ->
-            {
-                try {
-                    matchClients.get(message.getPlayerName()).pickAccepted(new PickAccepted(message.getPlayerName(), MessageID.PICK_ACCEPTED, lastPicked));
-                } catch (RemoteException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-           );
+                    {
+                        try {
+                            matchClients.get(message.getPlayerName()).pickAccepted(new PickAccepted(message.getPlayerName(), MessageID.PICK_ACCEPTED, lastPicked));
+                        } catch (RemoteException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    }
+            );
         }
     }
 
@@ -295,14 +294,39 @@ public class GameServerController extends RoomServices {
     @Override
     public void chatMessage(@NotNull Chat message) {
         if (message.getMessageID() != MessageID.CHAT_MESSAGE) return;
-        names.forEach(client -> executorService.execute(() ->
-        {
-            try {
-                matchClients.get(client).chatMessage(new Chat(client, MessageID.CHAT_MESSAGE, message.getMessage()));
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
-        }));
+        if (message.getMessage().startsWith("@")) {
+            names.forEach(client -> {
+                if (message.getMessage().startsWith("@" + client + " ")) {
+                    executorService.execute(() -> {
+                        try {
+                            matchClients.get(client).chatMessage(new Chat(client, MessageID.CHAT_MESSAGE,
+                                    message.getPlayerName() + " whispered to you: " +
+                                            message.getMessage().substring(message.getMessage().indexOf(" ") + 1)));
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    executorService.execute(() -> {
+                        try {
+                            matchClients.get(message.getPlayerName()).chatMessage(new Chat(message.getPlayerName(), MessageID.CHAT_MESSAGE,
+                                    client + " heard your whisper: " +
+                                            message.getMessage().substring(message.getMessage().indexOf(" ") + 1)));
+                        } catch (RemoteException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                }
+            });
+        } else {
+            names.forEach(client -> executorService.execute(() ->
+            {
+                try {
+                    matchClients.get(client).chatMessage(new Chat(client, MessageID.CHAT_MESSAGE, message.getPlayerName() + ": " + message.getMessage()));
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+            }));
+        }
     }
 
 }

@@ -198,7 +198,7 @@ public class Client implements ClientController {
     }
 
     @Override
-    public synchronized void newTurn(EndGame message) {
+    public void newTurn(EndGame message) {
         try {
             send(message);
         } catch (IOException ignored) {

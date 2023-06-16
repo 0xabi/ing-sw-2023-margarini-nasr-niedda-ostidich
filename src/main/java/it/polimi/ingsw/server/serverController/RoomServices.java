@@ -116,7 +116,7 @@ public class RoomServices extends UnicastRemoteObject implements ServerControlle
      * @author Francesco Ostidich
      */
     @Override
-    synchronized public void pickTilesRequest(@NotNull PickTilesRequest message) {
+    public void pickTilesRequest(@NotNull PickTilesRequest message) {
         try {
             playerMatch.get(message.getPlayerName()).pickTilesRequest(message);
         } catch (NullPointerException ignored) {
@@ -127,7 +127,7 @@ public class RoomServices extends UnicastRemoteObject implements ServerControlle
      * @author Francesco Ostidich
      */
     @Override
-    synchronized public void insertTilesRequest(InsertTilesRequest message) {
+    public void insertTilesRequest(InsertTilesRequest message) {
         try {
             playerMatch.get(message.getPlayerName()).insertTilesRequest(message);
         } catch (NullPointerException ignored) {

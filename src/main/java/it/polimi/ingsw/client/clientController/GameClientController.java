@@ -236,7 +236,7 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
      * @author Francesco Ostidich
      */
     @Override
-    synchronized public void notifyGameHasStarted(@NotNull NotifyGameHasStarted msg) {
+    public void notifyGameHasStarted(@NotNull NotifyGameHasStarted msg) {
         if (!msg.getPlayerName().equals(playerName) ||
                 msg.getMessageID() != MessageID.NOTIFY_GAME_HAS_STARTED) return;
         if (Debugging.isDebugging()) {
@@ -316,7 +316,7 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
      * @author Francesco Ostidich
      */
     @Override
-    synchronized public void newTurn(@NotNull EndGame msg) {
+    public void newTurn(@NotNull EndGame msg) {
         if (msg.getMessageID() != MessageID.NEW_TURN_END_GAME) return;
         newTurnInitializing(msg);
         endGame(msg);
@@ -326,7 +326,7 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
      * @author Francesco Ostidich
      */
     @Override
-    synchronized public void newTurn(@NotNull NextPlayer msg) {
+    public void newTurn(@NotNull NextPlayer msg) {
         if (msg.getMessageID() != MessageID.NEW_TURN_NEXT_PLAYER) return;
         newTurnInitializing(msg);
         if (playerName.equals(msg.getNextPlayer()))
@@ -339,26 +339,26 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
      * @author Francesco Ostidich
      */
     @Override
-    synchronized public void pickAccepted(@NotNull PickAccepted msg) {
+    public void pickAccepted(@NotNull PickAccepted msg) {
         if (!msg.getPlayerName().equals(playerName) ||
                 msg.getMessageID() != MessageID.PICK_ACCEPTED) return;
         view.chooseOrder(msg.getPickedTiles());
     }
 
     /**
-     * If it is the last turn, end game actions are to be made.
-     *
-     * @param msg is the data from the last server message
      * @author Francesco Ostidich
      */
     @Override
-    synchronized public void endGame(@NotNull EndGame msg) {
+    public void endGame(@NotNull EndGame msg) {
         view.givePersonalGoals(msg.getPersonalGoals());
         view.assignPersonalGoalPoints(msg.getPersonalGoalPoints());
         view.assignAdjacentGoalPoints(msg.getAdjacentGoalPoints());
         view.announceWinner(msg.getWinner(), msg.getPlayerPoints());
     }
 
+    /**
+     * @author Francesco Ostidich
+     */
     @Override
     public void chatMessage(@NotNull Chat message) {
         if (!playerName.equals(message.getPlayerName())

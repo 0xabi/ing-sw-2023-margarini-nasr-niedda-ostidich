@@ -17,6 +17,8 @@ import java.rmi.registry.Registry;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Asks for connection to the server, and wants the ServerController interface to call methods on it.
@@ -25,6 +27,8 @@ import java.util.Queue;
  * the method directly in the server on the controller.
  */
 public class GameClientNetwork implements ClientNetwork {
+
+    private final ExecutorService executorService;
 
     private final String connectionType;
 
@@ -52,6 +56,7 @@ public class GameClientNetwork implements ClientNetwork {
      */
     public GameClientNetwork(String connectionType) {
         this.connectionType = connectionType;
+        executorService = Executors.newCachedThreadPool();
     }
 
     @Override
@@ -151,25 +156,27 @@ public class GameClientNetwork implements ClientNetwork {
             //noinspection BusyWait
             Thread.sleep(1000);
             if (messageQueue.size() > 0) {
-                try {
-                    Message msg = messageQueue.remove();
-                    switch (msg.getMessageID()) {
-                        case NEW_TURN_END_GAME -> controller.newTurn((EndGame) msg);
-                        case NEW_TURN_NEXT_PLAYER -> controller.newTurn((NextPlayer) msg);
-                        case NOTIFY_GAME_HAS_STARTED -> controller.notifyGameHasStarted((NotifyGameHasStarted) msg);
-                        case PICK_ACCEPTED -> controller.pickAccepted((PickAccepted) msg);
-                        case SHOW_ROOMS -> controller.showRooms((ShowRooms) msg);
-                        case SHOW_PERSONAL_ROOM -> controller.showPersonalRoom((ShowPersonalRoom) msg);
-                        case DISCONNECT_PLAYERS -> {
-                            //TODO: manage disconnection
+                Message msg = messageQueue.remove();
+                executorService.execute(() -> {
+                    try {
+                        switch (msg.getMessageID()) {
+                            case NEW_TURN_END_GAME -> controller.newTurn((EndGame) msg);
+                            case NEW_TURN_NEXT_PLAYER -> controller.newTurn((NextPlayer) msg);
+                            case NOTIFY_GAME_HAS_STARTED -> controller.notifyGameHasStarted((NotifyGameHasStarted) msg);
+                            case PICK_ACCEPTED -> controller.pickAccepted((PickAccepted) msg);
+                            case SHOW_ROOMS -> controller.showRooms((ShowRooms) msg);
+                            case SHOW_PERSONAL_ROOM -> controller.showPersonalRoom((ShowPersonalRoom) msg);
+                            case DISCONNECT_PLAYERS -> {
+                                //TODO: manage disconnection
+                            }
+                            case CHAT_MESSAGE -> controller.chatMessage((Chat) msg);
+                            case PLAYER_ACCEPTED -> controller.serverConnected();
+                            case PLAYER_NOT_ACCEPTED -> controller.restart();
+                            case PING -> send(new Pong(playerName, MessageID.PONG));
                         }
-                        case CHAT_MESSAGE -> controller.chatMessage((Chat) msg);
-                        case PLAYER_ACCEPTED -> controller.serverConnected();
-                        case PLAYER_NOT_ACCEPTED -> controller.restart();
-                        case PING -> send(new Pong(playerName, MessageID.PONG));
+                    } catch (IOException ignored) {
                     }
-                } catch (ClassCastException ignored) {
-                }
+                });
             }
         }
     }
