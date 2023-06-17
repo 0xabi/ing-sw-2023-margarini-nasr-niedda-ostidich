@@ -49,6 +49,7 @@ public class PlayerNameSceneHandler extends SceneHandler{
     public void next(){
 
         try {
+            getGui().setPlayerName(username_txt.getText());
             getClientController().update(new Event(EventID.CHOOSE_PLAYER_NAME, username_txt.getText()));
         } catch (RemoteException e) {
             throw new RuntimeException(e);

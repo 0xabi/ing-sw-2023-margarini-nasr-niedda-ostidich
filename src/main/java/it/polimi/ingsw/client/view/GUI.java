@@ -3,13 +3,12 @@ package it.polimi.ingsw.client.view;
 import it.polimi.ingsw.client.view.handler.ChooseGameRoomSceneHandler;
 import it.polimi.ingsw.client.view.handler.SceneHandler;
 import it.polimi.ingsw.client.view.handler.WaitPlayersSceneHandler;
+import it.polimi.ingsw.client.view.handler.match.MatchSceneHandler;
 import it.polimi.ingsw.general.GameRoom;
 import it.polimi.ingsw.general.Tile;
-
+import javafx.application.Platform;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
-
 public class GUI extends GameClientView {
 
     public GUI() {
@@ -29,7 +28,7 @@ public class GUI extends GameClientView {
 
     @Override
     public void choosePlayerName() {
-        //SceneHandler.switchScene("wait_players");
+        //SceneHandler.switchScene("match");
         SceneHandler.switchScene("player_name");
     }
 
@@ -75,6 +74,9 @@ public class GUI extends GameClientView {
     public void notifyGameHasStared() {
 
         SceneHandler.switchScene("match");
+        MatchSceneHandler.setNumOfPlayers(getNames().size());
+        MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
+        Platform.runLater(msh::initOpponentPlayers);
 
     }
 
@@ -87,20 +89,58 @@ public class GUI extends GameClientView {
     @Override
     public void pickTiles(int availablePickNumber) {
 
+        MatchSceneHandler.setPickPhase(true);
+        MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
+        MatchSceneHandler.setAvailableTiles(availablePickNumber);
+
+        Platform.runLater(() ->{
+            msh.checkSelection();
+            msh.updateBoard();
+
+            msh.updateOpponentBoards();
+        });
+
+
     }
 
     @Override
     public void chooseOrder(List<Tile> selection) {
+
+        MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
+
+        Platform.runLater(msh::chooseOrder);
+
 
     }
 
     @Override
     public void chooseColumn() {
 
+        MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
+        Platform.runLater(() ->{
+            msh.changeAdviseMsg("Choose column");
+            msh.enableColumnsCursor();
+            msh.checkColumnSelection(true);
+        });
+
+
     }
 
     @Override
     public void playerIsPlaying(String playerName) {
+
+        MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
+        MatchSceneHandler.setPickPhase(false);
+
+        Platform.runLater(() -> {
+            msh.checkColumnSelection(false);
+            msh.changeAdviseMsg(playerName + " is currently playing his turn");
+            msh.updateBoard();
+            msh.updateOpponentBoards();
+        });
+
+
+
 
     }
 
