@@ -18,8 +18,6 @@ public class FourGroupsOfFour extends CommonGoal {
 
     private Tile[][] copy;
 
-    private final Queue<Coordinates> queue = new LinkedList<>();
-
     private static final int dimGroup = 4;
 
     private static final int times = 4;
@@ -47,13 +45,19 @@ public class FourGroupsOfFour extends CommonGoal {
     }
 
     /**
-     * //TODO java doc is to be written
+     * This method returns a list of adjacent tiles to the given coordinates (x, y). The tiles are determined
+     * by comparing the tile at the given coordinates with its adjacent tiles in the 'copy' array.
+     * The adjacent tiles are checked in the north, south, west, and east directions.
      *
-     * @param x
-     * @param y
-     * @return
+     * @param x the x-coordinate of the tile
+     * @param y the y-coordinate of the tile
+     * @return a list of adjacent tiles as {@link Coordinates} objects
+     *
+     * @throws IndexOutOfBoundsException if the given coordinates are out of bounds in the 'copy' array
+     *
      * @author Edoardo Margarini
      */
+
     private @NotNull List<Coordinates> adjacentTile(int x, int y) {
         //noinspection DuplicatedCode
         List<Coordinates> adjTiles = new LinkedList<>();
@@ -77,13 +81,19 @@ public class FourGroupsOfFour extends CommonGoal {
     }
 
     /**
-     * //TODO java doc is to be written
      *
-     * @param x
-     * @param y
-     * @return
+     * This method determines the number of tiles belonging to a block, starting from the given coordinates (x, y).
+     * It performs a breadth-first search (BFS) algorithm to explore adjacent tiles and counts the number of visited tiles.
+     *
+     * <p>The method modifies the 'copy' array by setting the visited tiles to null.</p>
+     *
+     * @param x the x-coordinate of the starting tile
+     * @param y the y-coordinate of the starting tile
+     * @return the number of tiles belonging to the block
+     *
      * @author Edoardo Margarini
      */
+
     @SuppressWarnings("DuplicatedCode")
     private int BelongToABlock(int x, int y) {
         int count = 0;

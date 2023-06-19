@@ -19,6 +19,12 @@ import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
 
+/**
+ * The Client class represents a client connected to the server.
+ * It handles communication with the client, message sending, and message processing.
+ *
+ * @author Edoardo Margarini
+ */
 public class Client implements ClientController {
 
     private boolean alive;
@@ -28,8 +34,6 @@ public class Client implements ClientController {
     }
 
     private String connectionType = null;
-
-    private final Socket clientSocket;
 
     private final ObjectOutputStream MessageToClient;
 
@@ -43,8 +47,15 @@ public class Client implements ClientController {
 
     private String playerName;
 
+    /**
+     * Constructs a new Client object.
+     *
+     * @param clientSocket the client socket for communication
+     * @param roomServices the server controller for handling room services
+     * @throws IOException if an I/O error occurs during the construction
+     * @author Edoardo Margarini
+     */
     public Client(@NotNull Socket clientSocket, ServerController roomServices) throws IOException {
-        this.clientSocket = clientSocket;
         MessageFromClient = new ObjectInputStream(clientSocket.getInputStream());
         MessageToClient = new ObjectOutputStream(clientSocket.getOutputStream());
         this.roomServices = roomServices;
@@ -60,6 +71,17 @@ public class Client implements ClientController {
         new Thread(this::ClientSocketListener).start();
     }
 
+    /**
+     * Sends a message to the client.
+     * The method synchronizes the send operation to ensure thread safety.
+     * If the connection type is "Socket", it writes the message object to the client output stream,
+     * flushes the stream, and resets it for future use.
+     *
+     * @param message the message to be sent to the client
+     * @throws IOException if an I/O error occurs during the send operation
+     * @author Francesco Ostidich
+     */
+
     public synchronized void send(Message message) throws IOException {{
             if (Objects.equals(connectionType, "Socket")) {
                 MessageToClient.writeObject(message);
@@ -68,6 +90,16 @@ public class Client implements ClientController {
             }
         }
     }
+
+    /**
+     * Listens for incoming messages from the client socket and adds them to the message queue.
+     * The method continuously reads objects from the client socket and checks their message ID.
+     * If the received message is a PONG message, it removes a corresponding message from the ping queue.
+     * For other message types, they are added to the message queue for further processing.
+     * If any I/O or class not found exception occurs during message receiving, the method breaks the loop and exits.
+     *
+     * @author Edoardo Margarini
+     */
 
     public void ClientSocketListener() {
         Message clientMessage;
@@ -85,10 +117,22 @@ public class Client implements ClientController {
         }
     }
 
+    /**
+     * Sorts and handles incoming messages from the message queue.
+     * The method continuously checks the message queue and processes the messages if available.
+     * Each message is handled based on its message ID by invoking the corresponding method in the 'roomServices' object.
+     * If an unexpected message type is encountered, it is ignored.
+     * If any exception occurs during message handling, a RuntimeException is thrown.
+     *
+     * @throws InterruptedException if the thread sleep is interrupted
+     *
+     * @author Edoardo Margarini
+     */
+
     public void Sorter() throws InterruptedException {
         while (alive) {
             //noinspection BusyWait
-            Thread.sleep(1000);
+            Thread.sleep(100);
             if (messageQueue.size() > 0) {
                 Message msg = messageQueue.remove();
                 try {
@@ -121,6 +165,19 @@ public class Client implements ClientController {
             }
         }
     }
+
+    /**
+     * Checks the disconnection status of the player by sending periodic ping messages.
+     * If the player fails to respond to multiple consecutive pings, it is considered disconnected.
+     * The method sends a ping message to the player every 10 seconds and checks the size of the ping queue.
+     * If the size exceeds 2 (indicating that the player has not responded to two consecutive pings),
+     * the player is considered disconnected and the 'alive' flag is set to false.
+     *
+     * @throws IOException            if an I/O error occurs while sending the ping message
+     * @throws InterruptedException if the thread sleep is interrupted
+     *
+     * @author Edoardo Margarini
+     */
 
     public void CheckDisconnection() throws IOException, InterruptedException {
         Message ping = new Ping(playerName, MessageID.PING);

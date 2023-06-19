@@ -6,8 +6,10 @@ import it.polimi.ingsw.general.interfaces.ServerNetwork;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -51,14 +53,27 @@ public class GameServerNetwork implements ServerNetwork, Serializable {
     /**
      * Activate the gameVirtualView, so it can be listening for clients requests.
      * Method has its own thread, and it is up for all server run time.
+     * The method creates a registry for the RMI connection on port 1099 and binds the "Connection" name to the server controller.
+     * It then continuously accepts incoming client socket connections and creates a new ClientController object for each client.
+     * The client's connection is accepted and a message is printed to indicate the connection acceptance.
+     * If an I/O exception occurs during connection acceptance, a message is printed indicating the failure.
+     * Note: The method runs in its own thread and is executed as long as the server is running.
+     *
+     * @author Edoardo Margarini
      */
+
     private void waitForClients() {
         System.out.println("server listening");
         try {
+            InetAddress hostIP = InetAddress.getLocalHost();
+            System.setProperty("java.rmi.server.hostname", hostIP.toString());
         Registry registry = LocateRegistry.createRegistry(1099);
         registry.rebind("Connection", roomServices);
 
         } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        } catch (UnknownHostException e) {
+            System.out.println("Impossible to determinate IP address");
             throw new RuntimeException(e);
         }
         while (running) {
