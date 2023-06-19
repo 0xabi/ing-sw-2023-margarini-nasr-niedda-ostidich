@@ -4,3 +4,61 @@
     -fx-background-size: stretch;
 
 }
+
+
+.txt_area
+{
+    -fx-border-color: black;
+}
+.txt_field
+{
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+    -fx-border-color: black;
+}
+
+.btn_send
+{
+    -fx-background-color: #043605;
+    -fx-border-color: black;
+    -fx-border-width: 1;
+
+    -fx-text-align: center;
+    -fx-opacity: 90%;
+}
+
+.btn_send:hover{
+    -fx-opacity: 95%;
+    -fx-cursor: hand;
+}
+
+.btn_send:pressed
+{
+    -fx-opacity: 100%;
+    -fx-border-width: 2;
+}
+
+.btn
+{
+
+    -fx-background-color: #043605;
+    -fx-border-color: white;
+    -fx-border-width: 3;
+
+
+    -fx-text-align: center;
+    -fx-opacity: 90%;
+    -fx-border-radius: 10 10 10 10;
+    -fx-background-radius: 10 10 10 10;
+
+}
+.btn:hover{
+    -fx-opacity: 95%;
+    -fx-cursor: hand;
+}
+
+.btn:pressed
+{
+    -fx-opacity: 100%;
+    -fx-border-width: 4;
+}

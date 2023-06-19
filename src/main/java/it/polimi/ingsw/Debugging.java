@@ -14,7 +14,63 @@ import java.util.*;
 
 public class Debugging {
 
-    private static final boolean debugging = true;
+    /**
+     * A class to measure performance about some instruction or piece of code.
+     */
+    public static class Watch
+    {
+
+        boolean on = false;
+        public static Watch temp = new Watch("temp");
+
+        boolean started = false;
+
+        String name;
+        long begin=0L;
+
+        public Watch(String name)
+        {
+            this.name = name;
+        }
+        public void start()
+        {
+            if(started)
+            {
+                if(on)
+                    System.out.println("Watch for "+name+" already started");
+            }
+            else
+            {
+                started = true;
+                begin = System.currentTimeMillis();
+            }
+
+        }
+        public void stop()
+        {
+            if(started)
+            {
+                if(on) {
+                    System.out.print(name + ": ");
+                    System.out.print(System.currentTimeMillis() - begin);
+                    System.out.println(" ms");
+                }
+                started=false;
+            }
+            else
+            {
+                if(on)
+                    System.out.println("No watch for " + name+" started");
+            }
+        }
+
+        public boolean isRunning()
+        {
+            return started;
+        }
+    }
+
+    private static final boolean debugging = false;
 
     private static String generatedConnection;
 

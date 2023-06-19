@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.view;
 
+import it.polimi.ingsw.Debugging;
 import it.polimi.ingsw.client.view.handler.ChooseGameRoomSceneHandler;
 import it.polimi.ingsw.client.view.handler.SceneHandler;
 import it.polimi.ingsw.client.view.handler.WaitPlayersSceneHandler;
@@ -76,8 +77,14 @@ public class GUI extends GameClientView {
         SceneHandler.switchScene("match");
         MatchSceneHandler.setNumOfPlayers(getNames().size());
         MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
-        Platform.runLater(msh::initOpponentPlayers);
 
+        Platform.runLater(() ->{
+            msh.initPersonalGoal(getPlayerPersonalGoals().get(0));
+            msh.initOpponentPlayers();
+            msh.setImageCommonGoals(getCommonGoal1(),getCommonGoal2());
+            msh.initChair();
+            msh.initCommonGoals();
+        });
     }
 
     @Override
@@ -131,7 +138,7 @@ public class GUI extends GameClientView {
 
         MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
         MatchSceneHandler.setPickPhase(false);
-
+        Debugging.Watch.temp.stop();
         Platform.runLater(() -> {
             msh.checkColumnSelection(false);
             msh.changeAdviseMsg(playerName + " is currently playing his turn");

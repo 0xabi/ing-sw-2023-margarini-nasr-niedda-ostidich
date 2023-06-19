@@ -8,6 +8,7 @@ import java.util.*;
 
 import it.polimi.ingsw.server.model.Board;
 import org.jetbrains.annotations.NotNull;
+import it.polimi.ingsw.Debugging.Watch;
 
 /**
  * CLI class is to implement GameView UI abstract class.
@@ -30,6 +31,11 @@ public class CLI extends GameClientView {
     private final Thread scannerThread;
 
     private final Thread chatThread;
+
+    Watch pickTilesReqToServer = new Watch("pickTilesReqToServer");
+
+    Watch chooseOrderReqToServer = new Watch("chooseOrderReqToServer");
+    Watch columnReqToServer = new Watch("columnReqToServer");
 
     /**
      * Class constructor.
@@ -474,6 +480,7 @@ public class CLI extends GameClientView {
         }
         try {
             System.out.println("\t\t\t\tYou chose the following coordinates:" + list);
+            pickTilesReqToServer.start();
             getClientController().update(new Event(EventID.PICK_TILES, list));
         } catch (RemoteException e) {
             throw new RuntimeException(e);
@@ -482,6 +489,7 @@ public class CLI extends GameClientView {
 
     @Override
     public void chooseOrder(@NotNull List<Tile> selection) { //13 rows + 2 of "-------"
+        pickTilesReqToServer.stop();
         ArrayList<ArrayList<Tile>> resultSet = OrderChoice(selection);
         int choice = -1;
         do {
@@ -500,6 +508,8 @@ public class CLI extends GameClientView {
             }
         } while (choice >= resultSet.size() || choice < 0);
         try {
+
+            chooseOrderReqToServer.start();
             getClientController().update(new Event(EventID.CHOOSE_ORDER, resultSet.get(choice)));
         } catch (RemoteException e) {
             throw new RuntimeException(e);
@@ -508,6 +518,7 @@ public class CLI extends GameClientView {
 
     @Override
     public void chooseColumn() {
+        chooseOrderReqToServer.stop();
         int column = 0;
         boolean attempt;
         do {
@@ -526,6 +537,8 @@ public class CLI extends GameClientView {
             }
         } while (!attempt);
         try {
+
+            columnReqToServer.start();
             getClientController().update(new Event(EventID.CHOOSE_COLUMN, column));
         } catch (RemoteException e) {
             throw new RuntimeException(e);
@@ -538,6 +551,7 @@ public class CLI extends GameClientView {
             Debugging.checkTestTile(getPlayerShelves().get(getPlayerName())[0][0]);
             Debugging.connectionStatistics();
         }
+        columnReqToServer.stop();
         currentPlayer = playerName;
         printScenario1(null);
         System.out.println("\t\t\t\t" + playerName + " is currently playing his turn\n");

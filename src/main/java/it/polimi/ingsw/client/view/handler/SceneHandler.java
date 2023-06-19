@@ -80,6 +80,7 @@ public abstract class SceneHandler {
     public static void setScene(Scene scene)
     {
         SceneHandler.scene = scene;
+        //System.out.println("Scene"+scene);
     }
 
     /**

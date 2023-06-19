@@ -5,6 +5,7 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -22,54 +23,82 @@
       </effect>
       <Image url="@../graphics/boards/bookshelf.png" />
    </ImageView>
-   <ImageView fx:id="personalGoal" fitHeight="239.0" fitWidth="163.0" layoutX="14.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true">
+   <ImageView fx:id="personalGoal" fitHeight="239.0" fitWidth="163.0" layoutX="14.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
       <effect>
          <DropShadow spread="0.41" />
       </effect>
       <Image url="@../graphics/personalGoalCards/front_EMPTY.jpg" />
    </ImageView>
-   <ImageView fx:id="commonGoal1" fitHeight="104.0" fitWidth="163.0" layoutX="296.0" layoutY="545.0" pickOnBounds="true" preserveRatio="true">
+   <ImageView fx:id="commonGoal1" fitHeight="104.0" fitWidth="163.0" layoutX="16.0" layoutY="594.0" pickOnBounds="true" preserveRatio="true">
       <effect>
          <DropShadow />
       </effect>
-      <Image url="@../graphics/commonGoalCards/1.jpg" />
+      <Image url="@../graphics/commonGoalCards/Corners.jpg" />
    </ImageView>
-   <ImageView fx:id="commonGoal2" fitHeight="104.0" fitWidth="163.0" layoutX="39.0" layoutY="545.0" pickOnBounds="true" preserveRatio="true">
+   <ImageView fx:id="commonGoal2" fitHeight="104.0" fitWidth="163.0" layoutX="16.0" layoutY="472.0" pickOnBounds="true" preserveRatio="true">
       <effect>
          <DropShadow />
       </effect>
-      <Image url="@../graphics/commonGoalCards/1.jpg" />
+      <Image url="@../graphics/commonGoalCards/Corners.jpg" />
    </ImageView>
    <Label fx:id="mainPlayerLbl" alignment="CENTER" layoutX="207.0" layoutY="459.0" prefHeight="25.0" prefWidth="316.0" text="Player" translateX="1.0" />
-   <ImageView fx:id="shelfPlayer1" fitHeight="184.0" fitWidth="182.0" layoutX="550.0" layoutY="487.0" pickOnBounds="true">
+   <ImageView fx:id="shelfPlayer1" fitHeight="184.0" fitWidth="182.0" layoutX="490.0" layoutY="487.0" pickOnBounds="true">
       <effect>
          <DropShadow offsetX="-3.0" />
       </effect>
       <Image url="@../graphics/boards/bookshelf.png" />
    </ImageView>
-   <ImageView fx:id="shelfPlayer2" fitHeight="184.0" fitWidth="182.0" layoutX="765.0" layoutY="487.0" pickOnBounds="true">
+   <ImageView fx:id="shelfPlayer2" fitHeight="184.0" fitWidth="182.0" layoutX="750.0" layoutY="487.0" pickOnBounds="true">
       <effect>
          <DropShadow offsetX="-3.0" />
       </effect>
       <Image url="@../graphics/boards/bookshelf.png" />
    </ImageView>
-   <ImageView fx:id="shelfPlayer3" fitHeight="184.0" fitWidth="182.0" layoutX="981.0" layoutY="487.0" pickOnBounds="true">
+   <ImageView fx:id="shelfPlayer3" fitHeight="184.0" fitWidth="182.0" layoutX="1010.0" layoutY="487.0" pickOnBounds="true">
       <effect>
          <DropShadow offsetX="-3.0" />
       </effect>
       <Image url="@../graphics/boards/bookshelf.png" />
    </ImageView>
-   <Label fx:id="player1Lbl" alignment="CENTER" layoutX="550.0" layoutY="673.0" prefHeight="25.0" prefWidth="182.0" text="Player" />
-   <Label fx:id="player2Lbl" alignment="CENTER" layoutX="765.0" layoutY="673.0" prefHeight="25.0" prefWidth="182.0" text="Player" />
-   <Label fx:id="player3Lbl" alignment="CENTER" layoutX="981.0" layoutY="673.0" prefHeight="25.0" prefWidth="182.0" text="Player" />
+   <Label fx:id="player1Lbl" alignment="CENTER" layoutX="490.0" layoutY="673.0" prefHeight="25.0" prefWidth="182.0" text="Player" />
+   <Label fx:id="player2Lbl" alignment="CENTER" layoutX="750.0" layoutY="673.0" prefHeight="25.0" prefWidth="182.0" text="Player" />
+   <Label fx:id="player3Lbl" alignment="CENTER" layoutX="1010.0" layoutY="673.0" prefHeight="25.0" prefWidth="182.0" text="Player" />
    <Label fx:id="advertising" alignment="TOP_LEFT" layoutX="539.0" layoutY="7.0" text="oooooh picca tutto ahaaaa" />
-   <Button layoutX="571.0" layoutY="402.0" mnemonicParsing="false" onAction="#callPick" prefHeight="38.0" prefWidth="58.0" text="PICK" />
-   <TextArea fx:id="txtArea" layoutX="976.0" layoutY="31.0" prefHeight="394.0" prefWidth="215.0" />
-   <TextField fx:id="txtField" layoutX="977.0" layoutY="424.0" prefHeight="30.0" prefWidth="189.0" />
-   <Button fx:id="sendBtn" layoutX="1165.0" layoutY="424.0" mnemonicParsing="false" onMouseClicked="#sendMsg" prefHeight="30.0" prefWidth="28.0" text="&gt;" />
+   <Button layoutX="571.0" layoutY="402.0" mnemonicParsing="false" onAction="#callPick" prefHeight="38.0" prefWidth="58.0" styleClass="btn" text="PICK" textFill="WHITE" />
+   <TextArea fx:id="txtArea" layoutX="976.0" layoutY="31.0" prefHeight="394.0" prefWidth="215.0" styleClass="txt_area" />
+   <TextField fx:id="txtField" layoutX="977.0" layoutY="424.0" prefHeight="30.0" prefWidth="189.0" styleClass="txt_field" />
+   <Button fx:id="sendBtn" layoutX="1165.0" layoutY="424.0" mnemonicParsing="false" onMouseClicked="#sendMsg" prefHeight="30.0" prefWidth="28.0" styleClass="btn_send" text="&gt;" textFill="WHITE" />
    <ImageView fx:id="col1" fitHeight="257.0" fitWidth="44.0" layoutX="246.0" layoutY="153.0" onMouseClicked="#putCol1" pickOnBounds="true" preserveRatio="true" />
    <ImageView fx:id="col2" fitHeight="257.0" fitWidth="44.0" layoutX="293.0" layoutY="154.0" onMouseClicked="#putCol2" pickOnBounds="true" preserveRatio="true" />
    <ImageView fx:id="col3" fitHeight="257.0" fitWidth="44.0" layoutX="344.0" layoutY="154.0" onMouseClicked="#putCol3" pickOnBounds="true" preserveRatio="true" />
    <ImageView fx:id="col4" fitHeight="257.0" fitWidth="44.0" layoutX="395.0" layoutY="154.0" onMouseClicked="#putCol4" pickOnBounds="true" preserveRatio="true" />
    <ImageView fx:id="col5" fitHeight="257.0" fitWidth="44.0" layoutX="445.0" layoutY="154.0" onMouseClicked="#putCol5" pickOnBounds="true" preserveRatio="true" />
+   <ImageView fx:id="endGameToken" fitHeight="43.0" fitWidth="43.0" layoutX="881.0" layoutY="327.0" pickOnBounds="true" preserveRatio="true" rotate="8.0">
+      <image>
+         <Image url="@../graphics/scoring tokens/end game.jpg" />
+      </image>
+      <effect>
+         <InnerShadow radius="4.8725" width="0.49" />
+      </effect>
+   </ImageView>
+   <ImageView fx:id="chairPlayer1" fitHeight="43.0" fitWidth="43.0" layoutX="446.0" layoutY="594.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <image>
+         <Image url="@../graphics/misc/firstplayertoken.png" />
+      </image>
+   </ImageView>
+   <ImageView fx:id="chairPlayer2" fitHeight="43.0" fitWidth="43.0" layoutX="706.0" layoutY="594.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <image>
+         <Image url="@../graphics/misc/firstplayertoken.png" />
+      </image>
+   </ImageView>
+   <ImageView fx:id="chairPlayer3" fitHeight="43.0" fitWidth="43.0" layoutX="966.0" layoutY="594.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <image>
+         <Image url="@../graphics/misc/firstplayertoken.png" />
+      </image>
+   </ImageView>
+   <ImageView fx:id="chairMainPlayer" fitHeight="43.0" fitWidth="43.0" layoutX="152.0" layoutY="404.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <image>
+         <Image url="@../graphics/misc/firstplayertoken.png" />
+      </image>
+   </ImageView>
 </AnchorPane>

@@ -22,10 +22,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
 import javafx.util.Duration;
+import it.polimi.ingsw.Debugging.Watch;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class MatchSceneHandler extends SceneHandler {
 
@@ -78,6 +80,20 @@ public class MatchSceneHandler extends SceneHandler {
     @FXML
     private Button sendBtn;
 
+    @FXML
+    private ImageView endGameToken;
+
+    @FXML
+    private ImageView chairMainPlayer;
+
+    @FXML
+    private ImageView chairPlayer1;
+
+    @FXML
+    private ImageView chairPlayer2;
+
+    @FXML
+    private ImageView chairPlayer3;
     private Integer column = null;
 
     Tile[][] prevMainShelf;
@@ -105,15 +121,15 @@ public class MatchSceneHandler extends SceneHandler {
 
     private static int numTotPlayers;
 
+
     private static boolean tilesIsMoving = false;
 
-
+    Watch pickTilesReqToServer = new Watch("pickTilesReqToServer");
+    Watch chooseColumnReqToServer = new Watch("chooseColumnReqToServer");
+    Watch chooseOrderReqToServer = new Watch("chooseOrderReqToServer");
     int indexPosShelf;
-    int indexPosShelfPlayer1;
-    int indexPosShelfPlayer2;
-    int indexPosShelfPLayer3;
 
-    long beginT = 0;
+
 
 
     public void test()
@@ -173,6 +189,75 @@ public class MatchSceneHandler extends SceneHandler {
     }
 
 
+
+    /**
+     * Initialize and create scoring tokens
+     * @author Abdullah Nasr
+     */
+    public void initCommonGoals()
+    {
+        CommonGoalsHandler.setRoot(getRoot());
+        CommonGoalsHandler.setOpponentNames(opponentPlayersName);
+        CommonGoalsHandler.setNamePlayer(getGui().getPlayerName());
+        CommonGoalsHandler.setShelves(mainShelf,shelfPlayer1,shelfPlayer2,shelfPlayer3);
+        CommonGoalsHandler.initCommonGoals(numTotPlayers,commonGoal1,commonGoal2);
+    }
+
+    /**
+     * Set the chair to the player that have the first turn
+     * @author Abdullah Nasr
+     */
+    public void initChair()
+    {
+        String firstTurnPlayerName = getGui().getNames().get(0);
+        int counter = 0;
+
+        //if the main player have the first turn
+        if(getGui().getPlayerName().equals(firstTurnPlayerName))
+        {
+            chairMainPlayer.setVisible(true);
+        }
+        else
+        {
+            for(String currentName : opponentPlayersName)
+            {
+                if(currentName.equals(firstTurnPlayerName))
+                {
+                    if(counter==0)
+                    {
+                        chairPlayer1.setVisible(true);
+                    }
+                    else if(counter==1)
+                    {
+                        chairPlayer2.setVisible(true);
+                    }
+                    else if(counter==3)
+                    {
+                        chairPlayer3.setVisible(true);
+                    }
+                }
+
+                counter++;
+            }
+        }
+    }
+
+
+
+    /**
+     * It reads the personal goal image based on the number that is associated in the json
+     * @param personalGoalNumber The number that is associated with the configuration present in the json file
+     * @author Abdullah Nasr
+     */
+    public void initPersonalGoal(Integer personalGoalNumber)
+    {
+        String postfix = personalGoalNumber == 1 ? ".png" : personalGoalNumber+".png";
+
+        personalGoal.setImage(new Image(Objects.requireNonNull(getClass().getResource("/graphics/personalGoalCards/Personal_Goals" + postfix)).toString()));
+
+    }
+
+
     /**
      * Set the number of players in the match
      * @param numPlayers the number of players in the match
@@ -184,9 +269,9 @@ public class MatchSceneHandler extends SceneHandler {
     }
 
     /**
-     *
-     * @param namePlayer
-     * @param shelf
+     * It creates the images view for the tiles of the opponent
+     * @param namePlayer The opponent's name
+     * @param shelf The image view of the opponent's shelf
      * @author Abdullah Nasr
      */
     public void initOpponentShelf(String namePlayer,ImageView shelf)
@@ -222,11 +307,14 @@ public class MatchSceneHandler extends SceneHandler {
     }
 
     /**
-     *
+     * It updates the image view of the opponent boards
      * @author Abdullah Nasr
      */
     public void updateOpponentBoards()
     {
+
+        Watch updateOpponentBoards = new Watch("updateOpponentBoards");
+        updateOpponentBoards.start();
         for(String currentName: opponentPlayersName)
         {
             Tile[][] currentShelf = getGui().getPlayerShelves().get(currentName);
@@ -250,6 +338,7 @@ public class MatchSceneHandler extends SceneHandler {
                 }
             }
         }
+        updateOpponentBoards.stop();
     }
 
     /**
@@ -259,7 +348,6 @@ public class MatchSceneHandler extends SceneHandler {
      */
     public void initOpponentPlayers()
     {
-        beginT = System.currentTimeMillis();
         //get opponent names
         for(String currentName : getGui().getNames())
         {
@@ -303,8 +391,6 @@ public class MatchSceneHandler extends SceneHandler {
             initOpponentShelf(opponentPlayersName.get(2),shelfPlayer3);
         }
 
-        System.out.print("Time to initialize opponent: ");
-        System.out.println(System.currentTimeMillis() - beginT);
     }
 
     /**
@@ -352,6 +438,29 @@ public class MatchSceneHandler extends SceneHandler {
 
 
     /**
+     * Set the images of the common goals given the names of the first and second common goals
+     * @param commonGoal1Name The name of the first common goal
+     * @param commonGoal2Name The name of the second common goal
+     * @author Abdullah Nasr
+     */
+    public void setImageCommonGoals(String commonGoal1Name, String commonGoal2Name)
+    {
+        commonGoal1.setImage(getCommonGoalImage(commonGoal1Name));
+        commonGoal2.setImage(getCommonGoalImage(commonGoal2Name));
+    }
+
+    /**
+     * Import common goal's image based on the name of the common goal
+     * @author Abdullah Nasr
+     */
+    public Image getCommonGoalImage(String commonGoalName)
+    {
+
+        return new Image(Objects.requireNonNull(getClass().getResource("/graphics/commonGoalCards/" + commonGoalName + ".jpg")).toString());
+
+    }
+
+    /**
      * It gives the tile image based on the tile type
      * @param tileType the tile type to be converted into image
      * @return The image of the tile
@@ -364,29 +473,29 @@ public class MatchSceneHandler extends SceneHandler {
         if(tileType == Tile.FRAMES)
         {
 
-            return new Image(getClass().getResource("/graphics/itemTiles/Cornici1.1.png").toString());
+            return new Image(Objects.requireNonNull(getClass().getResource("/graphics/itemTiles/Cornici1.1.png")).toString());
 
         }
         else if(tileType == Tile.CATS)
         {
-            return new Image(getClass().getResource("/graphics/itemTiles/Gatti1.1.png").toString());
+            return new Image(Objects.requireNonNull(getClass().getResource("/graphics/itemTiles/Gatti1.1.png")).toString());
         }
         else if(tileType == Tile.BOOKS)
         {
-            return new Image(getClass().getResource("/graphics/itemTiles/Libri1.1.png").toString());
+            return new Image(Objects.requireNonNull(getClass().getResource("/graphics/itemTiles/Libri1.1.png")).toString());
 
         }
         else if(tileType == Tile.PLANTS)
         {
-            return new Image(getClass().getResource("/graphics/itemTiles/Piante1.1.png").toString());
+            return new Image(Objects.requireNonNull(getClass().getResource("/graphics/itemTiles/Piante1.1.png")).toString());
         }
         else if(tileType == Tile.TROPHIES)
         {
-            return new Image(getClass().getResource("/graphics/itemTiles/Trofei1.1.png").toString());
+            return new Image(Objects.requireNonNull(getClass().getResource("/graphics/itemTiles/Trofei1.1.png")).toString());
         }
         else if(tileType == Tile.GAMES)
         {
-            return new Image(getClass().getResource("/graphics/itemTiles/Giochi1.1.png").toString());
+            return new Image(Objects.requireNonNull(getClass().getResource("/graphics/itemTiles/Giochi1.1.png")).toString());
         }
 
         return null;
@@ -397,7 +506,7 @@ public class MatchSceneHandler extends SceneHandler {
      */
     public void moveTiles()
     {
-        beginT = System.currentTimeMillis();
+
         double tilesSize = tiles.size()*GuiObjectsHandler.getBoardTilesSizeWidth() + (tiles.size()-1) * 0.1018;
         TranslateTransition translate;
         double begin = mainShelf.getLayoutX() + (mainShelf.getFitWidth()- tilesSize)/2;
@@ -406,24 +515,14 @@ public class MatchSceneHandler extends SceneHandler {
             for(ImageView tile : tiles)
             {
                 translate = new TranslateTransition();
-                System.out.print("translate = new TranslateTransition(); ");
-                System.out.println(System.currentTimeMillis()-beginT);
 
                 translate.setNode(tile);
-                System.out.print("translate.setNode(tile); ");
-                System.out.println(System.currentTimeMillis() - beginT);
 
                 translate.setDuration(Duration.millis(1000));
-                System.out.print("translate.setDuration(Duration.millis(1000)); ");
-                System.out.println(System.currentTimeMillis() - beginT);
 
                 translate.setToX((begin+n*(GuiObjectsHandler.getBoardTilesSizeWidth()+0.1018))-tile.getLayoutX());
-                System.out.print("translate.setToX ");
-                System.out.println(System.currentTimeMillis() - beginT);
 
                 translate.setToY(mainShelf.getLayoutY()-tile.getLayoutY()-GuiObjectsHandler.getBoardTilesSizeHeight()*2);
-                System.out.print("translate.setToY ");
-                System.out.println(System.currentTimeMillis() - beginT);
 
                 translate.play();
                 tile.setEffect(null);
@@ -433,8 +532,7 @@ public class MatchSceneHandler extends SceneHandler {
         pickPhase = false;
         insertPhase = true;
 
-        System.out.println("Time to moveTiles(): ");
-        System.out.println(System.currentTimeMillis()-beginT);
+
     }
 
 
@@ -442,6 +540,10 @@ public class MatchSceneHandler extends SceneHandler {
      * @author Pietro Andrea Niedda
      */
     public void callPick(){
+
+        Watch callPickWatch = new Watch("callPickWatch");
+
+        callPickWatch.start();
 
         if(!pickPhase){
             advertising.setText("You can't pick");
@@ -454,6 +556,7 @@ public class MatchSceneHandler extends SceneHandler {
 
             try {
                 //begin = System.currentTimeMillis();
+                pickTilesReqToServer.start();
                 getClientController().update(new Event(EventID.PICK_TILES, coordsList));
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
@@ -462,6 +565,8 @@ public class MatchSceneHandler extends SceneHandler {
             prevMainShelf = getGui().getPlayerShelves().get(getGui().getPlayerName());
 
         }
+
+        callPickWatch.stop();
     }
 
 
@@ -549,8 +654,6 @@ public class MatchSceneHandler extends SceneHandler {
         selectedColumnNumber = null;
         resetColumnsCursor();
 
-        System.out.println("Time to callInsert(): ");
-        //System.out.println(System.currentTimeMillis() - beginT);
     }
 
     /**
@@ -596,6 +699,8 @@ public class MatchSceneHandler extends SceneHandler {
             try {
                 selectedColumn=true;
                 selectedColumnNumber = column;
+                chooseColumnReqToServer.start();
+                Watch.temp.start();
                 getClientController().update(new Event(EventID.CHOOSE_COLUMN, column));
                 //callInsert(column);
             } catch (RemoteException e) {
@@ -670,7 +775,6 @@ public class MatchSceneHandler extends SceneHandler {
      */
     public void initMainShelf()
     {
-        beginT = System.currentTimeMillis();
 
         //set name player
         String mainPlayer = getGui().getPlayerName();
@@ -725,8 +829,13 @@ public class MatchSceneHandler extends SceneHandler {
         }
         else
         {
+            pickTilesReqToServer.stop();
             changeAdviseMsg("Choose the order of your picked tiles");
+
+            Watch moveTilesWatch = new Watch("moveTiles");
+            moveTilesWatch.start();
             moveTiles();
+            moveTilesWatch.stop();
         }
     }
 
@@ -749,6 +858,12 @@ public class MatchSceneHandler extends SceneHandler {
         {
             callInsert(selectedColumnNumber);
         }
+
+        if(chooseColumnReqToServer.isRunning())
+            chooseColumnReqToServer.stop();
+
+        if(chooseOrderReqToServer.isRunning())
+            chooseOrderReqToServer.stop();
 
     }
 
@@ -783,6 +898,8 @@ public class MatchSceneHandler extends SceneHandler {
      * @author Pietro Andrea Niedda
      */
     private void tileBehavior(ImageView tile){
+        Watch tileBehaviorWatch = new Watch("tileBehavior");
+        tileBehaviorWatch.start();
         if(pickPhase) {
             if (tiles.contains(tile)) {
                 tile.setEffect(null);
@@ -795,12 +912,7 @@ public class MatchSceneHandler extends SceneHandler {
             } else if (availableTiles>0) {
                 tile.setEffect(new Glow(1));
                 tiles.add(tile);
-                beginT = System.currentTimeMillis();
                 coordsList.add(imageToCoord.get(tile));
-                System.out.print("Added tile: "+ imageToCoord.get(tile));
-                System.out.print(" with ");
-                System.out.print(System.currentTimeMillis() - beginT);
-                System.out.println("ms");
 
                 availableTiles--;
                 changeAdviseMsg("You can pick more " + availableTiles + " tiles");
@@ -818,7 +930,6 @@ public class MatchSceneHandler extends SceneHandler {
                     ordered.add(tile);
                     if(tiles.size() == ordered.size())
                     {
-                        beginT = System.currentTimeMillis();
                         ArrayList<Tile> coordsList = new ArrayList<>();
                         for(ImageView iv : ordered)
                         {
@@ -826,15 +937,13 @@ public class MatchSceneHandler extends SceneHandler {
                             coordsList.add(getGui().getBoard()[coord.x()][coord.y()]);
                         }
 
-                        System.out.println("Time to convert image into coordinates: ");
-                        System.out.println(System.currentTimeMillis() - beginT);
-
                         try {
                             System.out.println("Choosed Order");
                             for(Tile currentT : coordsList)
                             {
                                 System.out.println(currentT);
                             }
+                            chooseOrderReqToServer.start();
                             getClientController().update(new Event(EventID.CHOOSE_ORDER, coordsList));
                         } catch (RemoteException e) {
                             throw new RuntimeException(e);
@@ -844,6 +953,8 @@ public class MatchSceneHandler extends SceneHandler {
                 else advertising.setText("Can't choose this  tile");
             }
         }
+
+        tileBehaviorWatch.stop();
     }
 
     /**
@@ -853,9 +964,10 @@ public class MatchSceneHandler extends SceneHandler {
     public void updateBoard()
     {
 
+        Watch updateBoardWatch = new Watch("updateBoard");
+        updateBoardWatch.start();
         if(!tilesIsMoving)
         {
-            beginT = System.currentTimeMillis();
 
             Tile[][] currboard = getGui().getBoard();
 
@@ -877,18 +989,16 @@ public class MatchSceneHandler extends SceneHandler {
                 }
             }
 
-            System.out.println("Time to updateBoard()");
-            System.out.println(System.currentTimeMillis() - beginT);
         }
+
+        updateBoardWatch.stop();
     }
 
     /**
      *
      * @author Pietro Andrea Niedda
      */
-    public void fillBoard(){ 
-
-        beginT = System.currentTimeMillis();
+    public void fillBoard(){
 
         Tile[][] currboard = getGui().getBoard();
         int indexPosShelf = getRoot().getChildren().indexOf(mainShelf);
@@ -916,10 +1026,6 @@ public class MatchSceneHandler extends SceneHandler {
                 }
             }
         }
-
-        System.out.println("Time to fillBoard()");
-        System.out.println(System.currentTimeMillis()- beginT);
-
     }
 
     /**
@@ -957,6 +1063,8 @@ public class MatchSceneHandler extends SceneHandler {
         fillBoard();
 
         getScene().setRoot(getRoot());
+
+        getScene().getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/match.css")).toExternalForm());
 
     }
 
