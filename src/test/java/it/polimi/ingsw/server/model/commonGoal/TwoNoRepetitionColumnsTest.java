@@ -82,6 +82,7 @@ public class TwoNoRepetitionColumnsTest {
         tilesToInsert.add(Tile.FRAMES);
         tilesToInsert.add(Tile.GAMES);
         assertTrue(shelf.insertInColumn(tilesToInsert, 0));
+        assertTrue(shelf.insertInColumn(tilesToInsert, 1));
         assertFalse(cg.check(shelf));
     }
 

@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -85,7 +86,8 @@ public class HomeSceneHandler extends SceneHandler{
     public void runScene()
     {
         resize();
-        getScene().setRoot(getRoot());
+        //getScene().setRoot(getRoot());
+        getStage().setScene(new Scene(getRoot()));
 
 
     }

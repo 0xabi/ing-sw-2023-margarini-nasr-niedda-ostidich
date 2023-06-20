@@ -37,12 +37,17 @@ public class TwoNoRepetitionColumns extends CommonGoal {
      *
      * @param shelf the player's shelf
      * @param col   the column in which to check repetition
-     * @return true if the number of different tiles in front of each other in the column is equal to the number {@code NUM_DIFFERENT_TILES}, false otherwise
+     * @return true if all tiles in the column is different, false otherwise
      * @author Abdullah Nasr
      */
     private boolean checkCol(@NotNull Shelf shelf, int col) {
         Set<Tile> checked = new HashSet<>();
+        Tile[][] tiles = shelf.getPositions();
         for (int i = 0; i < Shelf.getColumnLength(); i++) {
+
+            if(tiles[col][i]==null || checked.contains(tiles[col][i]))
+                return false;
+
             checked.add(shelf.getPositions()[col][i]);
         }
         return checked.size() >= Shelf.getColumnLength();
@@ -50,7 +55,7 @@ public class TwoNoRepetitionColumns extends CommonGoal {
 
     /**
      * <p>
-     * count the number of column that have the number of different tiles in front of each other equal to the number {@code NUM_DIFFERENT_TILES}
+     * count the number of column that have all the tiles different
      * </p>
      *
      * @param shelf the player's shelf

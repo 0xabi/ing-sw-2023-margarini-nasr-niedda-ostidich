@@ -6,6 +6,7 @@ import it.polimi.ingsw.general.EventID;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -93,7 +94,9 @@ public class ConnectionSceneHandler extends SceneHandler {
 
         resize();
 
-        getScene().setRoot(getRoot());
+        //getScene().setRoot(getRoot());
+
+        getStage().setScene(new Scene(getRoot()));
 
     }
 

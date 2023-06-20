@@ -38,20 +38,25 @@ public class TwoNoRepetitionRows extends CommonGoal {
      *
      * @param shelf the player's shelf
      * @param row   the row in which to check repetition
-     * @return true if the number of different tiles in front of each other in the row is equal to the number {@code NUM_DIFFERENT_TILES}, false otherwise
+     * @return true if all tiles in the row is different, false otherwise
      * @author Abdullah Nasr
      */
     private boolean checkRow(@NotNull Shelf shelf, int row) {
         Set<Tile> checked = new HashSet<>();
+        Tile[][] tiles = shelf.getPositions();
         for (int i = 0; i < Shelf.getRowLength(); i++) {
-            checked.add(shelf.getPositions()[i][row]);
+
+            if(tiles[i][row]== null || checked.contains(tiles[i][row]))
+                return false;
+
+            checked.add(tiles[i][row]);
         }
         return checked.size() == Shelf.getRowLength();
     }
 
     /**
      * <p>
-     * count the number of row that have the number of different tiles in front of each other equal to the number {@code NUM_DIFFERENT_TILES}
+     * count the number of row that have all the tiles different
      * </p>
      *
      * @param shelf the player's shelf

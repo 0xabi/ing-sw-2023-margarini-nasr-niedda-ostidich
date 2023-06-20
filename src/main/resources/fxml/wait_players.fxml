@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="pane" prefHeight="380.0" prefWidth="1100.0" styleClass="anchor_pane" stylesheets="@../css/menu.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.handler.WaitPlayersSceneHandler">
+<AnchorPane fx:id="pane" prefHeight="380.0" prefWidth="1100.0" styleClass="anchor_pane" stylesheets="@../css/wait_players.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.handler.WaitPlayersSceneHandler">
    <ImageView fx:id="logo" fitHeight="158.0" fitWidth="331.0" layoutX="384.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
       <Image url="@../graphics/publisherMaterial/small_title.png" />
    </ImageView>

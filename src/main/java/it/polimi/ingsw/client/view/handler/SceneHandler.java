@@ -135,6 +135,7 @@ public abstract class SceneHandler {
 
         try {
             //resizetest();
+            //setScene(loader.load());
             setRoot(loader.load());
             currentHandler = loader.getController();
             currentHandler.runScene();

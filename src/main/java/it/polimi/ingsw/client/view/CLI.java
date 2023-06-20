@@ -614,7 +614,7 @@ public class CLI extends GameClientView {
             while (chatMessage == null) {
                 try {
                     //noinspection BusyWait
-                    Thread.sleep(1000);
+                    Thread.sleep(200);
                 } catch (InterruptedException ignored) {
                 }
             }

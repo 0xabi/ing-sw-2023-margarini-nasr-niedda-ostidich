@@ -154,7 +154,7 @@ public class GameClientNetwork implements ClientNetwork {
         //noinspection InfiniteLoopStatement
         while (true) { //FIXME: put while "client is alive"
             //noinspection BusyWait
-            Thread.sleep(1000);
+            Thread.sleep(200);
             if (messageQueue.size() > 0) {
                 Message msg = messageQueue.remove();
                 executorService.execute(() -> {

@@ -229,7 +229,7 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
         if (!msg.getPlayerName().equals(playerName) ||
                 msg.getMessageID() != MessageID.SHOW_PERSONAL_ROOM) return;
         view.updateGameRoom(msg.getGameRoom());
-        view.showUpdatedGameRoom(newRoomName);
+        view.showUpdatedGameRoom(msg.getGameRoom().gameRoomName());
     }
 
     /**
@@ -268,7 +268,9 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
      * @param msg is the message with needed info
      * @author Francesco Ostidich
      */
-    public void newTurnInitializing(@NotNull NextPlayer msg) { System.out.println("TBR debug: received CG2 gp -> " + msg.getCommonGoal2GivenPlayers());
+    public void newTurnInitializing(@NotNull NextPlayer msg) {
+        System.out.print("TBR debug: received CG2 gp -> " + msg.getCommonGoal2GivenPlayers());
+        System.out.println("received CG1 gp -> " + msg.getCommonGoal1GivenPlayers());
         newTurnInitializingBias(msg.getPlayerShelves(), msg.getBoard(), msg.getEndGameToken(), msg.getBag(), msg.getCommonGoal1TokenStack(), msg.getCommonGoal1GivenPlayers(), msg.getCommonGoal2TokenStack(), msg.getCommonGoal2GivenPlayers(), msg.getPlayerPoints());
     }
 

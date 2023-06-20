@@ -6,10 +6,10 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane fx:id="pane" prefHeight="380.0" prefWidth="1100.0" styleClass="anchor_pane" stylesheets="@../css/menu.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.handler.NewOrJoinHandler">
-   <Button fx:id="newGameBtn" layoutX="392.0" layoutY="91.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#newGame" prefHeight="66.0" prefWidth="317.0" styleClass="btn" stylesheets="@../css/menu.css" text="New game" />
-   <Button fx:id="home_btn" layoutX="392.0" layoutY="291.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#exit" prefHeight="66.0" prefWidth="317.0" styleClass="btn" stylesheets="@../css/menu.css" text="Home" />
+   <Button fx:id="newGameBtn" layoutX="392.0" layoutY="91.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#newGame" prefHeight="66.0" prefWidth="317.0" styleClass="btn" stylesheets="@../css/menu.css" text="New game" textFill="WHITE" />
+   <Button fx:id="home_btn" layoutX="392.0" layoutY="291.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#exit" prefHeight="66.0" prefWidth="317.0" styleClass="btn" stylesheets="@../css/menu.css" text="Home" textFill="WHITE" />
    <ImageView fx:id="logo" fitHeight="158.0" fitWidth="331.0" layoutX="385.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true">
       <Image url="@../graphics/publisherMaterial/small_title.png" />
    </ImageView>
-   <Button fx:id="joinGameBtn" layoutX="392.0" layoutY="190.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#joinGame" prefHeight="66.0" prefWidth="317.0" styleClass="btn" stylesheets="@../css/menu.css" text="Join game" />
+   <Button fx:id="joinGameBtn" layoutX="392.0" layoutY="190.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#joinGame" prefHeight="66.0" prefWidth="317.0" styleClass="btn" stylesheets="@../css/menu.css" text="Join game" textFill="WHITE" />
 </AnchorPane>

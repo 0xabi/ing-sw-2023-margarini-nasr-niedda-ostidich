@@ -8,6 +8,7 @@ import it.polimi.ingsw.client.view.handler.match.MatchSceneHandler;
 import it.polimi.ingsw.general.GameRoom;
 import it.polimi.ingsw.general.Tile;
 import javafx.application.Platform;
+
 import java.util.List;
 import java.util.Map;
 public class GUI extends GameClientView {
@@ -18,7 +19,8 @@ public class GUI extends GameClientView {
 
     @Override
     public void start() {
-        SceneHandler.setClientController(getClientController());
+            SceneHandler.setClientController(getClientController());
+
     }
 
     @Override
@@ -30,20 +32,33 @@ public class GUI extends GameClientView {
     @Override
     public void choosePlayerName() {
         //SceneHandler.switchScene("match");
-        SceneHandler.switchScene("player_name");
+
+        Platform.runLater(() ->
+        {
+            SceneHandler.switchScene("player_name");
+        });
+
     }
 
     @Override
     public void chooseNewOrJoin() {
 
-        SceneHandler.switchScene("new_or_join");
+
+        Platform.runLater(() -> {
+            SceneHandler.switchScene("new_or_join");
+        });
+
 
     }
 
     @Override
     public void chooseNewGameName() {
 
-        System.out.println("choosenewgame");
+        Platform.runLater(() ->
+        {
+            System.out.println("choosenewgame");
+        });
+
 
 
     }
@@ -51,22 +66,33 @@ public class GUI extends GameClientView {
     @Override
     public void chooseNewGamePlayerNumber() {
 
-        SceneHandler.switchScene("game_ip_connection");
+        Platform.runLater(() ->
+        {
+            SceneHandler.switchScene("game_ip_connection");
+
+        });
 
     }
 
     @Override
     public void showUpdatedGameRoom(String roomName) {
-        GameRoom room = null;
-        for (GameRoom gameRoom : getGameRooms()) {
-            if (gameRoom.gameRoomName().equals(roomName)) {
-                room = gameRoom;
-                break;
+
+
+        Platform.runLater(() ->
+        {
+            GameRoom room = null;
+            for (GameRoom gameRoom : getGameRooms()) {
+                if (gameRoom.gameRoomName().equals(roomName)) {
+                    room = gameRoom;
+                    break;
+                }
             }
-        }
-        if (room == null) throw new RuntimeException("no such room name present while printing personal room!");
-        WaitPlayersSceneHandler.setRoom(room);
-        SceneHandler.switchScene("wait_players");
+            if (room == null) throw new RuntimeException("no such room name present while printing personal room!");
+            WaitPlayersSceneHandler.setRoom(room);
+
+            SceneHandler.switchScene("wait_players");
+        });
+
 
 
     }
@@ -74,37 +100,47 @@ public class GUI extends GameClientView {
     @Override
     public void notifyGameHasStared() {
 
-        SceneHandler.switchScene("match");
-        MatchSceneHandler.setNumOfPlayers(getNames().size());
-        MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
+
 
         Platform.runLater(() ->{
+
+            SceneHandler.switchScene("match");
+            MatchSceneHandler.setNumOfPlayers(getNames().size());
+            MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
+
             msh.initPersonalGoal(getPlayerPersonalGoals().get(0));
             msh.initOpponentPlayers();
             msh.setImageCommonGoals(getCommonGoal1(),getCommonGoal2());
             msh.initChair();
-            msh.initCommonGoals();
+            msh.initScoringTokens();
+
         });
     }
 
     @Override
     public void chooseGameRoom(List<GameRoom> rooms) {
-        ChooseGameRoomSceneHandler.setGameRooms(rooms);
-        SceneHandler.switchScene("choose_game_room");
+
+        Platform.runLater(() ->
+        {
+            ChooseGameRoomSceneHandler.setGameRooms(rooms);
+            SceneHandler.switchScene("choose_game_room");
+        });
+
     }
 
     @Override
     public void pickTiles(int availablePickNumber) {
 
-        MatchSceneHandler.setPickPhase(true);
-        MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
-        MatchSceneHandler.setAvailableTiles(availablePickNumber);
-
         Platform.runLater(() ->{
+
+            MatchSceneHandler.setPickPhase(true);
+            MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
+            MatchSceneHandler.setAvailableTiles(availablePickNumber);
+
             msh.checkSelection();
             msh.updateBoard();
-
             msh.updateOpponentBoards();
+            msh.updateCommonGoals(getCommonGoal1GivenPlayers(),getCommonGoal2GivenPlayers());
         });
 
 
@@ -113,9 +149,10 @@ public class GUI extends GameClientView {
     @Override
     public void chooseOrder(List<Tile> selection) {
 
-        MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
-
-        Platform.runLater(msh::chooseOrder);
+        Platform.runLater(() ->{
+            MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
+            msh.chooseOrder();
+        });
 
 
     }
@@ -123,8 +160,9 @@ public class GUI extends GameClientView {
     @Override
     public void chooseColumn() {
 
-        MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
+
         Platform.runLater(() ->{
+            MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
             msh.changeAdviseMsg("Choose column");
             msh.enableColumnsCursor();
             msh.checkColumnSelection(true);
@@ -136,17 +174,19 @@ public class GUI extends GameClientView {
     @Override
     public void playerIsPlaying(String playerName) {
 
-        MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
-        MatchSceneHandler.setPickPhase(false);
-        Debugging.Watch.temp.stop();
+
         Platform.runLater(() -> {
+
+            MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
+            MatchSceneHandler.setPickPhase(false);
+            Debugging.Watch.temp.stop();
+
             msh.checkColumnSelection(false);
             msh.changeAdviseMsg(playerName + " is currently playing his turn");
             msh.updateBoard();
             msh.updateOpponentBoards();
+            msh.updateCommonGoals(getCommonGoal1GivenPlayers(),getCommonGoal2GivenPlayers());
         });
-
-
 
 
     }

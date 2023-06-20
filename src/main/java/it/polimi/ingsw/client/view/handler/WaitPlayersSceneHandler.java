@@ -4,6 +4,7 @@ import it.polimi.ingsw.general.GameRoom;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -111,12 +112,12 @@ entered_players*/
         }
 
         //remove last comma
-        players.substring(0,players.length()-2);
+        String playersNames = players.substring(0,players.length()-1);
 
         room_name.setText(room.gameRoomName());
         creator.setText(room.creatorName());
         max_players.setText(String.valueOf(room.totalPlayers()));
-        entered_players.setText(players.toString());
+        entered_players.setText(playersNames);
 
     }
 
@@ -128,7 +129,8 @@ entered_players*/
         resize();
         updateInfo();
 
-        getScene().setRoot(getRoot());
+        //getScene().setRoot(getRoot());
+        getStage().setScene(new Scene(getRoot()));
 
     }
 }

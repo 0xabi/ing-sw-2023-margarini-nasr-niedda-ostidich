@@ -8,6 +8,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -41,7 +42,7 @@ public class ChooseGameRoomSceneHandler extends SceneHandler{
                 "\t" + gameRoom.enteredPlayers().size() + "/" + gameRoom.totalPlayers());
     }
     public void updateList(){
-        lobbys = new LinkedList<String>();
+        lobbys = new LinkedList<>();
         getLobbys();
         lobbyList.getItems().addAll(lobbys);
         lobbyList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
@@ -65,7 +66,9 @@ public class ChooseGameRoomSceneHandler extends SceneHandler{
     public void runScene() {
         updateList();
         resize();
-        getScene().setRoot(getRoot());
+        //getScene().setRoot(getRoot());
+        getStage().setScene(new Scene(getRoot()));
+
     }
 
     @Override

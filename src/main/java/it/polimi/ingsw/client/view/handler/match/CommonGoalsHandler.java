@@ -1,11 +1,15 @@
 package it.polimi.ingsw.client.view.handler.match;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import javafx.animation.TranslateTransition;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class CommonGoalsHandler {
@@ -84,6 +88,52 @@ public class CommonGoalsHandler {
         return scoringToken8IV;
     }
 
+    public static void setImageCommonGoals(ImageView commonGoal1, String commonGoal1Name, ImageView commonGoal2,String commonGoal2Name)
+    {
+        Tooltip TipCg2 = new Tooltip();
+        Tooltip TipCg1 = new Tooltip();
+
+        TipCg1.setText(getCommonGoalDescription(commonGoal1Name));
+        TipCg1.setShowDuration(Duration.millis(6000));
+        TipCg2.setText(getCommonGoalDescription(commonGoal2Name));
+        TipCg2.setShowDuration(Duration.millis(6000));
+
+
+        Tooltip.install(commonGoal1, TipCg1);
+        Tooltip.install(commonGoal2, TipCg2);
+
+        commonGoal1.setImage(getCommonGoalImage(commonGoal1Name));
+        commonGoal2.setImage(getCommonGoalImage(commonGoal2Name));
+    }
+
+    /**
+     * Import common goal's image based on the name of the common goal
+     * @author Abdullah Nasr
+     */
+    public static Image getCommonGoalImage(String commonGoalName)
+    {
+
+        return new Image(Objects.requireNonNull(CommonGoalsHandler.class.getResource("/graphics/commonGoalCards/" + commonGoalName + ".jpg")).toString());
+
+    }
+
+    /**
+     *
+     * @param commonGoalName
+     * @return
+     */
+    public static String getCommonGoalDescription(String commonGoalName)
+    {
+        JsonObject jObject = JsonParser.parseReader(new InputStreamReader(Objects.requireNonNull(ClassLoader.getSystemResourceAsStream("configFiles/commonGoalDescription.json")))).getAsJsonObject();
+        if(jObject.has(commonGoalName))
+        {
+            return jObject.get(commonGoalName).getAsString();
+        }
+
+        return "N/A";
+
+    }
+
     public static ImageView createScoringToken6IV(ImageView commonGoal, int numPlayers)
     {
         ImageView scoringToken6IV = new ImageView();
@@ -113,7 +163,7 @@ public class CommonGoalsHandler {
         return scoringToken2IV;
     }
 
-    public static void initCommonGoals(int numTotPlayers, ImageView commonGoal1, ImageView commonGoal2)
+    public static void initScoringTokens(int numTotPlayers, ImageView commonGoal1, ImageView commonGoal2)
     {
         if(numTotPlayers==2)
         {
@@ -166,7 +216,7 @@ public class CommonGoalsHandler {
         double destinationX;
         double destinationY;
 
-        if(firstPlaceIsOccupied(namePlayer))
+        if(!firstPlaceIsOccupied(namePlayer))
         {
             translate = new TranslateTransition();
             destinationX = shelfDestination.getLayoutX() + (shelfDestination.getFitWidth()*GuiObjectsHandler.getPlaceScoreTokenMainPlayerPosX());
@@ -208,7 +258,7 @@ public class CommonGoalsHandler {
         double destinationX;
         double destinationY;
 
-        if(firstPlaceIsOccupied(namePlayer))
+        if(!firstPlaceIsOccupied(namePlayer))
         {
             translate = new TranslateTransition();
             destinationX = shelfDestination.getLayoutX() + (shelfDestination.getFitWidth()*GuiObjectsHandler.getPlaceScoreTokenPosX());
@@ -243,14 +293,14 @@ public class CommonGoalsHandler {
             translate.play();
         }
     }
-    private static void moveScoringTokenCG1ToPlayer(String namePlayer)
+    private static void moveScoringTokenCGToPlayer(ImageView scoringTokenIV, String namePlayer)
     {
         int counter = 0;
-        ImageView ivToMove = commonGoal1ScoringTokenStackImages.pop();
+
 
         if(namePlayer.equals(nameMainPlayer))
         {
-            moveScoringTokenToMainPlayer(ivToMove,shelfPlayer,namePlayer);
+            moveScoringTokenToMainPlayer(scoringTokenIV,shelfPlayer,namePlayer);
         }
         else
         {
@@ -260,15 +310,15 @@ public class CommonGoalsHandler {
                 {
                     if(counter==0)
                     {
-                        moveScoringTokenToOpponentPlayer(ivToMove,player1Shelf,namePlayer);
+                        moveScoringTokenToOpponentPlayer(scoringTokenIV,player1Shelf,namePlayer);
                     }
                     else if(counter==1)
                     {
-                        moveScoringTokenToOpponentPlayer(ivToMove,player2Shelf,namePlayer);
+                        moveScoringTokenToOpponentPlayer(scoringTokenIV,player2Shelf,namePlayer);
                     }
                     else if(counter==3)
                     {
-                        moveScoringTokenToOpponentPlayer(ivToMove,player3Shelf,namePlayer);
+                        moveScoringTokenToOpponentPlayer(scoringTokenIV,player3Shelf,namePlayer);
                     }
                 }
 
@@ -276,6 +326,7 @@ public class CommonGoalsHandler {
             }
         }
     }
+
     public static void updateCommonGoal1(Map<Integer, String> givenCommonGoal1)
     {
         //there was a new achieved common goal 1
@@ -292,11 +343,45 @@ public class CommonGoalsHandler {
 
             namePlayer = givenCommonGoal1.get(key);
 
-            moveScoringTokenCG1ToPlayer(namePlayer);
+            ImageView scoringTokenIV = commonGoal1ScoringTokenStackImages.pop();
+            moveScoringTokenCGToPlayer(scoringTokenIV,namePlayer);
 
             lenStackCG1++;
         }
+        else
+        {
+            System.out.println("No common goal 1 achieved");
+        }
 
     }
+
+    public static void updateCommonGoal2(Map<Integer, String> givenCommonGoal2)
+    {
+        //there was a new achieved common goal 1
+        if(lenStackCG2!=givenCommonGoal2.size())
+        {
+            Integer key=0;
+            String namePlayer;
+
+            //get the last pair value
+            for(Map.Entry<Integer, String> currentEntry : givenCommonGoal2.entrySet())
+            {
+                key = currentEntry.getKey();
+            }
+
+            namePlayer = givenCommonGoal2.get(key);
+
+            ImageView scoringTokenIV = commonGoal2ScoringTokenStackImages.pop();
+            moveScoringTokenCGToPlayer(scoringTokenIV,namePlayer);
+
+            lenStackCG2++;
+        }
+        else
+        {
+            System.out.println("No common goal 2 achieved");
+        }
+
+    }
+
 
 }

@@ -12,10 +12,8 @@ import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,6 +25,7 @@ import it.polimi.ingsw.Debugging.Watch;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class MatchSceneHandler extends SceneHandler {
@@ -111,13 +110,13 @@ public class MatchSceneHandler extends SceneHandler {
 
     private final ImageView[][] boardTilesImages = new ImageView[Board.getRowLength()][Board.getColumnLength()];
 
-    private static final HashMap<ImageView, Coordinates> imageToCoord = new HashMap<ImageView, Coordinates>();
+    private static final HashMap<ImageView, Coordinates> imageToCoord = new HashMap<>();
     private static int availableTiles = 0;
 
-    ArrayList coordsList = new ArrayList<Coordinates>();
+    ArrayList<Coordinates> coordsList = new ArrayList<>();
 
-    private static ArrayList<String> opponentPlayersName = new ArrayList<>();
-    private static HashMap<String, ImageView[][]> opponentsPlayerTilesImages = new HashMap<>();
+    private final static ArrayList<String> opponentPlayersName = new ArrayList<>();
+    private final static HashMap<String, ImageView[][]> opponentsPlayerTilesImages = new HashMap<>();
 
     private static int numTotPlayers;
 
@@ -194,13 +193,19 @@ public class MatchSceneHandler extends SceneHandler {
      * Initialize and create scoring tokens
      * @author Abdullah Nasr
      */
-    public void initCommonGoals()
+    public void initScoringTokens()
     {
         CommonGoalsHandler.setRoot(getRoot());
         CommonGoalsHandler.setOpponentNames(opponentPlayersName);
         CommonGoalsHandler.setNamePlayer(getGui().getPlayerName());
         CommonGoalsHandler.setShelves(mainShelf,shelfPlayer1,shelfPlayer2,shelfPlayer3);
-        CommonGoalsHandler.initCommonGoals(numTotPlayers,commonGoal1,commonGoal2);
+        CommonGoalsHandler.initScoringTokens(numTotPlayers,commonGoal1,commonGoal2);
+    }
+
+    public void updateCommonGoals(Map<Integer, String> givenCommonGoal1, Map<Integer,String> givenCommonGoal2)
+    {
+        CommonGoalsHandler.updateCommonGoal1(givenCommonGoal1);
+        CommonGoalsHandler.updateCommonGoal2(givenCommonGoal2);
     }
 
     /**
@@ -445,19 +450,7 @@ public class MatchSceneHandler extends SceneHandler {
      */
     public void setImageCommonGoals(String commonGoal1Name, String commonGoal2Name)
     {
-        commonGoal1.setImage(getCommonGoalImage(commonGoal1Name));
-        commonGoal2.setImage(getCommonGoalImage(commonGoal2Name));
-    }
-
-    /**
-     * Import common goal's image based on the name of the common goal
-     * @author Abdullah Nasr
-     */
-    public Image getCommonGoalImage(String commonGoalName)
-    {
-
-        return new Image(Objects.requireNonNull(getClass().getResource("/graphics/commonGoalCards/" + commonGoalName + ".jpg")).toString());
-
+        CommonGoalsHandler.setImageCommonGoals(commonGoal1,commonGoal1Name,commonGoal2,commonGoal2Name);
     }
 
     /**
@@ -1047,6 +1040,8 @@ public class MatchSceneHandler extends SceneHandler {
         getRoot().setTranslateX( (bounds.getWidth()-panePrefWidth)/2);
         getRoot().setTranslateY((bounds.getHeight()-panePrefHeight)/2);
 
+        System.out.println("resize done");
+
     }
 
 
@@ -1057,14 +1052,12 @@ public class MatchSceneHandler extends SceneHandler {
     public void runScene() {
 
         advertising.setText("");
-        resize();
-        //test();
+
         initMainShelf();
         fillBoard();
-
-        getScene().setRoot(getRoot());
-
-        getScene().getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/match.css")).toExternalForm());
+        resize();
+        //getScene().setRoot(getRoot());
+        getStage().setScene(new Scene(getRoot()));
 
     }
 
