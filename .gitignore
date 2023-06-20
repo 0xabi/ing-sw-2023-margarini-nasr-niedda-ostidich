@@ -78,6 +78,5 @@ fabric.properties
 
 # Ignore class
 target/
-/src/main/resources/graphics/
 *.patch
 /.idea/shelf/
