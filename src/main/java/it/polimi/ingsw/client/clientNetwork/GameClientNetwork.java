@@ -32,8 +32,6 @@ public class GameClientNetwork implements ClientNetwork {
 
     private final String connectionType;
 
-    private Socket socket;
-
     private ObjectOutputStream MessageToServer;
 
     private ObjectInputStream MessageFromServer;
@@ -41,8 +39,6 @@ public class GameClientNetwork implements ClientNetwork {
     private Queue<Message> messageQueue;
 
     private ClientController controller;
-
-    private String serverIP;
 
     private String playerName;
 
@@ -61,7 +57,6 @@ public class GameClientNetwork implements ClientNetwork {
 
     @Override
     public ServerController connect(String serverIP, String playerName, ClientController controller) {
-        this.serverIP = serverIP;
         this.playerName = playerName;
         this.controller = controller;
         boolean connected = false;
@@ -69,7 +64,7 @@ public class GameClientNetwork implements ClientNetwork {
             while (!connected) {
                 try {
                     //FIXME: Socket without try catch with resources
-                    socket = new Socket(serverIP, 34634);
+                    Socket socket = new Socket(serverIP, 34634);
                     connected = true;
                     messageQueue = new LinkedList<>();
                     this.MessageToServer = new ObjectOutputStream(socket.getOutputStream());
@@ -90,13 +85,11 @@ public class GameClientNetwork implements ClientNetwork {
                 } catch (IOException ignored) {
                 }
             }
-        if (Objects.equals(connectionType, "RMI"))
-            while (!connected) {
+        if (Objects.equals(connectionType, "RMI")){
                 try {
-                    Registry registry = LocateRegistry.getRegistry(serverIP, 1099);
-                    ServerController server = (ServerController) registry.lookup("Connection");
-                    roomServices = server;
-                    connected = true;
+                    Registry registry = LocateRegistry.getRegistry( serverIP , 1099);
+                    roomServices = (ServerController) registry.lookup("Connection");
+
                     if (roomServices.PlayerIDisAvailable(new Hello(playerName, MessageID.HELLO))) {
                         new Thread(() -> {
                             try {
@@ -110,7 +103,6 @@ public class GameClientNetwork implements ClientNetwork {
                     return roomServices;
                 } catch (Exception e) {
                     System.out.println("[System] Server failed: " + e);
-                    break;
                 }
             }
         return new Server(this);
@@ -129,6 +121,17 @@ public class GameClientNetwork implements ClientNetwork {
             }
         }
     }
+
+    /**
+     * Listens for incoming messages from the server and adds them to the message queue for processing.
+     * This method runs in an infinite loop, continuously receiving messages from the server.
+     * If a Ping message is received, a Pong message is sent back to the server to maintain the connection.
+     * Other received messages are added to the message queue for further processing.
+     * If an I/O or ClassNotFoundException occurs, it indicates a connection issue with the server.
+     *
+     * @throws RuntimeException If an IOException occurs while sending the Pong message.
+     * @author Edoardo Margarini
+     */
 
     public void ServerSocketListener() {
         Message serverMessage;
@@ -150,6 +153,13 @@ public class GameClientNetwork implements ClientNetwork {
         }
     }
 
+    /**
+     * Sorts and processes incoming messages from the message queue.
+     * This method runs in an infinite loop, continuously checking for new messages and executing corresponding actions.
+     * Each message is processed on a separate thread using an executor service.
+     *
+     * @throws Exception If an exception occurs during message processing.
+     */
     public void Sorter() throws Exception {
         //noinspection InfiniteLoopStatement
         while (true) { //FIXME: put while "client is alive"

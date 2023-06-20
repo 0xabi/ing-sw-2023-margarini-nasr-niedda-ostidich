@@ -28,10 +28,6 @@ public class CLI extends GameClientView {
 
     private String playerName;
 
-    private final Thread scannerThread;
-
-    private final Thread chatThread;
-
     Watch pickTilesReqToServer = new Watch("pickTilesReqToServer");
 
     Watch chooseOrderReqToServer = new Watch("chooseOrderReqToServer");
@@ -44,9 +40,9 @@ public class CLI extends GameClientView {
      */
     public CLI() {
         super();
-        scannerThread = new Thread(this::scan);
+        Thread scannerThread = new Thread(this::scan);
         scannerThread.start();
-        chatThread = new Thread(this::justScanChat);
+        Thread chatThread = new Thread(this::justScanChat);
         chatThread.start();
         try {
             start();
@@ -226,6 +222,8 @@ public class CLI extends GameClientView {
         System.out.println("Max players: " + room.totalPlayers());
         System.out.print("Entered players: \t");
         room.enteredPlayers().forEach(player -> System.out.println(player + "\n\t\t\t\t\t\t"));
+
+        System.out.print("Waiting for players... \t");
     }
 
     /**
@@ -262,6 +260,14 @@ public class CLI extends GameClientView {
             }
         }
     }
+
+    /**
+     * Prints the game board with tiles and their corresponding colors.
+     *
+     * @param list a list of Coordinates representing the highlighted cells
+     *
+     * @author Edoardo Margarini
+     */
 
     public void printBoard(ArrayList<Coordinates> list) {
         Tile[][] boxes = getBoard();
@@ -329,6 +335,12 @@ public class CLI extends GameClientView {
         System.out.println("\n\t\t\t\t  V Y\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
     }
 
+    /**
+     * Prints the bookshelves of each player, including the current player's name highlighted.
+     *
+     * @author Edoardo Margarini
+     */
+
     public void printBookshelves() {
         String Space;
         if (getNames().size() == 2)
@@ -339,12 +351,12 @@ public class CLI extends GameClientView {
         System.out.print(Space + "\t");
         for (String name : getNames())
             if (name.equals(currentPlayer))
-                System.out.print("\t" + (char) 27 + "[4m" + (char) 27 + "[49m" + (char) 27 + "[39m" + name + (char) 27 + "[0m" + "\t\t\t");
+                System.out.print("\t\t" + (char) 27 + "[4m" + (char) 27 + "[49m" + (char) 27 + "[39m" + name + (char) 27 + "[0m" + "\t\t\t\t\t");
             else
-                System.out.print("\t" + (char) 27 + "[49m" + (char) 27 + "[39m" + name + "\t\t\t");
+                System.out.print("\t\t" + (char) 27 + "[49m" + (char) 27 + "[39m" + name + "\t\t\t\t\t");
         System.out.println();
         for (int i = getGameParameters().get("shelfColumnLength") - 1; i >= 0; i--) {
-            printShelfRow(i, Space + "\t");
+            printShelfRow(i , Space + "\t");
             System.out.println();
         }
         System.out.println();
@@ -376,19 +388,40 @@ public class CLI extends GameClientView {
         }
     }
 
+    /**
+     * Prints a row of tiles from the bookshelves for a specific column.
+     *
+     * @param column the column index of the shelf to print
+     * @param space  additional space for formatting purposes
+     *
+     * @author Edoardo Margarini
+     */
+
     public void printShelfRow(int column, String space) {
         System.out.print(space);
         for (String name : getNames()) {
             Tile[][] currentShelf = getPlayerShelves().get(name);
             for (int j = 0; j < getGameParameters().get("shelfRowLength"); j++) {
                 if (currentShelf[j][column] == null)
-                    System.out.print("[ ]");
-                else
-                    System.out.print("[" + currentShelf[j][column].toString().charAt(0) + "]");
+                    System.out.print((char) 27 + "[49m" + (char) 27 + "[39m" + "[   ]");
+                else {
+                    System.out.print((char) 27 + "[49m" + (char) 27 + "[39m" + "[");
+                    currentShelf[j][column].printColorForBoard();
+                    System.out.print((char) 27 + "[49m" + (char) 27 + "[39m" + "]");
+                }
+
             }
             System.out.print("\t\t");
         }
     }
+
+    /**
+     * Prints the common goals and their corresponding token stacks in a specific row.
+     *
+     * @param i the row index where the common goals are printed
+     *
+     * @author Edaardo Margarini
+     */
 
     public void printCommonGoalsInRow(int i) {
         if (i == 1) {
@@ -530,6 +563,10 @@ public class CLI extends GameClientView {
                     Debugging.flipAlreadyPicket();
                 } else {
                     column = Integer.parseInt(playerMessage("\t\t\t\tChoose column: "));
+                    if(column < 0 || column > getGameParameters().get("shelfRowLength") - 1){
+                        System.out.println("\t\t\t\tinvalid input, try again");
+                        attempt = false;
+                    }
                 }
             } catch (Exception e) {
                 System.out.println("\t\t\t\tinvalid input, try again");
@@ -705,6 +742,17 @@ public class CLI extends GameClientView {
         return temp;
     }
 
+    /**
+     * Orders the given list of tiles in different permutations and returns a list of ordered tile combinations.
+     *
+     * @param list the list of tiles to be ordered
+     * @return an ArrayList of ArrayLists of Tile objects representing the ordered tile combinations
+     * @throws RuntimeException if the number of tiles in the list is not valid for ordering
+     *
+     * @author Edoardo Margarini
+     */
+
+
     private @NotNull ArrayList<ArrayList<Tile>> OrderChoice(List<Tile> list) {
         ArrayList<ArrayList<Tile>> result = new ArrayList<>();
         ArrayList<Tile> temp = new ArrayList<>(list);
@@ -736,6 +784,14 @@ public class CLI extends GameClientView {
         return result;
     }
 
+    /**
+     * Prints the possible choices scenario, displaying the available choices for the player.
+     * The choices are displayed in a grid format, with their corresponding indices.
+     * Each choice is represented by a tile and its color is printed.
+     *
+     * @param choices The list of possible choices for the player.
+     * @author Edoardo Margarini
+     */
     public void printPossibleChoices(@NotNull ArrayList<ArrayList<Tile>> choices) {
         System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
         for (int i = 0; i < choices.size(); i++) {
@@ -759,6 +815,14 @@ public class CLI extends GameClientView {
         System.out.println("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
     }
 
+    /**
+     * Prints the single shelf scenario, including the player's personal goal and the contents of the shelf.
+     * The personal goal and shelf contents are displayed row by row.
+     * The shelf row indices and the player's personal goal are also printed.
+     *
+     * @author Edoardo Margarini
+     */
+
     public void printSingleShelf() {
         System.out.print("\t\t\t\t\t");
         for (int i = 0; i < getGameParameters().get("shelfRowLength"); i++)
@@ -781,11 +845,27 @@ public class CLI extends GameClientView {
         System.out.println("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
     }
 
+    /**
+     * Prints the game scenario where the bookshelves and the board are displayed.
+     *
+     * @param board the list of coordinates representing the board state
+     * @author Edoardo Margarini
+     */
+
     public void printScenario1(ArrayList<Coordinates> board) {
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        justPrintChat();
+        System.out.println("\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
         printBookshelves();
         printBoard(board);
     }
+
+    /**
+     * Prints the game scenario where the possible choices and the single shelf are displayed.
+     *
+     * @param choices the list of choices available to the player
+     * @author Edoardo Margarini
+     */
 
     public void printScenario2(ArrayList<ArrayList<Tile>> choices) {
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n");
@@ -798,10 +878,10 @@ public class CLI extends GameClientView {
         System.out.print("\t\t\t\t\t\t\t\t");
         for (int j = 0; j < getGameParameters().get("shelfRowLength"); j++) {
             temp = new Coordinates(j, column);
-            if (getMapPersonalGoal().get(temp) == null)
-                System.out.print((char) 27 + "[49m" + (char) 27 + "[39m" + "[   ]");
+            if (getMapPersonalGoal().get( temp ) == null)
+                System.out.print((char)27 + "[49m" + (char) 27 + "[39m" + "[   ]");
             else if (getPlayerShelves().get(getPlayerName())[j][getGameParameters().get("shelfColumnLength") - column - 1] == getMapPersonalGoal().get(temp)) {
-                System.out.print((char) 27 + "[4m" + (char) 27 + "[49m" + (char) 27 + "[39m" + "[");
+                System.out.print((char)27 + "[4m" + (char) 27 + "[49m" + (char) 27 + "[39m" + "[");
                 getMapPersonalGoal().get(temp).printColorForBoard();
                 System.out.print((char) 27 + "[49m" + (char) 27 + "[39m" + "]" + (char) 27 + "[0m");
             } else {

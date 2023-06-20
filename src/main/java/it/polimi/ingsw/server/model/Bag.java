@@ -6,12 +6,17 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * The number of each single tile is given by a constant. A map with tiles as key remembers the remaining quantities in the bag.
- * It's called to draw tiles when the board is to be refilled (if there are any tile left of that type in the bag).
- * Before the refill, tiles remaining on the board should be emptied in bag.
+ * The Bag class represents a bag of tiles used in the game. It keeps track of the remaining quantities of each tile type.
+ * Tiles are drawn from the bag when the board is refilled, and any tiles remaining on the board are returned to the bag.
+ * The bag ensures that there are a fixed number of each tile type available for drawing.
+ *
+ * <p>The number of each single tile is given by a constant. A map with tiles as keys remembers the remaining quantities in the bag.
+ * The bag is called to draw tiles when the board is to be refilled (if there are any tiles left of that type in the bag).
+ * Before the refill, any tiles remaining on the board should be emptied into the bag.</p>
  *
  * @author Edoardo Margarini
  */
+
 public class Bag implements Serializable {
 
     private static final int TOTAL_QUANTITY = 22;
@@ -41,31 +46,46 @@ public class Bag implements Serializable {
     }
 
     /**
-     * //TODO java doc is to be written
+     * Adds a tile to the bag.
      *
-     * @param tile
+     * <p>Adds one instance of the specified tile to the bag. The quantity of the tile is increased by one in the bag's tile count.</p>
+     *
+     * @param tile the tile to be added to the bag.
+     *
      * @author Edoardo Margarini
      */
+
     protected void addTile(Tile tile) {
         tilesLeft.replace(tile, tilesLeft.get(tile) + 1);
     }
 
     /**
-     * //TODO java doc is to be written
+     * Removes a tile from the bag.
      *
-     * @param tile
+     * <p>Removes one instance of the specified tile from the bag. The quantity of the tile is decreased by one in the bag's
+     * tile count.</p>
+     *
+     * @param tile the tile to be removed from the bag.
+     *
      * @author Edoardo Margarini
      */
+
     private void removeTile(Tile tile) {
         tilesLeft.put(tile, tilesLeft.get(tile) - 1);
     }
 
     /**
-     * //TODO java doc is to be written
+     * Draws a random tile from the bag.
      *
-     * @return
+     * <p>A random tile is selected from the remaining tiles in the bag. The quantity of each tile is taken into account,
+     * and only tiles with a positive quantity can be drawn. If a tile has no remaining quantity, the draw is retried until
+     * a valid tile is selected.</p>
+     *
+     * @return the randomly drawn tile from the bag.
+     *
      * @author Edoardo Margarini
      */
+
     protected Tile draw() {
         Random random = new Random();
         int number = random.nextInt(6);
@@ -77,11 +97,15 @@ public class Bag implements Serializable {
     }
 
     /**
-     * //TODO java doc is to be written
+     * Returns the total number of tiles remaining in the bag.
      *
-     * @return
+     * <p>The size of the bag is calculated by summing up the quantities of all the remaining tiles.</p>
+     *
+     * @return the total number of tiles remaining in the bag as an integer.
+     *
      * @author Edoardo Margarini
      */
+
     protected int size() {
         return tilesLeft.values()
                 .stream()
