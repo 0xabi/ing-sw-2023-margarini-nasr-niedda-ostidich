@@ -31,7 +31,8 @@ public class FourRowsOfFive extends CommonGoal {
      */
     @Override
     public boolean check(@NotNull Shelf shelf) {
-        Tile[][] matrix = shelf.getPositions().clone();
+
+        Tile[][] matrix = shelf.cloneShelf().getPositions();
         Set<Tile> tiles = new HashSet<>();
         int count = 0;
         int present = 0;

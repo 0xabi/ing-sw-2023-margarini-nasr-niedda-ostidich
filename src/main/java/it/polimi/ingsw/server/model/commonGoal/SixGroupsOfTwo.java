@@ -34,7 +34,8 @@ public class SixGroupsOfTwo extends CommonGoal {
      */
     @Override
     public boolean check(@NotNull Shelf shelf) {
-        copy = shelf.getPositions().clone();
+
+        copy = shelf.cloneShelf().getPositions();
         int count = 0;
         for (int i = 0; i < Shelf.getRowLength(); i++)
             for (int j = 0; j < Shelf.getColumnLength(); j++)
@@ -42,6 +43,7 @@ public class SixGroupsOfTwo extends CommonGoal {
                     if (BelongToABlock(i, j) == dimGroup)
                         count++;
                 }
+
         return count >= times;
     }
 

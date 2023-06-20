@@ -78,7 +78,7 @@ public class AdjacentTilesGoal {
         int count;
         int totPoints = 0;
         int maxTilesGroup = new LinkedList<>(groupPoints.keySet()).get(groupPoints.size() - 1);
-        copy = Tile.clone(shelf.getPositions());
+        copy = shelf.cloneShelf().getPositions();
         for (int i = 0; i < Shelf.getRowLength(); i++)
             for (int j = 0; j < Shelf.getColumnLength(); j++)
                 if (copy[i][j] != null && copy[i][j] != null) {

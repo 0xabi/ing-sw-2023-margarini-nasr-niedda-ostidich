@@ -5,6 +5,7 @@ import it.polimi.ingsw.general.Coordinates;
 import it.polimi.ingsw.general.Tile;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class Shelf {
 
     private static final int COLUMN_LENGTH = 6;
 
-    private final Tile[][] positions;
+    private Tile[][] positions;
 
     /**
      * Class constructor.
@@ -139,6 +140,24 @@ public class Shelf {
             positions[i][row] = tilesList.remove(0);
         }
         return true;
+    }
+
+    /**
+     * Creates a deep clone of the current Shelf object.
+     *
+     * @return A new Shelf object that is a deep copy of the original.
+     * @author Edoardo Margarini
+     */
+    public Shelf cloneShelf() {
+        Tile[][] clonedPositions = new Tile[positions.length][];
+        for (int i = 0; i < positions.length; i++) {
+            clonedPositions[i] = Arrays.copyOf(positions[i], positions[i].length);
+        }
+
+        Shelf clonedShelf = new Shelf();
+        clonedShelf.positions = clonedPositions;
+
+        return clonedShelf;
     }
 
 }
