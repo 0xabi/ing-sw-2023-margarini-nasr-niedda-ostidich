@@ -88,7 +88,8 @@ public class GameClientNetwork implements ClientNetwork {
         if(Objects.equals(connectionType, "RMI"))
             while(!connected){
                 try {
-                    Registry registry = LocateRegistry.getRegistry();
+
+                    Registry registry = LocateRegistry.getRegistry(serverIP, 1099);
                     ServerController server = (ServerController) registry.lookup("Connection");
                     roomServices = server;
                     connected = true;
