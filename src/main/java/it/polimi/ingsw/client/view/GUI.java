@@ -230,5 +230,10 @@ public class GUI extends GameClientView {
     @Override
     public void justPrintChat() {
 
+        Platform.runLater(() -> {
+            MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
+            msh.updateChat(getChatMessages());
+        });
+
     }
 }
