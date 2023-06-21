@@ -23,10 +23,7 @@ import javafx.util.Duration;
 import it.polimi.ingsw.Debugging.Watch;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class MatchSceneHandler extends SceneHandler {
 
@@ -186,6 +183,25 @@ public class MatchSceneHandler extends SceneHandler {
 
 
     }
+
+    /**
+     * Update the text area containing the chat given the list of messages
+     * @param listMessages A list with all messages
+     * @author Abdullah Nasr
+     */
+    public void updateChat(List<String> listMessages)
+    {
+        StringBuilder chatStr= new StringBuilder();
+
+        for(String msg : listMessages)
+        {
+            chatStr.append(msg).append("\n");
+
+        }
+
+        txtArea.setText(chatStr.toString());
+    }
+
 
 
 
@@ -744,9 +760,17 @@ public class MatchSceneHandler extends SceneHandler {
 
 
     /**
+     * Send a message to other players
      * @author Abdullah Nasr
      */
     public void sendMsg(){
+
+        try {
+            getClientController().update(new Event(EventID.JUST_SCAN_CHAT, txtField.getText()));
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+        txtField.setText("");
 
     }
 
