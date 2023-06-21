@@ -85,29 +85,34 @@ public class GameClientNetwork implements ClientNetwork {
                 } catch (IOException ignored) {
                 }
             }
-        if (Objects.equals(connectionType, "RMI")){
+        if(Objects.equals(connectionType, "RMI"))
+            while(!connected){
                 try {
-                    Registry registry = LocateRegistry.getRegistry( serverIP , 1099);
-                    roomServices = (ServerController) registry.lookup("Connection");
-
-                    if (roomServices.PlayerIDisAvailable(new Hello(playerName, MessageID.HELLO))) {
-                        new Thread(() -> {
+                    Registry registry = LocateRegistry.getRegistry();
+                    ServerController server = (ServerController) registry.lookup("Connection");
+                    roomServices = server;
+                    connected = true;
+                    if(roomServices.PlayerIDisAvailable(new Hello(playerName, MessageID.HELLO))) {
+                        new Thread(()->{
                             try {
                                 roomServices.playerConnected(playerName, controller);
                                 controller.serverConnected();
                             } catch (RemoteException e) {
                                 throw new RuntimeException(e);
-                            }
-                        }).start();
-                    } else controller.restart();
+                            }}).start();
+                    }else controller.restart();
                     return roomServices;
-                } catch (Exception e) {
+
+
+                }catch (Exception e) {
                     System.out.println("[System] Server failed: " + e);
+                    break;
                 }
+
             }
+
         return new Server(this);
     }
-
     @Override
     public synchronized void send(Message message) throws IOException {
         if (Objects.equals(connectionType, "Socket")) {

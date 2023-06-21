@@ -66,7 +66,7 @@ public class GameServerNetwork implements ServerNetwork, Serializable {
         System.out.println("server listening");
         try {
             InetAddress hostIP = InetAddress.getLocalHost();
-            System.setProperty("java.rmi.server.hostname", hostIP.toString());
+            System.setProperty("java.rmi.server.hostname", hostIP.getHostAddress());
         Registry registry = LocateRegistry.createRegistry(1099);
         registry.rebind("Connection", roomServices);
 
