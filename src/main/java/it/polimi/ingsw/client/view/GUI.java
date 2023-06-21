@@ -5,21 +5,27 @@ import it.polimi.ingsw.client.view.handler.ChooseGameRoomSceneHandler;
 import it.polimi.ingsw.client.view.handler.SceneHandler;
 import it.polimi.ingsw.client.view.handler.WaitPlayersSceneHandler;
 import it.polimi.ingsw.client.view.handler.match.MatchSceneHandler;
+import it.polimi.ingsw.general.Event;
+import it.polimi.ingsw.general.EventID;
 import it.polimi.ingsw.general.GameRoom;
 import it.polimi.ingsw.general.Tile;
 import javafx.application.Platform;
 
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 public class GUI extends GameClientView {
 
+    private String chatMessage;
+
     public GUI() {
         super();
+        chatMessage = null;
     }
 
     @Override
     public void start() {
-            SceneHandler.setClientController(getClientController());
+        SceneHandler.setClientController(getClientController());
 
     }
 
@@ -114,6 +120,8 @@ public class GUI extends GameClientView {
             msh.initChair();
             msh.initScoringTokens();
 
+            Thread chatThread = new Thread(this::justScanChat);
+            chatThread.start();
         });
     }
 
@@ -213,7 +221,7 @@ public class GUI extends GameClientView {
 
     @Override
     public void chooseRMIorSocket() {
-            SceneHandler.switchScene("connection");
+        SceneHandler.switchScene("connection");
     }
 
 
@@ -222,18 +230,17 @@ public class GUI extends GameClientView {
 
     }
 
-    @Override
-    public void justScanChat() {
 
-    }
+    public void updateChatMessage(String message){chatMessage = message;}
+
+    @Override
+    public void justScanChat() {}
 
     @Override
     public void justPrintChat() {
-
         Platform.runLater(() -> {
             MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
             msh.updateChat(getChatMessages());
         });
-
     }
 }

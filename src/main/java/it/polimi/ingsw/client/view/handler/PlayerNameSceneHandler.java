@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -106,6 +107,12 @@ public class PlayerNameSceneHandler extends SceneHandler{
      */
     @Override
     public void runScene() {
+
+        username_txt.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                next();
+            }
+        });
 
         resize();
 

@@ -17,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
 import javafx.util.Duration;
@@ -117,6 +118,7 @@ public class MatchSceneHandler extends SceneHandler {
 
     private static int numTotPlayers;
 
+    private String chatMessage;
 
     private static boolean tilesIsMoving = false;
 
@@ -189,18 +191,7 @@ public class MatchSceneHandler extends SceneHandler {
      * @param listMessages A list with all messages
      * @author Abdullah Nasr
      */
-    public void updateChat(List<String> listMessages)
-    {
-        StringBuilder chatStr= new StringBuilder();
-
-        for(String msg : listMessages)
-        {
-            chatStr.append(msg).append("\n");
-
-        }
-
-        txtArea.setText(chatStr.toString());
-    }
+    public void updateChat(List<String> listMessages) {txtArea.appendText(listMessages.get(listMessages.size() - 1) + "\n");}
 
 
 
@@ -511,7 +502,7 @@ public class MatchSceneHandler extends SceneHandler {
     }
 
     /**
-     *
+     * @author Pietro Andrea Niedda
      */
     public void moveTiles()
     {
@@ -521,6 +512,14 @@ public class MatchSceneHandler extends SceneHandler {
         double begin = mainShelf.getLayoutX() + (mainShelf.getFitWidth()- tilesSize)/2;
         int n = 0;
 
+        if(!pickPhase){
+            advertising.setText("It's not pick phase");
+        }
+        else if(tiles.size() == 0){
+            advertising.setText("Must choose tiles first");
+        }
+        else
+        {
             for(ImageView tile : tiles)
             {
                 translate = new TranslateTransition();
@@ -542,6 +541,7 @@ public class MatchSceneHandler extends SceneHandler {
         insertPhase = true;
 
 
+    }
     }
 
 
@@ -579,7 +579,6 @@ public class MatchSceneHandler extends SceneHandler {
     }
 
 
-
     /**
      *
      * @param col
@@ -591,6 +590,7 @@ public class MatchSceneHandler extends SceneHandler {
 
         double currFreeRowPositionY;
         double currFreeRowPositionX = mainShelf.getLayoutX()+mainShelf.getFitWidth()*GuiObjectsHandler.getMainShelfTilesPosX(col);
+
 
 
         for(ImageView tile : ordered) {
@@ -616,7 +616,7 @@ public class MatchSceneHandler extends SceneHandler {
                 //update shelf image view
                mainShelfTileImages[col][finalFreeRowPosition].setImage(tile.getImage());
 
-               
+
                Coordinates coordTile = imageToCoord.get(tile);
 
                //replace tile and put the new on into the board
@@ -648,7 +648,6 @@ public class MatchSceneHandler extends SceneHandler {
 
             freeRowPosition++;
 
-
             //insert(tile, n++);
 
         }
@@ -662,7 +661,6 @@ public class MatchSceneHandler extends SceneHandler {
         selectedColumn = false;
         selectedColumnNumber = null;
         resetColumnsCursor();
-
     }
 
     /**
@@ -689,18 +687,17 @@ public class MatchSceneHandler extends SceneHandler {
     }
 
     /**
-     * Put the tiles into the specified column
-     * The index column starts from 0
-     * @param column a number(from 0) that indicates the column in which insert the tiles
-     * @author Abdullah Nasr
+     * @author Pietro Andrea Niedda
      */
     public void putCol(int column)
     {
         if(!insertPhase) {
             advertising.setText("It's not insert phase");
+            return;
         }
         else if(ordered.size() != tiles.size()){
             advertising.setText("Must choose order first");
+            return;
         }
         else
         {
@@ -759,19 +756,19 @@ public class MatchSceneHandler extends SceneHandler {
     }
 
 
+
     /**
      * Send a message to other players
      * @author Abdullah Nasr
      */
     public void sendMsg(){
 
-        try {
+        try{
             getClientController().update(new Event(EventID.JUST_SCAN_CHAT, txtField.getText()));
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
+    }catch (RemoteException e){
+        throw  new RuntimeException(e);
         }
         txtField.setText("");
-
     }
 
     /**
@@ -792,7 +789,6 @@ public class MatchSceneHandler extends SceneHandler {
      */
     public void initMainShelf()
     {
-
         //set name player
         String mainPlayer = getGui().getPlayerName();
         mainPlayerLbl.setText(mainPlayer);
@@ -805,6 +801,7 @@ public class MatchSceneHandler extends SceneHandler {
             {
                 ImageView iv = new ImageView();
 
+                Tile typeTile = getGui().getPlayerShelves().get(mainPlayer)[i][j];
 
                 //Tile typeTile = getGui().getPlayerShelves().get(mainPlayer)[i][j];
 
@@ -1012,7 +1009,6 @@ public class MatchSceneHandler extends SceneHandler {
     }
 
     /**
-     *
      * @author Pietro Andrea Niedda
      */
     public void fillBoard(){
@@ -1043,10 +1039,11 @@ public class MatchSceneHandler extends SceneHandler {
                 }
             }
         }
+
     }
 
     /**
-     * @author Abdullah Nasr
+     * @author Pietro Andrea Niedda
      */
     @Override
     public void resize() {
@@ -1069,6 +1066,7 @@ public class MatchSceneHandler extends SceneHandler {
     }
 
 
+
     /**
      * @author Abdullah Nasr
      */
@@ -1076,9 +1074,18 @@ public class MatchSceneHandler extends SceneHandler {
     public void runScene() {
 
         advertising.setText("");
+        chatMessage = "";
 
         initMainShelf();
+
         fillBoard();
+
+        txtField.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                sendMsg();
+            }
+        });
+
         resize();
         //getScene().setRoot(getRoot());
         getStage().setScene(new Scene(getRoot()));

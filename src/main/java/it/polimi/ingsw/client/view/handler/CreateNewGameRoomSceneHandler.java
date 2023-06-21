@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 
 import javafx.scene.text.Font;
@@ -107,6 +108,12 @@ public class CreateNewGameRoomSceneHandler extends SceneHandler {
 
     @Override
     public void runScene() {
+
+        game_name_txt.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER) {
+                next();
+            }
+        });
 
         resize();
 
