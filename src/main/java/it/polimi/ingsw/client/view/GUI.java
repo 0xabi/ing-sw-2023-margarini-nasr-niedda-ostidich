@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.Debugging;
+import it.polimi.ingsw.client.view.handler.AssignPointsSceneHandler;
 import it.polimi.ingsw.client.view.handler.ChooseGameRoomSceneHandler;
 import it.polimi.ingsw.client.view.handler.SceneHandler;
 import it.polimi.ingsw.client.view.handler.WaitPlayersSceneHandler;
@@ -185,6 +186,7 @@ public class GUI extends GameClientView {
 
         Platform.runLater(() -> {
 
+
             MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
             MatchSceneHandler.setPickPhase(false);
             Debugging.Watch.temp.stop();
@@ -216,6 +218,13 @@ public class GUI extends GameClientView {
 
     @Override
     public void announceWinner(String winnerName, Map<String, Integer> points) {
+
+        SceneHandler.switchScene("assaign_points");
+        AssignPointsSceneHandler apsh = (AssignPointsSceneHandler) SceneHandler.getCurrentHandler();
+
+        for (Map.Entry<String, Integer> entry : points.entrySet())
+            apsh.updateinfo(entry.getKey(), entry.getValue());
+        apsh.show();
 
     }
 
