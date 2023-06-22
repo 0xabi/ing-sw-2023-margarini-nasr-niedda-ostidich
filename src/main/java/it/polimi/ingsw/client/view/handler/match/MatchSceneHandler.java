@@ -91,7 +91,6 @@ public class MatchSceneHandler extends SceneHandler {
 
     @FXML
     private ImageView chairPlayer3;
-    private Integer column = null;
 
     Tile[][] prevMainShelf;
     private static boolean pickPhase = false;
@@ -118,8 +117,6 @@ public class MatchSceneHandler extends SceneHandler {
 
     private static int numTotPlayers;
 
-    private String chatMessage;
-
     private static boolean tilesIsMoving = false;
 
     Watch pickTilesReqToServer = new Watch("pickTilesReqToServer");
@@ -127,64 +124,6 @@ public class MatchSceneHandler extends SceneHandler {
     Watch chooseOrderReqToServer = new Watch("chooseOrderReqToServer");
     int indexPosShelf;
 
-
-
-
-    public void test()
-    {
-        //set up usernames
-        getGui().turnCycleOrder(new ArrayList<>() {{
-            add("PlayerAkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-            add("PlayerB");
-            add("PlayerC");
-        }});
-
-        //link username with shelves
-        HashMap<String, Tile[][]> plShelves = new HashMap<>();
-
-        //set player shelves
-        Shelf shelfPlayerA = new Shelf();
-        Shelf shelfPlayerB = new Shelf();
-        Shelf shelfPlayerC = new Shelf();
-
-        plShelves.put("PlayerAkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk", shelfPlayerA.getPositions());
-        plShelves.put("PlayerB", shelfPlayerB.getPositions());
-        plShelves.put("PlayerC", shelfPlayerC.getPositions());
-
-        //insert tiles into the shelves
-        shelfPlayerA.insertInColumn(new ArrayList<>() {{
-            add(Tile.CATS);
-            add(Tile.CATS);
-            add(Tile.GAMES);
-        }},1);
-
-        shelfPlayerA.insertInColumn(new ArrayList<>() {{
-            add(Tile.GAMES);
-        }},3);
-
-        shelfPlayerB.insertInColumn(new ArrayList<>() {{
-            add(Tile.TROPHIES);
-            add(Tile.CATS);
-            add(Tile.FRAMES);
-        }},1);
-
-
-        Tile[][] board = {{null,null,null,null,null,null,null,null,null},
-                {null,null,null,Tile.CATS,Tile.FRAMES,null,null,null,null,null},
-                {null,null,null,Tile.FRAMES,Tile.BOOKS,Tile.PLANTS,null,null,null},
-                {null,null,Tile.BOOKS,Tile.GAMES,Tile.TROPHIES,Tile.TROPHIES,Tile.BOOKS,Tile.CATS,null},
-                {null,Tile.PLANTS,Tile.GAMES,Tile.TROPHIES,Tile.FRAMES,Tile.GAMES,Tile.TROPHIES,Tile.GAMES,null},
-                {null,Tile.PLANTS,Tile.GAMES,Tile.TROPHIES,Tile.FRAMES,Tile.GAMES,Tile.TROPHIES,null,null},
-                {null,null,null,Tile.FRAMES,Tile.CATS,Tile.TROPHIES,null,null,null},
-                {null,null,null,null,Tile.BOOKS,Tile.TROPHIES,null,null,null},
-                {null,null,null,null,null,null,null,null,null,}};
-
-
-        getGui().updatePlayerShelves(plShelves);
-        getGui().updateBoard(board);
-
-
-    }
 
     /**
      * Update the text area containing the chat given the list of messages
@@ -209,6 +148,12 @@ public class MatchSceneHandler extends SceneHandler {
         CommonGoalsHandler.initScoringTokens(numTotPlayers,commonGoal1,commonGoal2);
     }
 
+    /**
+     * It updates the taken common goals' scoring tokens with the corresponding player's name
+     * @param givenCommonGoal1 The taken common goal 1's scoring tokens with the corresponding player's name
+     * @param givenCommonGoal2 The taken common goal 2's scoring tokens with the corresponding player's name
+     * @author Abdullah Nasr
+     */
     public void updateCommonGoals(Map<Integer, String> givenCommonGoal1, Map<Integer,String> givenCommonGoal2)
     {
         CommonGoalsHandler.updateCommonGoal1(givenCommonGoal1);
@@ -406,6 +351,7 @@ public class MatchSceneHandler extends SceneHandler {
     }
 
     /**
+     * Make the columns not clickable
      * @author Pietro Andrea Niedda
      */
     public void resetColumnsCursor(){
@@ -422,7 +368,8 @@ public class MatchSceneHandler extends SceneHandler {
     }
 
     /**
-     *
+     * Make the columns clickable
+     * @author Pietro Andrea Niedda
      */
     public void enableColumnsCursor()
     {
@@ -502,6 +449,7 @@ public class MatchSceneHandler extends SceneHandler {
     }
 
     /**
+     * Move the tiles above the shelf
      * @author Pietro Andrea Niedda
      */
     public void moveTiles()
@@ -512,14 +460,6 @@ public class MatchSceneHandler extends SceneHandler {
         double begin = mainShelf.getLayoutX() + (mainShelf.getFitWidth()- tilesSize)/2;
         int n = 0;
 
-        if(!pickPhase){
-            advertising.setText("It's not pick phase");
-        }
-        else if(tiles.size() == 0){
-            advertising.setText("Must choose tiles first");
-        }
-        else
-        {
             for(ImageView tile : tiles)
             {
                 translate = new TranslateTransition();
@@ -542,10 +482,10 @@ public class MatchSceneHandler extends SceneHandler {
 
 
     }
-    }
 
 
     /**
+     * Send to the server the chosen tiles
      * @author Pietro Andrea Niedda
      */
     public void callPick(){
@@ -579,9 +519,10 @@ public class MatchSceneHandler extends SceneHandler {
     }
 
 
+
     /**
-     *
-     * @param col
+     * Insert tiles into the chosen column
+     * @param col The column into which insert the tiles
      * @author Pietro Andrea Niedda
      */
     public void callInsert(int col){
@@ -590,7 +531,6 @@ public class MatchSceneHandler extends SceneHandler {
 
         double currFreeRowPositionY;
         double currFreeRowPositionX = mainShelf.getLayoutX()+mainShelf.getFitWidth()*GuiObjectsHandler.getMainShelfTilesPosX(col);
-
 
 
         for(ImageView tile : ordered) {
@@ -616,7 +556,7 @@ public class MatchSceneHandler extends SceneHandler {
                 //update shelf image view
                mainShelfTileImages[col][finalFreeRowPosition].setImage(tile.getImage());
 
-
+               
                Coordinates coordTile = imageToCoord.get(tile);
 
                //replace tile and put the new on into the board
@@ -648,6 +588,7 @@ public class MatchSceneHandler extends SceneHandler {
 
             freeRowPosition++;
 
+
             //insert(tile, n++);
 
         }
@@ -661,6 +602,7 @@ public class MatchSceneHandler extends SceneHandler {
         selectedColumn = false;
         selectedColumnNumber = null;
         resetColumnsCursor();
+
     }
 
     /**
@@ -687,17 +629,18 @@ public class MatchSceneHandler extends SceneHandler {
     }
 
     /**
-     * @author Pietro Andrea Niedda
+     * Put the tiles into the specified column
+     * The index column starts from 0
+     * @param column a number(from 0) that indicates the column in which insert the tiles
+     * @author Abdullah Nasr
      */
     public void putCol(int column)
     {
         if(!insertPhase) {
             advertising.setText("It's not insert phase");
-            return;
         }
         else if(ordered.size() != tiles.size()){
             advertising.setText("Must choose order first");
-            return;
         }
         else
         {
@@ -728,33 +671,49 @@ public class MatchSceneHandler extends SceneHandler {
     }
 
     /**
-     *
+     * Insert tiles into the first column
+     * @author Pietro Andrea Niedda
      */
     public void putCol1()
     {
         putCol(0);
     }
 
+    /**
+     * Insert tiles into the second column
+     * @author Pietro Andrea Niedda
+     */
     public void putCol2()
     {
         putCol(1);
     }
 
+    /**
+     * Insert tiles into the third column
+     * @author Pietro Andrea Niedda
+     */
     public void putCol3()
     {
         putCol(2);
     }
 
+    /**
+     * Insert tiles into the fourth column
+     * @author Pietro Andrea Niedda
+     */
     public void putCol4()
     {
         putCol(3);
     }
 
+    /**
+     * Insert tiles into the fifth column
+     * @author Pietro Andrea Niedda
+     */
     public void putCol5()
     {
         putCol(4);
     }
-
 
 
     /**
@@ -763,12 +722,13 @@ public class MatchSceneHandler extends SceneHandler {
      */
     public void sendMsg(){
 
-        try{
+        try {
             getClientController().update(new Event(EventID.JUST_SCAN_CHAT, txtField.getText()));
-    }catch (RemoteException e){
-        throw  new RuntimeException(e);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
         }
         txtField.setText("");
+
     }
 
     /**
@@ -789,6 +749,7 @@ public class MatchSceneHandler extends SceneHandler {
      */
     public void initMainShelf()
     {
+
         //set name player
         String mainPlayer = getGui().getPlayerName();
         mainPlayerLbl.setText(mainPlayer);
@@ -801,7 +762,6 @@ public class MatchSceneHandler extends SceneHandler {
             {
                 ImageView iv = new ImageView();
 
-                Tile typeTile = getGui().getPlayerShelves().get(mainPlayer)[i][j];
 
                 //Tile typeTile = getGui().getPlayerShelves().get(mainPlayer)[i][j];
 
@@ -824,8 +784,8 @@ public class MatchSceneHandler extends SceneHandler {
     }
 
     /**
-     * Tell to the user to choose the order, if just choose the order it means that
-     * I chose an invalid column, so i will resend to the controller the coordinates
+     * Tell to the user to choose the order, if already chose the order it means that
+     * I chose an invalid column, so I will resend to the controller the coordinates
      *
      * @author Abdullah Nasr
      */
@@ -907,8 +867,11 @@ public class MatchSceneHandler extends SceneHandler {
     }
 
     /**
-     *
-     * @param tile
+     * It defines the tile's behavior, the function is executed every time the tile is clicked.
+     * The behavior depends on if the game is in the picking phase or insertion phase.
+     * During the picking phase it stores the picked tiles to be sent to the server.
+     * During the insertion phase it stored the chosen order of the tiles' insertion to be sent to the server.
+     * @param tile The tile's image
      * @author Pietro Andrea Niedda
      */
     private void tileBehavior(ImageView tile){
@@ -1009,6 +972,7 @@ public class MatchSceneHandler extends SceneHandler {
     }
 
     /**
+     * It creates the images of board's tiles.
      * @author Pietro Andrea Niedda
      */
     public void fillBoard(){
@@ -1039,11 +1003,10 @@ public class MatchSceneHandler extends SceneHandler {
                 }
             }
         }
-
     }
 
     /**
-     * @author Pietro Andrea Niedda
+     * @author Abdullah Nasr
      */
     @Override
     public void resize() {
@@ -1066,7 +1029,6 @@ public class MatchSceneHandler extends SceneHandler {
     }
 
 
-
     /**
      * @author Abdullah Nasr
      */
@@ -1074,10 +1036,8 @@ public class MatchSceneHandler extends SceneHandler {
     public void runScene() {
 
         advertising.setText("");
-        chatMessage = "";
 
         initMainShelf();
-
         fillBoard();
 
         txtField.setOnKeyPressed(event -> {
