@@ -6,7 +6,6 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="pane" prefHeight="500.0" prefWidth="1100.0" styleClass="anchor_pane" stylesheets="@../css/wait_players.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.handler.AssignPointsSceneHandler">
@@ -24,82 +23,66 @@
             <BoxBlur height="14.0" width="255.0" />
          </effect>
       </ImageView>
-      <HBox fx:id="winner_Box" alignment="CENTER_LEFT" layoutX="163.0" layoutY="200.0" prefHeight="30.0" prefWidth="794.0" spacing="100.0">
-         <children>
-            <Label fx:id="winner" alignment="TOP_LEFT" prefHeight="26.0" prefWidth="80.0" styleClass="roomInfoTxt" text="winner">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <Label fx:id="winner_name" alignment="TOP_LEFT" prefHeight="20.0" prefWidth="69.0" text="winner">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Label fx:id="winner_cgp" prefWidth="35.0" text="CGP" />
-            <Label fx:id="winner_pgp" prefWidth="35.0" text="PGP" />
-            <Label fx:id="winner_agp" prefWidth="35.0" text="AGP" />
-            <Label fx:id="winner_points" prefWidth="35.0" text="points" />
-         </children>
-      </HBox>
-      <HBox fx:id="second_Box" alignment="CENTER_LEFT" layoutX="163.0" layoutY="240.0" prefHeight="30.0" prefWidth="794.0" spacing="100.0">
-         <children>
-            <Label fx:id="second" alignment="TOP_LEFT" lineSpacing="140.0" prefHeight="26.0" prefWidth="80.0" styleClass="roomInfoTxt" text="2nd place">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <Label fx:id="second_name" alignment="TOP_LEFT" prefWidth="70.0" text="2nd place">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Label fx:id="second_cgp" prefWidth="35.0" text="CGP" />
-            <Label fx:id="second_pgp" prefWidth="35.0" text="PGP" />
-            <Label fx:id="second_agp" prefWidth="35.0" text="AGP" />
-            <Label fx:id="second_points" prefHeight="18.0" prefWidth="35.0" text="points" />
-         </children>
-      </HBox>
-      <HBox fx:id="third_Box" alignment="CENTER_LEFT" layoutX="163.0" layoutY="280.0" prefHeight="30.0" prefWidth="794.0" spacing="100.0">
-         <children>
-            <Label fx:id="third" alignment="TOP_LEFT" lineSpacing="140.0" prefHeight="26.0" prefWidth="80.0" styleClass="roomInfoTxt" text="3rd place">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <Label fx:id="third_name" alignment="TOP_LEFT" prefWidth="70.0" text="3rd place">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Label fx:id="third_cgp" prefWidth="35.0" text="CGP" />
-            <Label fx:id="third_pgp" prefWidth="35.0" text="PGP" />
-            <Label fx:id="third_agp" prefWidth="35.0" text="AGP" />
-            <Label fx:id="third_points" prefHeight="18.0" prefWidth="35.0" text="points" />
-         </children>
-      </HBox>
-      <HBox fx:id="fourth_Box" alignment="CENTER_LEFT" layoutX="163.0" layoutY="320.0" prefHeight="30.0" prefWidth="794.0" spacing="100.0">
-         <children>
-            <Label fx:id="fourth" alignment="TOP_LEFT" prefHeight="26.0" prefWidth="80.0" styleClass="roomInfoTxt" text="4th place">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <Label fx:id="fourth_name" alignment="TOP_LEFT" prefWidth="70.0" text="4th place">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Label fx:id="fourth_cgp" prefWidth="35.0" text="CGP" />
-            <Label fx:id="fourth_pgp" prefWidth="35.0" text="PGP" />
-            <Label fx:id="fourth_agp" prefWidth="35.0" text="AGP" />
-            <Label fx:id="fourth_points" prefWidth="35.0" text="points" />
-         </children>
-      </HBox>
       <Button fx:id="back_Btn" layoutX="503.0" layoutY="411.0" mnemonicParsing="false" onAction="#back" styleClass="btn" stylesheets="@../css/menu.css" text="back" />
       <Label fx:id="cgp_lbl" alignment="TOP_LEFT" layoutX="460.0" layoutY="146.0" prefHeight="26.0" styleClass="roomInfoTxt" text="CommonGoal Points" />
       <Label fx:id="pgp_lbl" alignment="TOP_LEFT" layoutX="600.0" layoutY="146.0" prefHeight="26.0" styleClass="roomInfoTxt" text="PersonalGoal Points" />
       <Label fx:id="agp_lbl" alignment="TOP_LEFT" layoutX="740.0" layoutY="146.0" prefHeight="26.0" styleClass="roomInfoTxt" text="AdjacentsTiles Points" />
       <Label fx:id="total_lbl" alignment="TOP_LEFT" layoutX="888.0" layoutY="146.0" prefHeight="26.0" styleClass="roomInfoTxt" text="Total Points" />
+      <Label fx:id="winner" alignment="TOP_LEFT" layoutX="163.0" layoutY="200.0" styleClass="roomInfoTxt" text="winner">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="winner_name" alignment="TOP_LEFT" layoutX="340.0" layoutY="200.0" text="winner">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="winner_cgp" layoutX="638.0" layoutY="201.0" text="CGP" />
+      <Label fx:id="winner_pgp" layoutX="500.0" layoutY="200.0" text="PGP" />
+      <Label fx:id="winner_agp" layoutX="782.0" layoutY="200.0" text="AGP" />
+      <Label fx:id="winner_points" layoutX="904.0" layoutY="201.0" text="points" />
+      <Label fx:id="second" alignment="TOP_LEFT" layoutX="163.0" layoutY="240.0" lineSpacing="140.0" styleClass="roomInfoTxt" text="2nd place">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="second_name" alignment="TOP_LEFT" layoutX="340.0" layoutY="240.0" text="2nd place">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="second_cgp" layoutX="638.0" layoutY="241.0" text="CGP" />
+      <Label fx:id="second_pgp" layoutX="500.0" layoutY="240.0" text="PGP" />
+      <Label fx:id="second_agp" layoutX="782.0" layoutY="240.0" text="AGP" />
+      <Label fx:id="second_points" layoutX="904.0" layoutY="240.0" text="points" />
+      <Label fx:id="third" alignment="TOP_LEFT" layoutX="163.0" layoutY="280.0" lineSpacing="140.0" styleClass="roomInfoTxt" text="3rd place">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="third_name" alignment="TOP_LEFT" layoutX="340.0" layoutY="280.0" text="3rd place">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="third_cgp" layoutX="638.0" layoutY="280.0" text="CGP" />
+      <Label fx:id="third_pgp" layoutX="500.0" layoutY="280.0" text="PGP" />
+      <Label fx:id="third_agp" layoutX="782.0" layoutY="280.0" text="AGP" />
+      <Label fx:id="third_points" layoutX="904.0" layoutY="280.0" text="points" />
+      <Label fx:id="fourth" alignment="TOP_LEFT" layoutX="163.0" layoutY="320.0" styleClass="roomInfoTxt" text="4th place">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="fourth_name" alignment="TOP_LEFT" layoutX="340.0" layoutY="320.0" text="4th place">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="fourth_cgp" layoutX="638.0" layoutY="320.0" text="CGP" />
+      <Label fx:id="fourth_pgp" layoutX="500.0" layoutY="320.0" text="PGP" />
+      <Label fx:id="fourth_agp" layoutX="782.0" layoutY="320.0" text="AGP" />
+      <Label fx:id="fourth_points" layoutX="904.0" layoutY="320.0" text="points" />
    </children>
 </AnchorPane>

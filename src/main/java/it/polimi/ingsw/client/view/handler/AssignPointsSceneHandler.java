@@ -35,8 +35,7 @@ public class AssignPointsSceneHandler extends SceneHandler {
     private Label winner_pgp;
     @FXML
     private Label winner_agp;
-    @FXML
-    private HBox winner_Box;
+
     @FXML
     private Label second;
     @FXML
@@ -49,8 +48,7 @@ public class AssignPointsSceneHandler extends SceneHandler {
     private Label second_pgp;
     @FXML
     private Label second_agp;
-    @FXML
-    private HBox second_Box;
+
     @FXML
     private Label third;
     @FXML
@@ -63,8 +61,7 @@ public class AssignPointsSceneHandler extends SceneHandler {
     private Label third_pgp;
     @FXML
     private Label third_agp;
-    @FXML
-    private HBox third_Box;
+
     @FXML
     private Label fourth;
     @FXML
@@ -77,8 +74,7 @@ public class AssignPointsSceneHandler extends SceneHandler {
     private Label fourth_pgp;
     @FXML
     private Label fourth_agp;
-    @FXML
-    private HBox fourth_Box;
+
     @FXML
     private Label cgp_lbl;
     @FXML
@@ -283,16 +279,10 @@ public class AssignPointsSceneHandler extends SceneHandler {
         fourth_pgp.setFont(Font.font(fourth_pgp.getFont().getFamily(), fourth_pgp.getFont().getSize()*ratio_y));
         fourth_agp.setFont(Font.font(fourth_agp.getFont().getFamily(), fourth_agp.getFont().getSize()*ratio_y));
 
-        cgp_lbl.setFont(Font.font(cgp_lbl.getFont().getFamily(), cgp_lbl.getFont().getSize()*ratio_y));
-        pgp_lbl.setFont(Font.font(pgp_lbl.getFont().getFamily(), pgp_lbl.getFont().getSize()*ratio_y));
-        agp_lbl.setFont(Font.font(agp_lbl.getFont().getFamily(), agp_lbl.getFont().getSize()*ratio_y));
-        total_lbl.setFont(Font.font(total_lbl.getFont().getFamily(), total_lbl.getFont().getSize()*ratio_y));
+        cgp_lbl.setFont(Font.font(cgp_lbl.getFont().getFamily(), cgp_lbl.getFont().getSize()*ratio_x));
+        pgp_lbl.setFont(Font.font(pgp_lbl.getFont().getFamily(), pgp_lbl.getFont().getSize()*ratio_x));
+        agp_lbl.setFont(Font.font(agp_lbl.getFont().getFamily(), agp_lbl.getFont().getSize()*ratio_x));
+        total_lbl.setFont(Font.font(total_lbl.getFont().getFamily(), total_lbl.getFont().getSize()*ratio_x));
 
-        /*winner_Box.setPrefWidth(winner_Box.getWidth()*ratio_x);
-        winner_Box.setPrefHeight(winner_Box.getHeight()*ratio_y);*/
-        winner_Box.setSpacing(winner_Box.getSpacing()*ratio_x);
-        second_Box.setSpacing(second_Box.getSpacing()*ratio_x);
-        third_Box.setSpacing(third_Box.getSpacing()*ratio_x);
-        fourth_Box.setSpacing(fourth_Box.getSpacing()*ratio_x);
     }
 }
