@@ -12,6 +12,8 @@ import it.polimi.ingsw.server.model.GameServerModel;
 import org.jetbrains.annotations.NotNull;
 
 import java.rmi.RemoteException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -90,7 +92,7 @@ public class GameServerController extends RoomServices {
                         model.getCommonGoal2(),
                         shelves));
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                disconnectedPlayer(playerTurn);
             }
         }));
     }
@@ -101,6 +103,7 @@ public class GameServerController extends RoomServices {
     @Override
     public void disconnectedPlayer(String playerName) {
         disconnected.add(playerName);
+        System.out.println("[" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + "] " + playerName + " quit the lobby");
         if (disconnected.size() == names.size()) closeGame(names);
         if (playerTurn.equals(playerName)) {
             if (playerPhase == Phase.INSERT) {
@@ -134,7 +137,7 @@ public class GameServerController extends RoomServices {
                 try {
                     matchClients.get(message.getPlayerName()).pickAccepted(new PickAccepted(message.getPlayerName(), MessageID.PICK_ACCEPTED, lastPicked));
                 } catch (RemoteException e) {
-                    throw new RuntimeException(e);
+                    disconnectedPlayer(playerTurn);
                 }
             });
         } else {
@@ -160,7 +163,7 @@ public class GameServerController extends RoomServices {
                         try {
                             matchClients.get(message.getPlayerName()).pickAccepted(new PickAccepted(message.getPlayerName(), MessageID.PICK_ACCEPTED, lastPicked));
                         } catch (RemoteException ex) {
-                            throw new RuntimeException(ex);
+                            disconnectedPlayer(playerTurn);
                         }
                     }
             );
@@ -236,7 +239,7 @@ public class GameServerController extends RoomServices {
                             adjacentGoalPoints,
                             winner[0]));
                 } catch (RemoteException e) {
-                    throw new RuntimeException(e);
+                    disconnectedPlayer(client);
                 }
             }));
             return;
@@ -266,7 +269,7 @@ public class GameServerController extends RoomServices {
                         model.checkAvailablePickNumber(playerTurn),
                         playerTurn));
             } catch (RemoteException e) {
-                throw new RuntimeException(e);
+                disconnectedPlayer(client);
             }
         }));
     }

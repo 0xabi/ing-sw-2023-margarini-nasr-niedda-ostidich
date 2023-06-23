@@ -82,11 +82,20 @@ public class Client implements ClientController {
      * @author Francesco Ostidich
      */
 
-    public synchronized void send(Message message) throws IOException {{
+    public synchronized void send(Message message) throws IOException{{
             if (Objects.equals(connectionType, "Socket")) {
-                MessageToClient.writeObject(message);
-                MessageToClient.flush();
-                MessageToClient.reset();
+                try {
+                    MessageToClient.writeObject(message);
+                    MessageToClient.flush();
+                    MessageToClient.reset();
+                } catch (IOException e) {
+                    try {
+                        roomServices.disconnectedPlayer(playerName);
+
+                    } catch (RemoteException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
             }
         }
     }
@@ -185,10 +194,16 @@ public class Client implements ClientController {
             //noinspection BusyWait
             Thread.sleep(10 * 1000);
             pingQueue.add(ping);
-            send(ping);
+            try {
+                send(ping);
+            }catch(IOException e){
+                return;
+            }
+
             if (pingQueue.size() > 2) {
                 System.out.println("[" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + "] " + playerName + " quit the lobby");
-                alive = false;
+                roomServices.disconnectedPlayer(playerName);
+                return;
             }
         }
     }
