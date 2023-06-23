@@ -158,8 +158,5 @@ public class ConnectionSceneHandler extends SceneHandler {
         invalidMsgLbl.setPrefHeight(invalidMsgLbl.getPrefHeight()*ratio_y);
 
 
-
-
-
     }
 }

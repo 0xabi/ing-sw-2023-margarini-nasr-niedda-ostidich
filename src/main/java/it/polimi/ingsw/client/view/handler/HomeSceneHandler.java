@@ -29,10 +29,10 @@ public class HomeSceneHandler extends SceneHandler{
     private AnchorPane pane;
 
     /**
+     * Go to the next scene
      * @author Abdullah Nasr
      */
     public void start() {
-        //SceneHandler.switchScene("match");
         try {
             getClientController().update(new Event(EventID.START,null));
         } catch (RemoteException e) {
@@ -41,6 +41,7 @@ public class HomeSceneHandler extends SceneHandler{
     }
 
     /**
+     * Quit the game
      * @author Abdullah Nasr
      */
     public void exit()

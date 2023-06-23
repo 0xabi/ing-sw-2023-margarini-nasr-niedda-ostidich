@@ -41,6 +41,7 @@ public class PlayerNameSceneHandler extends SceneHandler{
     private AnchorPane pane;
 
     /**
+     * Switch to home scene
      * @author Abdullah Nasr
      */
     public void back()
@@ -48,6 +49,10 @@ public class PlayerNameSceneHandler extends SceneHandler{
         SceneHandler.switchScene("home");
     }
 
+    /**
+     * Communicate the player's name to the server and go next
+     * @author Abdullah Nasr
+     */
     public void next(){
 
         try {

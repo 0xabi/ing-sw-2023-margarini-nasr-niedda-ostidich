@@ -107,7 +107,7 @@ public class ChooseGameRoomSceneHandler extends SceneHandler{
         backBtn.setFont(Font.font(backBtn.getFont().getFamily(), backBtn.getFont().getSize()*ratio_x));
         refreshBtn.setFont(Font.font(refreshBtn.getFont().getFamily(), refreshBtn.getFont().getSize()*ratio_x));
 
-        /**/lobbyList.setPrefWidth(lobbyList.getPrefWidth()*ratio_x);
+        lobbyList.setPrefWidth(lobbyList.getPrefWidth()*ratio_x);
         lobbyList.setPrefHeight(lobbyList.getPrefHeight()*ratio_y);
 
         availableLobbyLabel.setFont(Font.font(availableLobbyLabel.getFont().getFamily(), availableLobbyLabel.getFont().getSize()*ratio_y));
