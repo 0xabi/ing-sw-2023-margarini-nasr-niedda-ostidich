@@ -48,21 +48,28 @@ public class StairTest {
 
     @Test
     public void checkShouldReturnTrueStair() {
-        int c = 0;
-        ArrayList<Tile> tiles = new ArrayList<>();
-        tiles.add(Tile.CATS);
-        for (int i = 0; i < Shelf.getRowLength(); i++) {
-            for (int j = 0; j < c; j++)
-                shelf.insertInColumn(tiles, i);
-            c++;
-        }
+        ArrayList<Tile> tiles1 = new ArrayList<>();
+        tiles1.add(Tile.CATS);
+        ArrayList<Tile> tiles2 = new ArrayList<>();
+        tiles2.add(Tile.CATS);
+        tiles2.add(Tile.CATS);
+        ArrayList<Tile> tiles3 = new ArrayList<>();
+        tiles3.add(Tile.CATS);
+        tiles3.add(Tile.CATS);
+        tiles3.add(Tile.CATS);
+        shelf.insertInColumn(tiles3, 4);
+        shelf.insertInColumn(tiles2, 4);
+        shelf.insertInColumn(tiles3, 3);
+        shelf.insertInColumn(tiles1, 3);
+        shelf.insertInColumn(tiles3, 2);
+        shelf.insertInColumn(tiles2, 1);
+        shelf.insertInColumn(tiles1, 0);
         assertTrue(goal.check(shelf));
         shelf = new Shelf();
     }
 
     @Test
     public void checkShouldReturnTrueReverseStairs() {
-        int c = Shelf.getRowLength();
         ArrayList<Tile> tiles1 = new ArrayList<>();
         tiles1.add(Tile.CATS);
         ArrayList<Tile> tiles2 = new ArrayList<>();
