@@ -38,8 +38,8 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Label fx:id="winner_cgp" layoutX="638.0" layoutY="201.0" text="CGP" />
-      <Label fx:id="winner_pgp" layoutX="500.0" layoutY="200.0" text="PGP" />
+      <Label fx:id="winner_cgp" layoutX="500.0" layoutY="200.0" text="CGP" />
+      <Label fx:id="winner_pgp" layoutX="638.0" layoutY="200.0" text="PGP" />
       <Label fx:id="winner_agp" layoutX="782.0" layoutY="200.0" text="AGP" />
       <Label fx:id="winner_points" layoutX="904.0" layoutY="201.0" text="points" />
       <Label fx:id="second" alignment="TOP_LEFT" layoutX="163.0" layoutY="240.0" lineSpacing="140.0" styleClass="roomInfoTxt" text="2nd place">
@@ -52,8 +52,8 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Label fx:id="second_cgp" layoutX="638.0" layoutY="241.0" text="CGP" />
-      <Label fx:id="second_pgp" layoutX="500.0" layoutY="240.0" text="PGP" />
+      <Label fx:id="second_cgp" layoutX="500.0" layoutY="240.0" text="CGP" />
+      <Label fx:id="second_pgp" layoutX="638.0" layoutY="240.0" text="PGP" />
       <Label fx:id="second_agp" layoutX="782.0" layoutY="240.0" text="AGP" />
       <Label fx:id="second_points" layoutX="904.0" layoutY="240.0" text="points" />
       <Label fx:id="third" alignment="TOP_LEFT" layoutX="163.0" layoutY="280.0" lineSpacing="140.0" styleClass="roomInfoTxt" text="3rd place">
@@ -66,8 +66,8 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Label fx:id="third_cgp" layoutX="638.0" layoutY="280.0" text="CGP" />
-      <Label fx:id="third_pgp" layoutX="500.0" layoutY="280.0" text="PGP" />
+      <Label fx:id="third_cgp" layoutX="500.0" layoutY="280.0" text="CGP" />
+      <Label fx:id="third_pgp" layoutX="639.0" layoutY="280.0" text="PGP" />
       <Label fx:id="third_agp" layoutX="782.0" layoutY="280.0" text="AGP" />
       <Label fx:id="third_points" layoutX="904.0" layoutY="280.0" text="points" />
       <Label fx:id="fourth" alignment="TOP_LEFT" layoutX="163.0" layoutY="320.0" styleClass="roomInfoTxt" text="4th place">
@@ -80,8 +80,8 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Label fx:id="fourth_cgp" layoutX="638.0" layoutY="320.0" text="CGP" />
-      <Label fx:id="fourth_pgp" layoutX="500.0" layoutY="320.0" text="PGP" />
+      <Label fx:id="fourth_cgp" layoutX="500.0" layoutY="320.0" text="CGP" />
+      <Label fx:id="fourth_pgp" layoutX="638.0" layoutY="320.0" text="PGP" />
       <Label fx:id="fourth_agp" layoutX="782.0" layoutY="320.0" text="AGP" />
       <Label fx:id="fourth_points" layoutX="904.0" layoutY="320.0" text="points" />
    </children>

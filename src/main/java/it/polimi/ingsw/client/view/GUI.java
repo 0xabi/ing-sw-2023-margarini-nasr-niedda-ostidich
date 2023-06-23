@@ -39,9 +39,9 @@ public class GUI extends GameClientView {
 
         Platform.runLater(() ->
         {
-            SceneHandler.switchScene("player_name");
+            //SceneHandler.switchScene("player_name");
 
-           /*SceneHandler.switchScene("assign_points");
+           SceneHandler.switchScene("assign_points");
             HashMap<String, Integer> points = new HashMap<>();
 
             points.put("paolo", 10);
@@ -60,9 +60,13 @@ public class GUI extends GameClientView {
                 apsh.updateAGPoints(entry.getKey(), entry.getValue());
 
             points.clear();
-            points.put("giorgio", 2);
 
-            for (Map.Entry<String, Integer> entry : points.entrySet())
+            assignCommonGoalPoints("paolo",8);
+            assignCommonGoalPoints("paolo",4);
+            assignCommonGoalPoints("giorgio",8);
+            System.out.println(commonGoalAssignationReminder);
+
+            for (Map.Entry<String, Integer> entry : commonGoalAssignationReminder.entrySet())
                 apsh.updateCGPoints(entry.getKey(), entry.getValue());
 
             points.clear();
@@ -72,7 +76,7 @@ public class GUI extends GameClientView {
             for (Map.Entry<String, Integer> entry : points.entrySet())
                 apsh.updateinfo(entry.getKey(), entry.getValue());
 
-            apsh.show();*/
+            apsh.show();
         });
 
     }
@@ -234,14 +238,15 @@ public class GUI extends GameClientView {
     @Override
     public void assignCommonGoalPoints(String playerName, int token) {
 
-        Platform.runLater(() -> {
 
-            if(commonGoalAssignationReminder.containsKey(playerName))
-                commonGoalAssignationReminder.computeIfPresent(playerName, (k, v) -> v + token);
+            if(commonGoalAssignationReminder.containsKey(playerName)){
+                commonGoalAssignationReminder.put(playerName,commonGoalAssignationReminder.get(playerName) + token);
+            }
+            else
+            {
+                commonGoalAssignationReminder.put(playerName, token);
+            }
 
-            else commonGoalAssignationReminder.put(playerName, token);
-
-        });
 
     }
 
