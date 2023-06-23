@@ -39,9 +39,9 @@ public class GUI extends GameClientView {
 
         Platform.runLater(() ->
         {
-            //SceneHandler.switchScene("player_name");
+            SceneHandler.switchScene("player_name");
 
-           SceneHandler.switchScene("assign_points");
+           /*SceneHandler.switchScene("assign_points");
             HashMap<String, Integer> points = new HashMap<>();
 
             points.put("paolo", 10);
@@ -76,7 +76,7 @@ public class GUI extends GameClientView {
             for (Map.Entry<String, Integer> entry : points.entrySet())
                 apsh.updateinfo(entry.getKey(), entry.getValue());
 
-            apsh.show();
+            apsh.show();*/
         });
 
     }
@@ -238,15 +238,15 @@ public class GUI extends GameClientView {
     @Override
     public void assignCommonGoalPoints(String playerName, int token) {
 
+    }
 
-            if(commonGoalAssignationReminder.containsKey(playerName)){
-                commonGoalAssignationReminder.put(playerName,commonGoalAssignationReminder.get(playerName) + token);
-            }
-            else
-            {
-                commonGoalAssignationReminder.put(playerName, token);
-            }
+    private void calculateCGPoints(String playerName, Integer token){
 
+        if(commonGoalAssignationReminder.containsKey(playerName)) {
+            commonGoalAssignationReminder.put(playerName, commonGoalAssignationReminder.get(playerName) + token);
+        }
+
+        else { commonGoalAssignationReminder.put(playerName, token); }
 
     }
 
@@ -264,6 +264,12 @@ public class GUI extends GameClientView {
 
             for (Map.Entry<String, Integer> entry : points.entrySet())
                 apsh.updatePGPoints(entry.getKey(), entry.getValue());
+
+            for(Map.Entry<Integer, String> cgpoints: getCommonGoal1GivenPlayers().entrySet())
+                calculateCGPoints(cgpoints.getValue(), cgpoints.getKey());
+
+            for(Map.Entry<Integer, String> cgpoints: getCommonGoal2GivenPlayers().entrySet())
+                calculateCGPoints(cgpoints.getValue(), cgpoints.getKey());
 
             for (Map.Entry<String, Integer> commonGoalPoints : commonGoalAssignationReminder.entrySet())
                 apsh.updateCGPoints(commonGoalPoints.getKey(), commonGoalPoints.getValue());
