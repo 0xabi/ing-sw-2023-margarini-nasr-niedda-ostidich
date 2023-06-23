@@ -31,8 +31,10 @@ public class NewOrJoinHandler extends SceneHandler{
     private AnchorPane pane;
 
 
-
-
+    /**
+     * Switch to scene which you can create a new game
+     * @author Abdullah Nasr
+     */
     public void newGame()
     {
         try {
@@ -42,6 +44,10 @@ public class NewOrJoinHandler extends SceneHandler{
         }
     }
 
+    /**
+     * Switch to scene which you can join a game
+     * @author Abdullah Nasr
+     */
     public void joinGame()
     {
         try {
@@ -51,13 +57,19 @@ public class NewOrJoinHandler extends SceneHandler{
         }
     }
 
+    /**
+     * Go back to home scene
+     * @author Abdullah Nasr
+     */
     public void exit()
     {
         SceneHandler.switchScene("home");
     }
 
 
-
+    /**
+     * @author Abdullah Nasr
+     */
     @Override
     public void resize() {
 
@@ -90,11 +102,12 @@ public class NewOrJoinHandler extends SceneHandler{
 
         }
 
+    /**
+     * @author Abdullah Nasr
+     */
     @Override
     public void runScene() {
         resize();
-
-        //getScene().setRoot(getRoot());
         getStage().setScene(new Scene(getRoot()));
     }
 
