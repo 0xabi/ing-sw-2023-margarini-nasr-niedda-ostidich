@@ -6,19 +6,16 @@ import it.polimi.ingsw.client.view.handler.ChooseGameRoomSceneHandler;
 import it.polimi.ingsw.client.view.handler.SceneHandler;
 import it.polimi.ingsw.client.view.handler.WaitPlayersSceneHandler;
 import it.polimi.ingsw.client.view.handler.match.MatchSceneHandler;
-import it.polimi.ingsw.general.Event;
-import it.polimi.ingsw.general.EventID;
 import it.polimi.ingsw.general.GameRoom;
 import it.polimi.ingsw.general.Tile;
 import javafx.application.Platform;
 
-import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 public class GUI extends GameClientView {
 
-    private Map<String, Integer> commonGoalAssignationReminder = new HashMap<>();
+    private final Map<String, Integer> commonGoalAssignationReminder = new HashMap<>();
 
     public GUI() {
         super();
@@ -252,10 +249,11 @@ public class GUI extends GameClientView {
     public void assignPersonalGoalPoints(Map<String, Integer> points) {
         Platform.runLater(() -> {
 
+            System.out.println("PGaa");
             MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
             msh.moveTiles();
 
-            /*SceneHandler.switchScene("assign_points");
+            SceneHandler.switchScene("assign_points");
 
             AssignPointsSceneHandler apsh = (AssignPointsSceneHandler) SceneHandler.getCurrentHandler();
 
@@ -263,7 +261,7 @@ public class GUI extends GameClientView {
                 apsh.updatePGPoints(entry.getKey(), entry.getValue());
 
             for (Map.Entry<String, Integer> commonGoalPoints : commonGoalAssignationReminder.entrySet())
-                apsh.updateCGPoints(commonGoalPoints.getKey(), commonGoalPoints.getValue());*/
+                apsh.updateCGPoints(commonGoalPoints.getKey(), commonGoalPoints.getValue());
 
         });
     }
@@ -273,10 +271,10 @@ public class GUI extends GameClientView {
 
         Platform.runLater(() -> {
 
-            /*AssignPointsSceneHandler apsh = (AssignPointsSceneHandler) SceneHandler.getCurrentHandler();
+            AssignPointsSceneHandler apsh = (AssignPointsSceneHandler) SceneHandler.getCurrentHandler();
 
             for (Map.Entry<String, Integer> entry : points.entrySet())
-                apsh.updateAGPoints(entry.getKey(), entry.getValue());*/
+                apsh.updateAGPoints(entry.getKey(), entry.getValue());
 
         });
 
@@ -287,12 +285,12 @@ public class GUI extends GameClientView {
 
         Platform.runLater(() -> {
 
-            /*AssignPointsSceneHandler apsh = (AssignPointsSceneHandler) SceneHandler.getCurrentHandler();
+            AssignPointsSceneHandler apsh = (AssignPointsSceneHandler) SceneHandler.getCurrentHandler();
 
             for (Map.Entry<String, Integer> entry : points.entrySet())
                 apsh.updateinfo(entry.getKey(), entry.getValue());
 
-            apsh.show();*/
+            apsh.show();
 
         });
 

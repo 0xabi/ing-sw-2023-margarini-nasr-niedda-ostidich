@@ -186,7 +186,7 @@ public class Client implements ClientController {
             Thread.sleep(10 * 1000);
             pingQueue.add(ping);
             send(ping);
-            if (pingQueue.size() > 2) {
+            if (pingQueue.size() > 2000) {
                 System.out.println("[" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + "] " + playerName + " quit the lobby");
                 alive = false;
             }
