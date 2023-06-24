@@ -33,6 +33,55 @@ public class AdjacentTilesGoalTest {
     }
 
     @Test
+    public void assignPoints_OnlyRandom3Tiles_TwoPoints()
+    {
+        tilesToInsert.add(Tile.PLANTS);
+        tilesToInsert.add(Tile.TROPHIES);
+        tilesToInsert.add(Tile.GAMES);
+        tilesToInsert.add(Tile.TROPHIES);
+        tilesToInsert.add(Tile.CATS);
+        tilesToInsert.add(Tile.CATS);
+        assertTrue(shelf.insertInColumn(tilesToInsert,0));
+
+        tilesToInsert.clear();
+        tilesToInsert.add(Tile.GAMES);
+        tilesToInsert.add(Tile.CATS);
+        tilesToInsert.add(Tile.GAMES);
+        tilesToInsert.add(Tile.BOOKS);
+        tilesToInsert.add(Tile.TROPHIES);
+        tilesToInsert.add(Tile.TROPHIES);
+        assertTrue(shelf.insertInColumn(tilesToInsert,1));
+
+        tilesToInsert.clear();
+        tilesToInsert.add(Tile.CATS);
+        tilesToInsert.add(Tile.GAMES);
+        tilesToInsert.add(Tile.FRAMES);
+        tilesToInsert.add(Tile.PLANTS);
+        tilesToInsert.add(Tile.CATS);
+        tilesToInsert.add(Tile.TROPHIES);
+        assertTrue(shelf.insertInColumn(tilesToInsert,2));
+
+        tilesToInsert.clear();
+        tilesToInsert.add(Tile.GAMES);
+        tilesToInsert.add(Tile.TROPHIES);
+        tilesToInsert.add(Tile.GAMES);
+        tilesToInsert.add(Tile.BOOKS);
+        tilesToInsert.add(Tile.FRAMES);
+        tilesToInsert.add(Tile.PLANTS);
+
+        tilesToInsert.clear();
+        tilesToInsert.add(Tile.TROPHIES);
+        tilesToInsert.add(Tile.CATS);
+        tilesToInsert.add(Tile.BOOKS);
+        tilesToInsert.add(Tile.GAMES);
+        tilesToInsert.add(Tile.PLANTS);
+        tilesToInsert.add(Tile.FRAMES);
+
+        int points = AdjacentTilesGoal.assignPoints(player);
+        Assert.assertTrue(AdjacentTilesGoal.getGroupPoints().containsValue(points));
+        assertEquals(2, player.getPoints());
+    }
+    @Test
     public void assignPoints_3TilesHorizontal_TwoPoints() {
         tilesToInsert.add(Tile.CATS);
         tilesToInsert.add(Tile.CATS);

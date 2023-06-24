@@ -189,7 +189,9 @@ public class Board {
             return false;
         //checks the player has chosen available tiles (!=null !=Tile.EMPTY)
         for (Coordinates e : selection) {
-            if(e.x() > ROW_LENGTH-1 || e.y() > COLUMN_LENGTH-1 || e.x() < 0 || e.y() < 0)
+            if(e.x() > ROW_LENGTH-1 || e.y() > COLUMN_LENGTH-1)
+                return false;
+            if(e.x() < 0 || e.y() < 0)
                 return false;
             if (spaces[e.x()][e.y()] == null || spaces[e.x()][e.y()] == Tile.EMPTY)
                 return false;

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.Debugging;
+import it.polimi.ingsw.client.view.handler.AssignPointsSceneHandler;
 import it.polimi.ingsw.client.view.handler.ChooseGameRoomSceneHandler;
 import it.polimi.ingsw.client.view.handler.SceneHandler;
 import it.polimi.ingsw.client.view.handler.WaitPlayersSceneHandler;
@@ -9,9 +10,12 @@ import it.polimi.ingsw.general.GameRoom;
 import it.polimi.ingsw.general.Tile;
 import javafx.application.Platform;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 public class GUI extends GameClientView {
+
+    private final Map<String, Integer> commonGoalAssignationReminder = new HashMap<>();
 
     public GUI() {
         super();
@@ -19,7 +23,7 @@ public class GUI extends GameClientView {
 
     @Override
     public void start() {
-            SceneHandler.setClientController(getClientController());
+        SceneHandler.setClientController(getClientController());
 
     }
 
@@ -36,6 +40,43 @@ public class GUI extends GameClientView {
         Platform.runLater(() ->
         {
             SceneHandler.switchScene("player_name");
+
+           /*SceneHandler.switchScene("assign_points");
+            HashMap<String, Integer> points = new HashMap<>();
+
+            points.put("paolo", 10);
+            points.put("giorgio", 11);
+
+            AssignPointsSceneHandler apsh = (AssignPointsSceneHandler) SceneHandler.getCurrentHandler();
+
+            for (Map.Entry<String, Integer> entry : points.entrySet())
+                apsh.updatePGPoints(entry.getKey(), entry.getValue());
+
+            points.clear();
+            points.put("paolo", 17);
+            points.put("giorgio", 15);
+
+            for (Map.Entry<String, Integer> entry : points.entrySet())
+                apsh.updateAGPoints(entry.getKey(), entry.getValue());
+
+            points.clear();
+
+            assignCommonGoalPoints("paolo",8);
+            assignCommonGoalPoints("paolo",4);
+            assignCommonGoalPoints("giorgio",8);
+            System.out.println(commonGoalAssignationReminder);
+
+            for (Map.Entry<String, Integer> entry : commonGoalAssignationReminder.entrySet())
+                apsh.updateCGPoints(entry.getKey(), entry.getValue());
+
+            points.clear();
+            points.put("paolo", 27);
+            points.put("giorgio", 28);
+
+            for (Map.Entry<String, Integer> entry : points.entrySet())
+                apsh.updateinfo(entry.getKey(), entry.getValue());
+
+            apsh.show();*/
         });
 
     }
@@ -177,6 +218,7 @@ public class GUI extends GameClientView {
 
         Platform.runLater(() -> {
 
+
             MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
             MatchSceneHandler.setPickPhase(false);
             Debugging.Watch.temp.stop();
@@ -196,24 +238,76 @@ public class GUI extends GameClientView {
 
     }
 
-    @Override
-    public void assignPersonalGoalPoints(Map<String, Integer> points) {
+    private void calculateCGPoints(String playerName, Integer token){
+
+        if(commonGoalAssignationReminder.containsKey(playerName)) {
+            commonGoalAssignationReminder.put(playerName, commonGoalAssignationReminder.get(playerName) + token);
+        }
+
+        else { commonGoalAssignationReminder.put(playerName, token); }
 
     }
 
     @Override
+    public void assignPersonalGoalPoints(Map<String, Integer> points) {
+        Platform.runLater(() -> {
+
+            MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
+            msh.moveTiles();
+            msh.clear();
+
+            SceneHandler.switchScene("assign_points");
+
+            AssignPointsSceneHandler apsh = (AssignPointsSceneHandler) SceneHandler.getCurrentHandler();
+
+            for (Map.Entry<String, Integer> entry : points.entrySet())
+                apsh.updatePGPoints(entry.getKey(), entry.getValue());
+
+            for(Map.Entry<Integer, String> cgpoints: getCommonGoal1GivenPlayers().entrySet())
+                calculateCGPoints(cgpoints.getValue(), cgpoints.getKey());
+
+            for(Map.Entry<Integer, String> cgpoints: getCommonGoal2GivenPlayers().entrySet())
+                calculateCGPoints(cgpoints.getValue(), cgpoints.getKey());
+
+            for (Map.Entry<String, Integer> commonGoalPoints : commonGoalAssignationReminder.entrySet())
+                apsh.updateCGPoints(commonGoalPoints.getKey(), commonGoalPoints.getValue());
+
+        });
+    }
+
+    @Override
     public void assignAdjacentGoalPoints(Map<String, Integer> points) {
+
+        Platform.runLater(() -> {
+
+            AssignPointsSceneHandler apsh = (AssignPointsSceneHandler) SceneHandler.getCurrentHandler();
+
+            for (Map.Entry<String, Integer> entry : points.entrySet())
+                apsh.updateAGPoints(entry.getKey(), entry.getValue());
+
+        });
 
     }
 
     @Override
     public void announceWinner(String winnerName, Map<String, Integer> points) {
 
+        Platform.runLater(() -> {
+
+            AssignPointsSceneHandler apsh = (AssignPointsSceneHandler) SceneHandler.getCurrentHandler();
+
+            for (Map.Entry<String, Integer> entry : points.entrySet())
+                apsh.updateinfo(entry.getKey(), entry.getValue());
+
+            apsh.show();
+
+        });
+
     }
 
     @Override
     public void chooseRMIorSocket() {
-            SceneHandler.switchScene("connection");
+        SceneHandler.switchScene("connection");
     }
 
 
@@ -223,17 +317,13 @@ public class GUI extends GameClientView {
     }
 
     @Override
-    public void justScanChat() {
-
-    }
+    public void justScanChat() {}
 
     @Override
     public void justPrintChat() {
-
         Platform.runLater(() -> {
             MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
             msh.updateChat(getChatMessages());
         });
-
     }
 }

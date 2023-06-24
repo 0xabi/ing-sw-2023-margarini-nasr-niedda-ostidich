@@ -25,6 +25,10 @@ public class ChooseGameRoomSceneHandler extends SceneHandler{
     private LinkedList<String> lobbys;
     private static List<GameRoom> gameRooms;
     @FXML
+    private Button backBtn;
+    @FXML
+    private Button refreshBtn;
+    @FXML
     private ListView<String> lobbyList;
     @FXML
     private AnchorPane pane;
@@ -62,6 +66,18 @@ public class ChooseGameRoomSceneHandler extends SceneHandler{
         }
     }
 
+    public void refresh(){
+        try {
+            getClientController().update(new Event(EventID.CHOOSE_GAME_ROOM, "refresh"));
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void back(){
+        SceneHandler.switchScene("new_or_join");
+    }
+
     @Override
     public void runScene() {
         updateList();
@@ -88,8 +104,10 @@ public class ChooseGameRoomSceneHandler extends SceneHandler{
 
         //re-sizing according to the resolution
         joinBtn.setFont(Font.font(joinBtn.getFont().getFamily(), joinBtn.getFont().getSize()*ratio_x));
+        backBtn.setFont(Font.font(backBtn.getFont().getFamily(), backBtn.getFont().getSize()*ratio_x));
+        refreshBtn.setFont(Font.font(refreshBtn.getFont().getFamily(), refreshBtn.getFont().getSize()*ratio_x));
 
-        /**/lobbyList.setPrefWidth(lobbyList.getPrefWidth()*ratio_x);
+        lobbyList.setPrefWidth(lobbyList.getPrefWidth()*ratio_x);
         lobbyList.setPrefHeight(lobbyList.getPrefHeight()*ratio_y);
 
         availableLobbyLabel.setFont(Font.font(availableLobbyLabel.getFont().getFamily(), availableLobbyLabel.getFont().getSize()*ratio_y));

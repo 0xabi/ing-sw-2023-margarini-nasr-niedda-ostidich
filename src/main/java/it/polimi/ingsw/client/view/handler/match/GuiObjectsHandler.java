@@ -200,46 +200,76 @@ public class GuiObjectsHandler {
     }
 
 
-    /** Shelf **/
+    /* Shelf */
 
+    /**
+     * Get the main player's shelf width
+     * @return The main player's shelf width
+     * @author Abdullah Nasr
+     */
     public static double getMainShelfTilesSizeWidth() {
         return mainShelfTilesSizeWidth;
     }
 
 
+    /**
+     * Get the main player's shelf height
+     * @return The main player's shelf height
+     * @author Abdullah Nasr
+     */
     public static double getMainShelfTilesSizeHeight() {
         return mainShelfTilesSizeHeight;
     }
 
+    /**
+     * Get the opponent player's shelf width
+     * @return The opponent player's shelf width
+     * @author Abdullah Nasr
+     */
     public static double getPlayerShelfTilesSizeWidth() {
         return playerShelfTilesSizeWidth;
     }
 
+    /**
+     * Get the opponent player's shelf height
+     * @return The opponent player's shelf height
+     * @author Abdullah Nasr
+     */
     public static double getPlayerShelfTilesSizeHeight() {
         return playerShelfTilesSizeHeight;
     }
 
+
     /**
+     * Given the row's number it returns the percentage of the relative position of the tile to the shelf
+     * e.g. if the tile is in the half of the shelf it returns 0.5(50%)
      * The row with index 0 starts from the bottom of the shelf
-     * @param row
-     * @return
+     * @param row The row's number of the shelf(starting from 0)
+     * @return The percentage of the relative position of the tile in the specified row to the shelf
+     * @author Abdullah Nasr
      */
     public static double getMainShelfTilesPosY(int row) {
         return mainShelfTilesPosY[row];
     }
 
     /**
+     * Given the column's number it returns the percentage of the relative position of the tile to the shelf
+     * e.g. if the tile is in the half of the shelf it returns 0.5(50%)
      * The column with index 0 starts from the left of the shelf
-     * @param col
-     * @return
+     * @param col The column's number of the shelf(starting from 0)
+     * @return The percentage of the relative position of the tile in the specified column to the shelf
+     * @author Abdullah Nasr
      */
     public static double getMainShelfTilesPosX(int col) { return mainShelfTilesPosX[col]; }
 
 
     /**
+     * Given the column's number it returns the percentage of the relative position of the tile to the board
+     * e.g. if the tile is in the half of the board it returns 0.5(50%)
      * The column with index 0 starts from the left of the board
-     * @param col
-     * @return
+     * @param col The column's number of the board(starting from 0)
+     * @return The percentage of the relative position of the tile in the specified column to the board
+     * @author Abdullah Nasr
      */
     public static double getBoardTilesPosX(int col)
     {
@@ -247,9 +277,12 @@ public class GuiObjectsHandler {
     }
 
     /**
-     * The row with index 0 starts from the upper of the board
-     * @param row
-     * @return
+     * Given the row's number it returns the percentage of the relative position of the tile to the board
+     * e.g. if the tile is in the half of the board it returns 0.5(50%)
+     * The row with index 0 starts from above of the board
+     * @param row The row's number of the board(starting from 0)
+     * @return The percentage of the relative position of the tile in the specified row to the shelf
+     * @author Abdullah Nasr
      */
     public static double getBoardTilesPosY(int row)
     {
@@ -257,14 +290,22 @@ public class GuiObjectsHandler {
     }
 
 
+    /**
+     * Get the tile's width present in the board
+     * @return The tile's width present in the board
+     * @author Abdullah Nasr
+     */
     public static double getBoardTilesSizeWidth() {
         return boardTilesSizeWidth;
     }
 
+    /**
+     * Get the tile's height present in the board
+     * @return The tile's height present in the board
+     * @author Abdullah Nasr
+     */
     public static double getBoardTilesSizeHeight() {
         return boardTilesSizeHeight;
     }
-
-
 
 }

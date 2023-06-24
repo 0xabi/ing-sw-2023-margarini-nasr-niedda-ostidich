@@ -357,7 +357,7 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
         view.givePersonalGoals(msg.getPersonalGoals());
         view.assignPersonalGoalPoints(msg.getPersonalGoalPoints());
         view.assignAdjacentGoalPoints(msg.getAdjacentGoalPoints());
-        view.announceWinner(msg.getWinner(), msg.getPlayerPoints());
+        view. announceWinner(msg.getWinner(), msg.getPlayerPoints());
     }
 
     /**

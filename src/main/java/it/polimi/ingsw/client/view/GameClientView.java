@@ -410,7 +410,7 @@ public abstract class GameClientView implements ClientView {
     public void updateCommonGoal2GivenPlayers(Map<Integer, String> givenPlayer) {
         if (givenPlayer != null) {
             for (int token : givenPlayer.keySet()) {
-                if(commonGoal2GivenPlayers.containsKey(token))
+                if(!commonGoal2GivenPlayers.containsKey(token))
                     this.commonGoal2GivenPlayers.put(token, givenPlayer.get(token));
 
             }
