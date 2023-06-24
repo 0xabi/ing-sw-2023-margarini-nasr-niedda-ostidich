@@ -526,6 +526,7 @@ public class MatchSceneHandler extends SceneHandler {
      * @author Pietro Andrea Niedda
      */
     public void callInsert(int col){
+        tilesIsMoving = true;
         TranslateTransition translate;
         int freeRowPosition = getFreeCellMainShelfPosition(col);
 
@@ -551,7 +552,6 @@ public class MatchSceneHandler extends SceneHandler {
             translate.setOnFinished(e -> {
 
 
-                tilesIsMoving=false;
 
                 //update shelf image view
                mainShelfTileImages[col][finalFreeRowPosition].setImage(tile.getImage());
@@ -574,6 +574,7 @@ public class MatchSceneHandler extends SceneHandler {
                 imageToCoord.put(newTile, coordTile);
                 boardTilesImages[coordTile.x()][coordTile.y()]=newTile;
                 getRoot().getChildren().add(indexPosShelf,newTile);
+                tilesIsMoving=false;
                 updateBoard();
 
 
@@ -582,8 +583,6 @@ public class MatchSceneHandler extends SceneHandler {
 
             tile.setEffect(null);
             tile.setOnMouseClicked(null);
-
-            tilesIsMoving = true;
             translate.play();
 
             freeRowPosition++;
@@ -1026,6 +1025,23 @@ public class MatchSceneHandler extends SceneHandler {
 
         System.out.println("resize done");
 
+    }
+
+    /**
+     * Clear data of the match
+     * Is needed in case you make another match in the same GUI instance
+     * @author Abdullah Nasr
+     */
+    public void clear()
+    {
+        opponentPlayersName.clear();
+        imageToCoord.clear();
+        opponentsPlayerTilesImages.clear();
+        chairMainPlayer.setVisible(false);
+        chairPlayer1.setVisible(false);
+        chairPlayer2.setVisible(false);
+        chairPlayer3.setVisible(false);
+        CommonGoalsHandler.clear();
     }
 
 

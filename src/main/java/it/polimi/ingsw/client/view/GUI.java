@@ -155,8 +155,6 @@ public class GUI extends GameClientView {
             msh.initChair();
             msh.initScoringTokens();
 
-            Thread chatThread = new Thread(this::justScanChat);
-            chatThread.start();
         });
     }
 
@@ -254,9 +252,9 @@ public class GUI extends GameClientView {
     public void assignPersonalGoalPoints(Map<String, Integer> points) {
         Platform.runLater(() -> {
 
-            System.out.println("PGaa");
             MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
             msh.moveTiles();
+            msh.clear();
 
             SceneHandler.switchScene("assign_points");
 

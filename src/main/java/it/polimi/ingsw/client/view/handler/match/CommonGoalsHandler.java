@@ -279,11 +279,11 @@ public class CommonGoalsHandler {
      * @return True if graphically the place where is stored the first taken scoring token is occupied, false otherwise.
      * @author Abdullah Nasr
      */
-    private static boolean firstPlaceIsOccupied(String namePlayer)
+    private static boolean firstPlaceIsNotOccupied(String namePlayer)
     {
         Boolean state = place1occupied.get(namePlayer);
 
-        return state != null && state;
+        return state == null || !state;
 
     }
 
@@ -300,7 +300,7 @@ public class CommonGoalsHandler {
         double destinationX;
         double destinationY;
 
-        if(!firstPlaceIsOccupied(namePlayer))
+        if(firstPlaceIsNotOccupied(namePlayer))
         {
             translate = new TranslateTransition();
             destinationX = shelfDestination.getLayoutX() + (shelfDestination.getFitWidth()*GuiObjectsHandler.getPlaceScoreTokenMainPlayerPosX());
@@ -349,7 +349,7 @@ public class CommonGoalsHandler {
         double destinationX;
         double destinationY;
 
-        if(!firstPlaceIsOccupied(namePlayer))
+        if(firstPlaceIsNotOccupied(namePlayer))
         {
             translate = new TranslateTransition();
             destinationX = shelfDestination.getLayoutX() + (shelfDestination.getFitWidth()*GuiObjectsHandler.getPlaceScoreTokenPosX());
@@ -436,13 +436,18 @@ public class CommonGoalsHandler {
         //there was a new achieved common goal 1
         if(lenStackCG1!=givenCommonGoal1.size())
         {
-            Integer key=0;
+            Integer key=-1;
             String namePlayer;
 
-            //get the last pair value
+            //get the min token
+            //to find the last inserted token
+            //and then also find the name of the player who took the last common goal
             for(Map.Entry<Integer, String> currentEntry : givenCommonGoal1.entrySet())
             {
-                key = currentEntry.getKey();
+                if(key==-1||currentEntry.getKey()<key)
+                {
+                    key = currentEntry.getKey();
+                }
             }
 
             namePlayer = givenCommonGoal1.get(key);
@@ -469,13 +474,18 @@ public class CommonGoalsHandler {
         //there was a new achieved common goal 1
         if(lenStackCG2!=givenCommonGoal2.size())
         {
-            Integer key=0;
+            Integer key=-1;
             String namePlayer;
 
-            //get the last pair value
+            //get the min token
+            //to find the last inserted token
+            //and then also find the name of the player who took the last common goal
             for(Map.Entry<Integer, String> currentEntry : givenCommonGoal2.entrySet())
             {
-                key = currentEntry.getKey();
+                if(key==-1||currentEntry.getKey()<key)
+                {
+                    key = currentEntry.getKey();
+                }
             }
 
             namePlayer = givenCommonGoal2.get(key);
@@ -489,5 +499,18 @@ public class CommonGoalsHandler {
         {
             System.out.println("No common goal 2 achieved");
         }
+    }
+
+    /**
+     * Clear data of the match
+     * Is needed in case you make another match in the same GUI instance
+     * @author Abdullah Nasr
+     */
+    public static void clear()
+    {
+        commonGoal1ScoringTokenStackImages.clear();
+        commonGoal2ScoringTokenStackImages.clear();
+        place1occupied.clear();
+        lenStackCG1 = lenStackCG2 = 0;
     }
 }
