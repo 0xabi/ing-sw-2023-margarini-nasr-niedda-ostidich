@@ -5,10 +5,13 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 
 public class GUIApp extends Application {
@@ -51,9 +54,26 @@ public class GUIApp extends Application {
              stage.setHeight(screenHeight);
              stage.show();
 
+             stage.setOnCloseRequest(event -> {
+                 event.consume();
+                 Logout();
+             });
 
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+
+    }
+
+    private void Logout(){
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Logging out");
+        alert.setHeaderText("You're about to logout!");
+        alert.setContentText("Are you sure?");
+
+        if(alert.showAndWait().get() == ButtonType.OK){
+            System.exit(0);
         }
 
     }
