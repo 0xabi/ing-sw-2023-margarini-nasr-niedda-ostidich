@@ -14,6 +14,12 @@ public class EndGame extends Message {
 
     private final boolean endGameToken;
 
+    public String getEndGameTokenPlayer() {
+        return endGameTokenPlayer;
+    }
+
+    private final String endGameTokenPlayer;
+
     public Map<Tile, Integer> getBag() {
         return bag;
     }
@@ -70,10 +76,11 @@ public class EndGame extends Message {
 
     private final Map<String, Integer> adjacentGoalPoints;
 
-    public EndGame(String playerName, MessageID messageID, Tile[][] board, boolean endGameToken, Map<Tile, Integer> bag, Stack<Integer> commonGoal1TokenStack, Stack<Integer> commonGoal2TokenStack, Map<Integer, String> commonGoal1GivenPlayers, Map<Integer, String> commonGoal2GivenPlayers, Map<String, Tile[][]> playerShelves, Map<String, Integer> playerPoints, List<Integer> personalGoals, Map<String, Integer> personalGoalPoints, Map<String, Integer> adjacentGoalPoints, String winner) {
+    public EndGame(String playerName, MessageID messageID, Tile[][] board, boolean endGameToken, String endGameTokenPlayer, Map<Tile, Integer> bag, Stack<Integer> commonGoal1TokenStack, Stack<Integer> commonGoal2TokenStack, Map<Integer, String> commonGoal1GivenPlayers, Map<Integer, String> commonGoal2GivenPlayers, Map<String, Tile[][]> playerShelves, Map<String, Integer> playerPoints, List<Integer> personalGoals, Map<String, Integer> personalGoalPoints, Map<String, Integer> adjacentGoalPoints, String winner) {
         super(playerName, messageID);
         this.board = board;
         this.endGameToken = endGameToken;
+        this.endGameTokenPlayer = endGameTokenPlayer;
         this.bag = bag;
         this.commonGoal1TokenStack = commonGoal1TokenStack;
         this.commonGoal2TokenStack = commonGoal2TokenStack;

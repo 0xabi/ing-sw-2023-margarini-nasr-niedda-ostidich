@@ -269,9 +269,7 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
      * @author Francesco Ostidich
      */
     public void newTurnInitializing(@NotNull NextPlayer msg) {
-        System.out.print("TBR debug: received CG2 gp -> " + msg.getCommonGoal2GivenPlayers());
-        System.out.println("received CG1 gp -> " + msg.getCommonGoal1GivenPlayers());
-        newTurnInitializingBias(msg.getPlayerShelves(), msg.getBoard(), msg.getEndGameToken(), msg.getBag(), msg.getCommonGoal1TokenStack(), msg.getCommonGoal1GivenPlayers(), msg.getCommonGoal2TokenStack(), msg.getCommonGoal2GivenPlayers(), msg.getPlayerPoints());
+        newTurnInitializingBias(msg.getPlayerShelves(), msg.getBoard(), msg.getEndGameToken(), msg.getBag(), msg.getCommonGoal1TokenStack(), msg.getCommonGoal1GivenPlayers(), msg.getCommonGoal2TokenStack(), msg.getCommonGoal2GivenPlayers(), msg.getPlayerPoints(), msg.getEndGameTokenPlayer());
     }
 
     /**
@@ -287,10 +285,14 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
      * @param commonGoal2GivenPlayers is the map of common goal 2 given players
      * @param playerPoints            is the map of player points
      */
-    private void newTurnInitializingBias(Map<String, Tile[][]> playerShelves, Tile[][] board, boolean endGameToken, Map<Tile, Integer> bag, Stack<Integer> commonGoal1TokenStack, Map<Integer, String> commonGoal1GivenPlayers, Stack<Integer> commonGoal2TokenStack, Map<Integer, String> commonGoal2GivenPlayers, Map<String, Integer> playerPoints) {
+    private void newTurnInitializingBias(Map<String, Tile[][]> playerShelves, Tile[][] board, boolean endGameToken, Map<Tile, Integer> bag, Stack<Integer> commonGoal1TokenStack, Map<Integer, String> commonGoal1GivenPlayers, Stack<Integer> commonGoal2TokenStack, Map<Integer, String> commonGoal2GivenPlayers, Map<String, Integer> playerPoints, String endGameTokenPlayer) {
         if (Debugging.isDebugging()) Debugging.checkTestTile(playerShelves.get(playerName)[0][0]);
         view.updateBoard(board);
-        if (!endGameToken) view.updateEndGameToken(false);
+        if (!endGameToken) {
+            view.updateEndGameToken(false);
+            view.updateEndGameTokenPlayer(endGameTokenPlayer);
+            System.out.println("TBR debug: end game token player -> " + endGameTokenPlayer);
+        }
         view.updateBag(bag);
         view.updateCommonGoal1TokenStack(commonGoal1TokenStack);
         view.updateCommonGoal1GivenPlayers(commonGoal1GivenPlayers);
@@ -311,7 +313,7 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
      * @author Francesco Ostidich
      */
     public void newTurnInitializing(@NotNull EndGame msg) {
-        newTurnInitializingBias(msg.getPlayerShelves(), msg.getBoard(), msg.getEndGameToken(), msg.getBag(), msg.getCommonGoal1TokenStack(), msg.getCommonGoal1GivenPlayers(), msg.getCommonGoal2TokenStack(), msg.getCommonGoal2GivenPlayers(), msg.getPlayerPoints());
+        newTurnInitializingBias(msg.getPlayerShelves(), msg.getBoard(), msg.getEndGameToken(), msg.getBag(), msg.getCommonGoal1TokenStack(), msg.getCommonGoal1GivenPlayers(), msg.getCommonGoal2TokenStack(), msg.getCommonGoal2GivenPlayers(), msg.getPlayerPoints(), msg.getEndGameTokenPlayer());
     }
 
     /**

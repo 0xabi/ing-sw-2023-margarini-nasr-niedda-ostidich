@@ -14,24 +14,36 @@ import java.util.*;
 
 public class Debugging {
 
-    /**
-     * A class to measure performance about some instruction or piece of code.
-     */
+    private static final boolean debugging = false;
+
+    public static void main(String @NotNull [] args) {
+        if (args.length != 0) {
+            if (args.length == 1) {
+                ClientApp.main(new String[]{args[0], "1"});
+            } else {
+                ClientApp.main(new String[]{args[0], args[1]});
+            }
+        } else {
+            if (isDebugging()) connectionStatisticsNewLine();
+            ServerApp.main(new String[]{});
+        }
+    }
+
     public static class Watch
     {
 
         boolean on = false;
-        public static Watch temp = new Watch("temp");
 
+        public static Watch temp = new Watch("temp");
         boolean started = false;
 
         String name;
         long begin=0L;
-
         public Watch(String name)
         {
             this.name = name;
         }
+
         public void start()
         {
             if(started)
@@ -68,9 +80,8 @@ public class Debugging {
         {
             return started;
         }
-    }
 
-    private static final boolean debugging = false;
+    }
 
     private static String generatedConnection;
 
@@ -154,21 +165,12 @@ public class Debugging {
         }
     }
 
-    public static void main(String @NotNull [] args) {
-        if (args.length != 0) {
-            ClientApp.main(new String[]{args[0], args[1]});
-        } else {
-            if (isDebugging()) connectionStatisticsNewLine();
-            ServerApp.main(new String[]{});
-        }
-    }
-
     /**
      * No arguments: network types randomly assigned.<br>
      * Two arguments: arguments used as respective network types.
      */
     @SuppressWarnings("MismatchedReadAndWriteOfArray")
-    private static final String[] connections = {"RMI", "RMI"};
+    private static final String[] connections = {};
 
     public static String getConfiguration() {
         return configuration;

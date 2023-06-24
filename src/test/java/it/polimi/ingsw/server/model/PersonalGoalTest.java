@@ -32,7 +32,7 @@ public class PersonalGoalTest {
     @Test
     public void assignPoints_shouldAddOnePlayersPoints() {
         System.out.println(player.getPersonalGoal().getMatches());
-        List<Tile> tiles = new LinkedList<>(Arrays.asList(Tile.PLANTS, Tile.CATS));
+        List<Tile> tiles = new LinkedList<>(Arrays.asList(Tile.PLANTS, Tile.PLANTS, Tile.PLANTS, Tile.PLANTS, Tile.CATS));
         System.out.println(player.getShelf().insertInColumn(tiles, 4));
         System.out.println(player.getShelf().getPosition(new Coordinates(4, 1)));
         System.out.println(PersonalGoal.getPoints());

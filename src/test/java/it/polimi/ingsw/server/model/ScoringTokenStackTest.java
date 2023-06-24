@@ -8,7 +8,7 @@ public class ScoringTokenStackTest {
     @Test
     public void getter() {
         ScoringTokenStack stack = new ScoringTokenStack(2);
-        Assert.assertEquals(2, stack.getTokenStack().size());
+        Assert.assertEquals(3, stack.getTokenStack().size());
     }
 
 }

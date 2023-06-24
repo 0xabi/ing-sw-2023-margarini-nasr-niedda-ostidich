@@ -38,6 +38,8 @@ public class GameServerController extends RoomServices {
 
     private final List<String> names;
 
+    private String endGameTokenPlayer;
+
     private final Set<String> disconnected;
 
     private final ServerModel model;
@@ -185,8 +187,10 @@ public class GameServerController extends RoomServices {
         }
         if (model.checkToRefill()) model.refill();
         if (model.checkPlayerShelfIsFull(playerName) &&
-                model.getEndGameToken().isPresent())
+                model.getEndGameToken().isPresent()) {
             model.assignEndGameTokenPoints(playerName);
+            endGameTokenPlayer = playerName;
+        }
     }
 
     /**
@@ -224,7 +228,7 @@ public class GameServerController extends RoomServices {
                             MessageID.NEW_TURN_END_GAME,
                             model.getBoard(),
                             model.getEndGameToken().isPresent(),
-                            model.getBag(),
+                            endGameTokenPlayer, model.getBag(),
                             model.getCommonGoal1Tokens(),
                             model.getCommonGoal2Tokens(),
                             model.getCommonGoal1GivenPlayers(),
@@ -256,6 +260,7 @@ public class GameServerController extends RoomServices {
                         MessageID.NEW_TURN_NEXT_PLAYER,
                         model.getBoard(),
                         model.getEndGameToken().isPresent(),
+                        endGameTokenPlayer,
                         model.getBag(),
                         model.getCommonGoal1Tokens(),
                         model.getCommonGoal2Tokens(),

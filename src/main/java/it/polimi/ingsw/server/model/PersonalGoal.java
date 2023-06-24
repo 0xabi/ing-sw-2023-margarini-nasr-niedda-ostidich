@@ -62,7 +62,10 @@ public class PersonalGoal {
      * @author Francesco Ostidich
      */
     private void matchesConstructor(int personalGoalNumber) {
-        JsonElement matchesElements = JsonParser.parseReader(new InputStreamReader(Objects.requireNonNull(ClassLoader.getSystemResourceAsStream("configFiles/personalGoalMatchesMap.json"))));
+        JsonElement matchesElements = JsonParser.parseReader(
+                new InputStreamReader(
+                        Objects.requireNonNull(
+                                ClassLoader.getSystemResourceAsStream("configFiles/personalGoalMatchesMap.json"))));
         JsonObject matchesObject = matchesElements.getAsJsonObject();
         JsonArray jsonCoordinates;
         for (Tile tile : Tile.values()) {

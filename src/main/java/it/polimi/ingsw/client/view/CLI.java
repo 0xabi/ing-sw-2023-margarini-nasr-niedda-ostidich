@@ -670,6 +670,7 @@ public class CLI extends GameClientView {
      */
     @Override
     public void justPrintChat() {
+        System.out.println();
         getChatMessages().forEach(System.out::println);
     }
 

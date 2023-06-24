@@ -13,10 +13,17 @@ public class NextPlayer extends Message {
 
     private final boolean endGameToken;
 
-    public NextPlayer(String playerName, MessageID messageID, Tile[][] board, boolean endGameToken, Map<Tile, Integer> bag, Stack<Integer> commonGoal1TokenStack, Stack<Integer> commonGoal2TokenStack, Map<Integer, String> commonGoal1GivenPlayers, Map<Integer, String> commonGoal2GivenPlayers, Map<String, Tile[][]> playerShelves, Map<String, Integer> playerPoints, int availablePickNumber, String nextPlayer) {
+    public String getEndGameTokenPlayer() {
+        return endGameTokenPlayer;
+    }
+
+    private final String endGameTokenPlayer;
+
+    public NextPlayer(String playerName, MessageID messageID, Tile[][] board, boolean endGameToken, String endGameTokenPlayer, Map<Tile, Integer> bag, Stack<Integer> commonGoal1TokenStack, Stack<Integer> commonGoal2TokenStack, Map<Integer, String> commonGoal1GivenPlayers, Map<Integer, String> commonGoal2GivenPlayers, Map<String, Tile[][]> playerShelves, Map<String, Integer> playerPoints, int availablePickNumber, String nextPlayer) {
         super(playerName, messageID);
         this.board = board;
         this.endGameToken = endGameToken;
+        this.endGameTokenPlayer = endGameTokenPlayer;
         this.bag = bag;
         this.commonGoal1TokenStack = commonGoal1TokenStack;
         this.commonGoal2TokenStack = commonGoal2TokenStack;

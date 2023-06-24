@@ -46,6 +46,8 @@ public abstract class GameClientView implements ClientView {
 
     private boolean endGameToken;
 
+    private String endGameTokenPlayer;
+
     private Map<Tile, Integer> bag;
 
     private String commonGoal1;
@@ -107,6 +109,14 @@ public abstract class GameClientView implements ClientView {
      */
     public List<String> getChatMessages() {
         return chatMessages;
+    }
+
+    /**
+     * @author Francesco Ostidich
+     */
+    @Override
+    public void updateEndGameTokenPlayer(String player) {
+        endGameTokenPlayer = player;
     }
 
     /**

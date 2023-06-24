@@ -5,7 +5,6 @@ import it.polimi.ingsw.general.Tile;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Stack;
 
 /**
@@ -158,6 +157,14 @@ public interface ClientView {
      * @author Francesco Ostidich
      */
     void updateGameRoom(GameRoom gameRoom);
+
+    /**
+     * Set the player who got the end game token.
+     *
+     * @author Francesco Ostidich
+     * @return end game token player
+     */
+    void updateEndGameTokenPlayer(String player);
 
     /**
      * When a new message is received, it has to be stored and shown.
