@@ -61,9 +61,9 @@ public class GUI extends GameClientView {
 
             points.clear();
 
-            assignCommonGoalPoints("paolo",8);
-            assignCommonGoalPoints("paolo",4);
-            assignCommonGoalPoints("giorgio",8);
+            calculateCGPoints("paolo",8);
+            calculateCGPoints("paolo",4);
+            calculateCGPoints("giorgio",8);
             System.out.println(commonGoalAssignationReminder);
 
             for (Map.Entry<String, Integer> entry : commonGoalAssignationReminder.entrySet())

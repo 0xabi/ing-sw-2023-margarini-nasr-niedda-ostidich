@@ -46,7 +46,7 @@ public class HomeSceneHandler extends SceneHandler{
      */
     public void exit()
     {
-        Platform.exit();
+        System.exit(0);
     }
 
     /**
