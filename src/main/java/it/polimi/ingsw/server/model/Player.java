@@ -37,9 +37,9 @@ public class Player {
     }
 
     /**
-     * //TODO java doc is to be written
+     * Getter for the name of the player
      *
-     * @return
+     * @return the name of the player
      * @author Pietro Andrea Niedda
      */
     protected String getName() {
@@ -47,9 +47,9 @@ public class Player {
     }
 
     /**
-     * //TODO java doc is to be written
+     * Getter for the points scored from the player
      *
-     * @return
+     * @return the points scored from the player
      * @author Pietro Andrea Niedda
      */
     protected int getPoints() {
@@ -57,9 +57,9 @@ public class Player {
     }
 
     /**
-     * //TODO java doc is to be written
+     * Getter for the personal goal of the player
      *
-     * @return
+     * @return the personal goal of the player
      * @author Pietro Andrea Niedda
      */
     protected PersonalGoal getPersonalGoal() {
@@ -67,9 +67,9 @@ public class Player {
     }
 
     /**
-     * //TODO java doc is to be written
+     * Getter for the shelf of the player
      *
-     * @return
+     * @return the shelf of the player
      * @author Pietro Andrea Niedda
      */
     protected Shelf getShelf() {
@@ -77,9 +77,9 @@ public class Player {
     }
 
     /**
-     * //TODO java doc is to be written
+     * This method increments the points of the player by a specified amount
      *
-     * @param points
+     * @param points the amount of which player's points will be incremented
      * @author Pietro Andrea Niedda
      */
     protected void addPoints(int points) {
@@ -87,9 +87,10 @@ public class Player {
     }
 
     /**
-     * //TODO java doc is to be written
+     * This method analyses the shelf of the player due to find the maximum number of tiles that can be inserted inside
+     * the columns
      *
-     * @return
+     * @return the maximum number of selectable tiles to be inserted in the shelf
      * @author Pietro Andrea Niedda
      */
     protected int checkAvailablePickNumber() {
@@ -103,9 +104,11 @@ public class Player {
     }
 
     /**
-     * //TODO java doc is to be written
+     * This method updates the shelf of the player, inserting the selected tiles, in the selected column, if possible.
+     * If not possible, an exception wil be thrown, advising the player that the selection was not allowed
      *
-     * @param tiles
+     * @param tiles the list of tiles that are to be inserted in the shelf
+     * @param column the column in which to insert the tiles
      * @author Pietro Andrea Niedda
      */
     protected void insertTiles(List<Tile> tiles, int column) {

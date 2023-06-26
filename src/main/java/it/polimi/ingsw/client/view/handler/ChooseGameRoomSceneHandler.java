@@ -38,16 +38,32 @@ public class ChooseGameRoomSceneHandler extends SceneHandler{
     private Button joinBtn;
     private boolean lobbyHasBeenSelected = false;
 
+    /**
+     * Prepares a list of all the available gamerooms
+     * @param gameRooms is a list of the available rooms received from the server
+     * @author Pietro Andrea Niedda
+     */
     public static void setGameRooms(List<GameRoom> gameRooms){
         ChooseGameRoomSceneHandler.gameRooms = gameRooms;
     }
-    private void getLobbys(){
+
+    /**
+     * Prepares a string that contains: the gameroom name, the name of its creator and the number of players
+     * already entered
+     * @author Pietro Andrea Niedda
+     */
+    private void getLobbies(){
         for(GameRoom gameRoom: gameRooms) lobbys.add(gameRoom.gameRoomName() + "\t" + gameRoom.creatorName() +
                 "\t" + gameRoom.enteredPlayers().size() + "/" + gameRoom.totalPlayers());
     }
+
+    /**
+     * Allows to visualize and select the gameroom via the ListView
+     * @author Pietro Andrea Niedda
+     */
     public void updateList(){
         lobbys = new LinkedList<>();
-        getLobbys();
+        getLobbies();
         lobbyList.getItems().addAll(lobbys);
         lobbyList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -57,6 +73,11 @@ public class ChooseGameRoomSceneHandler extends SceneHandler{
             }
         });
     }
+
+    /**
+     * Allows to join the previously selected gameroom
+     * @author Pietro Andrea Niedda
+     */
     public void join(){
         if(!lobbyHasBeenSelected) return;
         try {
@@ -66,6 +87,10 @@ public class ChooseGameRoomSceneHandler extends SceneHandler{
         }
     }
 
+    /**
+     * Allows to refresh the list of available lobbies
+     * @author Pietro Andrea Niedda
+     */
     public void refresh(){
         try {
             getClientController().update(new Event(EventID.CHOOSE_GAME_ROOM, "refresh"));
@@ -74,6 +99,10 @@ public class ChooseGameRoomSceneHandler extends SceneHandler{
         }
     }
 
+    /**
+     * Used to return to the previous scene
+     * @author Pietro Andrea Niedda
+     */
     public void back(){
         SceneHandler.switchScene("new_or_join");
     }

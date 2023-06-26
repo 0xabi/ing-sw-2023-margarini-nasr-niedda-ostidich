@@ -790,7 +790,7 @@ public class MatchSceneHandler extends SceneHandler {
      */
     public void chooseOrder()
     {
-        //i just chose the order but the column was invalid
+        //I just chose the order but the column was invalid
         if(ordered.size()!=0)
         {
             //changeAdviseMsg("Invalid column, please retry again");

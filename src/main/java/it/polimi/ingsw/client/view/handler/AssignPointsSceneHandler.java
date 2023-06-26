@@ -90,6 +90,10 @@ public class AssignPointsSceneHandler extends SceneHandler {
     private Map<String, Integer> PG_Points = new HashMap<>();
     private Map<String, Integer> AG_Points = new HashMap<>();
 
+    /**
+     * Hides all the information about third and fourth placed players
+     * @author Pietro Andrea Niedda
+     */
     private void hideAll(){
         third.setVisible(false);
         third_name.setVisible(false);
@@ -106,22 +110,58 @@ public class AssignPointsSceneHandler extends SceneHandler {
         fourth_agp.setVisible(false);
     }
 
+    /**
+     * Used to return to the previous scene
+     * @author Pietro Andrea Niedda
+     */
     public void back(){SceneHandler.switchScene("new_or_join");}
 
+    /**
+     * Prepares a map containing the name of the player the key, and the total amount of points scored from the player
+     * as the value
+     * @param name the name of the player
+     * @param points the total amount of points scored from the player
+     *  @author Pietro Andrea Niedda
+     */
     public void updateinfo(String name, Integer points){this.total_points.put(name, points);}
 
+    /**
+     * Prepares a map containing the name of the player the key, and the points received from the common goals as
+     * the value
+     * @param name the name of the player
+     * @param token the amount of points
+     * @author Pietro Andrea Niedda
+     */
     public void updateCGPoints(String name, int token){
         CG_Points.put(name, token);
     }
 
+    /**
+     * Prepares a map containing the name of the player the key, and the points received from the personal goal as
+     * the value
+     * @param name the name of rhe player
+     * @param points the amount of points
+     * @author Pietro Andrea Niedda
+     */
     public void updatePGPoints(String name, Integer points){
         PG_Points.put(name, points);
     }
 
+    /**
+     * Prepares a map containing the name of the player the key, and the points received from the adjacent tiles as
+     * the value
+     * @param name the name of the player
+     * @param points the amount of points
+     * @author Pietro Andrea Niedda
+     */
     public void updateAGPoints(String name, Integer points){
         AG_Points.put(name, points);
     }
 
+    /**
+     * Show each player and his positioning and the amount of points received for each category
+     * @author Pietro Andrea Niedda
+     */
     public void show(){
 
         if(total_points.size() == 4)  setFourthPlace(getLastPlace());
@@ -134,6 +174,11 @@ public class AssignPointsSceneHandler extends SceneHandler {
 
     }
 
+    /**
+     * This method is used to get the name of the player that has scored the smallest amount of points
+     * @return the name of the player with fewer points
+     * @author Pietro Andrea Niedda
+     */
     private String getLastPlace(){
 
         Integer min = 1000;
@@ -148,6 +193,11 @@ public class AssignPointsSceneHandler extends SceneHandler {
         return name;
     }
 
+    /**
+     * Sets on visible all the information about the fourth placed player
+     * @param player the name of the player in fourth position
+     * @author Pietro Andrea Niedda
+     */
     private void setFourthPlace(String player){
 
         fourth.setVisible(true);
@@ -167,6 +217,11 @@ public class AssignPointsSceneHandler extends SceneHandler {
         total_points.remove(player);
     }
 
+    /**
+     * Sets on visible all the information about the third placed player
+     * @param player the name of the player in third position
+     * @author Pietro Andrea Niedda
+     */
     private void setThirdPlace(String player){
 
         third.setVisible(true);
@@ -186,6 +241,11 @@ public class AssignPointsSceneHandler extends SceneHandler {
         total_points.remove(player);
     }
 
+    /**
+     * Sets on visible all the information about the second placed player
+     * @param player the name of the player in second position
+     * @author Pietro Andrea Niedda
+     */
     private void setSecondPlace(String player){
 
         second.setVisible(true);
@@ -202,6 +262,11 @@ public class AssignPointsSceneHandler extends SceneHandler {
         total_points.remove(player);
     }
 
+    /**
+     * Sets on visible all the information about the winner
+     * @param player the name of the winner
+     * @author Pietro Andrea Niedda
+     */
     private void setFirstPlace(String player){
 
         winner.setVisible(true);
