@@ -110,6 +110,10 @@ public class MatchSceneHandler extends SceneHandler {
     private static final HashMap<ImageView, Coordinates> imageToCoord = new HashMap<>();
     private static int availableTiles = 0;
 
+    private boolean endGameTokenIsTaken = false;
+
+    String endGameTokeHolderName;
+
     ArrayList<Coordinates> coordsList = new ArrayList<>();
 
     private final static ArrayList<String> opponentPlayersName = new ArrayList<>();
@@ -119,6 +123,9 @@ public class MatchSceneHandler extends SceneHandler {
 
     private static boolean tilesIsMoving = false;
 
+    private static boolean endGameTokenMoved = false;
+
+
     Watch pickTilesReqToServer = new Watch("pickTilesReqToServer");
     Watch chooseColumnReqToServer = new Watch("chooseColumnReqToServer");
     Watch chooseOrderReqToServer = new Watch("chooseOrderReqToServer");
@@ -127,69 +134,63 @@ public class MatchSceneHandler extends SceneHandler {
 
     /**
      * Update the text area containing the chat given the list of messages
+     *
      * @param listMessages A list with all messages
      * @author Abdullah Nasr
      */
-    public void updateChat(List<String> listMessages) {txtArea.appendText(listMessages.get(listMessages.size() - 1) + "\n");}
-
-
+    public void updateChat(List<String> listMessages) {
+        txtArea.appendText(listMessages.get(listMessages.size() - 1) + "\n");
+    }
 
 
     /**
      * Initialize and create scoring tokens
+     *
      * @author Abdullah Nasr
      */
-    public void initScoringTokens()
-    {
+    public void initScoringTokens() {
         CommonGoalsHandler.setRoot(getRoot());
         CommonGoalsHandler.setOpponentNames(opponentPlayersName);
         CommonGoalsHandler.setNamePlayer(getGui().getPlayerName());
-        CommonGoalsHandler.setShelves(mainShelf,shelfPlayer1,shelfPlayer2,shelfPlayer3);
-        CommonGoalsHandler.initScoringTokens(numTotPlayers,commonGoal1,commonGoal2);
+        CommonGoalsHandler.setShelves(mainShelf, shelfPlayer1, shelfPlayer2, shelfPlayer3);
+        CommonGoalsHandler.initScoringTokens(numTotPlayers, commonGoal1, commonGoal2);
     }
 
     /**
      * It updates the taken common goals' scoring tokens with the corresponding player's name
+     *
      * @param givenCommonGoal1 The taken common goal 1's scoring tokens with the corresponding player's name
      * @param givenCommonGoal2 The taken common goal 2's scoring tokens with the corresponding player's name
      * @author Abdullah Nasr
      */
-    public void updateCommonGoals(Map<Integer, String> givenCommonGoal1, Map<Integer,String> givenCommonGoal2)
-    {
+    public void updateCommonGoals(Map<Integer, String> givenCommonGoal1, Map<Integer, String> givenCommonGoal2) {
+
         CommonGoalsHandler.updateCommonGoal1(givenCommonGoal1);
         CommonGoalsHandler.updateCommonGoal2(givenCommonGoal2);
+
+
     }
 
     /**
      * Set the chair to the player that have the first turn
+     *
      * @author Abdullah Nasr
      */
-    public void initChair()
-    {
+    public void initChair() {
         String firstTurnPlayerName = getGui().getNames().get(0);
         int counter = 0;
 
         //if the main player have the first turn
-        if(getGui().getPlayerName().equals(firstTurnPlayerName))
-        {
+        if (getGui().getPlayerName().equals(firstTurnPlayerName)) {
             chairMainPlayer.setVisible(true);
-        }
-        else
-        {
-            for(String currentName : opponentPlayersName)
-            {
-                if(currentName.equals(firstTurnPlayerName))
-                {
-                    if(counter==0)
-                    {
+        } else {
+            for (String currentName : opponentPlayersName) {
+                if (currentName.equals(firstTurnPlayerName)) {
+                    if (counter == 0) {
                         chairPlayer1.setVisible(true);
-                    }
-                    else if(counter==1)
-                    {
+                    } else if (counter == 1) {
                         chairPlayer2.setVisible(true);
-                    }
-                    else if(counter==3)
-                    {
+                    } else if (counter == 3) {
                         chairPlayer3.setVisible(true);
                     }
                 }
@@ -199,16 +200,102 @@ public class MatchSceneHandler extends SceneHandler {
         }
     }
 
+    /**
+     * Move the end game token near the player's name
+     *
+     * @param namePlayerLbl The label of player's name
+     * @author Abdullah Nasr
+     */
+    public void moveEndGameTokenToPlayer(Label namePlayerLbl) {
+        TranslateTransition translate = new TranslateTransition();
+        double destinationX = namePlayerLbl.getLayoutX();
+        double destinationY = namePlayerLbl.getLayoutY();
+
+        translate.setNode(endGameToken);
+
+        translate.setDuration(Duration.millis(600));
+
+        translate.setToX(destinationX - endGameToken.getLayoutX());
+
+        translate.setToY(destinationY - endGameToken.getLayoutY());
+
+        translate.play();
+    }
+
+    /**
+     * Check if the end game is taken, and move the end game token
+     * to the one who took it
+     *
+     * @author Abdullah Nasr
+     */
+    public void updateEndGameToken() {
+        if (endGameTokenIsTaken && !endGameTokenMoved) {
+            String endGameTokenHolder = getEndGameTokeHolderName();
+            int counter = 0;
+
+
+            if (endGameTokenHolder.equals(getGui().getPlayerName())) {
+                moveEndGameTokenToPlayer(mainPlayerLbl);
+            } else {
+                for (String currentName : opponentPlayersName) {
+                    if (endGameTokenHolder.equals(currentName)) {
+                        if (counter == 0) {
+                            moveEndGameTokenToPlayer(player1Lbl);
+                        } else if (counter == 1) {
+                            moveEndGameTokenToPlayer(player2Lbl);
+                        } else if (counter == 3) {
+                            moveEndGameTokenToPlayer(player3Lbl);
+                        }
+                    }
+
+                    counter++;
+                }
+            }
+
+            endGameTokenMoved = true;
+        }
+    }
+
+
+    /**
+     * Return the name of the player that get the end game token
+     *
+     * @return End game token holder's name
+     * @author Abdullah Nasr
+     */
+    public String getEndGameTokeHolderName() {
+        return endGameTokeHolderName;
+    }
+
+    /**
+     * Set if the game token is taken
+     *
+     * @param taken indicates if the end game token is taken
+     * @author Abdullah Nasr
+     */
+    public void setEndGameTokenIsTaken(boolean taken) {
+        endGameTokenIsTaken = taken;
+    }
+
+    /**
+     * Set the name of the player that get the end game token
+     *
+     * @param name End game token holder's name
+     * @author Abdullah Nasr
+     */
+    public void setEndGameTokeHolderName(String name) {
+        endGameTokeHolderName = name;
+    }
 
 
     /**
      * It reads the personal goal image based on the number that is associated in the json
+     *
      * @param personalGoalNumber The number that is associated with the configuration present in the json file
      * @author Abdullah Nasr
      */
-    public void initPersonalGoal(Integer personalGoalNumber)
-    {
-        String postfix = personalGoalNumber == 1 ? ".png" : personalGoalNumber+".png";
+    public void initPersonalGoal(Integer personalGoalNumber) {
+        String postfix = personalGoalNumber == 1 ? ".png" : personalGoalNumber + ".png";
 
         personalGoal.setImage(new Image(Objects.requireNonNull(getClass().getResource("/graphics/personalGoalCards/Personal_Goals" + postfix)).toString()));
 
@@ -217,29 +304,27 @@ public class MatchSceneHandler extends SceneHandler {
 
     /**
      * Set the number of players in the match
+     *
      * @param numPlayers the number of players in the match
      * @author Abdullah Nasr
      */
-    public static void setNumOfPlayers(int numPlayers)
-    {
+    public static void setNumOfPlayers(int numPlayers) {
         numTotPlayers = numPlayers;
     }
 
     /**
      * It creates the images view for the tiles of the opponent
+     *
      * @param namePlayer The opponent's name
-     * @param shelf The image view of the opponent's shelf
+     * @param shelf      The image view of the opponent's shelf
      * @author Abdullah Nasr
      */
-    public void initOpponentShelf(String namePlayer,ImageView shelf)
-    {
+    public void initOpponentShelf(String namePlayer, ImageView shelf) {
         int posShelf = getRoot().getChildren().indexOf(shelf);
-        ImageView[][] shelfTileImages=  new ImageView[Shelf.getRowLength()][Shelf.getColumnLength()];
+        ImageView[][] shelfTileImages = new ImageView[Shelf.getRowLength()][Shelf.getColumnLength()];
 
-        for(int i=0;i<Shelf.getRowLength();i++)
-        {
-            for(int j=0;j<Shelf.getColumnLength();j++)
-            {
+        for (int i = 0; i < Shelf.getRowLength(); i++) {
+            for (int j = 0; j < Shelf.getColumnLength(); j++) {
                 ImageView iv = new ImageView();
 
 
@@ -251,8 +336,8 @@ public class MatchSceneHandler extends SceneHandler {
                 iv.setFitWidth(GuiObjectsHandler.getPlayerShelfTilesSizeWidth());
                 iv.setFitHeight(GuiObjectsHandler.getPlayerShelfTilesSizeHeight());
 
-                iv.setLayoutX(shelf.getLayoutX()+shelf.getFitWidth()*GuiObjectsHandler.getMainShelfTilesPosX(i));
-                iv.setLayoutY(shelf.getLayoutY()+shelf.getFitHeight()*GuiObjectsHandler.getMainShelfTilesPosY(j));
+                iv.setLayoutX(shelf.getLayoutX() + shelf.getFitWidth() * GuiObjectsHandler.getMainShelfTilesPosX(i));
+                iv.setLayoutY(shelf.getLayoutY() + shelf.getFitHeight() * GuiObjectsHandler.getMainShelfTilesPosY(j));
                 shelfTileImages[i][j] = iv;
                 getRoot().getChildren().add(posShelf, iv);
 
@@ -265,29 +350,24 @@ public class MatchSceneHandler extends SceneHandler {
 
     /**
      * It updates the image view of the opponent boards
+     *
      * @author Abdullah Nasr
      */
-    public void updateOpponentBoards()
-    {
+    public void updateOpponentBoards() {
 
         Watch updateOpponentBoards = new Watch("updateOpponentBoards");
         updateOpponentBoards.start();
-        for(String currentName: opponentPlayersName)
-        {
+        for (String currentName : opponentPlayersName) {
             Tile[][] currentShelf = getGui().getPlayerShelves().get(currentName);
             ImageView[][] currentTilesImages = opponentsPlayerTilesImages.get(currentName);
 
-            for(int i=0;i< Shelf.getRowLength();i++) {
+            for (int i = 0; i < Shelf.getRowLength(); i++) {
                 for (int j = 0; j < Shelf.getColumnLength(); j++) {
 
-                    if(currentTilesImages[i][j]!=null)
-                    {
-                        if(currentShelf[i][j]== null || currentShelf[i][j]==Tile.EMPTY)
-                        {
+                    if (currentTilesImages[i][j] != null) {
+                        if (currentShelf[i][j] == null || currentShelf[i][j] == Tile.EMPTY) {
                             currentTilesImages[i][j].setVisible(false);
-                        }
-                        else
-                        {
+                        } else {
                             currentTilesImages[i][j].setImage(getTileImage(currentShelf[i][j]));
                             currentTilesImages[i][j].setVisible(true);
                         }
@@ -299,62 +379,56 @@ public class MatchSceneHandler extends SceneHandler {
     }
 
     /**
-     *  Initialize GUI's components for opponent players
-     *  as Label, Image View etc.
-     *  @author Abdullah Nasr
+     * Initialize GUI's components for opponent players
+     * as Label, Image View etc.
+     *
+     * @author Abdullah Nasr
      */
-    public void initOpponentPlayers()
-    {
+    public void initOpponentPlayers() {
         //get opponent names
-        for(String currentName : getGui().getNames())
-        {
-            if(!getGui().getPlayerName().equals(currentName))
-            {
+        for (String currentName : getGui().getNames()) {
+            if (!getGui().getPlayerName().equals(currentName)) {
                 opponentPlayersName.add(currentName);
                 //initOpponentShelf(currentName, );
             }
         }
 
         //show only #numTotPlayers shelves
-        if(numTotPlayers==2)
-        {
+        if (numTotPlayers == 2) {
             player2Lbl.setVisible(false);
             player3Lbl.setVisible(false);
             shelfPlayer2.setVisible(false);
             shelfPlayer3.setVisible(false);
             player1Lbl.setText(opponentPlayersName.get(0));
-            initOpponentShelf(opponentPlayersName.get(0),shelfPlayer1);
-        }
-        else if(numTotPlayers==3)
-        {
+            initOpponentShelf(opponentPlayersName.get(0), shelfPlayer1);
+        } else if (numTotPlayers == 3) {
             player3Lbl.setVisible(false);
             shelfPlayer3.setVisible(false);
 
             player1Lbl.setText(opponentPlayersName.get(0));
-            initOpponentShelf(opponentPlayersName.get(0),shelfPlayer1);
+            initOpponentShelf(opponentPlayersName.get(0), shelfPlayer1);
 
             player2Lbl.setText(opponentPlayersName.get(1));
-            initOpponentShelf(opponentPlayersName.get(1),shelfPlayer2);
-        }
-        else if(numTotPlayers==4)
-        {
+            initOpponentShelf(opponentPlayersName.get(1), shelfPlayer2);
+        } else if (numTotPlayers == 4) {
             player1Lbl.setText(opponentPlayersName.get(0));
-            initOpponentShelf(opponentPlayersName.get(0),shelfPlayer1);
+            initOpponentShelf(opponentPlayersName.get(0), shelfPlayer1);
 
             player2Lbl.setText(opponentPlayersName.get(1));
-            initOpponentShelf(opponentPlayersName.get(1),shelfPlayer2);
+            initOpponentShelf(opponentPlayersName.get(1), shelfPlayer2);
 
             player3Lbl.setText(opponentPlayersName.get(2));
-            initOpponentShelf(opponentPlayersName.get(2),shelfPlayer3);
+            initOpponentShelf(opponentPlayersName.get(2), shelfPlayer3);
         }
 
     }
 
     /**
      * Make the columns not clickable
+     *
      * @author Pietro Andrea Niedda
      */
-    public void resetColumnsCursor(){
+    public void resetColumnsCursor() {
         col1.setVisible(false);
         col2.setVisible(false);
         col3.setVisible(false);
@@ -369,10 +443,10 @@ public class MatchSceneHandler extends SceneHandler {
 
     /**
      * Make the columns clickable
+     *
      * @author Pietro Andrea Niedda
      */
-    public void enableColumnsCursor()
-    {
+    public void enableColumnsCursor() {
         col1.setVisible(true);
         col2.setVisible(true);
         col3.setVisible(true);
@@ -387,61 +461,50 @@ public class MatchSceneHandler extends SceneHandler {
 
     /**
      * Set the number of pickable tiles
+     *
      * @param num the number of pickable tiles
      * @author Abdullah nasr
      */
-    public static void setAvailableTiles(int num)
-    {
+    public static void setAvailableTiles(int num) {
         availableTiles = num;
     }
 
 
     /**
      * Set the images of the common goals given the names of the first and second common goals
+     *
      * @param commonGoal1Name The name of the first common goal
      * @param commonGoal2Name The name of the second common goal
      * @author Abdullah Nasr
      */
-    public void setImageCommonGoals(String commonGoal1Name, String commonGoal2Name)
-    {
-        CommonGoalsHandler.setImageCommonGoals(commonGoal1,commonGoal1Name,commonGoal2,commonGoal2Name);
+    public void setImageCommonGoals(String commonGoal1Name, String commonGoal2Name) {
+        CommonGoalsHandler.setImageCommonGoals(commonGoal1, commonGoal1Name, commonGoal2, commonGoal2Name);
     }
 
     /**
      * It gives the tile image based on the tile type
+     *
      * @param tileType the tile type to be converted into image
      * @return The image of the tile
      * @author Abdullah Nasr
      */
-    public Image getTileImage(Tile tileType)
-    {
+    public Image getTileImage(Tile tileType) {
         //Random rand = new Random();
 
-        if(tileType == Tile.FRAMES)
-        {
+        if (tileType == Tile.FRAMES) {
 
             return new Image(Objects.requireNonNull(getClass().getResource("/graphics/itemTiles/Cornici1.1.png")).toString());
 
-        }
-        else if(tileType == Tile.CATS)
-        {
+        } else if (tileType == Tile.CATS) {
             return new Image(Objects.requireNonNull(getClass().getResource("/graphics/itemTiles/Gatti1.1.png")).toString());
-        }
-        else if(tileType == Tile.BOOKS)
-        {
+        } else if (tileType == Tile.BOOKS) {
             return new Image(Objects.requireNonNull(getClass().getResource("/graphics/itemTiles/Libri1.1.png")).toString());
 
-        }
-        else if(tileType == Tile.PLANTS)
-        {
+        } else if (tileType == Tile.PLANTS) {
             return new Image(Objects.requireNonNull(getClass().getResource("/graphics/itemTiles/Piante1.1.png")).toString());
-        }
-        else if(tileType == Tile.TROPHIES)
-        {
+        } else if (tileType == Tile.TROPHIES) {
             return new Image(Objects.requireNonNull(getClass().getResource("/graphics/itemTiles/Trofei1.1.png")).toString());
-        }
-        else if(tileType == Tile.GAMES)
-        {
+        } else if (tileType == Tile.GAMES) {
             return new Image(Objects.requireNonNull(getClass().getResource("/graphics/itemTiles/Giochi1.1.png")).toString());
         }
 
@@ -450,32 +513,31 @@ public class MatchSceneHandler extends SceneHandler {
 
     /**
      * Move the tiles above the shelf
+     *
      * @author Pietro Andrea Niedda
      */
-    public void moveTiles()
-    {
+    public void moveTiles() {
 
-        double tilesSize = tiles.size()*GuiObjectsHandler.getBoardTilesSizeWidth() + (tiles.size()-1) * 0.1018;
+        double tilesSize = tiles.size() * GuiObjectsHandler.getBoardTilesSizeWidth() + (tiles.size() - 1) * 0.1018;
         TranslateTransition translate;
-        double begin = mainShelf.getLayoutX() + (mainShelf.getFitWidth()- tilesSize)/2;
+        double begin = mainShelf.getLayoutX() + (mainShelf.getFitWidth() - tilesSize) / 2;
         int n = 0;
 
-            for(ImageView tile : tiles)
-            {
-                translate = new TranslateTransition();
+        for (ImageView tile : tiles) {
+            translate = new TranslateTransition();
 
-                translate.setNode(tile);
+            translate.setNode(tile);
 
-                translate.setDuration(Duration.millis(1000));
+            translate.setDuration(Duration.millis(1000));
 
-                translate.setToX((begin+n*(GuiObjectsHandler.getBoardTilesSizeWidth()+0.1018))-tile.getLayoutX());
+            translate.setToX((begin + n * (GuiObjectsHandler.getBoardTilesSizeWidth() + 0.1018)) - tile.getLayoutX());
 
-                translate.setToY(mainShelf.getLayoutY()-tile.getLayoutY()-GuiObjectsHandler.getBoardTilesSizeHeight()*2);
+            translate.setToY(mainShelf.getLayoutY() - tile.getLayoutY() - GuiObjectsHandler.getBoardTilesSizeHeight() * 2);
 
-                translate.play();
-                tile.setEffect(null);
-                n++;
-            }
+            translate.play();
+            tile.setEffect(null);
+            n++;
+        }
 
         pickPhase = false;
         insertPhase = true;
@@ -486,22 +548,20 @@ public class MatchSceneHandler extends SceneHandler {
 
     /**
      * Send to the server the chosen tiles
+     *
      * @author Pietro Andrea Niedda
      */
-    public void callPick(){
+    public void callPick() {
 
         Watch callPickWatch = new Watch("callPickWatch");
 
         callPickWatch.start();
 
-        if(!pickPhase){
+        if (!pickPhase) {
             advertising.setText("You can't pick");
-        }
-        else if(tiles.size() == 0){
+        } else if (tiles.size() == 0) {
             advertising.setText("Must choose tiles first");
-        }
-        else
-        {
+        } else {
 
             try {
                 //begin = System.currentTimeMillis();
@@ -519,22 +579,22 @@ public class MatchSceneHandler extends SceneHandler {
     }
 
 
-
     /**
      * Insert tiles into the chosen column
+     *
      * @param col The column into which insert the tiles
      * @author Pietro Andrea Niedda
      */
-    public void callInsert(int col){
+    public void callInsert(int col) {
         tilesIsMoving = true;
         TranslateTransition translate;
         int freeRowPosition = getFreeCellMainShelfPosition(col);
 
         double currFreeRowPositionY;
-        double currFreeRowPositionX = mainShelf.getLayoutX()+mainShelf.getFitWidth()*GuiObjectsHandler.getMainShelfTilesPosX(col);
+        double currFreeRowPositionX = mainShelf.getLayoutX() + mainShelf.getFitWidth() * GuiObjectsHandler.getMainShelfTilesPosX(col);
 
 
-        for(ImageView tile : ordered) {
+        for (ImageView tile : ordered) {
 
             //beginT = System.currentTimeMillis();
             int finalFreeRowPosition;
@@ -543,41 +603,38 @@ public class MatchSceneHandler extends SceneHandler {
             tile.setFitHeight(GuiObjectsHandler.getBoardTilesSizeHeight());
             translate.setNode(tile);
             translate.setDuration(Duration.millis(1000));
-            currFreeRowPositionY =mainShelf.getLayoutY()+mainShelf.getFitHeight()*GuiObjectsHandler.getMainShelfTilesPosY(freeRowPosition);
+            currFreeRowPositionY = mainShelf.getLayoutY() + mainShelf.getFitHeight() * GuiObjectsHandler.getMainShelfTilesPosY(freeRowPosition);
 
-            translate.setToY(currFreeRowPositionY -tile.getLayoutY());
-            translate.setToX(currFreeRowPositionX-tile.getLayoutX());
+            translate.setToY(currFreeRowPositionY - tile.getLayoutY());
+            translate.setToX(currFreeRowPositionX - tile.getLayoutX());
             finalFreeRowPosition = freeRowPosition;
 
             translate.setOnFinished(e -> {
 
 
-
                 //update shelf image view
-               mainShelfTileImages[col][finalFreeRowPosition].setImage(tile.getImage());
+                mainShelfTileImages[col][finalFreeRowPosition].setImage(tile.getImage());
 
-               
-               Coordinates coordTile = imageToCoord.get(tile);
 
-               //replace tile and put the new on into the board
+                Coordinates coordTile = imageToCoord.get(tile);
+
+                //replace tile and put the new on into the board
                 ImageView newTile = new ImageView();
                 newTile.setImage(null);
                 newTile.setCursor(Cursor.HAND);
                 newTile.setVisible(false);
                 newTile.setFitWidth(GuiObjectsHandler.getBoardTilesSizeWidth());
                 newTile.setFitHeight(GuiObjectsHandler.getBoardTilesSizeHeight());
-                newTile.setLayoutX(board.getLayoutX()+board.getFitWidth()*GuiObjectsHandler.getBoardTilesPosX(coordTile.x()));
-                newTile.setLayoutY(board.getLayoutY()+board.getFitHeight()*GuiObjectsHandler.getBoardTilesPosY(coordTile.y()));
-                newTile.setOnMouseClicked(event ->tileBehavior(newTile));
+                newTile.setLayoutX(board.getLayoutX() + board.getFitWidth() * GuiObjectsHandler.getBoardTilesPosX(coordTile.x()));
+                newTile.setLayoutY(board.getLayoutY() + board.getFitHeight() * GuiObjectsHandler.getBoardTilesPosY(coordTile.y()));
+                newTile.setOnMouseClicked(event -> tileBehavior(newTile));
 
                 imageToCoord.remove(tile);
                 imageToCoord.put(newTile, coordTile);
-                boardTilesImages[coordTile.x()][coordTile.y()]=newTile;
-                getRoot().getChildren().add(indexPosShelf,newTile);
-                tilesIsMoving=false;
+                boardTilesImages[coordTile.x()][coordTile.y()] = newTile;
+                getRoot().getChildren().add(indexPosShelf, newTile);
+                tilesIsMoving = false;
                 updateBoard();
-
-
 
             });
 
@@ -608,18 +665,16 @@ public class MatchSceneHandler extends SceneHandler {
      * The function gives the last free row from a specified column i.e.
      * the index of the first row starting from 0(bottom) that doesn't contain
      * a tile.
+     *
      * @param col The column in which search the first free slot
      * @return The index of the first row starting from 0(bottom) that doesn't contain a tile
      * @author Abdullah Nasr
      */
-    private int getFreeCellMainShelfPosition(int col)
-    {
+    private int getFreeCellMainShelfPosition(int col) {
         Tile[][] board = prevMainShelf;
 
-        for(int i=0;i<Shelf.getColumnLength();i++)
-        {
-            if(board[col][i]==null || board[col][i]==Tile.EMPTY)
-            {
+        for (int i = 0; i < Shelf.getColumnLength(); i++) {
+            if (board[col][i] == null || board[col][i] == Tile.EMPTY) {
                 return i;
             }
         }
@@ -630,22 +685,19 @@ public class MatchSceneHandler extends SceneHandler {
     /**
      * Put the tiles into the specified column
      * The index column starts from 0
+     *
      * @param column a number(from 0) that indicates the column in which insert the tiles
      * @author Abdullah Nasr
      */
-    public void putCol(int column)
-    {
-        if(!insertPhase) {
+    public void putCol(int column) {
+        if (!insertPhase) {
             advertising.setText("It's not insert phase");
-        }
-        else if(ordered.size() != tiles.size()){
+        } else if (ordered.size() != tiles.size()) {
             advertising.setText("Must choose order first");
-        }
-        else
-        {
+        } else {
             //resetColumnsCursor();
             try {
-                selectedColumn=true;
+                selectedColumn = true;
                 selectedColumnNumber = column;
                 chooseColumnReqToServer.start();
                 Watch.temp.start();
@@ -661,65 +713,66 @@ public class MatchSceneHandler extends SceneHandler {
 
     /**
      * Change the player's message label
+     *
      * @param msg the message to be shown to the player
      * @author Abdullah Nasr
      */
-    public void changeAdviseMsg(String msg)
-    {
+    public void changeAdviseMsg(String msg) {
         advertising.setText(msg);
     }
 
     /**
      * Insert tiles into the first column
+     *
      * @author Pietro Andrea Niedda
      */
-    public void putCol1()
-    {
+    public void putCol1() {
         putCol(0);
     }
 
     /**
      * Insert tiles into the second column
+     *
      * @author Pietro Andrea Niedda
      */
-    public void putCol2()
-    {
+    public void putCol2() {
         putCol(1);
     }
 
     /**
      * Insert tiles into the third column
+     *
      * @author Pietro Andrea Niedda
      */
-    public void putCol3()
-    {
+    public void putCol3() {
         putCol(2);
     }
 
     /**
      * Insert tiles into the fourth column
+     *
      * @author Pietro Andrea Niedda
      */
-    public void putCol4()
-    {
+    public void putCol4() {
         putCol(3);
     }
 
     /**
      * Insert tiles into the fifth column
+     *
      * @author Pietro Andrea Niedda
      */
-    public void putCol5()
-    {
+    public void putCol5() {
         putCol(4);
     }
 
 
     /**
      * Send a message to other players
+     *
      * @author Abdullah Nasr
      */
-    public void sendMsg(){
+    public void sendMsg() {
 
         try {
             getClientController().update(new Event(EventID.JUST_SCAN_CHAT, txtField.getText()));
@@ -732,22 +785,22 @@ public class MatchSceneHandler extends SceneHandler {
 
     /**
      * set if the player is in the pick phase
+     *
      * @param state can be true if the player is in the pick phase false otherwise
      * @author Abdullah Nasr
      */
-    public static void setPickPhase(boolean state)
-    {
-        pickPhase=state;
+    public static void setPickPhase(boolean state) {
+        pickPhase = state;
     }
 
 
     /**
      * It creates the images view(5x6) for the tiles contained in the player's shelf
      * at the beginning these images will have empty image, it will change during the game.
+     *
      * @author Abdullah Nasr
      */
-    public void initMainShelf()
-    {
+    public void initMainShelf() {
 
         //set name player
         String mainPlayer = getGui().getPlayerName();
@@ -755,10 +808,8 @@ public class MatchSceneHandler extends SceneHandler {
 
         indexPosShelf = getRoot().getChildren().indexOf(mainShelf);
 
-        for(int i=0;i<Shelf.getRowLength();i++)
-        {
-            for(int j=0;j<Shelf.getColumnLength();j++)
-            {
+        for (int i = 0; i < Shelf.getRowLength(); i++) {
+            for (int j = 0; j < Shelf.getColumnLength(); j++) {
                 ImageView iv = new ImageView();
 
 
@@ -770,8 +821,8 @@ public class MatchSceneHandler extends SceneHandler {
                 iv.setFitWidth(GuiObjectsHandler.getMainShelfTilesSizeWidth());
                 iv.setFitHeight(GuiObjectsHandler.getMainShelfTilesSizeHeight());
 
-                iv.setLayoutX(mainShelf.getLayoutX()+mainShelf.getFitWidth()*GuiObjectsHandler.getMainShelfTilesPosX(i));
-                iv.setLayoutY(mainShelf.getLayoutY()+mainShelf.getFitHeight()*GuiObjectsHandler.getMainShelfTilesPosY(j));
+                iv.setLayoutX(mainShelf.getLayoutX() + mainShelf.getFitWidth() * GuiObjectsHandler.getMainShelfTilesPosX(i));
+                iv.setLayoutY(mainShelf.getLayoutY() + mainShelf.getFitHeight() * GuiObjectsHandler.getMainShelfTilesPosY(j));
                 mainShelfTileImages[i][j] = iv;
                 getRoot().getChildren().add(indexPosShelf, iv);
 
@@ -788,20 +839,16 @@ public class MatchSceneHandler extends SceneHandler {
      *
      * @author Abdullah Nasr
      */
-    public void chooseOrder()
-    {
+    public void chooseOrder() {
         //I just chose the order but the column was invalid
-        if(ordered.size()!=0)
-        {
+        if (ordered.size() != 0) {
             //changeAdviseMsg("Invalid column, please retry again");
             try {
                 getClientController().update(new Event(EventID.CHOOSE_ORDER, coordsList));
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
-        }
-        else
-        {
+        } else {
             pickTilesReqToServer.stop();
             changeAdviseMsg("Choose the order of your picked tiles");
 
@@ -816,26 +863,23 @@ public class MatchSceneHandler extends SceneHandler {
      * If the function is called from column selection phase it means
      * that the previous selection failed, so it prompt to retry otherwise
      * it will animate the tiles
+     *
      * @param chooseColumnPhase true if you call the function during the column selection
      *                          phase, false otherwise
      * @author Abdullah Nasr
      */
-    public void checkColumnSelection(boolean chooseColumnPhase)
-    {
+    public void checkColumnSelection(boolean chooseColumnPhase) {
 
-        if(selectedColumn&&chooseColumnPhase)
-        {
+        if (selectedColumn && chooseColumnPhase) {
             changeAdviseMsg("Invalid column, please retry again");
-        }
-        else if(selectedColumn&&ordered.size()!=0)
-        {
+        } else if (selectedColumn && ordered.size() != 0) {
             callInsert(selectedColumnNumber);
         }
 
-        if(chooseColumnReqToServer.isRunning())
+        if (chooseColumnReqToServer.isRunning())
             chooseColumnReqToServer.stop();
 
-        if(chooseOrderReqToServer.isRunning())
+        if (chooseOrderReqToServer.isRunning())
             chooseOrderReqToServer.stop();
 
     }
@@ -843,24 +887,20 @@ public class MatchSceneHandler extends SceneHandler {
     /**
      * If the selection was illegal, prompt to retry the selection otherwise
      * prompt to continue with selection
+     *
      * @author Abdullah Nasr
      */
-    public void checkSelection()
-    {
-        if(tiles.size()!=0)
-        {
+    public void checkSelection() {
+        if (tiles.size() != 0) {
             changeAdviseMsg("Invalid selection, retry.");
 
-            for(ImageView iv : tiles)
-            {
+            for (ImageView iv : tiles) {
                 iv.setEffect(null);
             }
 
             tiles.clear();
             coordsList.clear();
-        }
-        else
-        {
+        } else {
             changeAdviseMsg("You can pick more " + availableTiles + " tiles");
         }
     }
@@ -870,22 +910,23 @@ public class MatchSceneHandler extends SceneHandler {
      * The behavior depends on if the game is in the picking phase or insertion phase.
      * During the picking phase it stores the picked tiles to be sent to the server.
      * During the insertion phase it stored the chosen order of the tiles' insertion to be sent to the server.
+     *
      * @param tile The tile's image
      * @author Pietro Andrea Niedda
      */
-    private void tileBehavior(ImageView tile){
+    private void tileBehavior(ImageView tile) {
         Watch tileBehaviorWatch = new Watch("tileBehavior");
         tileBehaviorWatch.start();
-        if(pickPhase) {
+        if (pickPhase) {
             if (tiles.contains(tile)) {
                 tile.setEffect(null);
                 tiles.remove(tile);
                 coordsList.remove(imageToCoord.get(tile));
-                System.out.println("Removed tile: "+ imageToCoord.get(tile));
+                System.out.println("Removed tile: " + imageToCoord.get(tile));
 
                 availableTiles++;
                 changeAdviseMsg("You can pick more " + availableTiles + " tiles");
-            } else if (availableTiles>0) {
+            } else if (availableTiles > 0) {
                 tile.setEffect(new Glow(1));
                 tiles.add(tile);
                 coordsList.add(imageToCoord.get(tile));
@@ -893,30 +934,26 @@ public class MatchSceneHandler extends SceneHandler {
                 availableTiles--;
                 changeAdviseMsg("You can pick more " + availableTiles + " tiles");
             } else advertising.setText("can't choose more tiles");
-        }
-        else if(insertPhase){
-            if(tiles.contains(tile)) {
+        } else if (insertPhase) {
+            if (tiles.contains(tile)) {
                 if (ordered.contains(tile)) {
                     tile.setEffect(null);
                     ordered.remove(tile);
-                    selectedColumn=false;
+                    selectedColumn = false;
                     changeAdviseMsg("Choose the order of your picked tiles");
                 } else if (ordered.size() < 3) {
                     tile.setEffect(new Glow(1));
                     ordered.add(tile);
-                    if(tiles.size() == ordered.size())
-                    {
+                    if (tiles.size() == ordered.size()) {
                         ArrayList<Tile> coordsList = new ArrayList<>();
-                        for(ImageView iv : ordered)
-                        {
+                        for (ImageView iv : ordered) {
                             Coordinates coord = imageToCoord.get(iv);
                             coordsList.add(getGui().getBoard()[coord.x()][coord.y()]);
                         }
 
                         try {
                             System.out.println("Choosed Order");
-                            for(Tile currentT : coordsList)
-                            {
+                            for (Tile currentT : coordsList) {
                                 System.out.println(currentT);
                             }
                             chooseOrderReqToServer.start();
@@ -925,8 +962,7 @@ public class MatchSceneHandler extends SceneHandler {
                             throw new RuntimeException(e);
                         }
                     }
-                }
-                else advertising.setText("Can't choose this  tile");
+                } else advertising.setText("Can't choose this  tile");
             }
         }
 
@@ -935,29 +971,24 @@ public class MatchSceneHandler extends SceneHandler {
 
     /**
      * It will change the image view contained in the board checking the tile array.
+     *
      * @author Abdullah Nasr
      */
-    public void updateBoard()
-    {
+    public void updateBoard() {
 
         Watch updateBoardWatch = new Watch("updateBoard");
         updateBoardWatch.start();
-        if(!tilesIsMoving)
-        {
+        if (!tilesIsMoving) {
 
             Tile[][] currboard = getGui().getBoard();
 
-            for(int i=0;i< Board.getRowLength();i++) {
+            for (int i = 0; i < Board.getRowLength(); i++) {
                 for (int j = 0; j < Board.getColumnLength(); j++) {
 
-                    if(boardTilesImages[i][j]!=null)
-                    {
-                        if(currboard[i][j]== null || currboard[i][j]==Tile.EMPTY)
-                        {
+                    if (boardTilesImages[i][j] != null) {
+                        if (currboard[i][j] == null || currboard[i][j] == Tile.EMPTY) {
                             boardTilesImages[i][j].setVisible(false);
-                        }
-                        else
-                        {
+                        } else {
                             boardTilesImages[i][j].setImage(getTileImage(currboard[i][j]));
                             boardTilesImages[i][j].setVisible(true);
                         }
@@ -972,32 +1003,30 @@ public class MatchSceneHandler extends SceneHandler {
 
     /**
      * It creates the images of board's tiles.
+     *
      * @author Pietro Andrea Niedda
      */
-    public void fillBoard(){
+    public void fillBoard() {
 
         Tile[][] currboard = getGui().getBoard();
         int indexPosShelf = getRoot().getChildren().indexOf(mainShelf);
-        
-        for(int i=0;i< Board.getColumnLength();i++)
-        {
-            for(int j=0;j<Board.getRowLength();j++)
-            {
-                if(currboard[j][i]!=null && currboard[j][i]!=Tile.EMPTY)
-                {
+
+        for (int i = 0; i < Board.getColumnLength(); i++) {
+            for (int j = 0; j < Board.getRowLength(); j++) {
+                if (currboard[j][i] != null && currboard[j][i] != Tile.EMPTY) {
                     ImageView tile = new ImageView();
                     tile.setImage(getTileImage(currboard[j][i]));
                     tile.setCursor(Cursor.HAND);
                     tile.setFitWidth(GuiObjectsHandler.getBoardTilesSizeWidth());
                     tile.setFitHeight(GuiObjectsHandler.getBoardTilesSizeHeight());
-                    tile.setLayoutX(board.getLayoutX()+board.getFitWidth()*GuiObjectsHandler.getBoardTilesPosX(j));
-                    tile.setLayoutY(board.getLayoutY()+board.getFitHeight()*GuiObjectsHandler.getBoardTilesPosY(i));
-                    tile.setOnMouseClicked(event ->tileBehavior(tile));
-                    System.out.println("I added "+currboard[j][i]+ "in position x: "+ GuiObjectsHandler.getBoardTilesPosX(i) + " y: "+GuiObjectsHandler.getBoardTilesPosY(j));
-                    imageToCoord.put(tile,new Coordinates(j,i));
-                    boardTilesImages[j][i]=tile;
+                    tile.setLayoutX(board.getLayoutX() + board.getFitWidth() * GuiObjectsHandler.getBoardTilesPosX(j));
+                    tile.setLayoutY(board.getLayoutY() + board.getFitHeight() * GuiObjectsHandler.getBoardTilesPosY(i));
+                    tile.setOnMouseClicked(event -> tileBehavior(tile));
+                    System.out.println("I added " + currboard[j][i] + "in position x: " + GuiObjectsHandler.getBoardTilesPosX(i) + " y: " + GuiObjectsHandler.getBoardTilesPosY(j));
+                    imageToCoord.put(tile, new Coordinates(j, i));
+                    boardTilesImages[j][i] = tile;
                     //System.out.println("picked tile:"+i+","+j);
-                    getRoot().getChildren().add(indexPosShelf,tile);
+                    getRoot().getChildren().add(indexPosShelf, tile);
 
                 }
             }
@@ -1014,14 +1043,14 @@ public class MatchSceneHandler extends SceneHandler {
         Rectangle2D bounds = screen.getVisualBounds();
         double panePrefWidth = pane.getPrefWidth();
         double panePrefHeight = pane.getPrefHeight();
-        double ratio_x = bounds.getWidth()/panePrefWidth;
-        double ratio_y =  bounds.getHeight()/panePrefHeight;
+        double ratio_x = bounds.getWidth() / panePrefWidth;
+        double ratio_y = bounds.getHeight() / panePrefHeight;
 
 
         getRoot().setScaleX(ratio_x);
         getRoot().setScaleY(ratio_y);
-        getRoot().setTranslateX( (bounds.getWidth()-panePrefWidth)/2);
-        getRoot().setTranslateY((bounds.getHeight()-panePrefHeight)/2);
+        getRoot().setTranslateX((bounds.getWidth() - panePrefWidth) / 2);
+        getRoot().setTranslateY((bounds.getHeight() - panePrefHeight) / 2);
 
         System.out.println("resize done");
 
@@ -1030,10 +1059,10 @@ public class MatchSceneHandler extends SceneHandler {
     /**
      * Clear data of the match
      * Is needed in case you make another match in the same GUI instance
+     *
      * @author Abdullah Nasr
      */
-    public void clear()
-    {
+    public void clear() {
         opponentPlayersName.clear();
         imageToCoord.clear();
         opponentsPlayerTilesImages.clear();
@@ -1057,7 +1086,7 @@ public class MatchSceneHandler extends SceneHandler {
         fillBoard();
 
         txtField.setOnKeyPressed(event -> {
-            if(event.getCode() == KeyCode.ENTER) {
+            if (event.getCode() == KeyCode.ENTER) {
                 sendMsg();
             }
         });
@@ -1067,5 +1096,6 @@ public class MatchSceneHandler extends SceneHandler {
         getStage().setScene(new Scene(getRoot()));
 
     }
+
 
 }

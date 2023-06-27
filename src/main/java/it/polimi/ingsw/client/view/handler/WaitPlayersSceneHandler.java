@@ -51,10 +51,19 @@ public class WaitPlayersSceneHandler extends SceneHandler{
 
 
     private static GameRoom room;
+
+    /**
+     * Set the game room
+     * @param room The game room
+     * @author Abdullah Nasr
+     */
     public static void setRoom(GameRoom room) {
        WaitPlayersSceneHandler.room = room;
     }
 
+    /**
+     * @author Abdullah Nasr
+     */
     @Override
     public void resize() {
 
@@ -87,21 +96,14 @@ public class WaitPlayersSceneHandler extends SceneHandler{
         entered_players.setFont(Font.font(entered_players.getFont().getFamily(), entered_players.getFont().getSize()*ratio_y));
         wait_players_lbl.setFont(Font.font(wait_players_lbl.getFont().getFamily(), wait_players_lbl.getFont().getSize()*ratio_y));
 
-        //room_name.setLayoutX(room_name_lbl.getLayoutX()+room_name_lbl.getBoundsInParent().getWidth());
-
-    /*wait_players_lbl
-entered_players_lbl
-max_players_lbl
-creator_lbl
-room_name_lbl
-room_name
-creator
-max_players
-entered_players*/
-
 
     }
 
+    /**
+     * It updates the information about the room as the name, creator's name, number of players and
+     * the current players that are in.
+     * @author Abdullah Nasr
+     */
     public void updateInfo()
     {
         StringBuilder players = new StringBuilder();
@@ -122,6 +124,9 @@ entered_players*/
     }
 
 
+    /**
+     * @author Abdullah Nasr
+     */
     @Override
     public void runScene() {
 

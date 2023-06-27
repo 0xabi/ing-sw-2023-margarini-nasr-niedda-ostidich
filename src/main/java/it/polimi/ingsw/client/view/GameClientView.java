@@ -119,6 +119,7 @@ public abstract class GameClientView implements ClientView {
         endGameTokenPlayer = player;
     }
 
+
     /**
      * @author Francesco Ostidich
      */
@@ -128,6 +129,18 @@ public abstract class GameClientView implements ClientView {
         if (chatMessages.size() > 7) {
             chatMessages.remove(0);
         }
+    }
+
+
+    /**
+     * Getter for end game token name.
+     *
+     * @return end game token name
+     * @author Abdullah Nasr
+     */
+    public String getEndGameTokenPlayer()
+    {
+        return endGameTokenPlayer;
     }
 
     /**

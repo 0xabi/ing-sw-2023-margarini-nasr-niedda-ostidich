@@ -27,14 +27,19 @@ public abstract class SceneHandler {
     private static GUI gui;
 
 
+    /**
+     * Set the Pane
+     * @param root The root pane
+     * @author Abdullah Nasr
+     */
     public static void setRoot(Pane root)
     {
         SceneHandler.root = root;
     }
 
     /**
-     *
-     * @return
+     * Get the pane
+     * @return The pane root
      * @author Abdullah Nasr
      */
     public static Pane getRoot()
@@ -43,7 +48,7 @@ public abstract class SceneHandler {
     }
 
     /**
-     * set the GUI that communicates with the handler
+     * Set the GUI that communicates with the handler
      * @param gui the GUI that communicates with the handler
      * @author Abdullah Nasr
      */
@@ -53,8 +58,8 @@ public abstract class SceneHandler {
     }
 
     /**
-     *
-     * @return GUI  that communicates with the handler
+     * Get the GUI that communicates with the handler
+     * @return GUI that communicates with the handler
      * @author Abdullah Nasr
      */
     public static GUI getGui()
@@ -63,8 +68,8 @@ public abstract class SceneHandler {
     }
 
     /**
-     *
-     * @param stage
+     * Set the stage
+     * @param stage The stage
      * @author Abdullah Nasr
      */
     public static void setStage(Stage stage)
@@ -73,8 +78,8 @@ public abstract class SceneHandler {
     }
 
     /**
-     *
-     * @param scene
+     * Set the scene
+     * @param scene The scene
      * @author Abdullah Nasr
      */
     public static void setScene(Scene scene)
@@ -84,8 +89,8 @@ public abstract class SceneHandler {
     }
 
     /**
-     *
-     * @return
+     * Get the scene
+     * @return The scene
      * @author Abdullah Nasr
      */
     public static Scene getScene()
@@ -94,8 +99,8 @@ public abstract class SceneHandler {
     }
 
     /**
-     *
-     * @param cc
+     * Set the client controller
+     * @param cc The client controller
      * @author Abdullah Nasr
      */
     public static void setClientController(ClientController cc)
@@ -104,18 +109,8 @@ public abstract class SceneHandler {
     }
 
     /**
-     *
-     * @return
-     * @author Abdullah Nasr
-     */
-    public static Stage getStage()
-    {
-        return stage;
-    }
-
-    /**
-     *
-     * @return
+     * Get the client controller
+     * @return The client controller
      * @author Abdullah Nasr
      */
     public static ClientController getClientController()
@@ -123,9 +118,21 @@ public abstract class SceneHandler {
         return cc;
     }
 
+
     /**
-     *
-     * @param nameRes
+     * Get the stage
+     * @return The stage
+     * @author Abdullah Nasr
+     */
+    public static Stage getStage()
+    {
+        return stage;
+    }
+
+
+    /**
+     * Switch the scene given the scene's name
+     * @param nameRes The name of the scene
      * @author Abdullah Nasr
      */
     public static void switchScene(String nameRes)
@@ -143,34 +150,11 @@ public abstract class SceneHandler {
             throw new RuntimeException(e);
         }
     }
-    public static void resizetest()
-    {
-        Stage stage = getStage();
-        double height = stage.getScene().getHeight();
-        double width = stage.getScene().getWidth();
 
-        //stage min sizes
-        stage.setMinHeight(450);
-        stage.setMinWidth(800);
-
-        //horizontal listener
-        stage.getScene().widthProperty().addListener((obs, oldVal, newVal) -> {
-            double scaleX = (newVal.doubleValue()/width);
-            getRoot().setScaleX(scaleX);
-            getRoot().setTranslateX(getRoot().getTranslateX() + (newVal.doubleValue()-oldVal.doubleValue())/2);
-        });
-
-        //vertical listener
-        stage.getScene().heightProperty().addListener((obs, oldVal, newVal) -> {
-            double scaleY = (newVal.doubleValue()/height);
-            getRoot().setScaleY(scaleY);
-            getRoot().setTranslateY(getRoot().getTranslateY() + (newVal.doubleValue()-oldVal.doubleValue())/2);
-        });
-    }
 
     /**
-     *
-     * @param sh
+     * Set the current scene handler
+     * @param sh The current scene handler
      * @author Abdullah Nasr
      */
     public static void setCurrentHandler(SceneHandler sh)
@@ -179,8 +163,8 @@ public abstract class SceneHandler {
     }
 
     /**
-     *
-     * @return
+     * Get the current scene handler
+     * @return The current scene handler
      * @author Abdullah Nasr
      */
     public static SceneHandler getCurrentHandler()

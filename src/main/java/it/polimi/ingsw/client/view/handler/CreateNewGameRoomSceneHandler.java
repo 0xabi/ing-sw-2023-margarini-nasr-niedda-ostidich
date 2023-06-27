@@ -59,7 +59,10 @@ public class CreateNewGameRoomSceneHandler extends SceneHandler {
     private AnchorPane pane;
 
 
-
+    /**
+     * Update two players checkbox
+     * @author Abdullah Nasr
+     */
     public void selectTwoPlayers()
     {
         twoPlayersCB.setSelected(true);
@@ -67,6 +70,10 @@ public class CreateNewGameRoomSceneHandler extends SceneHandler {
         fourPlayersCB.setSelected(false);
     }
 
+    /**
+     * Update three players checkbox
+     * @author Abdullah Nasr
+     */
     public void selectThreePlayers()
     {
         twoPlayersCB.setSelected(false);
@@ -74,12 +81,21 @@ public class CreateNewGameRoomSceneHandler extends SceneHandler {
         fourPlayersCB.setSelected(false);
     }
 
+    /**
+     * Update four players checkbox
+     * @author Abdullah Nasr
+     */
     public void selectFourPlayers()
     {
         twoPlayersCB.setSelected(false);
         threePlayersCB.setSelected(false);
         fourPlayersCB.setSelected(true);
     }
+
+    /**
+     * Send the new game room request and continue
+     * @author Abdullah Nasr
+     */
     public void next()
     {
 
@@ -101,11 +117,19 @@ public class CreateNewGameRoomSceneHandler extends SceneHandler {
         }
     }
 
+    /**
+     * Switch to home scene
+     * @author Abdullah Nasr
+     */
     public void back()
     {
         SceneHandler.switchScene("home");
     }
 
+
+    /**
+     * @author Abdullah Nasr
+     */
     @Override
     public void runScene() {
 
@@ -122,6 +146,9 @@ public class CreateNewGameRoomSceneHandler extends SceneHandler {
 
     }
 
+    /**
+     * @author Abdullah Nasr
+     */
     @Override
     public void resize() {
 

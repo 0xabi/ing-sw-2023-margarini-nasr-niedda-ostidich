@@ -16,6 +16,11 @@ import java.io.IOException;
 
 public class GUIApp extends Application {
 
+    /**
+     * The entry point that run JavaFX app given the arguments.
+     * @param args The arguments
+     * @author Abdullah Nasr
+     */
     public static void main(String[] args)
     {
         launch(args);

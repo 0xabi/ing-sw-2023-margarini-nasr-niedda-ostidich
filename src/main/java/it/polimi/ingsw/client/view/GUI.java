@@ -38,46 +38,7 @@ public class GUI extends GameClientView {
         //SceneHandler.switchScene("match");
 
         Platform.runLater(() ->
-        {
-            SceneHandler.switchScene("player_name");
-
-           /*SceneHandler.switchScene("assign_points");
-            HashMap<String, Integer> points = new HashMap<>();
-
-            points.put("paolo", 10);
-            points.put("giorgio", 11);
-
-            AssignPointsSceneHandler apsh = (AssignPointsSceneHandler) SceneHandler.getCurrentHandler();
-
-            for (Map.Entry<String, Integer> entry : points.entrySet())
-                apsh.updatePGPoints(entry.getKey(), entry.getValue());
-
-            points.clear();
-            points.put("paolo", 17);
-            points.put("giorgio", 15);
-
-            for (Map.Entry<String, Integer> entry : points.entrySet())
-                apsh.updateAGPoints(entry.getKey(), entry.getValue());
-
-            points.clear();
-
-            calculateCGPoints("paolo",8);
-            calculateCGPoints("paolo",4);
-            calculateCGPoints("giorgio",8);
-            System.out.println(commonGoalAssignationReminder);
-
-            for (Map.Entry<String, Integer> entry : commonGoalAssignationReminder.entrySet())
-                apsh.updateCGPoints(entry.getKey(), entry.getValue());
-
-            points.clear();
-            points.put("paolo", 27);
-            points.put("giorgio", 28);
-
-            for (Map.Entry<String, Integer> entry : points.entrySet())
-                apsh.updateinfo(entry.getKey(), entry.getValue());
-
-            apsh.show();*/
-        });
+                SceneHandler.switchScene("player_name"));
 
     }
 
@@ -85,9 +46,7 @@ public class GUI extends GameClientView {
     public void chooseNewOrJoin() {
 
 
-        Platform.runLater(() -> {
-            SceneHandler.switchScene("new_or_join");
-        });
+        Platform.runLater(() -> SceneHandler.switchScene("new_or_join"));
 
 
     }
@@ -96,9 +55,7 @@ public class GUI extends GameClientView {
     public void chooseNewGameName() {
 
         Platform.runLater(() ->
-        {
-            System.out.println("choosenewgame");
-        });
+                System.out.println("choosenewgame"));
 
 
 
@@ -108,10 +65,7 @@ public class GUI extends GameClientView {
     public void chooseNewGamePlayerNumber() {
 
         Platform.runLater(() ->
-        {
-            SceneHandler.switchScene("game_ip_connection");
-
-        });
+                SceneHandler.switchScene("game_ip_connection"));
 
     }
 
@@ -182,6 +136,7 @@ public class GUI extends GameClientView {
             msh.updateBoard();
             msh.updateOpponentBoards();
             msh.updateCommonGoals(getCommonGoal1GivenPlayers(),getCommonGoal2GivenPlayers());
+            msh.updateEndGameToken();
         });
 
 
@@ -228,8 +183,29 @@ public class GUI extends GameClientView {
             msh.updateBoard();
             msh.updateOpponentBoards();
             msh.updateCommonGoals(getCommonGoal1GivenPlayers(),getCommonGoal2GivenPlayers());
+            msh.updateEndGameToken();
         });
 
+    }
+
+    @Override
+    public void updateEndGameToken(boolean present) {
+
+        Platform.runLater(() ->
+        {
+            MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
+            msh.setEndGameTokenIsTaken(!present);
+        });
+    }
+
+    @Override
+    public void updateEndGameTokenPlayer(String player) {
+
+        Platform.runLater(() ->
+        {
+            MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
+            msh.setEndGameTokeHolderName(player);
+        });
 
     }
 
@@ -238,6 +214,11 @@ public class GUI extends GameClientView {
 
     }
 
+    /**
+     *
+     * @param playerName
+     * @param token
+     */
     private void calculateCGPoints(String playerName, Integer token){
 
         if(commonGoalAssignationReminder.containsKey(playerName)) {

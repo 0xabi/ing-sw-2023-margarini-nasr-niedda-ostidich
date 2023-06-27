@@ -48,6 +48,7 @@ public class ConnectionSceneHandler extends SceneHandler {
 
 
     /**
+     * Switch to home scene
      * @author Abdullah Nasr
      */
     public void back()
@@ -55,6 +56,10 @@ public class ConnectionSceneHandler extends SceneHandler {
         SceneHandler.switchScene("home");
     }
 
+    /**
+     * Connect to the server and switch scene
+     * @author Abdullah Nasr
+     */
     public void next(){
 
         if(InputFormatChecker.isIPAddress(ip_txt.getText()))
@@ -77,12 +82,20 @@ public class ConnectionSceneHandler extends SceneHandler {
     }
 
 
+    /**
+     * Update the RMI checkbox selection
+     * @author Abdullah Nasr
+     */
     public void setRMI()
     {
         RMICB.setSelected(true);
         socketCB.setSelected(false);
     }
 
+    /**
+     * Update the socket checkbox selection
+     * @author Abdullah Nasr
+     */
     public void setSocket()
     {
         socketCB.setSelected(true);
@@ -90,6 +103,10 @@ public class ConnectionSceneHandler extends SceneHandler {
 
     }
 
+
+    /**
+     * @author Abdullah Nasr
+     */
     @Override
     public void runScene() {
 
@@ -107,6 +124,9 @@ public class ConnectionSceneHandler extends SceneHandler {
 
     }
 
+    /**
+     * @author Abdullah Nasr
+     */
     @Override
     public void resize() {
 

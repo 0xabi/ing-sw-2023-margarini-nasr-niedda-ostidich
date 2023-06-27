@@ -84,7 +84,8 @@ public abstract class CommonGoal {
     /**
      * check if another common goal object is the same to this common goal
      * @param cg the common goal in which to check if is equal
-     * @return
+     * @return true if the common goal have the same name of the common goal passed by parameter, false otherwise
+     * @author Abdullah Nasr
      */
     public boolean isEqual(CommonGoal cg) {
        return cg.getCommonGoalName().equals(getCommonGoalName());
