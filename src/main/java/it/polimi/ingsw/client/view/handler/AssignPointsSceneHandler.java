@@ -91,7 +91,7 @@ public class AssignPointsSceneHandler extends SceneHandler {
     private Map<String, Integer> AG_Points = new HashMap<>();
 
     /**
-     * Hides all the information about third and fourth placed players
+     * Hides all the information about third and fourth placed players.
      * @author Pietro Andrea Niedda
      */
     private void hideAll(){
@@ -111,14 +111,14 @@ public class AssignPointsSceneHandler extends SceneHandler {
     }
 
     /**
-     * Used to return to the previous scene
+     * Used to return to the previous scene.
      * @author Pietro Andrea Niedda
      */
     public void back(){SceneHandler.switchScene("new_or_join");}
 
     /**
      * Prepares a map containing the name of the player the key, and the total amount of points scored from the player
-     * as the value
+     * as the value.
      * @param name the name of the player
      * @param points the total amount of points scored from the player
      *  @author Pietro Andrea Niedda
@@ -127,7 +127,7 @@ public class AssignPointsSceneHandler extends SceneHandler {
 
     /**
      * Prepares a map containing the name of the player the key, and the points received from the common goals as
-     * the value
+     * the value.
      * @param name the name of the player
      * @param token the amount of points
      * @author Pietro Andrea Niedda
@@ -138,7 +138,7 @@ public class AssignPointsSceneHandler extends SceneHandler {
 
     /**
      * Prepares a map containing the name of the player the key, and the points received from the personal goal as
-     * the value
+     * the value.
      * @param name the name of rhe player
      * @param points the amount of points
      * @author Pietro Andrea Niedda
@@ -149,7 +149,7 @@ public class AssignPointsSceneHandler extends SceneHandler {
 
     /**
      * Prepares a map containing the name of the player the key, and the points received from the adjacent tiles as
-     * the value
+     * the value.
      * @param name the name of the player
      * @param points the amount of points
      * @author Pietro Andrea Niedda
@@ -159,7 +159,7 @@ public class AssignPointsSceneHandler extends SceneHandler {
     }
 
     /**
-     * Show each player and his positioning and the amount of points received for each category
+     * Show each player and his positioning and the amount of points received for each category.
      * @author Pietro Andrea Niedda
      */
     public void show(){
@@ -175,7 +175,7 @@ public class AssignPointsSceneHandler extends SceneHandler {
     }
 
     /**
-     * This method is used to get the name of the player that has scored the smallest amount of points
+     * This method is used to get the name of the player that has scored the smallest amount of points.
      * @return the name of the player with fewer points
      * @author Pietro Andrea Niedda
      */
@@ -194,7 +194,7 @@ public class AssignPointsSceneHandler extends SceneHandler {
     }
 
     /**
-     * Sets on visible all the information about the fourth placed player
+     * Sets on visible all the information about the fourth placed player.
      * @param player the name of the player in fourth position
      * @author Pietro Andrea Niedda
      */
@@ -218,7 +218,7 @@ public class AssignPointsSceneHandler extends SceneHandler {
     }
 
     /**
-     * Sets on visible all the information about the third placed player
+     * Sets on visible all the information about the third placed player.
      * @param player the name of the player in third position
      * @author Pietro Andrea Niedda
      */
@@ -242,7 +242,7 @@ public class AssignPointsSceneHandler extends SceneHandler {
     }
 
     /**
-     * Sets on visible all the information about the second placed player
+     * Sets on visible all the information about the second placed player.
      * @param player the name of the player in second position
      * @author Pietro Andrea Niedda
      */
@@ -263,7 +263,7 @@ public class AssignPointsSceneHandler extends SceneHandler {
     }
 
     /**
-     * Sets on visible all the information about the winner
+     * Sets on visible all the information about the winner.
      * @param player the name of the winner
      * @author Pietro Andrea Niedda
      */

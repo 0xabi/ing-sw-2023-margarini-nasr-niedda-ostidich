@@ -112,6 +112,12 @@ public class GUI extends GameClientView {
         });
     }
 
+    /**
+     * When invoked, this method switches the scene to the one in which the player has to select the gameroom he wants
+     * to join.
+     * @param rooms is the game rooms availability list
+     * @author Pietro Andrea Niedda
+     */
     @Override
     public void chooseGameRoom(List<GameRoom> rooms) {
 
@@ -215,9 +221,11 @@ public class GUI extends GameClientView {
     }
 
     /**
-     *
-     * @param playerName
-     * @param token
+     *When invoked, store the amount of points scored from common goals from each player in the
+     * commonGoalAssignationReminder variable.
+     * @param playerName the name of the player
+     * @param token the amount of points received from a specific common goal
+     * @author Pietro Andrea Nieddakm
      */
     private void calculateCGPoints(String playerName, Integer token){
 
@@ -229,6 +237,12 @@ public class GUI extends GameClientView {
 
     }
 
+    /**
+     * This method is responsible for sending to the AssignPointsSceneHandler the information about the points each
+     * player has scored from personal goal and common goals.
+     * @param points is the personal goal assigned points map
+     * @author Pietro Andrea Niedda
+     */
     @Override
     public void assignPersonalGoalPoints(Map<String, Integer> points) {
         Platform.runLater(() -> {
@@ -256,6 +270,12 @@ public class GUI extends GameClientView {
         });
     }
 
+    /**
+     * This method is responsible for sending to the AssignPointsSceneHandler the information about the points each
+     * player has scored from the tiles that are adjacent.
+     * @param points is the adjacent goal assigned points map
+     * @author Pietro Andrea Niedda
+     */
     @Override
     public void assignAdjacentGoalPoints(Map<String, Integer> points) {
 
@@ -270,6 +290,15 @@ public class GUI extends GameClientView {
 
     }
 
+    /**
+     * This method is responsible for sending to the AssignPointsSceneHandler the information about the total amount of
+     * points each player has scored. Also informs the AssignPointsSceneHandler that it's time to update the scene,
+     * showing the points each player has scored for each category.
+     *player has scored from personal goal and common goals.
+     * @param winnerName is the winner player's name string
+     * @param points     is the players' end game points map
+     * @author Pietro Andrea Niedda
+     */
     @Override
     public void announceWinner(String winnerName, Map<String, Integer> points) {
 

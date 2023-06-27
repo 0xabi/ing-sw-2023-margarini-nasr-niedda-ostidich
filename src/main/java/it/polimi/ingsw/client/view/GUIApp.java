@@ -70,6 +70,10 @@ public class GUIApp extends Application {
 
     }
 
+    /**
+     *This method is invoked when the window is being closed, creating a pop-up window that asks to confirm the user is
+     * sure about closing the window. Click on ok to confirm, or on cancel otherwise.
+     */
     private void Logout(){
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
