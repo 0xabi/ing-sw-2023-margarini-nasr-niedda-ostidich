@@ -83,6 +83,8 @@ public class Client implements ClientController {
      */
 
     public synchronized void send(Message message) throws IOException{{
+            if(!alive)
+                return;
             if (Objects.equals(connectionType, "Socket")) {
                 try {
                     MessageToClient.writeObject(message);
@@ -90,6 +92,7 @@ public class Client implements ClientController {
                     MessageToClient.reset();
                 } catch (IOException e) {
                     try {
+                        alive = false;
                         roomServices.disconnectedPlayer(playerName);
 
                     } catch (RemoteException ex) {
@@ -197,12 +200,14 @@ public class Client implements ClientController {
             try {
                 send(ping);
             }catch(IOException e){
+                alive = false;
+                roomServices.disconnectedPlayer(playerName);
                 return;
             }
 
             if (pingQueue.size() > 2) {
-                System.out.println("[" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + "] " + playerName + " quit the lobby");
                 roomServices.disconnectedPlayer(playerName);
+                alive = false;
                 return;
             }
         }

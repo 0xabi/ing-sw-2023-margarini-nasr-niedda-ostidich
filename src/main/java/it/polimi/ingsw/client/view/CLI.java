@@ -367,10 +367,10 @@ public class CLI extends GameClientView {
                     System.out.print("\t");
                     getCommonGoal1GivenPlayers().keySet().forEach((k) -> {
                         if (getCommonGoal1GivenPlayers().get(k).equals(name))
-                            System.out.print((char) 27 + "[49m" + (char) 27 + "[39m" + "[" + (char) 27 + "[41m" + (char) 27 + "[30m" + " " + getCommonGoal1GivenPlayers().get(k) + " " + (char) 27 + "[49m" + (char) 27 + "[39m" + "]");
+                            System.out.print((char) 27 + "[49m" + (char) 27 + "[39m" + "[" + (char) 27 + "[41m" + (char) 27 + "[30m" + " " + k + " " + (char) 27 + "[49m" + (char) 27 + "[39m" + "]");
                     });
-                    System.out.print("\t\t\t");
-                } else System.out.print("\t\t\t\t\t");
+                    System.out.print("\t\t\t\t\t\t");
+                } else System.out.print("\t\t\t\t\t\t\t");
             System.out.println();
         }
         if (getCommonGoal2GivenPlayers().size() > 0) {
@@ -380,10 +380,10 @@ public class CLI extends GameClientView {
                     System.out.print("\t");
                     getCommonGoal2GivenPlayers().keySet().forEach((k) -> {
                         if (getCommonGoal2GivenPlayers().get(k).equals(name))
-                            System.out.print((char) 27 + "[49m" + (char) 27 + "[39m" + "[" + (char) 27 + "[41m" + (char) 27 + "[30m" + " " + getCommonGoal2GivenPlayers().get(k) + " " + (char) 27 + "[49m" + (char) 27 + "[39m" + "]");
+                            System.out.print((char) 27 + "[49m" + (char) 27 + "[39m" + "[" + (char) 27 + "[41m" + (char) 27 + "[30m" + " " + k + " " + (char) 27 + "[49m" + (char) 27 + "[39m" + "]");
                     });
-                    System.out.print("\t\t\t");
-                } else System.out.print("\t\t\t\t\t");
+                    System.out.print("\t\t\t\t\t\t");
+                } else System.out.print("     \t\t\t\t\t\t");
             System.out.println();
         }
     }

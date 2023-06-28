@@ -154,15 +154,13 @@ public class RoomServices extends UnicastRemoteObject implements ServerControlle
                     gameRooms.remove(gameRoom);
                     return;
                 }
-                gameRoom.enteredPlayers().forEach(player -> {
-                    executorService.execute(() ->
-                    {
-                        try {
-                            clients.get(player).showPersonalRoom(new ShowPersonalRoom(player, MessageID.SHOW_PERSONAL_ROOM, gameRoom));
-                        } catch (RemoteException ignored) {
-                        }
-                    });
-                });
+                gameRoom.enteredPlayers().forEach(player -> executorService.execute(() ->
+                {
+                    try {
+                        clients.get(player).showPersonalRoom(new ShowPersonalRoom(player, MessageID.SHOW_PERSONAL_ROOM, gameRoom));
+                    } catch (RemoteException ignored) {
+                    }
+                }));
                 return;
             }
         }
@@ -181,6 +179,7 @@ public class RoomServices extends UnicastRemoteObject implements ServerControlle
                     try {
                         clients.get(msg.getPlayerName()).roomNameNotAvailable(new RoomNameNotAvailable(msg.getPlayerName(), MessageID.ROOM_NAME_NOT_AVAILABLE));
                     } catch (RemoteException ignored) {
+                        
                     }
                 });
                 return;
@@ -195,6 +194,7 @@ public class RoomServices extends UnicastRemoteObject implements ServerControlle
             try {
                 clients.get(msg.getPlayerName()).showPersonalRoom(new ShowPersonalRoom(msg.getPlayerName(), MessageID.SHOW_PERSONAL_ROOM, newRoom));
             } catch (RemoteException ignored) {
+                
             }
         });
     }

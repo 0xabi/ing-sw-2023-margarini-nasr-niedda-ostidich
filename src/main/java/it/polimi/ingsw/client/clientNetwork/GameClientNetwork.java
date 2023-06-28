@@ -1,5 +1,7 @@
 package it.polimi.ingsw.client.clientNetwork;
 
+import it.polimi.ingsw.general.EventID;
+import it.polimi.ingsw.general.Event;
 import it.polimi.ingsw.general.Message;
 import it.polimi.ingsw.general.MessageID;
 import it.polimi.ingsw.general.interfaces.ClientController;
@@ -42,6 +44,8 @@ public class GameClientNetwork implements ClientNetwork {
 
     private String playerName;
 
+    private Socket socket;
+
     private ServerController roomServices;
 
     /**
@@ -63,19 +67,32 @@ public class GameClientNetwork implements ClientNetwork {
         if (Objects.equals(connectionType, "Socket"))
             while (!connected) {
                 try {
-                    //FIXME: Socket without try catch with resources
-                    Socket socket = new Socket(serverIP, 34634);
+                    socket = new Socket(serverIP, 34634);
+                } catch (Exception e) {
+                    try {
+                        controller.restart();
+                    } catch (RemoteException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
                     connected = true;
                     messageQueue = new LinkedList<>();
-                    this.MessageToServer = new ObjectOutputStream(socket.getOutputStream());
-                    this.MessageFromServer = new ObjectInputStream(socket.getInputStream());
-                } catch (Exception e) {
-                    System.out.println("connection problems!");
-                }
+                    try {
+                        this.MessageToServer = new ObjectOutputStream(socket.getOutputStream());
+                        this.MessageFromServer = new ObjectInputStream(socket.getInputStream());
+                    }catch(IOException e){
+                        System.out.println("connection problems!");
+                    }
+
                 new Thread(() -> {
                     try {
                         Sorter();
                     } catch (Exception e) {
+                        try {
+                            controller.restart();
+                        } catch (RemoteException ex) {
+                            throw new RuntimeException(ex);
+                        }
                         throw new RuntimeException(e);
                     }
                 }).start();
@@ -85,14 +102,11 @@ public class GameClientNetwork implements ClientNetwork {
                 } catch (IOException ignored) {
                 }
             }
-        if(Objects.equals(connectionType, "RMI"))
-            while(!connected){
+        if(Objects.equals(connectionType, "RMI")){
                 try {
 
                     Registry registry = LocateRegistry.getRegistry(serverIP, 1099);
-                    ServerController server = (ServerController) registry.lookup("Connection");
-                    roomServices = server;
-                    connected = true;
+                    roomServices = (ServerController) registry.lookup("Connection");
                     if(roomServices.PlayerIDisAvailable(new Hello(playerName, MessageID.HELLO))) {
                         new Thread(()->{
                             try {
@@ -107,7 +121,6 @@ public class GameClientNetwork implements ClientNetwork {
 
                 }catch (Exception e) {
                     System.out.println("[System] Server failed: " + e);
-                    break;
                 }
 
             }
@@ -141,11 +154,16 @@ public class GameClientNetwork implements ClientNetwork {
 
     public void ServerSocketListener() {
         Message serverMessage;
-        while (true) { //FIXME: add while "client is alive"
+        while (true) {
             try {
                 serverMessage = (Message) MessageFromServer.readObject();
             } catch (IOException | ClassNotFoundException e) {
-                //TODO: client is to be advised that connection with server has fallen
+                try {
+                    controller.update(new Event(EventID.START,null));
+                } catch (RemoteException ex) {
+                    throw new RuntimeException(ex);
+                }
+
                 break;
             }
             if (serverMessage.getMessageID() == MessageID.PING) {
@@ -168,7 +186,7 @@ public class GameClientNetwork implements ClientNetwork {
      */
     public void Sorter() throws Exception {
         //noinspection InfiniteLoopStatement
-        while (true) { //FIXME: put while "client is alive"
+        while (true) {
             //noinspection BusyWait
             Thread.sleep(190);
             if (messageQueue.size() > 0) {

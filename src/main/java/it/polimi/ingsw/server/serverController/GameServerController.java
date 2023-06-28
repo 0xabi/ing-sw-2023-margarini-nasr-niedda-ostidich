@@ -105,14 +105,17 @@ public class GameServerController extends RoomServices {
     @Override
     public void disconnectedPlayer(String playerName) {
         disconnected.add(playerName);
-        System.out.println("[" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + "] " + playerName + " quit the lobby");
+        System.out.println("[" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + "] " + playerName + " quit the game");
         if (disconnected.size() == names.size()) closeGame(names);
         if (playerTurn.equals(playerName)) {
-            if (playerPhase == Phase.INSERT) {
-                Random random = new Random();
-                insertTilesRequest(new InsertTilesRequest(playerName, MessageID.INSERT_TILES_REQUEST, lastPicked, random.nextInt(model.getGameParameters().get("shelfColumnNumber"))));
-            }
             nextTurn(true);
+            if (playerPhase == Phase.INSERT) {
+
+              //TODO bug. c'è qualcosa che è null
+                // Random random = new Random();
+                // insertTilesRequest(new InsertTilesRequest(playerName, MessageID.INSERT_TILES_REQUEST, lastPicked, random.nextInt(model.getGameParameters().get("shelfColumnNumber"))));
+            }
+
         }
     }
 
