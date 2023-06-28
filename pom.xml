@@ -70,7 +70,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>it.polimi.ingsw.Debugging</mainClass>
+                            <mainClass>it.polimi.ingsw.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -94,7 +94,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>it.polimi.ingsw.Debugging</mainClass>
+                            <mainClass>it.polimi.ingsw.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

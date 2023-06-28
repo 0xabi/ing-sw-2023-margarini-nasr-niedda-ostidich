@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.Debugging;
+import it.polimi.ingsw.Main;
 import it.polimi.ingsw.general.exceptions.PlayerNotFoundException;
 import it.polimi.ingsw.general.interfaces.ServerModel;
 import it.polimi.ingsw.general.Coordinates;
@@ -41,8 +41,8 @@ public class GameServerModel implements ServerModel, Serializable {
     public GameServerModel(@NotNull Set<String> names) {
         board = new Board(names.size());
         board.refill();
-        if (Debugging.isDebugging()) {
-            Debugging.clearBoard(board);
+        if (Main.isDebugging()) {
+            Main.clearBoard(board);
         }
         commonGoalConstructor(names.size());
         playerListConstructor(names);

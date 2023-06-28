@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.view;
 
-import it.polimi.ingsw.Debugging;
+import it.polimi.ingsw.Main;
 import it.polimi.ingsw.general.*;
 
 import java.rmi.RemoteException;
@@ -8,7 +8,7 @@ import java.util.*;
 
 import it.polimi.ingsw.server.model.Board;
 import org.jetbrains.annotations.NotNull;
-import it.polimi.ingsw.Debugging.Watch;
+import it.polimi.ingsw.Main.Watch;
 
 /**
  * CLI class is to implement GameView UI abstract class.
@@ -82,7 +82,7 @@ public class CLI extends GameClientView {
      */
     @Override
     public void chooseIPAddress() {
-        if (Debugging.isDebugging()) {
+        if (Main.isDebugging()) {
             try {
                 System.out.println("DEBUG: setting \"localhost\" as IP address");
                 getClientController().update(new Event(EventID.CHOOSE_IP_ADDRESS, "localhost"));
@@ -104,9 +104,9 @@ public class CLI extends GameClientView {
 
     @Override
     public void choosePlayerName() {
-        if (Debugging.isDebugging()) {
+        if (Main.isDebugging()) {
             try {
-                playerName = Debugging.randomString();
+                playerName = Main.randomString();
                 System.out.println("DEBUG: setting \"" + playerName + "\" as player name");
                 setPlayerName(playerName);
                 getClientController().update(new Event(EventID.CHOOSE_PLAYER_NAME, playerName));
@@ -132,9 +132,9 @@ public class CLI extends GameClientView {
      */
     @Override
     public void chooseNewOrJoin() {
-        if (Debugging.isDebugging()) {
+        if (Main.isDebugging()) {
             try {
-                getClientController().update(new Event(EventID.CHOOSE_NEW_OR_JOIN, Debugging.getRoomGeneration()));
+                getClientController().update(new Event(EventID.CHOOSE_NEW_OR_JOIN, Main.getRoomGeneration()));
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
@@ -156,7 +156,7 @@ public class CLI extends GameClientView {
      */
     @Override
     public void chooseNewGameName() {
-        if (Debugging.isDebugging()) {
+        if (Main.isDebugging()) {
             try {
                 System.out.println("DEBUG: setting \"game\" as room name");
                 getClientController().update(new Event(EventID.CHOOSE_NEW_GAME_NAME, "game"));
@@ -181,7 +181,7 @@ public class CLI extends GameClientView {
      */
     @Override
     public void chooseNewGamePlayerNumber() {
-        if (Debugging.isDebugging()) {
+        if (Main.isDebugging()) {
             try {
                 System.out.println("DEBUG: setting \"2\" as room size");
                 getClientController().update(new Event(EventID.CHOOSE_NEW_GAME_PLAYER_NUMBER, 2));
@@ -239,7 +239,7 @@ public class CLI extends GameClientView {
      */
     @Override
     public void chooseGameRoom(List<GameRoom> rooms) {
-        if (Debugging.isDebugging()) {
+        if (Main.isDebugging()) {
             try {
                 System.out.println("DEBUG: choosing \"game\" room to join");
                 getClientController().update(new Event(EventID.CHOOSE_GAME_ROOM, "game"));
@@ -451,8 +451,8 @@ public class CLI extends GameClientView {
                     if (retry)
                         System.out.println("\t\t\t\tThe Tile was already chosen or invalid input");
                     System.out.println("\t\t\t\tYou can pick more " + print + " tiles");
-                    if (Debugging.isDebugging() && !Debugging.isAlreadyPicket()) {
-                        if (Debugging.getConfiguration().equals("1")) {
+                    if (Main.isDebugging() && !Main.isAlreadyPicket()) {
+                        if (Main.getConfiguration().equals("1")) {
                             System.out.println("DEBUG: picking tile \"3,1\"");
                             coords = "3,1".split(",");
                         } else {
@@ -485,7 +485,7 @@ public class CLI extends GameClientView {
             msg = msg + "\n\t\t\t\tIf you're not satisfied of your choice and you would pick again press [r],";
             msg = msg + "\n\t\t\t\tIf you want to pick other Tiles press[c]";
             String response;
-            if (Debugging.isDebugging() && !Debugging.isAlreadyPicket()) {
+            if (Main.isDebugging() && !Main.isAlreadyPicket()) {
                 response = "y";
                 System.out.println("DEBUG: confirming selection with \"y\"");
             } else {
@@ -530,7 +530,7 @@ public class CLI extends GameClientView {
                 printScenario2(resultSet);
                 if (resultSet.size() == 1)
                     choice = 0;
-                else if (Debugging.isDebugging() && !Debugging.isAlreadyPicket()) {
+                else if (Main.isDebugging() && !Main.isAlreadyPicket()) {
                     choice = 0;
                     System.out.println("DEBUG: choosing order 0");
                 } else {
@@ -557,10 +557,10 @@ public class CLI extends GameClientView {
         do {
             attempt = true;
             try {
-                if (Debugging.isDebugging() && !Debugging.isAlreadyPicket()) {
+                if (Main.isDebugging() && !Main.isAlreadyPicket()) {
                     column = 2;
                     System.out.println("DEBUG: choosing column 2");
-                    Debugging.flipAlreadyPicket();
+                    Main.flipAlreadyPicket();
                 } else {
                     column = Integer.parseInt(playerMessage("\t\t\t\tChoose column: "));
                     if(column < 0 || column > getGameParameters().get("shelfRowLength") - 1){
@@ -584,9 +584,9 @@ public class CLI extends GameClientView {
 
     @Override
     public void playerIsPlaying(String playerName) {
-        if (Debugging.isDebugging() && Debugging.isAlreadyPicket()) {
-            Debugging.checkTestTile(getPlayerShelves().get(getPlayerName())[0][0]);
-            Debugging.connectionStatistics();
+        if (Main.isDebugging() && Main.isAlreadyPicket()) {
+            Main.checkTestTile(getPlayerShelves().get(getPlayerName())[0][0]);
+            Main.connectionStatistics();
         }
         columnReqToServer.stop();
         currentPlayer = playerName;
@@ -620,9 +620,9 @@ public class CLI extends GameClientView {
 
     @Override
     public void chooseRMIorSocket() {
-        if (Debugging.isDebugging()) {
+        if (Main.isDebugging()) {
             try {
-                getClientController().update(new Event(EventID.CHOOSE_RMI_OR_SOCKET, Debugging.getNetworkType()));
+                getClientController().update(new Event(EventID.CHOOSE_RMI_OR_SOCKET, Main.getNetworkType()));
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }

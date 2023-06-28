@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.serverController;
 
-import it.polimi.ingsw.Debugging;
+import it.polimi.ingsw.Main;
 import it.polimi.ingsw.general.MessageID;
 import it.polimi.ingsw.general.Tile;
 import it.polimi.ingsw.general.exceptions.AllPlayerDisconnectedException;
@@ -79,7 +79,7 @@ public class GameServerController extends RoomServices {
         names.forEach(player -> executorService.execute(() ->
         {
             try {
-                if (Debugging.isDebugging()) Debugging.calculateTime();
+                if (Main.isDebugging()) Main.calculateTime();
                 matchClients.get(player).notifyGameHasStarted(new NotifyGameHasStarted(
                         player,
                         MessageID.NOTIFY_GAME_HAS_STARTED,
@@ -295,7 +295,7 @@ public class GameServerController extends RoomServices {
             ++i;
         } while (i < names.size() && disconnected.contains(playerTurn));
         if (i >= names.size()) {
-            throw new AllPlayerDisconnectedException("all player are disconnected");
+            throw new AllPlayerDisconnectedException("all player have disconnected");
         }
     }
 
@@ -311,7 +311,7 @@ public class GameServerController extends RoomServices {
                                     message.getPlayerName() + " whispered to you: " +
                                             message.getMessage().substring(message.getMessage().indexOf(" ") + 1)));
                         } catch (RemoteException e) {
-                            throw new RuntimeException(e);
+                            disconnectedPlayer(client);
                         }
                     });
                     executorService.execute(() -> {
@@ -320,7 +320,7 @@ public class GameServerController extends RoomServices {
                                     client + " heard your whisper: " +
                                             message.getMessage().substring(message.getMessage().indexOf(" ") + 1)));
                         } catch (RemoteException e) {
-                            throw new RuntimeException(e);
+                            disconnectedPlayer(client);
                         }
                     });
                 }
@@ -331,7 +331,7 @@ public class GameServerController extends RoomServices {
                 try {
                     matchClients.get(client).chatMessage(new Chat(client, MessageID.CHAT_MESSAGE, message.getPlayerName() + ": " + message.getMessage()));
                 } catch (RemoteException e) {
-                    throw new RuntimeException(e);
+                    disconnectedPlayer(client);
                 }
             }));
         }

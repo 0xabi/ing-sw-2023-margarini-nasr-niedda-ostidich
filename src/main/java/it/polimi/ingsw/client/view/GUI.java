@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.view;
 
-import it.polimi.ingsw.Debugging;
+import it.polimi.ingsw.Main;
 import it.polimi.ingsw.client.view.handler.AssignPointsSceneHandler;
 import it.polimi.ingsw.client.view.handler.ChooseGameRoomSceneHandler;
 import it.polimi.ingsw.client.view.handler.SceneHandler;
@@ -182,7 +182,7 @@ public class GUI extends GameClientView {
 
             MatchSceneHandler msh = (MatchSceneHandler) SceneHandler.getCurrentHandler();
             MatchSceneHandler.setPickPhase(false);
-            Debugging.Watch.temp.stop();
+            Main.Watch.temp.stop();
 
             msh.checkColumnSelection(false);
             msh.changeAdviseMsg(playerName + " is currently playing his turn");

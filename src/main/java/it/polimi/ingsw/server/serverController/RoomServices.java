@@ -84,8 +84,8 @@ public class RoomServices extends UnicastRemoteObject implements ServerControlle
             try {
                 GameServerController gsc = new GameServerController(names);
                 names.keySet().forEach(player -> playerMatch.put(player, gsc));
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
+            } catch (RemoteException ignored) {
+                
             }
         });
     }
@@ -158,8 +158,8 @@ public class RoomServices extends UnicastRemoteObject implements ServerControlle
                 executorService.execute(() -> {
                             try {
                                 clients.get(msg.getPlayerName()).showPersonalRoom(new ShowPersonalRoom(msg.getPlayerName(), MessageID.SHOW_PERSONAL_ROOM, gameRoom));
-                            } catch (RemoteException e) {
-                                throw new RuntimeException(e);
+                            } catch (RemoteException ignored) {
+                                
                             }
                         }
                 );
@@ -180,8 +180,8 @@ public class RoomServices extends UnicastRemoteObject implements ServerControlle
                 {
                     try {
                         clients.get(msg.getPlayerName()).roomNameNotAvailable(new RoomNameNotAvailable(msg.getPlayerName(), MessageID.ROOM_NAME_NOT_AVAILABLE));
-                    } catch (RemoteException e) {
-                        throw new RuntimeException(e);
+                    } catch (RemoteException ignored) {
+                        
                     }
                 });
                 return;
@@ -195,8 +195,8 @@ public class RoomServices extends UnicastRemoteObject implements ServerControlle
         {
             try {
                 clients.get(msg.getPlayerName()).showPersonalRoom(new ShowPersonalRoom(msg.getPlayerName(), MessageID.SHOW_PERSONAL_ROOM, newRoom));
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
+            } catch (RemoteException ignored) {
+                
             }
         });
     }
@@ -211,7 +211,7 @@ public class RoomServices extends UnicastRemoteObject implements ServerControlle
                 {
                     try {
                         clients.get(msg.getPlayerName()).showRooms(new ShowRooms(msg.getPlayerName(), MessageID.SHOW_ROOMS, gameRooms));
-                    } catch (RemoteException e) {
+                    } catch (RemoteException ignored) {
                     }
                 }
         );

@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.Debugging;
+import it.polimi.ingsw.Main;
 import it.polimi.ingsw.general.Coordinates;
 import it.polimi.ingsw.general.Tile;
 import org.jetbrains.annotations.NotNull;
@@ -31,8 +31,8 @@ public class Shelf {
      */
     public Shelf() {
         positions = new Tile[ROW_LENGTH][COLUMN_LENGTH];
-        if (Debugging.isDebugging()) {
-            Debugging.fillShelf(this);
+        if (Main.isDebugging()) {
+            Main.fillShelf(this);
         }
     }
 

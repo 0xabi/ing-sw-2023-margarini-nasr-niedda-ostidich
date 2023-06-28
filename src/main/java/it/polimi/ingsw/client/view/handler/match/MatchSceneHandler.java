@@ -21,7 +21,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
 import javafx.util.Duration;
-import it.polimi.ingsw.Debugging.Watch;
+import it.polimi.ingsw.Main.Watch;
 
 import java.rmi.RemoteException;
 import java.util.*;

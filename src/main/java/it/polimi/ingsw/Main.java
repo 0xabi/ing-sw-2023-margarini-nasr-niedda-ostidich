@@ -12,7 +12,7 @@ import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 import java.util.*;
 
-public class Debugging {
+public class Main {
 
     private static final boolean debugging = false;
 
@@ -91,16 +91,16 @@ public class Debugging {
 
     public static void checkStartingPlayer(boolean startingPlayer) {
         System.out.println("DEBUG: shelf trial log checking starting player");
-        if (startingPlayer) Debugging.startingPlayer = Integer.parseInt(configuration);
-        else if (configuration.equals("1")) Debugging.startingPlayer = 2;
-        else Debugging.startingPlayer = 1;
+        if (startingPlayer) Main.startingPlayer = Integer.parseInt(configuration);
+        else if (configuration.equals("1")) Main.startingPlayer = 2;
+        else Main.startingPlayer = 1;
     }
 
     private static boolean testTile;
 
     public static void checkTestTile(Tile testTile) {
         System.out.println("DEBUG: shelf trial log checking test tile");
-        Debugging.testTile = testTile != null;
+        Main.testTile = testTile != null;
     }
 
     public static void calculateTime() {
@@ -219,7 +219,7 @@ public class Debugging {
     }
 
     public static void setConfiguration(String configuration) {
-        Debugging.configuration = configuration;
+        Main.configuration = configuration;
         System.out.println("DEBUG: setting \"" + configuration + "\" as configuration number");
     }
 

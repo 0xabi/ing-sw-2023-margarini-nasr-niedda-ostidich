@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.clientController;
 
-import it.polimi.ingsw.Debugging;
+import it.polimi.ingsw.Main;
 import it.polimi.ingsw.client.clientNetwork.GameClientNetwork;
 import it.polimi.ingsw.general.*;
 import it.polimi.ingsw.general.interfaces.ClientController;
@@ -239,8 +239,8 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
     public void notifyGameHasStarted(@NotNull NotifyGameHasStarted msg) {
         if (!msg.getPlayerName().equals(playerName) ||
                 msg.getMessageID() != MessageID.NOTIFY_GAME_HAS_STARTED) return;
-        if (Debugging.isDebugging()) {
-            Debugging.checkStartingPlayer(msg.getTurnCycle().get(0).equals(playerName));
+        if (Main.isDebugging()) {
+            Main.checkStartingPlayer(msg.getTurnCycle().get(0).equals(playerName));
         }
         view.setGameParameters(msg.getGameParameters());
         view.turnCycleOrder(msg.getTurnCycle());
@@ -286,7 +286,7 @@ public class GameClientController extends UnicastRemoteObject implements ClientC
      * @param playerPoints            is the map of player points
      */
     private void newTurnInitializingBias(Map<String, Tile[][]> playerShelves, Tile[][] board, boolean endGameToken, Map<Tile, Integer> bag, Stack<Integer> commonGoal1TokenStack, Map<Integer, String> commonGoal1GivenPlayers, Stack<Integer> commonGoal2TokenStack, Map<Integer, String> commonGoal2GivenPlayers, Map<String, Integer> playerPoints, String endGameTokenPlayer) {
-        if (Debugging.isDebugging()) Debugging.checkTestTile(playerShelves.get(playerName)[0][0]);
+        if (Main.isDebugging()) Main.checkTestTile(playerShelves.get(playerName)[0][0]);
         view.updateBoard(board);
         if (!endGameToken) {
             view.updateEndGameToken(false);
