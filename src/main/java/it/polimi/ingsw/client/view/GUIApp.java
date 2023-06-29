@@ -56,8 +56,8 @@ public class GUIApp extends Application {
              stage.setScene(scene);
              stage.setWidth(screenWidth);
              stage.setHeight(screenHeight);
-             stage.setMaximized(true);
-             stage.setResizable(false);
+             stage.setFullScreen(true);
+             //stage.setResizable(false);
              stage.show();
 
              stage.setOnCloseRequest(event -> {
@@ -82,7 +82,7 @@ public class GUIApp extends Application {
         alert.setHeaderText("You're about to logout!");
         alert.setContentText("Are you sure?");
 
-        if(ButtonType.OK == alert.showAndWait().get()){
+        if(alert.showAndWait().get() == ButtonType.OK){
             System.exit(0);
         }
 
