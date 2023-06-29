@@ -101,6 +101,9 @@ public class ChooseGameRoomSceneHandler extends SceneHandler{
         SceneHandler.switchScene("new_or_join");
     }
 
+    /**
+     * @author Pietro Andrea Niedda
+     */
     @Override
     public void runScene() {
         updateList();
@@ -110,6 +113,9 @@ public class ChooseGameRoomSceneHandler extends SceneHandler{
 
     }
 
+    /**
+     * @author Pietro Andrea Niedda
+     */
     @Override
     public void resize() {
         //noinspection DuplicatedCode

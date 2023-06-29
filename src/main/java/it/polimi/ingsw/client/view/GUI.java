@@ -93,7 +93,7 @@ public class GUI extends GameClientView {
     }
 
     @Override
-    public void notifyGameHasStared() {
+    public void notifyGameHasStared() { 
 
 
 

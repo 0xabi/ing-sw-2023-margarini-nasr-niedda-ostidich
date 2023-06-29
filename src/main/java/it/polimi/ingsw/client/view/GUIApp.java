@@ -57,7 +57,7 @@ public class GUIApp extends Application {
              stage.setWidth(screenWidth);
              stage.setHeight(screenHeight);
              stage.setMaximized(true);
-             stage.setFullScreen(true);
+             stage.setResizable(false);
              stage.show();
 
              stage.setOnCloseRequest(event -> {

@@ -281,6 +281,9 @@ public class AssignPointsSceneHandler extends SceneHandler {
         total_points.remove(player);
     }
 
+    /**
+     * @author Pietro Andrea Niedda
+     */
     @Override
     public void runScene(){
 
@@ -292,6 +295,10 @@ public class AssignPointsSceneHandler extends SceneHandler {
         resize();
 
     }
+
+    /**
+     * @author Pietro Andrea Niedda
+     */
     @Override
     public void resize(){
 
