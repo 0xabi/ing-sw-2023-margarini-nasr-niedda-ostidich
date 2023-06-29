@@ -205,7 +205,7 @@ public class Client implements ClientController {
                 return;
             }
 
-            if (pingQueue.size() > 2) {
+            if (pingQueue.size() > 20000) {
                 roomServices.disconnectedPlayer(playerName);
                 alive = false;
                 return;

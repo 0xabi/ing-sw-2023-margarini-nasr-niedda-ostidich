@@ -54,7 +54,7 @@
       </effect>
       <Image url="@../graphics/boards/bookshelf.png" />
    </ImageView>
-   <ImageView fx:id="shelfPlayer3" fitHeight="184.0" fitWidth="182.0" layoutX="1010.0" layoutY="487.0"  pickOnBounds="true">
+   <ImageView fx:id="shelfPlayer3" fitHeight="184.0" fitWidth="182.0" layoutX="1010.0" layoutY="487.0" pickOnBounds="true">
       <effect>
          <DropShadow offsetX="-3.0" />
       </effect>
@@ -65,7 +65,7 @@
    <Label fx:id="player3Lbl" alignment="CENTER" layoutX="1010.0" layoutY="673.0" prefHeight="25.0" prefWidth="182.0" text="Player" />
    <Label fx:id="advertising" alignment="TOP_LEFT" layoutX="539.0" layoutY="7.0" text="oooooh picca tutto ahaaaa" />
    <Button layoutX="571.0" layoutY="402.0" mnemonicParsing="false" onAction="#callPick" prefHeight="38.0" prefWidth="58.0" styleClass="btn" text="PICK" textFill="WHITE" />
-   <TextArea fx:id="txtArea" layoutX="976.0" layoutY="31.0" prefHeight="394.0" prefWidth="215.0" styleClass="txt_area" />
+   <TextArea fx:id="txtArea" editable="false" layoutX="976.0" layoutY="31.0" prefHeight="394.0" prefWidth="215.0" styleClass="txt_area" />
    <TextField fx:id="txtField" layoutX="977.0" layoutY="424.0" prefHeight="30.0" prefWidth="189.0" styleClass="txt_field" />
    <Button fx:id="sendBtn" defaultButton="true" layoutX="1165.0" layoutY="424.0" mnemonicParsing="false" onMouseClicked="#sendMsg" prefHeight="30.0" prefWidth="28.0" styleClass="btn_send" text="&gt;" textFill="WHITE" />
    <ImageView fx:id="col1" fitHeight="257.0" fitWidth="44.0" layoutX="246.0" layoutY="153.0" onMouseClicked="#putCol1" pickOnBounds="true" preserveRatio="true" />
