@@ -3,12 +3,9 @@ package it.polimi.ingsw.client.view.handler;
 import it.polimi.ingsw.general.Event;
 import it.polimi.ingsw.general.EventID;
 import it.polimi.ingsw.general.GameRoom;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -65,12 +62,9 @@ public class ChooseGameRoomSceneHandler extends SceneHandler{
         lobbys = new LinkedList<>();
         getLobbies();
         lobbyList.getItems().addAll(lobbys);
-        lobbyList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
-                lobbyHasBeenSelected = true;
-                selectedLobby = lobbyList.getSelectionModel().getSelectedItem().split("\t", 2)[0];
-            }
+        lobbyList.getSelectionModel().selectedItemProperty().addListener((observableValue, s, t1) -> {
+            lobbyHasBeenSelected = true;
+            selectedLobby = lobbyList.getSelectionModel().getSelectedItem().split("\t", 2)[0];
         });
     }
 
@@ -111,8 +105,8 @@ public class ChooseGameRoomSceneHandler extends SceneHandler{
     public void runScene() {
         updateList();
         resize();
-        //getScene().setRoot(getRoot());
-        getStage().setScene(new Scene(getRoot()));
+        getScene().setRoot(getRoot());
+        //getStage().setScene(new Scene(getRoot()));
 
     }
 

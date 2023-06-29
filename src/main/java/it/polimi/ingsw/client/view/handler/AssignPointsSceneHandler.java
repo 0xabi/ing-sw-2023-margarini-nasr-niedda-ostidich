@@ -3,12 +3,10 @@ package it.polimi.ingsw.client.view.handler;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
 
@@ -85,10 +83,10 @@ public class AssignPointsSceneHandler extends SceneHandler {
     private Label total_lbl;
     @FXML
     private Button back_Btn;
-    private Map<String, Integer> total_points = new HashMap<>();
-    private Map<String, Integer> CG_Points = new HashMap<>();
-    private Map<String, Integer> PG_Points = new HashMap<>();
-    private Map<String, Integer> AG_Points = new HashMap<>();
+    private final Map<String, Integer> total_points = new HashMap<>();
+    private final Map<String, Integer> CG_Points = new HashMap<>();
+    private final Map<String, Integer> PG_Points = new HashMap<>();
+    private final Map<String, Integer> AG_Points = new HashMap<>();
 
     /**
      * Hides all the information about third and fourth placed players.
@@ -288,7 +286,8 @@ public class AssignPointsSceneHandler extends SceneHandler {
 
         hideAll();
 
-        getStage().setScene(new Scene(getRoot()));
+        getScene().setRoot(getRoot());
+        //getStage().setScene(new Scene(getRoot()));
 
         resize();
 

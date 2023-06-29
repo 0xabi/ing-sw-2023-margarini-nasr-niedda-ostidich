@@ -4,7 +4,6 @@ import it.polimi.ingsw.general.GameRoom;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -134,8 +133,8 @@ public class WaitPlayersSceneHandler extends SceneHandler{
         resize();
         updateInfo();
 
-        //getScene().setRoot(getRoot());
-        getStage().setScene(new Scene(getRoot()));
+        getScene().setRoot(getRoot());
+        //getStage().setScene(new Scene(getRoot()));
 
     }
 }

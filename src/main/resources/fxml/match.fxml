@@ -67,38 +67,33 @@
    <Button layoutX="571.0" layoutY="402.0" mnemonicParsing="false" onAction="#callPick" prefHeight="38.0" prefWidth="58.0" styleClass="btn" text="PICK" textFill="WHITE" />
    <TextArea fx:id="txtArea" editable="false" layoutX="976.0" layoutY="31.0" prefHeight="394.0" prefWidth="215.0" styleClass="txt_area" />
    <TextField fx:id="txtField" layoutX="977.0" layoutY="424.0" prefHeight="30.0" prefWidth="189.0" styleClass="txt_field" />
-   <Button fx:id="sendBtn" defaultButton="true" layoutX="1165.0" layoutY="424.0" mnemonicParsing="false" onMouseClicked="#sendMsg" prefHeight="30.0" prefWidth="28.0" styleClass="btn_send" text="&gt;" textFill="WHITE" />
+   <Button defaultButton="true" layoutX="1165.0" layoutY="424.0" mnemonicParsing="false" onMouseClicked="#sendMsg" prefHeight="30.0" prefWidth="28.0" styleClass="btn_send" text="&gt;" textFill="WHITE" />
    <ImageView fx:id="col1" fitHeight="257.0" fitWidth="44.0" layoutX="246.0" layoutY="153.0" onMouseClicked="#putCol1" pickOnBounds="true" preserveRatio="true" />
    <ImageView fx:id="col2" fitHeight="257.0" fitWidth="44.0" layoutX="293.0" layoutY="154.0" onMouseClicked="#putCol2" pickOnBounds="true" preserveRatio="true" />
    <ImageView fx:id="col3" fitHeight="257.0" fitWidth="44.0" layoutX="344.0" layoutY="154.0" onMouseClicked="#putCol3" pickOnBounds="true" preserveRatio="true" />
    <ImageView fx:id="col4" fitHeight="257.0" fitWidth="44.0" layoutX="395.0" layoutY="154.0" onMouseClicked="#putCol4" pickOnBounds="true" preserveRatio="true" />
    <ImageView fx:id="col5" fitHeight="257.0" fitWidth="44.0" layoutX="445.0" layoutY="154.0" onMouseClicked="#putCol5" pickOnBounds="true" preserveRatio="true" />
-   <ImageView fx:id="endGameToken" fitHeight="43.0" fitWidth="43.0" layoutX="881.0" layoutY="327.0" pickOnBounds="true" preserveRatio="true" rotate="8.0">
-      <image>
-         <Image url="@../graphics/scoring tokens/end game.jpg" />
-      </image>
+   <ImageView fx:id="endGameToken" fitHeight="43.0" fitWidth="43.0" layoutX="881.0" layoutY="327.0" pickOnBounds="true"
+              preserveRatio="true" rotate="8.0">
       <effect>
-         <InnerShadow radius="4.8725" width="0.49" />
+         <InnerShadow radius="4.8725" width="0.49"/>
       </effect>
+      <Image url="@../graphics/scoring tokens/end game.jpg"/>
    </ImageView>
-   <ImageView fx:id="chairPlayer1" fitHeight="43.0" fitWidth="43.0" layoutX="446.0" layoutY="594.0" pickOnBounds="true" preserveRatio="true" visible="false">
-      <image>
-         <Image url="@../graphics/misc/firstplayertoken.png" />
-      </image>
+   <ImageView fx:id="chairPlayer1" fitHeight="43.0" fitWidth="43.0" layoutX="446.0" layoutY="594.0" pickOnBounds="true"
+              preserveRatio="true" visible="false">
+      <Image url="@../graphics/misc/firstplayertoken.png"/>
    </ImageView>
-   <ImageView fx:id="chairPlayer2" fitHeight="43.0" fitWidth="43.0" layoutX="706.0" layoutY="594.0" pickOnBounds="true" preserveRatio="true" visible="false">
-      <image>
-         <Image url="@../graphics/misc/firstplayertoken.png" />
-      </image>
+   <ImageView fx:id="chairPlayer2" fitHeight="43.0" fitWidth="43.0" layoutX="706.0" layoutY="594.0" pickOnBounds="true"
+              preserveRatio="true" visible="false">
+      <Image url="@../graphics/misc/firstplayertoken.png"/>
    </ImageView>
-   <ImageView fx:id="chairPlayer3" fitHeight="43.0" fitWidth="43.0" layoutX="966.0" layoutY="594.0" pickOnBounds="true" preserveRatio="true" visible="false">
-      <image>
-         <Image url="@../graphics/misc/firstplayertoken.png" />
-      </image>
+   <ImageView fx:id="chairPlayer3" fitHeight="43.0" fitWidth="43.0" layoutX="966.0" layoutY="594.0" pickOnBounds="true"
+              preserveRatio="true" visible="false">
+      <Image url="@../graphics/misc/firstplayertoken.png"/>
    </ImageView>
-   <ImageView fx:id="chairMainPlayer" fitHeight="43.0" fitWidth="43.0" layoutX="152.0" layoutY="404.0" pickOnBounds="true" preserveRatio="true" visible="false">
-      <image>
-         <Image url="@../graphics/misc/firstplayertoken.png" />
-      </image>
+   <ImageView fx:id="chairMainPlayer" fitHeight="43.0" fitWidth="43.0" layoutX="152.0" layoutY="404.0"
+              pickOnBounds="true" preserveRatio="true" visible="false">
+      <Image url="@../graphics/misc/firstplayertoken.png"/>
    </ImageView>
 </AnchorPane>

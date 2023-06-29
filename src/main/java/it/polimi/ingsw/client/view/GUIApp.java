@@ -11,7 +11,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 
 public class GUIApp extends Application {
@@ -57,6 +56,8 @@ public class GUIApp extends Application {
              stage.setScene(scene);
              stage.setWidth(screenWidth);
              stage.setHeight(screenHeight);
+             stage.setMaximized(true);
+             stage.setFullScreen(true);
              stage.show();
 
              stage.setOnCloseRequest(event -> {
@@ -81,7 +82,7 @@ public class GUIApp extends Application {
         alert.setHeaderText("You're about to logout!");
         alert.setContentText("Are you sure?");
 
-        if(alert.showAndWait().get() == ButtonType.OK){
+        if(ButtonType.OK == alert.showAndWait().get()){
             System.exit(0);
         }
 

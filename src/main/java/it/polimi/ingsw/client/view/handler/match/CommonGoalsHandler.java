@@ -396,7 +396,7 @@ public class CommonGoalsHandler {
                         moveScoringTokenToOpponentPlayer(scoringTokenIV, player1Shelf, namePlayer);
                     } else if (counter == 1) {
                         moveScoringTokenToOpponentPlayer(scoringTokenIV, player2Shelf, namePlayer);
-                    } else if (counter == 3) {
+                    } else if (counter == 2) {
                         moveScoringTokenToOpponentPlayer(scoringTokenIV, player3Shelf, namePlayer);
                     }
                 }

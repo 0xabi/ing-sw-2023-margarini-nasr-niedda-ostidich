@@ -12,7 +12,6 @@ import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
@@ -74,9 +73,6 @@ public class MatchSceneHandler extends SceneHandler {
     private TextField txtField;
     @FXML
     private TextArea txtArea;
-    @FXML
-    private Button sendBtn;
-
     @FXML
     private ImageView endGameToken;
 
@@ -190,7 +186,7 @@ public class MatchSceneHandler extends SceneHandler {
                         chairPlayer1.setVisible(true);
                     } else if (counter == 1) {
                         chairPlayer2.setVisible(true);
-                    } else if (counter == 3) {
+                    } else if (counter == 2) {
                         chairPlayer3.setVisible(true);
                     }
                 }
@@ -243,7 +239,7 @@ public class MatchSceneHandler extends SceneHandler {
                             moveEndGameTokenToPlayer(player1Lbl);
                         } else if (counter == 1) {
                             moveEndGameTokenToPlayer(player2Lbl);
-                        } else if (counter == 3) {
+                        } else if (counter == 2) {
                             moveEndGameTokenToPlayer(player3Lbl);
                         }
                     }
@@ -1092,8 +1088,8 @@ public class MatchSceneHandler extends SceneHandler {
         });
 
         resize();
-        //getScene().setRoot(getRoot());
-        getStage().setScene(new Scene(getRoot()));
+        getScene().setRoot(getRoot());
+        //getStage().setScene(new Scene(getRoot()));
 
     }
 

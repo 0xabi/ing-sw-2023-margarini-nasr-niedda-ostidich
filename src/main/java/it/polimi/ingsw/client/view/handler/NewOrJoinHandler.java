@@ -5,7 +5,6 @@ import it.polimi.ingsw.general.EventID;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -108,7 +107,8 @@ public class NewOrJoinHandler extends SceneHandler{
     @Override
     public void runScene() {
         resize();
-        getStage().setScene(new Scene(getRoot()));
+        getScene().setRoot(getRoot());
+        //getStage().setScene(new Scene(getRoot()));
     }
 
 
