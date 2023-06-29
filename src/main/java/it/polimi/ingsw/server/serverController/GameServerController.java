@@ -305,6 +305,7 @@ public class GameServerController extends RoomServices {
     @Override
     public void chatMessage(@NotNull Chat message) {
         if (message.getMessageID() != MessageID.CHAT_MESSAGE) return;
+        if (message.getMessage().trim().equals("")) return;
         if (message.getMessage().startsWith("@")) {
             names.forEach(client -> {
                 if (message.getMessage().startsWith("@" + client + " ")) {
