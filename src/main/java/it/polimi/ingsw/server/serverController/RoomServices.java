@@ -179,7 +179,6 @@ public class RoomServices extends UnicastRemoteObject implements ServerControlle
                     try {
                         clients.get(msg.getPlayerName()).roomNameNotAvailable(new RoomNameNotAvailable(msg.getPlayerName(), MessageID.ROOM_NAME_NOT_AVAILABLE));
                     } catch (RemoteException ignored) {
-                        
                     }
                 });
                 return;
@@ -194,7 +193,6 @@ public class RoomServices extends UnicastRemoteObject implements ServerControlle
             try {
                 clients.get(msg.getPlayerName()).showPersonalRoom(new ShowPersonalRoom(msg.getPlayerName(), MessageID.SHOW_PERSONAL_ROOM, newRoom));
             } catch (RemoteException ignored) {
-                
             }
         });
     }
@@ -223,12 +221,15 @@ public class RoomServices extends UnicastRemoteObject implements ServerControlle
      * @author Francesco Ostidich
      */
     protected void closeGame(@NotNull List<String> names) {
-        serverNetwork.disconnect(names);
         names.forEach(player -> {
             clients.remove(player);
             playerMatch.remove(player);
         });
-        System.gc();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ignored) {
+        }
+        serverNetwork.disconnect(names);
     }
 
     public boolean PlayerIDisAvailable(@NotNull Hello message) {

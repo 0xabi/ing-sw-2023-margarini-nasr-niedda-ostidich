@@ -106,16 +106,18 @@ public class GameServerController extends RoomServices {
     public void disconnectedPlayer(String playerName) {
         disconnected.add(playerName);
         System.out.println("[" + LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS) + "] " + playerName + " quit the game");
-        if (disconnected.size() == names.size()) closeGame(names);
+        if (disconnected.size() == names.size() - 1) {
+            names.forEach(player -> executorService.execute(() -> {
+                try {
+                    matchClients.get(player).chatMessage(new Chat(player, MessageID.CHAT_MESSAGE, "NO PLAYER ONLINE - GAME ENDED!"));
+                } catch (RemoteException | NullPointerException ignored) {
+                }
+            }));
+            closeGame(names);
+            return;
+        }
         if (playerTurn.equals(playerName)) {
             nextTurn(true);
-            if (playerPhase == Phase.INSERT) {
-
-              //TODO bug. c'è qualcosa che è null
-                // Random random = new Random();
-                // insertTilesRequest(new InsertTilesRequest(playerName, MessageID.INSERT_TILES_REQUEST, lastPicked, random.nextInt(model.getGameParameters().get("shelfColumnNumber"))));
-            }
-
         }
     }
 
@@ -254,7 +256,7 @@ public class GameServerController extends RoomServices {
         if (goOn) {
             try {
                 playerTurnProceed();
-            } catch (AllPlayerDisconnectedException ignored) {
+            } catch (AllPlayerDisconnectedException e) {
                 closeGame(names);
             }
         }
@@ -296,8 +298,8 @@ public class GameServerController extends RoomServices {
                 playerTurn = names.get(0);
             }
             ++i;
-        } while (i < names.size() && disconnected.contains(playerTurn));
-        if (i >= names.size()) {
+        } while (i < names.size() - 1 && disconnected.contains(playerTurn));
+        if (i >= names.size() - 1) {
             throw new AllPlayerDisconnectedException("all player have disconnected");
         }
     }
