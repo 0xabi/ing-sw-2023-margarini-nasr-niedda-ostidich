@@ -221,15 +221,12 @@ public class RoomServices extends UnicastRemoteObject implements ServerControlle
      * @author Francesco Ostidich
      */
     protected void closeGame(@NotNull List<String> names) {
+        serverNetwork.disconnect(names);
         names.forEach(player -> {
             clients.remove(player);
             playerMatch.remove(player);
         });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException ignored) {
-        }
-        serverNetwork.disconnect(names);
+        System.gc();
     }
 
     public boolean PlayerIDisAvailable(@NotNull Hello message) {
